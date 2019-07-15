@@ -1,0 +1,69 @@
+#ignore thumbnails created by windows
+Thumbs.db
+
+#Ignore files build by Visual Studio
+*.obj
+*.exe
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+*.lib
+*.sbr
+*.tmp
+*.dat
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio cache/options directory
+.vs/
+
+# Ignore Administration Kentico site
+CMS/
+Lib/
+GlobalAssemblyInfo.cs
+WebApp.sln
+
+# Ignore nuget packages
+packages/
+
+# Ignore Nuget packages Kentico content files
+# kentico.languagepack.english
+MyCompany.*/CMSResources/*
+SandboxSite/CMSResources/*
+# kentico.aspnet.mvc
+SandboxSite/App_Data/Global/Resources/Kentico.*
+
+# Ignore component development files
+SandboxSite/App_Data/Global/Resources/MyCompany.*
+SandboxSite/Content/*
+
+# Kentico application data files
+/SandboxSite/App_Data/CMSModules/WebFarm/*.sync
+/SandboxSite/App_Data/CMSModules/SmartSearch
+
+# Actual config files
+/SandboxSite/AppSettings.config
+/SandboxSite/ConnectionStrings.config
+
+# Ignore nuild nuget packages
+/SandboxSite/*.nupkg
+
+# build artifacts
+/artifacts
+
+# Webpack outputs
+MyCompany.Components/Content
+
+node_modules/

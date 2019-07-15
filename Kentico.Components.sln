@@ -1,0 +1,36 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.452
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandboxSite", "SandboxSite\SandboxSite.csproj", "{DAFBD0E0-F62E-4BB6-ACAD-78FBA75C4A3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Widget.Video", "Kentico.Widget.Video\Kentico.Widget.Video.csproj", "{7BC9BF35-B4C2-43FF-A932-1D29A797BF50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Widget.Video.Views", "Kentico.Widget.Video.Views\Kentico.Widget.Video.Views.csproj", "{47F7A09A-C58B-4F57-86FD-7E576C6474BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DAFBD0E0-F62E-4BB6-ACAD-78FBA75C4A3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAFBD0E0-F62E-4BB6-ACAD-78FBA75C4A3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAFBD0E0-F62E-4BB6-ACAD-78FBA75C4A3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAFBD0E0-F62E-4BB6-ACAD-78FBA75C4A3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BC9BF35-B4C2-43FF-A932-1D29A797BF50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BC9BF35-B4C2-43FF-A932-1D29A797BF50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BC9BF35-B4C2-43FF-A932-1D29A797BF50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BC9BF35-B4C2-43FF-A932-1D29A797BF50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47F7A09A-C58B-4F57-86FD-7E576C6474BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47F7A09A-C58B-4F57-86FD-7E576C6474BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47F7A09A-C58B-4F57-86FD-7E576C6474BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47F7A09A-C58B-4F57-86FD-7E576C6474BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C6500213-6CF9-462C-B95D-DCF91FC64889}
+	EndGlobalSection
+EndGlobal

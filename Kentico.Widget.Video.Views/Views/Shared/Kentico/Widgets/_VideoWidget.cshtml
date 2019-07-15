@@ -1,0 +1,19 @@
+﻿@model Kentico.Widget.Video.Models.VideoWidgetViewModel
+
+@if(!string.IsNullOrWhiteSpace(@Model.VideoUrl))
+{
+    <iframe src="@Model.VideoUrl"></iframe>
+} else
+{
+    <p>Configure video URL in widget properties.</p>
+}
+
+<script>
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () {
+        kentico._initVideoWidget("@Model.VideoUrl");
+    });
+} else {
+    kentico._initVideoWidget("@Model.VideoUrl");
+}
+</script>

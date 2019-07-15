@@ -1,0 +1,16 @@
+﻿@model Kentico.Widget.Video.Models.VideoUrlComponent
+@{
+    const string formControlClass = "ktc-form-control";
+
+    var controlGuid = Guid.NewGuid();
+}
+
+<div data-control-instance-id="@controlGuid">
+    @Html.TextBoxFor(m => m.Url, new { @class = formControlClass })
+</div>
+
+@*<script>
+    kentico._formComponents.videoUrl.init({
+        identifier: "@controlGuid",
+    });
+</script>*@
