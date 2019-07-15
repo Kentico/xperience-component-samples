@@ -1,0 +1,3 @@
+﻿<connectionStrings>
+  <add name="CMSConnectionString" connectionString="" />
+</connectionStrings>
