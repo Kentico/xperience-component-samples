@@ -1,7 +1,7 @@
-﻿window.kentico = window.kentico || {};
+﻿window.kenticoComponents = window.kenticoComponents || {};
 
-const setVideoSize = (videoUrl: string) => {
-    const videoIframe = document.querySelector<HTMLIFrameElement>(`iframe[src='${videoUrl}']`);
+const setVideoSize = (widgetGuid: string) => {
+    const videoIframe = document.querySelector<HTMLIFrameElement>(`iframe[data-widgetGuid='${widgetGuid}']`);
     if (!videoIframe) {
         return;
     }
@@ -14,12 +14,12 @@ const setVideoSize = (videoUrl: string) => {
     videoIframe.style.height = `${videoHeight}px`;
 };
 
-const init = (videoUrl: string) => {
-    setVideoSize(videoUrl);
+const init = (widgetGuid: string) => {
+    setVideoSize(widgetGuid);
 
     window.addEventListener("resize", (event) => {
-        setVideoSize(videoUrl);
+        setVideoSize(widgetGuid);
     });
 };
 
-window.kentico._initVideoWidget = init;
+window.kenticoComponents.initVideoWidget = init;

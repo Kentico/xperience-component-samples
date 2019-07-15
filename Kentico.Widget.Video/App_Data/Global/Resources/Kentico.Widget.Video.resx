@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Kentico.FormComponent.VideoUrl.Description" xml:space="preserve">
-    <value>Video URL</value>
-  </data>
-  <data name="Kentico.FormComponent.VideoUrl.Name" xml:space="preserve">
-    <value>VideoUrl</value>
-  </data>
   <data name="Kentico.Widget.Video.Description" xml:space="preserve">
     <value>Video widget</value>
   </data>
@@ -131,5 +125,11 @@
   </data>
   <data name="Kentico.Widget.Video.Name" xml:space="preserve">
     <value>Video</value>
+  </data>
+  <data name="Kentico.Widget.Video.VideoUrl.Placeholder" xml:space="preserve">
+    <value>Enter video URL</value>
+  </data>
+  <data name="Kentico.Widget.Video.VideoUrl.ValidationMessage" xml:space="preserve">
+    <value>Video URL is not valid.</value>
   </data>
 </root>

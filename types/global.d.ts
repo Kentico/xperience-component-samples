@@ -1,9 +1,9 @@
+import { KenticoComponents } from "./kenticoComponents";
 import { Kentico } from "./kentico";
-import { MyCompany } from "./mycompany";
 
 declare global {
   interface Window {
-    kentico: Kentico,
-    MyCompany: MyCompany,
+    kentico: Kentico;
+    kenticoComponents: KenticoComponents;
   }
 }

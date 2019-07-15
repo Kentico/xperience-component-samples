@@ -555,7 +555,6 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="packages.config" />
-    <Content Include="Views\Shared\Kentico\FormComponents\_VideoUrl.cshtml" />
     <Content Include="Views\Shared\Kentico\Widgets\_VideoWidget.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -14,8 +14,9 @@ namespace Kentico.Widget.Video.Models
         /// Video URL.
         /// </summary>
         [Required]
-        [EditingComponent(VideoUrlComponent.IDENTIFIER, Label = "{$Kentico.Widget.Video.Label$}", Order = 1)]
-        [RegularExpression(@"^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+", ErrorMessage = "Video URL is not valid.")]
+        [EditingComponent(TextInputComponent.IDENTIFIER, Label = "{$Kentico.Widget.Video.Label$}", Order = 1)]
+        [EditingComponentProperty(nameof(TextInputProperties.Placeholder), "{$Kentico.Widget.Video.VideoUrl.Placeholder$}")]
+        [RegularExpression(@"^(http(s)?:\/\/)?((w){3}.)?(m.)?youtu(be|.be)?(\.com)?\/.+", ErrorMessage = "Kentico.Widget.Video.VideoUrl.ValidationMessage")]
         public string VideoUrl { get; set; }
     }
 }

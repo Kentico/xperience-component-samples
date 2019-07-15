@@ -1,8 +1,17 @@
-﻿@model Kentico.Widget.Video.Models.VideoWidgetViewModel
+﻿@using Kentico.Widget.Video.Helpers;
 
-@if(!string.IsNullOrWhiteSpace(@Model.VideoUrl))
+@model Kentico.Widget.Video.Models.VideoWidgetViewModel
+
+@{ 
+    var widgetGuid = Guid.NewGuid();
+    var videoUrl = !string.IsNullOrWhiteSpace(Model.VideoUrl)
+        ? $"https://www.youtube.com/embed/{YoutubeVideoHelper.GetVideoId(Model.VideoUrl)}"
+        : null;
+}
+
+@if (videoUrl != null)
 {
-    <iframe src="@Model.VideoUrl"></iframe>
+    <iframe data-widgetGuid="@widgetGuid" src="@videoUrl"></iframe>
 } else
 {
     <p>Configure video URL in widget properties.</p>
@@ -11,9 +20,9 @@
 <script>
 if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
-        kentico._initVideoWidget("@Model.VideoUrl");
+        kenticoComponents.initVideoWidget("@widgetGuid");
     });
 } else {
-    kentico._initVideoWidget("@Model.VideoUrl");
+    kenticoComponents.initVideoWidget("@widgetGuid");
 }
 </script>
