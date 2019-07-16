@@ -1,3 +1,3 @@
 export interface KenticoComponents {
-    initVideoWidget: (widgetGuid: string, videoUrl: string) => void;
+    initVideoWidget: (widgetGuid: string) => void;
 }
