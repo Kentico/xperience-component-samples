@@ -7,8 +7,7 @@ build:
   verbosity: minimal
 
 # .NET Tests
-test:
-- auto
+test: auto
 
 # Test against the latest version of this Node.js version
 environment:
