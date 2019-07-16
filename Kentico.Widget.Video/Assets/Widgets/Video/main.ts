@@ -1,7 +1,7 @@
 ﻿window.kenticoComponents = window.kenticoComponents || {};
 
 const setVideoSize = (widgetGuid: string) => {
-    const videoIframe = document.querySelector<HTMLIFrameElement>(`iframe[data-widgetGuid='${widgetGuid}']`);
+    const videoIframe = document.querySelector<HTMLIFrameElement>(`iframe[data-widget-guid='${widgetGuid}']`);
     if (!videoIframe) {
         return;
     }
@@ -14,7 +14,7 @@ const setVideoSize = (widgetGuid: string) => {
     videoIframe.style.height = `${videoHeight}px`;
 };
 
-const init = (widgetGuid: string) => {
+export const init = (widgetGuid: string) => {
     setVideoSize(widgetGuid);
 
     window.addEventListener("resize", (event) => {

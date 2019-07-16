@@ -1,0 +1,31 @@
+# .NET Build Configuration
+version: 1.0.{build}
+image: Visual Studio 2019
+before_build:
+- cmd: nuget restore
+build:
+  verbosity: minimal
+
+# .NET Tests
+test: auto
+
+# Test against the latest version of this Node.js version
+environment:
+  nodejs_version: "8"
+
+# Install scripts. (runs after repo cloning)
+install:
+  # Get the latest stable version of Node.js or io.js
+  - ps: Install-Product node $env:nodejs_version
+  # install modules
+  - npm install
+
+# Post-install test scripts.
+after_test:
+  # Output useful info for debugging.
+  - node --version
+  - npm --version
+  # run build
+  - npm run build
+  # run tests
+  - npm run test
