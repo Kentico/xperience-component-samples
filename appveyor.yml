@@ -10,7 +10,7 @@ build:
 test:
   assemblies:
     only:
-      - '**\*.tests.dll'
+      - '**\*.Tests.dll'
 
 # Test against the latest version of this Node.js version
 environment:
@@ -28,5 +28,7 @@ test_script:
   # Output useful info for debugging.
   - node --version
   - npm --version
+  # run build
+  - npm run build
   # run tests
   - npm run test
