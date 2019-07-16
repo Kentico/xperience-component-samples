@@ -8,9 +8,7 @@ build:
 
 # .NET Tests
 test:
-  assemblies:
-    only:
-      - '**\*.Tests.dll'
+- auto
 
 # Test against the latest version of this Node.js version
 environment:
