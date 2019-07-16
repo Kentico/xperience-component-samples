@@ -1,3 +1,4 @@
+# .NET Build Configuration
 version: 1.0.{build}
 image: Visual Studio 2019
 before_build:
@@ -5,9 +6,12 @@ before_build:
 build:
   verbosity: minimal
 
+# .NET Tests
+test: auto
+
 # Test against the latest version of this Node.js version
 environment:
-  nodejs_version: "6"
+  nodejs_version: "8"
 
 # Install scripts. (runs after repo cloning)
 install:
@@ -17,9 +21,11 @@ install:
   - npm install
 
 # Post-install test scripts.
-test_script:
+after_test:
   # Output useful info for debugging.
   - node --version
   - npm --version
+  # run build
+  - npm run build
   # run tests
   - npm run test
