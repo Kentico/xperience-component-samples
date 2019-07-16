@@ -1,4 +1,4 @@
-import { KenticoComponents } from "./kenticoComponents";
+import { KenticoComponents } from "./kentico-components";
 import { Kentico } from "./kentico";
 
 declare global {
