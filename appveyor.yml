@@ -14,7 +14,7 @@ test:
 
 # Test against the latest version of this Node.js version
 environment:
-  nodejs_version: "8.9.4"
+  nodejs_version: "8"
 
 # Install scripts. (runs after repo cloning)
 install:
