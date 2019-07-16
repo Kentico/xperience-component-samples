@@ -1,9 +1,16 @@
+# .NET Build Configuration
 version: 1.0.{build}
 image: Visual Studio 2019
 before_build:
 - cmd: nuget restore
 build:
   verbosity: minimal
+
+# .NET Tests
+test:
+  assemblies:
+    only:
+      - '**\*.tests.dll'
 
 # Test against the latest version of this Node.js version
 environment:
