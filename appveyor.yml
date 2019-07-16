@@ -5,10 +5,7 @@ before_build:
 - cmd: nuget restore
 build:
   verbosity: minimal
-
-# .NET Tests
-test: auto
-
+  
 # Test against the latest version of this Node.js version
 environment:
   nodejs_version: "8"
@@ -29,3 +26,6 @@ test_script:
   - npm run build
   # run tests
   - npm run test
+
+# .NET Tests
+test: auto
