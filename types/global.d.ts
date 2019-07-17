@@ -3,7 +3,11 @@ import { Kentico } from "./kentico";
 
 declare global {
   interface Window {
-    kentico: Kentico;
-    kenticoComponents: KenticoComponents;
+    readonly kentico: Kentico;
+    readonly kenticoComponents: KenticoComponents;
   }
 }
+
+type Mutable<T> = {
+  -readonly [P in keyof T]: T[P] extends ReadonlyArray<infer U> ? Mutable<U>[] : Mutable<T[P]>
+};

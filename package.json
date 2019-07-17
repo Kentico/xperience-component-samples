@@ -1,15 +1,15 @@
 {
-  "name": "button",
+  "name": "kentico-components",
   "version": "1.0.0",
   "description": "",
-  "main": "button.js",
+  "main": "kentico-components.js",
   "scripts": {
     "build": "webpack --mode=production --hide-modules",
     "dev": "webpack --watch --mode=development --hide-modules",
     "test": "jest"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Kentico Software s.r.o.",
+  "license": "MIT",
   "dependencies": {
     "debounce": "^1.2.0",
     "lodash": "^4.17.14"

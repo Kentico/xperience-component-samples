@@ -20,9 +20,9 @@
 <script>
 if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
-        kenticoComponents.initVideoWidget("@widgetGuid");
+        kenticoComponents.widgets.video.init("@widgetGuid");
     });
 } else {
-    kenticoComponents.initVideoWidget("@widgetGuid");
+    kenticoComponents.widgets.video.init("@widgetGuid");
 }
 </script>
