@@ -1,4 +1,5 @@
-﻿window.kenticoComponents = window.kenticoComponents || {};
+﻿import { exposeWidgetComponent } from "@/shared/helpers";
+
 
 const setVideoSize = (widgetGuid: string) => {
     const videoIframe = document.querySelector<HTMLIFrameElement>(`iframe[data-widget-guid='${widgetGuid}']`);
@@ -22,4 +23,4 @@ export const init = (widgetGuid: string) => {
     });
 };
 
-window.kenticoComponents.initVideoWidget = init;
+exposeWidgetComponent("video", {init: init})
