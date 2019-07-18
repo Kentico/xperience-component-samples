@@ -1,4 +1,5 @@
-﻿import { exposeWidgetComponent } from "../../../../shared/helpers";
+﻿import { exposeWidgetComponent } from "@/shared/helpers";
+
 
 const setVideoSize = (widgetGuid: string) => {
     const videoIframe = document.querySelector<HTMLIFrameElement>(`iframe[data-widget-guid='${widgetGuid}']`);
