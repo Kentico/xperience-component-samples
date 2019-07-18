@@ -23,7 +23,7 @@ namespace Kentico.Widget.Video.Tests
             public void GetVideoId_YoutubeUrlIsMalformatted_ThrowsUriFormatException()
             {
                 // Act & Assert
-                Assert.Throws<UriFormatException>(() => GetVideoId("blah blah..."));
+                Assert.Throws<NullReferenceException>(() => GetVideoId("blah blah..."));
             }
 
 
