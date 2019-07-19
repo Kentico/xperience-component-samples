@@ -12,6 +12,7 @@ namespace Kentico.AspNet.Mvc.SandboxSite
             builder.UsePreview();
             builder.UsePageBuilder();
             builder.UseResourceSharingWithAdministration();
+            builder.UseDataAnnotationsLocalization();
         }
     }
 }
