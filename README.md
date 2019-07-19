@@ -9,3 +9,17 @@ Kentico EMS MVC components source code.
 Allows users to insert an embedded video from Youtube. The URL of the video can be specified in the widget property `Video URL`
 
 ![Video widget](/Kentico.Widget.Video/VideoWidget.gif)
+
+### Download & installation
+- Copy and include [`Kentico.Widget.Video`](/Kentico.Widget.Video) and [`Kentico.Widget.Video.Views`](/Kentico.Widget.Video.Views) projects into your solution
+- Reference these two projects in your MVC application
+- Build and Run your MVC application
+
+### Contribution
+- [Guidelines](/CONTRIBUTING.md)
+
+### Compatibility
+- Kentico 12 SP (Hotfix 12.0.29)
+
+### License
+- [MIT](/LICENSE)
