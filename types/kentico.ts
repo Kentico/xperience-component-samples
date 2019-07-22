@@ -21,5 +21,4 @@ interface PageBuilder {
 
 export interface Kentico {
     readonly pageBuilder: PageBuilder;
-    _initVideoWidget: any;
 }

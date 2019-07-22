@@ -11,7 +11,7 @@
 
 @if (videoUrl != null)
 {
-    <iframe data-widgetGuid="@widgetGuid" src="@videoUrl"></iframe>
+    <iframe data-widget-guid="@widgetGuid" src="@videoUrl"></iframe>
 } else
 {
     <p>Configure video URL in widget properties.</p>
@@ -20,9 +20,9 @@
 <script>
 if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
-        kenticoComponents.initVideoWidget("@widgetGuid");
+        kenticoComponents.widgets.video.init("@widgetGuid");
     });
 } else {
-    kenticoComponents.initVideoWidget("@widgetGuid");
+    kenticoComponents.widgets.video.init("@widgetGuid");
 }
 </script>

@@ -30,8 +30,8 @@ namespace Kentico.Widget.Video.Helpers
                 return queryDictionary[VIDEO_IDENTIFIER];
             }
 
-            // Otherwise return absolute path as a video identifier
-            return youtubeUri.AbsolutePath;
+            // Otherwise return absolute path without starting '/' as a video identifier
+            return youtubeUri.AbsolutePath.Remove(0, 1);
         }
     }
 }

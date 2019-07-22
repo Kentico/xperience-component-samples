@@ -1,12 +1,14 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.452
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.757
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandboxSite", "SandboxSite\SandboxSite.csproj", "{DAFBD0E0-F62E-4BB6-ACAD-78FBA75C4A3A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Widget.Video", "Kentico.Widget.Video\Kentico.Widget.Video.csproj", "{7BC9BF35-B4C2-43FF-A932-1D29A797BF50}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Widget.Video.Views", "Kentico.Widget.Video.Views\Kentico.Widget.Video.Views.csproj", "{47F7A09A-C58B-4F57-86FD-7E576C6474BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Widget.Video.Tests", "Kentico.Widget.Video.Tests\Kentico.Widget.Video.Tests.csproj", "{E2D994F8-CAB3-49C6-9A38-83466AD2E18B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +28,10 @@ Global
 		{47F7A09A-C58B-4F57-86FD-7E576C6474BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47F7A09A-C58B-4F57-86FD-7E576C6474BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47F7A09A-C58B-4F57-86FD-7E576C6474BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2D994F8-CAB3-49C6-9A38-83466AD2E18B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2D994F8-CAB3-49C6-9A38-83466AD2E18B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2D994F8-CAB3-49C6-9A38-83466AD2E18B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2D994F8-CAB3-49C6-9A38-83466AD2E18B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
