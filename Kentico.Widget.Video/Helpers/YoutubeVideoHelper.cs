@@ -4,7 +4,7 @@ using System.Web;
 namespace Kentico.Widget.Video.Helpers
 {
     /// <summary>
-    /// Helper methods for working with Youtube videos.
+    /// Helper methods for working with YouTube videos.
     /// </summary>
     public static class YoutubeVideoHelper
     {
@@ -12,12 +12,18 @@ namespace Kentico.Widget.Video.Helpers
 
 
         /// <summary>
-        /// Gets Youtube video identifier from given <paramref name="youtubeUrl"/>.
+        /// Gets a regular expression for all the known YouTube URLs.
         /// </summary>
-        /// <param name="youtubeUrl">Youtube video URL.</param>
-        /// <returns>Youtube video identifier.</returns>
+        public const string REGEX_YOUTUBE_URL = @"^(http(s)?:\/\/)?((w){3}.)?(m.)?youtu(be|.be)?(\.com)?\/.+";
+
+
+        /// <summary>
+        /// Gets YouTube video identifier from given <paramref name="youtubeUrl"/>.
+        /// </summary>
+        /// <param name="youtubeUrl">YouTube video URL.</param>
+        /// <returns>YouTube video identifier.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="youtubeUrl"/> is <c>null</c>.</exception>
-        /// <exception cref="UriFormatException"><paramref name="youtubeUrl"/> is malformatted.</exception>
+        /// <exception cref="UriFormatException"><paramref name="youtubeUrl"/> is malformed.</exception>
         public static string GetVideoId(string youtubeUrl)
         {
             youtubeUrl = youtubeUrl ?? throw new ArgumentNullException(nameof(youtubeUrl));

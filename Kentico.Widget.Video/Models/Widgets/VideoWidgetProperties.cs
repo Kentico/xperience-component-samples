@@ -2,6 +2,7 @@
 
 using Kentico.Forms.Web.Mvc;
 using Kentico.PageBuilder.Web.Mvc;
+using Kentico.Widget.Video.Helpers;
 
 namespace Kentico.Widget.Video.Models
 {
@@ -16,7 +17,7 @@ namespace Kentico.Widget.Video.Models
         [Required]
         [EditingComponent(TextInputComponent.IDENTIFIER, Label = "{$Kentico.Widget.Video.Label$}", Order = 1)]
         [EditingComponentProperty(nameof(TextInputProperties.Placeholder), "{$Kentico.Widget.Video.VideoUrl.Placeholder$}")]
-        [RegularExpression(@"^(http(s)?:\/\/)?((w){3}.)?(m.)?youtu(be|.be)?(\.com)?\/.+", ErrorMessage = "Kentico.Widget.Video.VideoUrl.ValidationMessage")]
+        [RegularExpression(YoutubeVideoHelper.REGEX_YOUTUBE_URL, ErrorMessage = "Kentico.Widget.Video.VideoUrl.InvalidFormatMessage")]
         public string VideoUrl { get; set; }
     }
 }
