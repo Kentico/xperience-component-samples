@@ -39,5 +39,7 @@ namespace Kentico.Widget.Video.Helpers
             // Otherwise return absolute path without starting '/' as a video identifier
             return youtubeUri.AbsolutePath.Remove(0, 1);
         }
+
+
     }
 }
