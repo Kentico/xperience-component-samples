@@ -129,7 +129,7 @@
   <data name="Kentico.Widget.Video.VideoUrl.Placeholder" xml:space="preserve">
     <value>Enter video URL</value>
   </data>
-  <data name="Kentico.Widget.Video.VideoUrl.ValidationMessage" xml:space="preserve">
+  <data name="Kentico.Widget.Video.VideoUrl.InvalidFormatMessage" xml:space="preserve">
     <value>Video URL is not valid.</value>
   </data>
 </root>
