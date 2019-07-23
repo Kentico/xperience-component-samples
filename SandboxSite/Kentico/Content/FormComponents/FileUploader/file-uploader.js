@@ -69,7 +69,7 @@ window.kentico._forms.formFileUploaderComponent = (function (document) {
             if (tempFileIdentifierInput.value) {
                 var deleteRequest = new XMLHttpRequest();
 
-                deleteRequest.open("DELETE", config.deleteEndpoint + "&tempFileIdentifier=" + tempFileIdentifierInput.value);
+                deleteRequest.open("POST", config.deleteEndpoint + "&tempFileIdentifier=" + tempFileIdentifierInput.value);
                 deleteRequest.send();
             }
         };
