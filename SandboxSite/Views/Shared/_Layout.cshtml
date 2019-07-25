@@ -5,11 +5,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
+    <title>@ViewBag.Title - Kentico components sandbox</title>
 
-    @* See ~/App_Start/ApplicationConfig.cs, ~/Controllers/HomeController.cs and ~/Views/Home/Index.cshtml
-       Uncomment the following line to add <link> tag referencing the Page builder style bundle. *@
     @Html.Kentico().PageBuilderStyles()
 
 </head>
@@ -19,14 +16,10 @@
 
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Kentico components sandbox</p>
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/scripts")
-
-    @* See ~/App_Start/ApplicationConfig.cs, ~/Controllers/HomeController.cs and ~/Views/Home/Index.cshtml
-       Uncomment the following line to add <script> tag referencing the Page builder script bundle. *@
     @Html.Kentico().PageBuilderScripts()
 
     @RenderSection("scripts", required: false)
