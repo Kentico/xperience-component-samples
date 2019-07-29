@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -8,24 +9,23 @@ using Kentico.Web.Mvc;
 
 namespace Kentico.AspNet.Mvc.SandboxSite
 {
-    public class HomeController : Controller
+    public class PageController : Controller
     {
         // GET: Home
-        public ActionResult Index()
+        public ActionResult Index(string nodeAlias)
         {
-            // Uncomment and optionally adjust the document query sample when using Page builder on the Home page
-            // See ~/App_Start/ApplicationConfig.cs, ~/Views/Shared/_Layout.cshtml and ~/Views/Home/Index.cshtml
-            // In the administration UI, create a Page type and set its
-            //   URL pattern = '/'
-            //   Use Page tab = True
-            // In the administration UI, create a Page utilizing the new Page type
+            if (String.IsNullOrEmpty(nodeAlias))
+            {
+                return HttpNotFound();
+            }
 
             TreeNode page = DocumentHelper
-                .GetDocuments()
-                .Path("/Home")
+                .GetDocuments("SandboxSite.DevelopmentPage")
+                .WhereEquals("NodeAlias", nodeAlias)
                 .OnCurrentSite()
                 .TopN(1)
                 .FirstOrDefault();
+
             if (page == null)
             {
                 return HttpNotFound();
@@ -36,6 +36,7 @@ namespace Kentico.AspNet.Mvc.SandboxSite
                 .PageBuilder()
                 .Initialize(page.DocumentID);
 
+            ViewBag.Title = page.DocumentName;
             return View();
         }
     }
