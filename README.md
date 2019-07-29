@@ -13,7 +13,7 @@ To help you get started with [MVC page builder](https://kentico.com/CMSPages/Doc
 - [Guidelines](/CONTRIBUTING.md)
 
 ## Compatibility
-- Components available in this repository are only compatible with Kentico 12 SP (Hotfix 12.0.29 or later)
+- Components available in this repository are only compatible with Kentico 12 SP (Hotfix 12.0.31 or later)
 
 ## License
 - [MIT](/LICENSE)
