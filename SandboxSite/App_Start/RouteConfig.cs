@@ -20,6 +20,12 @@ namespace Kentico.AspNet.Mvc.SandboxSite
                 url: "Page/{nodeAlias}",
                 defaults: new { controller = "Page", action = "Index" }
             );
+
+            routes.MapRoute(
+                name: "Root",
+                url: "",
+                defaults: new { controller = "Page", action = "Index", nodeAlias = "Home" }
+            );
         }
     }
 }
