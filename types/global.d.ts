@@ -1,10 +1,8 @@
-import { KenticoComponents } from "./kentico-components";
 import { Kentico } from "./kentico";
 
 declare global {
   interface Window {
     readonly kentico: Kentico;
-    readonly kenticoComponents: KenticoComponents;
   }
 }
 
