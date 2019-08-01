@@ -17,8 +17,25 @@ module.exports = {
           MiniCssExtractPlugin.loader,
           'css-loader',
           'less-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              syntax: 'postcss-less',
+              plugins: [
+                require('stylelint')(),
+                require('autoprefixer')(),
+              ]
+            }
+          },
         ]
       },
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+        ]
+      }
     ]
   },
   resolve: {

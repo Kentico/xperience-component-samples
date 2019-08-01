@@ -1,5 +1,5 @@
 import { Mutable } from "@/types/global";
-import { KenticoComponents } from "@/types/kentico-components";
+import { Kentico, PageBuilder } from "@/types/kentico";
 
 /**
  * Exposes component API to the global namespace.
@@ -8,11 +8,13 @@ import { KenticoComponents } from "@/types/kentico-components";
  */
 export const exposeWidgetComponent = (name: string, api: object) => {
     const mutableWindow: Mutable<Window> = window as any;
-    const kenticoComponents: Mutable<KenticoComponents> = mutableWindow.kenticoComponents = mutableWindow.kenticoComponents || {} as any;
-    kenticoComponents.widgets = kenticoComponents.widgets || {} as any;
+    const mutableKentico: Mutable<Kentico> = mutableWindow.kentico = mutableWindow.kentico || {} as any;
+    const mutablePageBuilder: Mutable<PageBuilder> = mutableKentico.pageBuilder = mutableKentico.pageBuilder || {} as any;
 
-    kenticoComponents.widgets = {
-        ...kenticoComponents.widgets,
+    mutablePageBuilder._widget = mutablePageBuilder._widget || {} as any;
+
+    mutablePageBuilder._widget = {
+        ...mutablePageBuilder._widget,
         [name]: {
             ...api,
         }

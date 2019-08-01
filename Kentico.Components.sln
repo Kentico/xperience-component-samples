@@ -10,6 +10,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Widget.Video.Views"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Widget.Video.Tests", "Kentico.Widget.Video.Tests\Kentico.Widget.Video.Tests.csproj", "{E2D994F8-CAB3-49C6-9A38-83466AD2E18B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Widget.RichText", "Kentico.Widget.RichText\Kentico.Widget.RichText.csproj", "{2325C81A-CA2E-4489-A001-41607DB6F24A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Widget.RichText.Views", "Kentico.Widget.RichText.Views\Kentico.Widget.RichText.Views.csproj", "{D5D1A1AB-12F9-43E4-AC6E-9F4AB3358BF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.InlineEditor.RichText", "Kentico.InlineEditor.RichText\Kentico.InlineEditor.RichText.csproj", "{CC8499D6-4F7C-4A4C-A902-D6FF1264653C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +38,18 @@ Global
 		{E2D994F8-CAB3-49C6-9A38-83466AD2E18B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2D994F8-CAB3-49C6-9A38-83466AD2E18B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2D994F8-CAB3-49C6-9A38-83466AD2E18B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2325C81A-CA2E-4489-A001-41607DB6F24A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2325C81A-CA2E-4489-A001-41607DB6F24A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2325C81A-CA2E-4489-A001-41607DB6F24A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2325C81A-CA2E-4489-A001-41607DB6F24A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5D1A1AB-12F9-43E4-AC6E-9F4AB3358BF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5D1A1AB-12F9-43E4-AC6E-9F4AB3358BF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5D1A1AB-12F9-43E4-AC6E-9F4AB3358BF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5D1A1AB-12F9-43E4-AC6E-9F4AB3358BF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC8499D6-4F7C-4A4C-A902-D6FF1264653C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC8499D6-4F7C-4A4C-A902-D6FF1264653C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC8499D6-4F7C-4A4C-A902-D6FF1264653C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC8499D6-4F7C-4A4C-A902-D6FF1264653C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
