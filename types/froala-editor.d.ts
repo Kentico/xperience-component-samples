@@ -1,6 +1,6 @@
 // TEMP: Temporary type definitions until Froala provides their official type definitions
 
-declare module 'froala-editor' {
+declare module 'froala-editor/js/froala_editor.pkgd.min' {
 
     /**
      * Define a custom icon.
@@ -538,7 +538,7 @@ declare module 'froala-editor' {
     export interface FroalaEvents {
       blur: () => void,
       click: (clickEvent: any) => void,
-      contentChanged: () => void,
+      contentChanged: (this: FroalaEditor) => void,
       destroy: () => void,
       drop: (dropEvent: JQueryEventObject) => void,
       focus: () => void,

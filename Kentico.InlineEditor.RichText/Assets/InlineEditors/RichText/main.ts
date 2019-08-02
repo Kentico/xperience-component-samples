@@ -1,13 +1,26 @@
 ﻿/// <reference path="../../../../types/global.d.ts" />
 
-import FroalaEditor from "froala-editor";
-import "froala-editor/css/froala_editor.css";
+import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
+import "froala-editor/css/froala_editor.pkgd.css";
 
 window.kentico.pageBuilder.registerInlineEditor("Kentico.InlineEditor.RichText", {
-    init({ editor, propertyName, propertyValue }) {
+    init({ editor, propertyName }) {
         const richTextWrapper = editor.querySelector(".ktc-rich-text-wrapper");
 
-        new FroalaEditor(richTextWrapper, {
+        const froala = new FroalaEditor(richTextWrapper, {
+            events: {
+                contentChanged() {
+                    const event = new CustomEvent("updateProperty", {
+                        detail: {
+                            name: propertyName,
+                            value: this.html.get(),
+                            refreshMarkup: false
+                        }
+                    });
+                    
+                    editor.dispatchEvent(event);
+                },
+            },
         });
     },
 });
