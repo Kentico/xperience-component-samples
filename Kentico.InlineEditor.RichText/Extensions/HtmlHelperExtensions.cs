@@ -20,6 +20,11 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         public static void RichTextEditor(this ExtensionPoint<HtmlHelper> instance, string propertyName, string propertyValue)
         {
             instance = instance ?? throw new ArgumentNullException(nameof(instance));
+            if (String.IsNullOrWhiteSpace(propertyName))
+            {
+                throw new ArgumentException(nameof(propertyName));
+            }
+
             var htmlHelper = instance.Target;
 
             using (htmlHelper.Kentico().BeginInlineEditor(RICH_TEXT_EDITOR_NAME, propertyName))
