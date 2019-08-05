@@ -2,6 +2,7 @@
 
 import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 import "froala-editor/css/froala_editor.pkgd.css";
+import "./style.less";
 
 const RICH_TEXT_WRAPPER_SELECTOR = ".ktc-rich-text-wrapper";
 
