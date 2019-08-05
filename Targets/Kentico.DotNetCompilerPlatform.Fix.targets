@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Fix missing RoslynToolPath property.
+       This happens only for the first build when the project is opened for the very first time and NuGet packages are restored. -->
+  <Target Name="FixMissingRoslynToolPathProperty" BeforeTargets="CopyFilesToOutputDirectory" Condition=" '$(RoslynToolPath)' == ''">
+    <PropertyGroup>
+      <RoslynToolPath>$(MSBuildThisFileDirectory)..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\roslynlatest</RoslynToolPath>
+    </PropertyGroup>
+    <ItemGroup>
+      <!-- Re-populate the RoslynCompilerFiles after the RoslynToolPath property is set correctly -->
+      <RoslynCompilerFiles Include="$(RoslynToolPath)\*">
+        <Link>roslyn\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      </RoslynCompilerFiles>      
+    </ItemGroup>
+  </Target>
+</Project>
