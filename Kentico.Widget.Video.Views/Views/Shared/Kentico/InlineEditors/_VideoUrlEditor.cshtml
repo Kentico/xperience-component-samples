@@ -1,0 +1,17 @@
+@using CMS.Helpers;
+
+@using Kentico.PageBuilder.Web.Mvc;
+@using Kentico.Widget.Video.Helpers;
+
+@model Kentico.Widget.Video.Models.VideoWidgetViewModel
+
+@using (Html.Kentico().BeginInlineEditor("Kentico.InlineEditor.VideoUrlEditor", nameof(Model.VideoUrl)))
+{
+    <form class="ktc-videoWidget-urlEditor">
+        <div class="ktc-form-group">
+            <p>@ResHelper.GetString("Kentico.VideoUrlEditor.Placeholder")</p>
+            <input pattern="@YoutubeVideoHelper.REGEX_YOUTUBE_URL" type="text" name="videoUrl" value="@Model.VideoUrl" />
+            <div class="ktc-hidden ktc-error-label">@ResHelper.GetString("Kentico.VideoUrlEditor.InvalidFormatMessage")</div>
+        </div>
+    </form>
+}

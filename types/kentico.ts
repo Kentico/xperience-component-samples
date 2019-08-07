@@ -2,9 +2,14 @@ type InlineEditorLifecycleCallback = (options: InlineEditorOptions) => void;
 
 interface InlineEditorOptions {
   readonly editor: HTMLElement;
-  readonly localization: any;
+  readonly localizationService: LocalizationService;
   readonly propertyValue: string;
   readonly propertyName: string;
+}
+
+interface LocalizationService {
+  readonly cultureCode: string;
+  getString: (resourceString: string, ...parameters: any[]) => string;
 }
 
 interface InlineEditor {

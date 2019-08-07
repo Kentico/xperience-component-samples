@@ -1,20 +1,27 @@
-﻿@using Kentico.Widget.Video.Helpers;
+﻿@using CMS.Helpers;
+
+@using Kentico.PageBuilder.Web.Mvc
+@using Kentico.Widget.Video.Helpers;
 
 @model Kentico.Widget.Video.Models.VideoWidgetViewModel
 
-@{ 
+@{
     var widgetGuid = Guid.NewGuid();
     var videoUrl = !string.IsNullOrWhiteSpace(Model.VideoUrl)
         ? $"https://www.youtube.com/embed/{YoutubeVideoHelper.GetVideoId(Model.VideoUrl)}"
         : null;
 }
-
 @if (videoUrl != null)
 {
     <div class="ktc-resp-container">
         <iframe data-widget-guid="@widgetGuid" src="@videoUrl" class="ktc-resp-iframe"></iframe>
     </div>
-} else
+}
+else if (Context.Kentico().PageBuilder().EditMode)
 {
-    <p>Configure video URL in widget properties.</p>
+    Html.RenderPartial("~/Views/Shared/Kentico/InlineEditors/_VideoUrlEditor.cshtml", Model);
+}
+else
+{
+    <p>@ResHelper.GetString("Kentico.Widget.Video.VideoUrl.NotSet")</p>
 }

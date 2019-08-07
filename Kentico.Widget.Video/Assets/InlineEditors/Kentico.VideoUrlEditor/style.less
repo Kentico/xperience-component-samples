@@ -1,0 +1,50 @@
+﻿@import "../../../../shared/variables.less";
+@import "../../../../shared/mixins.less";
+
+.ktc-videoWidget-urlEditor {
+    .ktc-components-font();
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .ktc-form-group {
+        width: 40%;
+        padding-bottom: @ktc-base-unit;
+        text-align: center;
+        color: @ktc-color-gray-130;
+
+        input {
+            background-color: @ktc-color-gray-160;
+            border: 2px solid @ktc-color-gray-130;
+            border-radius: 3px;
+            box-sizing: border-box;
+            color: @ktc-color-gray-50;
+            display: block;
+            height: 2 * @ktc-base-unit;
+            line-height: 1.25 * @ktc-base-unit;
+            padding: 4px 8px;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            width: 100%;
+            margin-bottom: 4px;
+
+            &:focus {
+                background-color: @ktc-color-white;
+                border-bottom: 2px solid @ktc-color-blue-100;
+                outline: 0;
+            }
+        }
+
+        .ktc-hidden {
+            display: none;
+        }
+
+        .ktc-error {
+            border-color: @ktc-color-red-160;
+        }
+
+        .ktc-error-label {
+            color: @ktc-color-red-160;
+            text-align: left;
+        }
+    }
+}
