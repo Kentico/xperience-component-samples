@@ -546,7 +546,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <TypeScriptCompile Include="Assets\InlineEditors\Kentico.VideoUrlEditor\main.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.VideoUrlEditor\main.ts" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Targets\Kentico.ResourceFiles.targets" />
