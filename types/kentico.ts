@@ -9,7 +9,7 @@ interface InlineEditorOptions {
 
 interface LocalizationService {
   readonly cultureCode: string;
-  getString: (resourceString: string, ...parameters: any[]) => string;
+  readonly getString: (resourceString: string, ...parameters: any[]) => string;
 }
 
 interface InlineEditor {
