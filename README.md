@@ -15,7 +15,7 @@ To help you get started with [MVC page builder](https://kentico.com/CMSPages/Doc
 ## Compatibility
 - Components available in this repository are only compatible with
   - `Kentico 12 SP` (Hotfix `12.0.31` or later)
-  - .NET Framework `4.6.1+`
+  - .NET Framework `4.6.1` or later
   - All modern browsers (last two released versions)
 
 ## License
