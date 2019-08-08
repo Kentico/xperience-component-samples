@@ -530,10 +530,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Assets\InlineEditors\RichText\main.ts" />
+    <Content Include="Assets\InlineEditors\RichText\main.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Content Include="Assets\InlineEditors\RichText\style.less" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

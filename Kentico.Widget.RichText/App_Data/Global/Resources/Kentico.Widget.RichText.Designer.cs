@@ -62,20 +62,20 @@ namespace Kentico.Components.Web.Mvc.Widgets.App_Data.Global.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rich text widget.
+        /// </summary>
+        internal static string Kentico_Widget_RichText_Description {
+            get {
+                return ResourceManager.GetString("Kentico.Widget.RichText.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rich text.
         /// </summary>
         internal static string Kentico_Widget_RichText_Name {
             get {
                 return ResourceManager.GetString("Kentico.Widget.RichText.Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rich text widget.
-        /// </summary>
-        internal static string Kentico_Widget_Video_Description {
-            get {
-                return ResourceManager.GetString("Kentico.Widget.Video.Description", resourceCulture);
             }
         }
     }

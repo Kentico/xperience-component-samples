@@ -19,7 +19,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
             var properties = GetProperties();
             var viewModel = new RichTextWidgetViewModel 
             {
-                PropertyName = nameof(properties.Content),
+                ContentPropertyName = nameof(properties.Content),
                 Content = properties.Content
             };
 

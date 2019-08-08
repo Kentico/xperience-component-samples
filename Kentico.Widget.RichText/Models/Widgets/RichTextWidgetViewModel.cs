@@ -6,13 +6,13 @@
     public class RichTextWidgetViewModel
     {
         /// <summary>
-        /// Name of the widget property to edit.
+        /// Name of the widget property which holds the editor content.
         /// </summary>
-        public string PropertyName { get; set; }
+        public string ContentPropertyName { get; set; }
 
 
         /// <summary>
-        /// Widget property content.
+        /// Rich text editor content.
         /// </summary>
         public string Content { get; set; }
     }
