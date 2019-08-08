@@ -8,8 +8,8 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
 {
     public static class HtmlHelperExtensions
     {
-        public const string RICH_TEXT_EDITOR_NAME = "Kentico.InlineEditor.RichText";
-        public const string RICH_TEXT_EDITOR_CLASS_NAME = "ktc-rich-text-wrapper";
+        private const string RICH_TEXT_EDITOR_NAME = "Kentico.InlineEditor.RichText";
+        private const string RICH_TEXT_EDITOR_CLASS_NAME = "ktc-rich-text-wrapper";
 
 
         /// <summary>
