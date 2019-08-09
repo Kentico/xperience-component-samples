@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7BC9BF35-B4C2-43FF-A932-1D29A797BF50}</ProjectGuid>
+    <ProjectGuid>{2325C81A-CA2E-4489-A001-41607DB6F24A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kentico.Widget.Video</RootNamespace>
-    <AssemblyName>Kentico.Widget.Video</AssemblyName>
+    <RootNamespace>Kentico.Components.Web.Mvc.Widgets</RootNamespace>
+    <AssemblyName>Kentico.Widget.RichText</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -437,7 +436,6 @@
       <HintPath>..\packages\Kentico.Libraries.12.0.31\lib\net461\PreMailer.Net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.HashFunction.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=80c9288e394c1322, processorArchitecture=MSIL">
@@ -525,22 +523,28 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\VideoWidgetController.cs" />
-    <Compile Include="Helpers\YoutubeVideoHelper.cs" />
-    <Compile Include="Models\Widgets\VideoWidgetProperties.cs" />
-    <Compile Include="Models\Widgets\VideoWidgetViewModel.cs" />
+    <Compile Include="App_Data\Global\Resources\Kentico.Widget.RichText.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Kentico.Widget.RichText.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\RichTextWidgetController.cs" />
+    <Compile Include="Models\Widgets\RichTextWidgetProperties.cs" />
+    <Compile Include="Models\Widgets\RichTextWidgetViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\AWSSDK.S3.3.1.9.0\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Assets\Widgets\Video\main.less" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="App_Data\Global\Resources\Kentico.Widget.Video.resx" />
+    <EmbeddedResource Include="App_Data\Global\Resources\Kentico.Widget.RichText.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Kentico.Widget.RichText.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Targets\Kentico.ResourceFiles.targets" />
