@@ -8,6 +8,8 @@ To help you get started with [MVC page builder](https://kentico.com/CMSPages/Doc
 
 ## Components available in this repository
 - [Video widget](/Kentico.Widget.Video/README.md)
+- [Rich Text widget](/Kentico.Widget.RichText/README.md)
+- [Rich Text inline editor](/Kentico.InlineEditor.RichText/README.md)
 
 ## Contribution
 - [Guidelines](/CONTRIBUTING.md)
