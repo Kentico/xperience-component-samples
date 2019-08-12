@@ -11,7 +11,6 @@ Prerequisite: You need to have [NodeJS runtime](https://nodejs.org/en/) installe
 1. Clone this repository to your file system.
     - `git clone https://github.com/Kentico/ems-mvc-components.git`
 1. Open the `Kentico.Components.sln` solution in Visual Studio and build the solution.
-    - :warning: If you receive an error about missing files related to Roslyn compiler, restart your Visual Studio.
 1. Open PowerShell and navigate to the root of the repository.
 1. In the PowerShell, run the `npm install` command and then the `npm run build` command.
 1. Copy `Kentico.Widget.Video.dll` and `Kentico.Widget.Video.Views.dll` files from the `/SandboxSite/bin` folder from this repository to the `bin` folder of your MVC project.
