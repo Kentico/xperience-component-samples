@@ -2,7 +2,7 @@
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <Import Project="..\Targets\Kentico.DotNetCompilerPlatform.Fix.targets"/>
+  <Import Project="..\Targets\Kentico.DotNetCompilerPlatform.Fix.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -643,6 +643,7 @@
     <Content Include="Kentico\Scripts\builders\Core-icons.ttf" />
     <Content Include="Kentico\Scripts\builders\Core-icons.eot" />
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\Preview.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -686,6 +687,19 @@
     <Analyzer Include="..\packages\AWSSDK.S3.3.1.9.0\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kentico.InlineEditor.RichText\Kentico.InlineEditor.RichText.csproj">
+      <Project>{cc8499d6-4f7c-4a4c-a902-d6ff1264653c}</Project>
+      <Name>Kentico.InlineEditor.RichText</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kentico.Widget.RichText.Views\Kentico.Widget.RichText.Views.csproj">
+      <Project>{d5d1a1ab-12f9-43e4-ac6e-9f4ab3358bf9}</Project>
+      <Name>Kentico.Widget.RichText.Views</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Kentico.Widget.RichText\Kentico.Widget.RichText.csproj">
+      <Project>{2325c81a-ca2e-4489-a001-41607db6f24a}</Project>
+      <Name>Kentico.Widget.RichText</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kentico.Widget.Video.Views\Kentico.Widget.Video.Views.csproj">
       <Project>{47f7a09a-c58b-4f57-86fd-7e576c6474be}</Project>
       <Name>Kentico.Widget.Video.Views</Name>

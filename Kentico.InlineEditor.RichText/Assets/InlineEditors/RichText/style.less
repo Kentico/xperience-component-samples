@@ -1,0 +1,19 @@
+// Override Froala editor's z-indexing since the zIndex option also sets the z-index to the main editor element,
+// thus covers the add widget button and they refuse to change this behavior, see https://github.com/froala/wysiwyg-editor/issues/3588
+.ktc-rich-text-wrapper {
+    .fr-toolbar {
+        z-index: inherit !important;
+
+        .fr-more-toolbar {
+            z-index: inherit !important;
+        }
+
+        .fr-dropdown-menu {
+            z-index: 10015 !important;
+        }
+    }
+}
+
+.fr-popup.fr-active {
+    z-index: 10015 !important;
+}
