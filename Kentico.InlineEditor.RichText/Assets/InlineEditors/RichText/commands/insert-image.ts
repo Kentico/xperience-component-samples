@@ -13,6 +13,7 @@ export const insertImageCommand: RegisterCommandParameters = {
         hideToolbar();
 
         getMediaFilesSelector().open({
+            allowedExtensions: ".gif;.png;.jpg;.jpeg",
             applyCallback(images) {
                 if (images) {
                     const selectedImage = images[0];
