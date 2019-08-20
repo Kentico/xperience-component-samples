@@ -22,7 +22,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
                 VideoUrl = properties.VideoUrl,
             };
 
-            return View("~/Views/Shared/Kentico/Widgets/_VideoWidget.cshtml", viewModel);
+            return PartialView("~/Views/Shared/Kentico/Widgets/_VideoWidget.cshtml", viewModel);
         }
     }
 }

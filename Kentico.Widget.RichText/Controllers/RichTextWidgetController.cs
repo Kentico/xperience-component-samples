@@ -23,7 +23,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
                 Content = properties.Content
             };
 
-            return View("~/Views/Shared/Kentico/Widgets/_RichTextWidget.cshtml", viewModel);
+            return PartialView("~/Views/Shared/Kentico/Widgets/_RichTextWidget.cshtml", viewModel);
         }
     }
 }
