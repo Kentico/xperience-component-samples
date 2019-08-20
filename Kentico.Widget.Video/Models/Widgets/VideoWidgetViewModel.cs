@@ -1,4 +1,4 @@
-﻿namespace Kentico.Widget.Video.Models
+﻿namespace Kentico.Components.Web.Mvc.Widgets.Models
 {
     /// <summary>
     /// View model for video widget.

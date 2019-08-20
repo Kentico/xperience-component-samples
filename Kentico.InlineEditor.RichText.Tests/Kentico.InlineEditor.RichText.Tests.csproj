@@ -10,7 +10,7 @@
     <ProjectGuid>{A74C858C-91DF-4614-9689-718CB8B9B328}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kentico.InlineEditor.RichText.Tests</RootNamespace>
+    <RootNamespace>Kentico.Components.Web.Mvc.InlineEditors.Tests</RootNamespace>
     <AssemblyName>Kentico.InlineEditor.RichText.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -4,7 +4,7 @@ using System.Web.Routing;
 
 using NSubstitute;
 
-namespace Kentico.InlineEditor.RichText.Tests
+namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 {
     /// <summary>
     /// Provides mock of HTML helper for tests.

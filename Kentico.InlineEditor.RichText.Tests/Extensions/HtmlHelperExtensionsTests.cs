@@ -4,10 +4,9 @@ using System.Web.Mvc;
 using NSubstitute;
 using NUnit.Framework;
 
-using Kentico.Components.Web.Mvc.InlineEditors;
 using Kentico.Web.Mvc;
 
-namespace Kentico.InlineEditor.RichText.Tests
+namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 {
     public class HtmlHelperExtensionsTests
     {
