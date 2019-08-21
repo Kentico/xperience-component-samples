@@ -543,6 +543,7 @@
   <ItemGroup>
     <Content Include="Assets\InlineEditors\RichText\commands\helpers.ts" />
     <Content Include="Assets\InlineEditors\RichText\commands\image-replace.ts" />
+    <Content Include="Assets\InlineEditors\RichText\commands\index.ts" />
     <Content Include="Assets\InlineEditors\RichText\commands\insert-image.ts" />
     <Content Include="Assets\InlineEditors\RichText\froala.ts" />
     <Content Include="Assets\InlineEditors\RichText\toolbar-helpers.ts" />
