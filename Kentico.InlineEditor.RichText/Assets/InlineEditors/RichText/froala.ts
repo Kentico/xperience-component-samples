@@ -1,8 +1,10 @@
-import FroalaEditor, { RegisterCommand } from "froala-editor/js/froala_editor.pkgd.min";
+import FroalaEditor, { RegisterCommand, RegisterShortcut } from "froala-editor/js/froala_editor.pkgd.min";
+import "froala-editor/css/froala_editor.pkgd.css";
 
 import { UPDATE_WIDGET_PROPERTY_EVENT_NAME } from "@/shared/constants";
-import { insertImageCommand } from "./commands/insert-image";
-import { imageReplaceCommand } from "./commands/image-replace";
+import { imageReplaceCommand, insertImageCommand } from "./commands";
+
+import "./style.less";
 
 export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLElement, propertyName: string) => {
     RegisterCommand("insertImageKentico", insertImageCommand);

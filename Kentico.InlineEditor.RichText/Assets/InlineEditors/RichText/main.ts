@@ -2,9 +2,6 @@
 
 import { initializeFroalaEditor, destroyFroalaEditor } from "./froala";
 
-import "froala-editor/css/froala_editor.pkgd.css";
-import "./style.less";
-
 const RICH_TEXT_WRAPPER_SELECTOR = ".ktc-rich-text-wrapper";
 
 window.kentico.pageBuilder.registerInlineEditor("Kentico.InlineEditor.RichText", {

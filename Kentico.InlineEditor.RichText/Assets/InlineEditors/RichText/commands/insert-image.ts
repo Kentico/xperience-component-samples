@@ -3,7 +3,7 @@ import { hideToolbar, showToolbar } from "../toolbar-helpers";
 import { getMediaFilesSelector } from "./helpers";
 
 export const insertImageCommand: RegisterCommandParameters = {
-    title: "Insert Image (Ctrl+P)",
+    title: "Insert Image",
     icon: "insertImage",
     focus: true,
     undo: true,
