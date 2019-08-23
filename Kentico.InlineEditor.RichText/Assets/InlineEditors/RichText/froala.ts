@@ -1,4 +1,4 @@
-import FroalaEditor, { RegisterCommand, RegisterShortcut } from "froala-editor/js/froala_editor.pkgd.min";
+import FroalaEditor, { RegisterCommand, RegisterQuickInsertButton } from "froala-editor/js/froala_editor.pkgd.min";
 import "froala-editor/css/froala_editor.pkgd.css";
 
 import { UPDATE_WIDGET_PROPERTY_EVENT_NAME } from "@/shared/constants";
@@ -9,12 +9,12 @@ import "./style.less";
 export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLElement, propertyName: string) => {
     RegisterCommand("insertImageKentico", insertImageCommand);
     RegisterCommand("imageReplaceKentico", imageReplaceCommand);
+    RegisterQuickInsertButton("imageKentico", insertImageCommand);
 
     new FroalaEditor(element, {
         toolbarInline: true,
-        quickInsertEnabled: false,
         charCounterCount: false,
-        toolbarVisibleWithoutSelection: true,
+        quickInsertButtons: ["imageKentico", "video", "embedly", "table", "ul", "ol", "hr"],
         imageEditButtons: ["imageReplaceKentico", "imageAlign", "imageCaption", "imageRemove", "|", "imageLink", "linkOpen", "linkEdit",
             "linkRemove", "-", "imageDisplay", "imageStyle", "imageAlt", "imageSize"],
         toolbarButtons:
