@@ -1,6 +1,7 @@
 import FroalaEditor, { RegisterCommandParameters } from "froala-editor/js/froala_editor.pkgd.min";
 import { hideToolbar, showToolbar } from "../toolbar-helpers";
 import { getMediaFilesSelector } from "./helpers";
+import { ALLOWED_IMAGE_EXTENSIONS } from "../constants";
 
 export const insertImageCommand: RegisterCommandParameters = {
     title: "Insert Image",
@@ -13,7 +14,7 @@ export const insertImageCommand: RegisterCommandParameters = {
         hideToolbar();
 
         getMediaFilesSelector().open({
-            allowedExtensions: ".gif;.png;.jpg;.jpeg",
+            allowedExtensions: ALLOWED_IMAGE_EXTENSIONS,
             applyCallback(images) {
                 if (images) {
                     const selectedImage = images[0];

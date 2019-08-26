@@ -1,5 +1,6 @@
 import FroalaEditor, { RegisterCommandParameters } from "froala-editor/js/froala_editor.pkgd.min";
 import { getMediaFilesSelector } from "./helpers";
+import { ALLOWED_IMAGE_EXTENSIONS } from "../constants";
 
 export const imageReplaceCommand: RegisterCommandParameters = {
     title: "Replace",
@@ -16,7 +17,7 @@ export const imageReplaceCommand: RegisterCommandParameters = {
         const currentImageId = currentImageElement.dataset.id || currentImageElement.dataset.strid;
 
         getMediaFilesSelector().open({
-            maxFilesLimit: 1,
+            allowedExtensions: ALLOWED_IMAGE_EXTENSIONS,
             selectedValues: [{ fileGuid: currentImageId! }],
             applyCallback(images: any) {
                 if (images) {
