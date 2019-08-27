@@ -6,6 +6,7 @@ const webpackConfig = require("./webpack/config");
 
 module.exports = (env, options) => {
   const isProduction = options.mode === "production";
+  const isPreview = env && env.NODE_ENV === "preview";
 
   if (isProduction) {
     webpackConfig.optimization.minimizer.push(
@@ -18,7 +19,7 @@ module.exports = (env, options) => {
     );
   }
 
-  const entryFilesOutputPathMappings = helpers.getSourceOutputMappings(isProduction);
+  const entryFilesOutputPathMappings = helpers.getSourceOutputMappings(isProduction, isPreview);
   return Object.entries(entryFilesOutputPathMappings).map(mappings => {
 
     const entry = {

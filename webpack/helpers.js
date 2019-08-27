@@ -3,7 +3,7 @@ const path = require('path');
 const constants = require("./constants");
 
 module.exports = {
-  getSourceOutputMappings(isProduction) {
+  getSourceOutputMappings(isProduction, isPreview) {
     const solutionFolderPath = path.resolve(__dirname, "../");
     const solutionFolderName = path.basename(solutionFolderPath);
     const sourceFiles = glob.sync(solutionFolderPath + `/**/${constants.SOURCE_FILES_FOLDER_NAME}/**/${constants.ENTRY_FILE_NAME}`);
@@ -12,7 +12,7 @@ module.exports = {
       .reduce((mappings, filePath) => {
         const componentFolderName = filePath.split("/")[1];
         const componentContentPath = `.${path.dirname(filePath.split(constants.SOURCE_FILES_FOLDER_NAME)[1])}`;
-        const outputPath = isProduction ? 
+        const outputPath = isProduction && !isPreview ? 
           path.resolve(__dirname, "../", `${componentFolderName}/${constants.OUTPUT_FOLDER_NAME}`, componentContentPath) :
           path.resolve(__dirname, "../", constants.DEV_OUTPUT_PATH, componentContentPath);
 
