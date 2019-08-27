@@ -1,0 +1,1 @@
+export const UPDATE_WIDGET_PROPERTY_EVENT_NAME = "updateProperty";

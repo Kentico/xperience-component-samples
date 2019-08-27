@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 using NUnit.Framework;
 
-namespace Kentico.Widget.Video.Helpers.Tests
+namespace Kentico.Components.Web.Mvc.Widgets.Helpers.Tests
 {
     [TestFixture]
     public static class YoutubeVideoHelperTests

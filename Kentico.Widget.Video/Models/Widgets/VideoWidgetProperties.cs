@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using Kentico.Components.Web.Mvc.Widgets.Helpers;
 using Kentico.Forms.Web.Mvc;
 using Kentico.PageBuilder.Web.Mvc;
-using Kentico.Widget.Video.Helpers;
 
-namespace Kentico.Widget.Video.Models
+namespace Kentico.Components.Web.Mvc.Widgets.Models
 {
     /// <summary>
     /// Video widget properties.

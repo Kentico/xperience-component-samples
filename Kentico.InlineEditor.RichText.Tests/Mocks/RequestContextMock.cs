@@ -1,6 +1,6 @@
 ﻿using System.Web.Routing;
 
-namespace Kentico.InlineEditor.RichText.Tests
+namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 {
     /// <summary>
     /// Provides mock of <see cref="RequestContext"/> for tests.
