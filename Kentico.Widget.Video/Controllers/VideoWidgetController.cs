@@ -1,13 +1,12 @@
 ﻿using System.Web.Mvc;
 
+using Kentico.Components.Web.Mvc.Widgets.Controllers;
+using Kentico.Components.Web.Mvc.Widgets.Models;
 using Kentico.PageBuilder.Web.Mvc;
-
-using Kentico.Widget.Video.Controllers;
-using Kentico.Widget.Video.Models;
 
 [assembly: RegisterWidget("Kentico.Widget.Video", typeof(VideoWidgetController), "{$Kentico.Widget.Video.Name$}", Description = "{$Kentico.Widget.Video.Description$}", IconClass = "icon-brand-youtube")]
 
-namespace Kentico.Widget.Video.Controllers
+namespace Kentico.Components.Web.Mvc.Widgets.Controllers
 {
     /// <summary>
     /// Controller for video widgets.
@@ -23,7 +22,7 @@ namespace Kentico.Widget.Video.Controllers
                 VideoUrl = properties.VideoUrl,
             };
 
-            return View("~/Views/Shared/Kentico/Widgets/_VideoWidget.cshtml", viewModel);
+            return PartialView("~/Views/Shared/Kentico/Widgets/_VideoWidget.cshtml", viewModel);
         }
     }
 }

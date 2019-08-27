@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Web;
 
-namespace Kentico.Widget.Video.Helpers
+namespace Kentico.Components.Web.Mvc.Widgets.Helpers
 {
     /// <summary>
     /// Helper methods for working with YouTube videos.
@@ -36,8 +37,8 @@ namespace Kentico.Widget.Video.Helpers
                 return queryDictionary[VIDEO_IDENTIFIER];
             }
 
-            // Otherwise return absolute path without starting '/' as a video identifier
-            return youtubeUri.AbsolutePath.Remove(0, 1);
+            // Otherwise return last segment in absolute path as a video identifier
+            return youtubeUri.AbsolutePath.Split('/').LastOrDefault();
         }
     }
 }

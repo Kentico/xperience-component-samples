@@ -8,7 +8,7 @@
     <ProjectGuid>{E2D994F8-CAB3-49C6-9A38-83466AD2E18B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kentico.Widget.Video.Tests</RootNamespace>
+    <RootNamespace>Kentico.Components.Web.Mvc.Widgets.Tests</RootNamespace>
     <AssemblyName>Kentico.Widget.Video.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

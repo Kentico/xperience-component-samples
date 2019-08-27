@@ -7,13 +7,18 @@ This repository contains [page builder](https://kentico.com/CMSPages/DocLinkMapp
 To help you get started with [MVC page builder](https://kentico.com/CMSPages/DocLinkMapper.ashx?version=latest&link=page_builder_mvc) development, you can explore the  [Kentico EMS Component Starter](https://github.com/Kentico/ems-mvc-component-starter) repository.
 
 ## Components available in this repository
-- [Video widget](/Kentico.Widget.Video/README.md)
+- [Video widget](/Kentico.Widget.Video)
+- [Rich Text widget](/Kentico.Widget.RichText)
+- [Rich Text inline editor](/Kentico.InlineEditor.RichText)
 
 ## Contribution
 - [Guidelines](/CONTRIBUTING.md)
 
 ## Compatibility
-- Components available in this repository are only compatible with Kentico 12 SP (Hotfix 12.0.31 or later)
+- Components available in this repository are only compatible with
+  - `Kentico 12 SP` (Hotfix `12.0.31` or later)
+  - .NET Framework `4.6.1` or later
+  - All modern browsers (last two released versions)
 
 ## License
 - [MIT](/LICENSE)

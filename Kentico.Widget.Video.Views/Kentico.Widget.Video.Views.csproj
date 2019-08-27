@@ -556,6 +556,7 @@
     </Content>
     <None Include="packages.config" />
     <Content Include="Views\Shared\Kentico\Widgets\_VideoWidget.cshtml" />
+    <Content Include="Views\Shared\Kentico\InlineEditors\_VideoUrlEditor.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
