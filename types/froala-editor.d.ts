@@ -49,6 +49,8 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
      *   }
      */
     export const ICON_TEMPLATES: GenericObject<string>;
+
+    export const POPUP_TEMPLATES: GenericObject<string>
   
     /**
      * Registers a button
@@ -82,7 +84,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
   
       // Specify the icon for the button.
       // If this option is not specified, the button name will be used.
-      icon: string;
+      icon?: string;
   
       // Save the button action into undo stack.
       undo: boolean;
@@ -94,7 +96,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       showOnMobile?: boolean;
   
       // Refresh the buttons state after the callback.
-      refreshAfterCallback: boolean;
+      refreshAfterCallback?: boolean;
   
       // Called when the button is hit.
       // The current context is the editor instance.
@@ -136,7 +138,8 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
     export const DEFAULTS: Partial<FroalaOptions>;
   
     export interface CustomPlugin {
-      _init(): void;
+      [x: string]: any;
+      _init?(): void;
     }
   
     // Froala Plugins
@@ -149,7 +152,11 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       constructor(element: any, options: Partial<FroalaOptions>);
       $oel: JQuery;
       destroy(): object;
+
+      // Custom props
+      kenticoMacroPlugin: any;
   
+      el: HTMLElement;
       opts: FroalaOptions;
       align: Align;
       button: Button;
@@ -230,6 +237,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
     }
   
     export interface FroalaOptions {
+      [x: string]: any,
       // Aviary Editor
       aviaryKey: boolean,
       aviaryOptions: { [key: string]: any },
@@ -908,7 +916,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       onHide(id: string, callback: () => void): object;
       onRefresh(id: string, callback: () => void): object;
       refresh(id: string): object;
-      setContainer(id: string): void;
+      setContainer(id: string, container: JQuery): void;
       show(id: string, leftOffset: number, topOffset: number, heigh: number): object;
     }
   

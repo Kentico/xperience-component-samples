@@ -1,15 +1,18 @@
-import FroalaEditor, { RegisterCommand, RegisterQuickInsertButton } from "froala-editor/js/froala_editor.pkgd.min";
+import FroalaEditor, * as Froala from "froala-editor/js/froala_editor.pkgd.min";
 import "froala-editor/css/froala_editor.pkgd.css";
 
 import { UPDATE_WIDGET_PROPERTY_EVENT_NAME } from "@/shared/constants";
 import { imageReplaceCommand, insertImageCommand } from "./commands";
+import { initializeMacroPlugin } from "./plugins/macros";
 
 import "./style.less";
 
 export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLElement, propertyName: string) => {
-    RegisterCommand("insertImageKentico", insertImageCommand);
-    RegisterCommand("imageReplaceKentico", imageReplaceCommand);
-    RegisterQuickInsertButton("imageKentico", insertImageCommand);
+    Froala.RegisterCommand("insertImageKentico", insertImageCommand);
+    Froala.RegisterCommand("imageReplaceKentico", imageReplaceCommand);
+    Froala.RegisterQuickInsertButton("imageKentico", insertImageCommand);
+
+    initializeMacroPlugin(Froala);
 
     new FroalaEditor(element, {
         toolbarInline: true,
@@ -28,7 +31,7 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
                     "paragraphStyle", "lineHeight", "outdent", "indent", "quote"]
             },
             moreRich: {
-                buttons: ["insertLink", "insertImageKentico", "insertVideo", "insertTable", "emoticons", "fontAwesome", "specialCharacters",
+                buttons: ["insertMacro", "insertLink", "insertImageKentico", "insertVideo", "insertTable", "emoticons", "fontAwesome", "specialCharacters",
                     "embedly", "insertFile", "insertHR"]
             },
             moreMisc: {
@@ -39,6 +42,13 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
         },
         events: {
             contentChanged(this: FroalaEditor) {
+                const froala = this;
+                const macros = froala.el.querySelectorAll<HTMLElement>(".ktc-macro");
+
+                macros.forEach((macroEl) => {
+                    macroEl.onclick = () => froala.kenticoMacroPlugin.showPopup(macroEl);
+                });
+
                 const event = new CustomEvent(UPDATE_WIDGET_PROPERTY_EVENT_NAME, {
                     detail: {
                         name: propertyName,
