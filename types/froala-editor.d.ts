@@ -1,7 +1,8 @@
 // TEMP: Temporary type definitions until Froala provides their official type definitions
 
 declare module 'froala-editor/js/froala_editor.pkgd.min' {
-
+    import { MacrosPlugin } from "@/Kentico.InlineEditor.RichText/Assets/InlineEditors/RichText/plugins/macros/macro-types";
+    
     /**
      * Define a custom icon.
      *
@@ -137,8 +138,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
     // Froala config defaults
     export const DEFAULTS: Partial<FroalaOptions>;
   
-    export interface CustomPlugin {
-      [x: string]: any;
+    export interface CustomPlugin extends GenericObject {
       _init?(): void;
     }
   
@@ -154,7 +154,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       destroy(): object;
 
       // Custom props
-      kenticoMacroPlugin: any;
+      kenticoMacroPlugin: MacrosPlugin;
   
       el: HTMLElement;
       opts: FroalaOptions;
@@ -561,6 +561,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       shortcut: (event: Event, commandName: string, shortcutValue: any) => void,
       touchstart: (touchstartEvent: JQueryEventObject) => void,
       touchend: (touchendEvent: JQueryEventObject) => void,
+      "html.set": () => void;
     }
   
     interface Apply<T> {

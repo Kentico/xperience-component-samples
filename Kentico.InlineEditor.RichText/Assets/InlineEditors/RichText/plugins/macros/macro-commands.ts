@@ -1,5 +1,7 @@
 import FroalaEditor, { RegisterCommandParameters } from "froala-editor/js/froala_editor.pkgd.min";
-import { MACRO_CLASS, MACRO_ACTIVE_CLASS } from "./macro-constants";
+
+import { MACRO_ACTIVE_CLASS } from "./macro-constants";
+import { getMacroEditModeElement } from "./macro-helper";
 
 export const insertMacroCommand: RegisterCommandParameters = {
     title: 'Insert Dynamic Text',
@@ -7,7 +9,7 @@ export const insertMacroCommand: RegisterCommandParameters = {
     undo: true,
     refreshAfterCallback: true,
     callback(this: FroalaEditor) {
-        this.html.insert(`<span contenteditable="false" class="fr-deletable ${MACRO_CLASS}">Username</span> `);
+        this.html.insert(`${getMacroEditModeElement().outerHTML} `);
         this.undo.saveStep();
 
         this.toolbar.hide();

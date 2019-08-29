@@ -30,7 +30,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             [Test]
             public void RichTextEditor_InstanceIsNull_ThrowsArgumentNullException()
             {
-                Assert.That(() => ((ExtensionPoint<HtmlHelper>)null).RichTextEditor(PROPERTY_NAME, "propertyValue"), Throws.ArgumentNullException);
+                Assert.That(() => ((ExtensionPoint<HtmlHelper>)null).RichTextEditor(PROPERTY_NAME), Throws.ArgumentNullException);
             }
 
 
@@ -39,21 +39,19 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             [TestCase(" ")]
             public void RichTextEditor_PropertyNameIsInvalid_ThrowsArgumentNullException(string invalidPropertyName)
             {
-                Assert.That(() => htmlHelperMock.Kentico().RichTextEditor(invalidPropertyName, "propertyValue"), Throws.ArgumentException);
+                Assert.That(() => htmlHelperMock.Kentico().RichTextEditor(invalidPropertyName), Throws.ArgumentException);
             }
 
 
-            [TestCase(null)]
-            [TestCase("")]
-            [TestCase("<p>Test</p>")]
-            public void RichTextEditor_ValidArguments_WritesToViewContext(string propertyValue)
+            [Test]
+            public void RichTextEditor_PropertyNameIsValid_WritesToViewContext()
             {
-                htmlHelperMock.Kentico().RichTextEditor(PROPERTY_NAME, propertyValue);
+                htmlHelperMock.Kentico().RichTextEditor(PROPERTY_NAME);
 
                 Received.InOrder(() =>
                 {
                     writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
-                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\">{propertyValue}</div>");
+                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" />");
                     writerMock.Write("</div>");
                 });
             }

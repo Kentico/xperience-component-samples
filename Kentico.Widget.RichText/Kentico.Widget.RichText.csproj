@@ -535,6 +535,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Content Include="Assets\Widgets\RichText\main.less" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

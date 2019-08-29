@@ -17,8 +17,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         /// </summary>
         /// <param name="instance">The object that provides methods to render HTML fragments.</param>
         /// <param name="propertyName">Name of the widget property which the inline editor edits.</param>
-        /// <param name="propertyValue">Current value of the widget property.</param>
-        public static void RichTextEditor(this ExtensionPoint<HtmlHelper> instance, string propertyName, string propertyValue)
+        public static void RichTextEditor(this ExtensionPoint<HtmlHelper> instance, string propertyName)
         {
             instance = instance ?? throw new ArgumentNullException(nameof(instance));
             if (String.IsNullOrWhiteSpace(propertyName))
@@ -32,9 +31,8 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
             {
                 var tagBuidler = new TagBuilder("div");
                 tagBuidler.AddCssClass(RICH_TEXT_EDITOR_CLASS_NAME);
-                tagBuidler.InnerHtml = propertyValue;
 
-                htmlHelper.ViewContext.Writer.Write(tagBuidler.ToString());
+                htmlHelper.ViewContext.Writer.Write(tagBuidler.ToString(TagRenderMode.SelfClosing));
             }
         }
     }
