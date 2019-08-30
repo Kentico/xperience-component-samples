@@ -79,6 +79,6 @@ const bindMacroClickListener = (editor: FroalaEditor) => {
     const macros = editor.el.querySelectorAll<HTMLElement>(`.${MACRO_CLASS}`);
 
     macros.forEach((macroEl) => {
-        macroEl.onclick = () => editor.kenticoMacroPlugin.showPopup(macroEl);
+        macroEl.onclick = () => editor.kenticoMacroPlugin.showActionsPopup(macroEl);
     });
 }

@@ -1,6 +1,8 @@
 import { CustomPlugin } from "froala-editor/js/froala_editor.pkgd.min";
 
 export interface MacrosPlugin extends CustomPlugin {
-    readonly showPopup: (macroElement: HTMLElement) => void;
-    readonly hidePopup: () => void;
+    readonly showActionsPopup: (macroElement: HTMLElement) => void;
+    readonly hideActionsPopup: () => void;
+    readonly showConfigurationPopup: (macroElement: HTMLElement) => void;
+    readonly hideConfigurationPopup: () => void;
 }

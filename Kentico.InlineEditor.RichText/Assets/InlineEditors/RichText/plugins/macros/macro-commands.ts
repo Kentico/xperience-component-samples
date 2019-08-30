@@ -1,10 +1,11 @@
 import FroalaEditor, { RegisterCommandParameters } from "froala-editor/js/froala_editor.pkgd.min";
-
 import { MACRO_ACTIVE_CLASS } from "./macro-constants";
+import { showMacroForm, showUrlParameterForm, hideConfigurationPopup } from "./popups";
 import { getMacroEditModeElement } from "./macro-templates";
 
 export const insertMacroCommand: RegisterCommandParameters = {
     title: 'Insert Dynamic Text',
+    icon: 'insertMacro',
     focus: true,
     undo: true,
     refreshAfterCallback: true,
@@ -28,7 +29,7 @@ export const removeMacroCommand: RegisterCommandParameters = {
             macroEl.remove();
         }
 
-        this.kenticoMacroPlugin.hidePopup();
+        this.kenticoMacroPlugin.hideActionsPopup();
     }
 }
 
@@ -37,6 +38,36 @@ export const configureMacroCommand: RegisterCommandParameters = {
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
-        alert("popupButton2");
+        this.kenticoMacroPlugin.showConfigurationPopup((this.$oel as any)[0]);
+    }
+}
+
+export const openMacroTabCommand: RegisterCommandParameters = {
+    title: "Insert macro",
+    icon: "macro",
+    undo: false,
+    focus: false,
+    callback(this: FroalaEditor) {
+        showMacroForm(this);
+    }    
+};
+
+
+export const openQueryTabCommand: RegisterCommandParameters = {
+    title: "URL parameter",
+    icon: "queryString",
+    undo: false,
+    focus: false,
+    callback(this: FroalaEditor) {
+        showUrlParameterForm.call(this);
+    }    
+};
+
+export const closeConfigurePopupCommand: RegisterCommandParameters = {
+    title: 'Back',
+    undo: false,
+    focus: false,
+    callback(this: FroalaEditor) {
+      hideConfigurationPopup.call(this);
     }
 }

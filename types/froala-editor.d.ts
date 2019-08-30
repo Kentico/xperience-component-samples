@@ -26,6 +26,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       ALT: string;
       FA5NAME: string;
       SVG_KEY: string;
+      PATH: string,
     }
   
     /**
@@ -73,7 +74,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
      * - videoEditButtons
      * - videoInsertButtons or videoSizeButtons
      *
-     * @param name Label given to the commang to be used in registering in button options
+     * @param name Label given to the command to be used in registering in button options
      * @param parameters
      */
     export function RegisterCommand(name: string, parameters: Partial<RegisterCommandParameters>): void;
@@ -151,11 +152,11 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
     export default class FroalaEditor {
       constructor(element: any, options: Partial<FroalaOptions>);
       $oel: JQuery;
+      $tb: JQuery;
       destroy(): object;
 
       // Custom props
       kenticoMacroPlugin: MacrosPlugin;
-  
       el: HTMLElement;
       opts: FroalaOptions;
       align: Align;
