@@ -1,5 +1,5 @@
 import { MACRO_CLASS } from "./macro-constants";
-import { getMacroEditModeElement } from "./macro-helper";
+import { getMacroEditModeElement } from "./macro-templates";
 
 export const replaceMacroElements = (html: string): string => {
     const tempWrapper = document.createElement("div");
@@ -12,5 +12,5 @@ export const replaceMacroElements = (html: string): string => {
 }
 
 export const replaceMacrosWithElements = (html: string): string => {
-    return html.replace(/{{ Username }}/g, getMacroEditModeElement().outerHTML);
+    return html.replace(/{{ Username }}/g, getMacroEditModeElement());
 }
