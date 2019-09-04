@@ -248,6 +248,18 @@
     <Reference Include="CMS.Taxonomy, Version=12.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <HintPath>..\packages\Kentico.Libraries.12.0.38\lib\net461\CMS.Taxonomy.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.Tests, Version=12.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kentico.Libraries.Tests.12.0.38\lib\net461\CMS.Tests.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.Tests.Activities, Version=12.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kentico.Libraries.Tests.12.0.38\lib\net461\CMS.Tests.Activities.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.Tests.Base, Version=12.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kentico.Libraries.Tests.12.0.38\lib\net461\CMS.Tests.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.Tests.DocumentEngine, Version=12.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kentico.Libraries.Tests.12.0.38\lib\net461\CMS.Tests.DocumentEngine.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.TranslationServices, Version=12.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <HintPath>..\packages\Kentico.Libraries.12.0.38\lib\net461\CMS.TranslationServices.dll</HintPath>
     </Reference>
@@ -567,7 +579,9 @@
     <Error Condition="!Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.12.0\build\NUnit.props'))" />
     <Error Condition="!Exists('..\packages\NUnit3TestAdapter.3.13.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit3TestAdapter.3.13.0\build\net35\NUnit3TestAdapter.props'))" />
     <Error Condition="!Exists('..\packages\Kentico.LanguagePack.English.12.0.38\build\Kentico.LanguagePack.English.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Kentico.LanguagePack.English.12.0.38\build\Kentico.LanguagePack.English.targets'))" />
+    <Error Condition="!Exists('..\packages\Kentico.Libraries.Tests.12.0.38\build\net461\Kentico.Libraries.Tests.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Kentico.Libraries.Tests.12.0.38\build\net461\Kentico.Libraries.Tests.targets'))" />
   </Target>
   <Import Project="..\packages\MSTest.TestAdapter.1.3.2\build\net45\MSTest.TestAdapter.targets" Condition="Exists('..\packages\MSTest.TestAdapter.1.3.2\build\net45\MSTest.TestAdapter.targets')" />
   <Import Project="..\packages\Kentico.LanguagePack.English.12.0.38\build\Kentico.LanguagePack.English.targets" Condition="Exists('..\packages\Kentico.LanguagePack.English.12.0.38\build\Kentico.LanguagePack.English.targets')" />
+  <Import Project="..\packages\Kentico.Libraries.Tests.12.0.38\build\net461\Kentico.Libraries.Tests.targets" Condition="Exists('..\packages\Kentico.Libraries.Tests.12.0.38\build\net461\Kentico.Libraries.Tests.targets')" />
 </Project>

@@ -12,6 +12,7 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
     RegisterQuickInsertButton("imageKentico", insertImageCommand);
 
     new FroalaEditor(element, {
+        key: element.dataset.richTextEditorLicense,
         toolbarInline: true,
         charCounterCount: false,
         quickInsertButtons: ["imageKentico", "video", "embedly", "table", "ul", "ol", "hr"],
