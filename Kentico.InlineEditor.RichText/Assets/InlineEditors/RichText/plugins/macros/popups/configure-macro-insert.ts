@@ -1,9 +1,9 @@
 import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 
-import { MACROS_PLUGIN_NAME, SWITCH_URL_TAB_COMMAND_NAME, SWITCH_MACRO_TAB_COMMAND_NAME } from "../macro-constants";
-import { getConfigureUrlParameterElement, getConfigureMacroElement } from "../macro-templates";
-
-export const CONFIGURATION_POPUP_NAME = `${MACROS_PLUGIN_NAME}.popupConfigure`;
+import { SWITCH_MACRO_TAB_COMMAND_NAME, CONFIGURATION_POPUP_NAME } from "../macro-constants";
+import { getConfigureContextMacroElement } from "../macro-templates";
+import { DialogMode } from "../macro-types";
+import { showUrlParameterForm, getDialogElement } from "./popup-helper";
 
 function initPopup(this: FroalaEditor) {
     // Popup buttons.
@@ -28,7 +28,7 @@ function initPopup(this: FroalaEditor) {
     return $popup;
 }
 
-export function showConfigurationPopup(this: FroalaEditor, element: HTMLElement) {
+export function showConfigurationPopup(this: FroalaEditor, element: HTMLElement, mode: DialogMode) {
     // Get the popup object defined above.
     var $popup = this.popups.get(CONFIGURATION_POPUP_NAME);
 
@@ -49,39 +49,27 @@ export function showConfigurationPopup(this: FroalaEditor, element: HTMLElement)
     // The button's outerHeight is required in case the popup needs to be displayed above it.
     this.popups.show(CONFIGURATION_POPUP_NAME, offsetLeft, offsetTop, element.offsetHeight);
 
-    showUrlParameterForm.call(this);
-}
-
-export function showUrlParameterForm(this: FroalaEditor) {
-    const dialog = getDialogElement(this, CONFIGURATION_POPUP_NAME);
-    const container = dialog.querySelector(".ktc-configure-popup") as HTMLElement;
-
-    container.innerHTML = getConfigureUrlParameterElement();
-
-    const button = dialog.querySelector(`.fr-command[data-cmd="${SWITCH_URL_TAB_COMMAND_NAME}"]`) as HTMLButtonElement;
-    button.classList.add("fr-active", "fr-selected");
+    showUrlParameterForm(this, CONFIGURATION_POPUP_NAME);
 }
 
 export function showMacroForm(editor: FroalaEditor) {
     const dialog = getDialogElement(editor, CONFIGURATION_POPUP_NAME);
-    const container = dialog.querySelector(".ktc-configure-popup");
 
-    if (container) {
-        container.innerHTML = getConfigureMacroElement();
+    if (dialog) {
+        const container = dialog.querySelector(".ktc-configure-popup");
+
+        if (container) {
+            container.innerHTML = getConfigureContextMacroElement(DialogMode.INSERT);
+        }
+
+        const button = dialog.querySelector<HTMLButtonElement>(`.fr-command[data-cmd="${SWITCH_MACRO_TAB_COMMAND_NAME}"]`);
+        button!.classList.add("fr-active", "fr-selected");
     }
-
-    const button = dialog.querySelector(`.fr-command[data-cmd="${SWITCH_MACRO_TAB_COMMAND_NAME}"]`) as HTMLButtonElement;
-    button.classList.add("fr-active", "fr-selected");
 }
 
 export function hideConfigurationPopup(this: FroalaEditor) {
     this.popups.hide(CONFIGURATION_POPUP_NAME);
 }
 
-const getDialogElement = (editor: FroalaEditor, popupName: string): HTMLElement => {
-    const jDialog = editor.popups.get(popupName);
-    const dialog = (jDialog as any)[0] as HTMLElement;
 
-    return dialog;
-};
 

@@ -1,5 +1,5 @@
 import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
-import { MACROS_PLUGIN_NAME, MACRO_ACTIVE_CLASS } from "../macro-constants";
+import { MACRO_ACTIVE_CLASS, ACTIONS_POPUP_NAME } from "../macro-constants";
 
 
 // Create custom popup.
@@ -8,9 +8,9 @@ function initPopup(this: FroalaEditor) {
     let popup_buttons = "";
 
     // Create the list of buttons.
-    if (this.opts.popupButtons.length > 1) {
+    if (this.opts.popupActionButtons.length > 1) {
         popup_buttons += "<div class=\"fr-buttons\">";
-        popup_buttons += this.button.buildList(this.opts.popupButtons);
+        popup_buttons += this.button.buildList(this.opts.popupActionButtons);
         popup_buttons += "</div>";
     }
 
@@ -20,14 +20,14 @@ function initPopup(this: FroalaEditor) {
     };
 
     // Create popup.
-    var $popup = this.popups.create(`${MACROS_PLUGIN_NAME}.popup`, template);
+    var $popup = this.popups.create(ACTIONS_POPUP_NAME, template);
 
     return $popup;
 }
 
 export function showActionsPopup(this: FroalaEditor, macroElement: HTMLElement) {
     // Get the popup object defined above.
-    let $popup = this.popups.get(`${MACROS_PLUGIN_NAME}.popup`);
+    let $popup = this.popups.get(ACTIONS_POPUP_NAME);
 
     // If popup doesn't exist then create it.
     // To improve performance it is best to create the popup when it is first needed
@@ -37,7 +37,7 @@ export function showActionsPopup(this: FroalaEditor, macroElement: HTMLElement) 
     }
 
     // Set the editor toolbar as the popup's container.
-    this.popups.setContainer(`${MACROS_PLUGIN_NAME}.popup`, this.$oel);
+    this.popups.setContainer(ACTIONS_POPUP_NAME, this.$oel);
 
     // Compute the popup's position.
     const { top, left } = macroElement.getBoundingClientRect();
@@ -46,7 +46,7 @@ export function showActionsPopup(this: FroalaEditor, macroElement: HTMLElement) 
 
     // Show the custom popup.
     // The button's outerHeight is required in case the popup needs to be displayed above it.
-    this.popups.show(`${MACROS_PLUGIN_NAME}.popup`, offsetLeft, offsetTop, macroElement.offsetHeight);
+    this.popups.show(ACTIONS_POPUP_NAME, offsetLeft, offsetTop, macroElement.offsetHeight);
 
     const currentActiveMacroEl = this.el.querySelector(`.${MACRO_ACTIVE_CLASS}`)
     if (currentActiveMacroEl) {
@@ -58,7 +58,7 @@ export function showActionsPopup(this: FroalaEditor, macroElement: HTMLElement) 
 
 // Hide the custom popup.
 export function hideActionsPopup(this: FroalaEditor) {
-    this.popups.hide(`${MACROS_PLUGIN_NAME}.popup`);
+    this.popups.hide(ACTIONS_POPUP_NAME);
 
     const activeMacro = this.el.querySelector(`.${MACRO_ACTIVE_CLASS}`);
     if (activeMacro) {

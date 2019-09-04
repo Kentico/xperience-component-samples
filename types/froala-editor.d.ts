@@ -93,6 +93,9 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
   
       // Focus inside the editor before the callback.
       focus: boolean;
+      
+      // Buttons which are included in the editor toolbar should have the plugin property set.
+      plugin?: string, 
   
       // Show the button on mobile or not.
       showOnMobile?: boolean;
