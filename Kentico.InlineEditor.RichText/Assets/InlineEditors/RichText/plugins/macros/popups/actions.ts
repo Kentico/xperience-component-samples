@@ -1,7 +1,6 @@
 import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 import { MACRO_ACTIVE_CLASS, ACTIONS_POPUP_NAME } from "../macro-constants";
 
-
 // Create custom popup.
 function initPopup(this: FroalaEditor) {
     // Popup buttons.

@@ -49,6 +49,7 @@ export const initializeMacroPlugin = (froala: Froala) => {
 
     froala.RegisterCommand(constants.INSERT_URL_MACRO_COMMAND_NAME, commands.insertMacro);
     froala.RegisterCommand(constants.INSERT_CONTEXT_MACRO_COMMAND_NAME, commands.insertMacro);
+    froala.RegisterCommand(constants.UPDATE_CONTEXT_MACRO_COMMAND_NAME, commands.updateMacro);
 
     froala.PLUGINS[constants.MACROS_PLUGIN_NAME] = macroPlugin;
 }

@@ -2,7 +2,8 @@ export const MACROS_PLUGIN_NAME = "kenticoMacroPlugin";
 
 export const INSERT_MACRO_COMMAND_NAME = "insertMacro";
 export const REMOVE_MACRO_COMMAND_NAME = "removeMacro";
-export const UPDATE_MACRO_COMMAND_NAME = "updateMacro";
+export const UPDATE_MACRO_COMMAND_NAME = "updateUrlParameterMacro";
+export const UPDATE_CONTEXT_MACRO_COMMAND_NAME = "updateContextMacro";
 export const CONFIGURE_MACRO_COMMAND_NAME = "configureMacro";
 export const OPEN_INSERT_MACRO_POPUP_COMMAND_NAME = "openInsertMacroPopup";
 export const CLOSE_CONFIGURE_POPUP_COMMAND_NAME = "popupConfigureClose";

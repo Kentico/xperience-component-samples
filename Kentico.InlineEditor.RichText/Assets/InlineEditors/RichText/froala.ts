@@ -5,11 +5,9 @@ import { UPDATE_WIDGET_PROPERTY_EVENT_NAME } from "@/shared/constants";
 import { imageReplaceCommand, insertImageCommand } from "./commands";
 import { initializeMacroPlugin } from "./plugins/macros";
 import { replaceMacroElements, replaceMacrosWithElements } from "./plugins/macros/macro-services";
-import { MACRO_CLASS, OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, CONFIGURE_URL_MACRO_POPUP_NAME, ACTIONS_POPUP_NAME, MACRO_ACTIVE_CLASS, CONFIGURE_CONTEXT_MACRO_POPUP_NAME, CONFIGURATION_POPUP_NAME } from "./plugins/macros/macro-constants";
+import { MACRO_CLASS, OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, ACTIONS_POPUP_NAME, MACRO_ACTIVE_CLASS, CONFIGURE_CONTEXT_MACRO_POPUP_NAME, CONFIGURATION_POPUP_NAME } from "./plugins/macros/macro-constants";
 
 import "./style.less";
-import { showForm } from "./plugins/macros/popups/popup-helper";
-import { DialogMode, MacroType } from "./plugins/macros/macro-types";
 
 export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLElement, propertyName: string, propertyValue: string) => {
     Froala.RegisterCommand("insertImageKentico", insertImageCommand);
@@ -54,14 +52,9 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
             },
             // [`popups.hide.${CONFIGURE_URL_MACRO_POPUP_NAME}`]: showActionsPopup,
             [`popups.hide.${CONFIGURE_CONTEXT_MACRO_POPUP_NAME}`]: showActionsPopup,
-            [`popups.hide.${CONFIGURATION_POPUP_NAME}`]: showActionsPopup,
-            [`popups.hide.${ACTIONS_POPUP_NAME}`]: function () { console.log("Actions popup hidden.");},
-            // [`popups.show.${CONFIGURE_CONTEXT_MACRO_POPUP_NAME}`]: function (this: FroalaEditor) {
-            //     showForm(this, CONFIGURE_CONTEXT_MACRO_POPUP_NAME, DialogMode.UPDATE, MacroType.CONTEXT, "test", "test");
-            // },
+            // [`popups.hide.${CONFIGURATION_POPUP_NAME}`]: showActionsPopup,
             contentChanged(this: FroalaEditor) {
                 bindMacroClickListener(this);
-                console.log("Content changed");
                 const event = new CustomEvent(UPDATE_WIDGET_PROPERTY_EVENT_NAME, {
                     detail: {
                         name: propertyName,

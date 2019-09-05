@@ -1,4 +1,4 @@
-import { MACRO_CLASS, UPDATE_MACRO_COMMAND_NAME, INSERT_URL_MACRO_COMMAND_NAME, INSERT_CONTEXT_MACRO_COMMAND_NAME } from "./macro-constants";
+import { MACRO_CLASS, UPDATE_MACRO_COMMAND_NAME, INSERT_URL_MACRO_COMMAND_NAME, INSERT_CONTEXT_MACRO_COMMAND_NAME, UPDATE_CONTEXT_MACRO_COMMAND_NAME } from "./macro-constants";
 import { DialogMode, MacroType } from "./macro-types";
 
 const macroEditModeTemplate = require("./templates/macro-element.html");
@@ -68,7 +68,7 @@ export const getConfigureContextMacroElement = (mode: DialogMode, macroValue: st
                 actionButtonText: "Save",
                 defaultTextLabel: "Default text",
                 macroTypeLabel: "Macro",
-                command: "Update!!!",
+                command: UPDATE_CONTEXT_MACRO_COMMAND_NAME,
             }
         break;
     }

@@ -1,7 +1,6 @@
 import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 import { MacrosPlugin, MacroType } from "./macro-types";
-import { showActionsPopup, showConfigurationPopup, hideActionsPopup } from "./popups";
-import { showConfigureUrlPopup } from "./popups/configure-url-macro";
+import { showActionsPopup, hideActionsPopup } from "./popups";
 import { CONFIGURE_URL_MACRO_POPUP_NAME, CONFIGURE_CONTEXT_MACRO_POPUP_NAME, CONFIGURATION_POPUP_NAME, ACTIONS_POPUP_NAME } from "./macro-constants";
 import { getShowDialog } from "./popups/popup-helper";
 
@@ -30,11 +29,16 @@ function hideConfigurationPopup(this: FroalaEditor) {
 export const macroPlugin = (editor: FroalaEditor): MacrosPlugin => {
 
     const showConfigureContextMacroPopup = getShowDialog(editor, CONFIGURE_CONTEXT_MACRO_POPUP_NAME, editor.opts.popupEditContextMacroButtons, MacroType.CONTEXT);
+    const showConfigureUrlPopup = getShowDialog(editor, CONFIGURE_URL_MACRO_POPUP_NAME, editor.opts.popupEditUrlMacroButtons, MacroType.URL);
+    const showConfigurationPopup = getShowDialog(editor, CONFIGURATION_POPUP_NAME, editor.opts.popupConfigureButtons, MacroType.URL);
+
     const macroPlugin = {
         showConfigureContextMacroPopup: showConfigureContextMacroPopup.bind(editor),
+        showConfigureUrlPopup: showConfigureUrlPopup.bind(editor),
+        showConfigurationPopup: showConfigurationPopup.bind(editor),
     } as MacrosPlugin;
 
-    return [showActionsPopup, hideActionsPopup, showConfigurationPopup, hideConfigurationPopup, hidePopups, showConfigureUrlPopup].reduce((accumulator: MacrosPlugin, currentValue) => {
+    return [showActionsPopup, hideActionsPopup, hideConfigurationPopup, hidePopups].reduce((accumulator: MacrosPlugin, currentValue) => {
         accumulator[currentValue.name] = currentValue.bind(editor);
         
         return accumulator;

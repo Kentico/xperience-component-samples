@@ -1,10 +1,9 @@
 import FroalaEditor, { RegisterCommandParameters } from "froala-editor/js/froala_editor.pkgd.min";
-import { MACRO_ACTIVE_CLASS, OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, INSERT_URL_MACRO_COMMAND_NAME, CONFIGURE_URL_MACRO_POPUP_NAME, CONFIGURATION_POPUP_NAME, MACROS_PLUGIN_NAME } from "./macro-constants";
-import { showMacroForm } from "./popups";
+import { MACRO_ACTIVE_CLASS, OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, INSERT_URL_MACRO_COMMAND_NAME, CONFIGURE_URL_MACRO_POPUP_NAME, CONFIGURATION_POPUP_NAME, MACROS_PLUGIN_NAME, UPDATE_MACRO_COMMAND_NAME, UPDATE_CONTEXT_MACRO_COMMAND_NAME, CONFIGURE_CONTEXT_MACRO_POPUP_NAME } from "./macro-constants";
 import { getMacroEditModeElement } from "./macro-templates";
 import { DialogMode, MacroType } from "./macro-types";
 import { unwrapElement } from "./macro-helpers";
-import { showUrlParameterForm } from "./popups/popup-helper";
+import { showForm } from "./popups/popup-helper";
 
 export const openInsertMacroPopupCommand: RegisterCommandParameters = {
     title: 'Insert Dynamic Text',
@@ -42,9 +41,9 @@ export const insertMacro: RegisterCommandParameters = {
             const defaultValue = popupElement!.querySelector<HTMLInputElement>("input[name='defaultText']");
             macroDefaultValue = defaultValue!.value;
         }
-        
-        this.html.insert(`${getMacroEditModeElement(macroType, macroValue, macroDefaultValue)} `);
+
         this.undo.saveStep();
+        this.html.insert(`${getMacroEditModeElement(macroType, macroValue, macroDefaultValue)} `);
         this.toolbar.hide();
         this.kenticoMacroPlugin.hideConfigurationPopup();
     }
@@ -55,17 +54,25 @@ export const updateMacro: RegisterCommandParameters = {
     focus: true,
     undo: true,
     refreshAfterCallback: true,
-    callback(this: FroalaEditor) {
+    callback(this: FroalaEditor, commandName) {
         this.undo.saveStep();
 
         const macroElement = this.el.querySelector<HTMLElement>(`.${MACRO_ACTIVE_CLASS}`);
 
         if (macroElement) {
-            const popupElement = unwrapElement(this.popups.get(CONFIGURE_URL_MACRO_POPUP_NAME));
-            const urlParameterName = popupElement!.querySelector<HTMLInputElement>("input[name='urlParameterName']");
-            const defaultValue = popupElement!.querySelector<HTMLInputElement>("input[name='defaultText']");
-            macroElement.dataset.macroValue = urlParameterName!.value;
-            macroElement.dataset.macroDefaultValue = defaultValue!.value;
+            if (commandName === UPDATE_MACRO_COMMAND_NAME) {
+                const popupElement = unwrapElement(this.popups.get(CONFIGURE_URL_MACRO_POPUP_NAME));
+                const urlParameterName = popupElement!.querySelector<HTMLInputElement>("input[name='urlParameterName']");
+                const defaultText = popupElement!.querySelector<HTMLInputElement>("input[name='defaultText']");
+                macroElement.dataset.macroValue = urlParameterName!.value;
+                macroElement.dataset.macroDefaultValue = defaultText!.value;
+            } else if (commandName === UPDATE_CONTEXT_MACRO_COMMAND_NAME) {
+                const popupElement = unwrapElement(this.popups.get(CONFIGURE_CONTEXT_MACRO_POPUP_NAME));
+                const contextMacroTypeSelectElement = popupElement!.querySelector<HTMLSelectElement>("select[name='contextMacroType']");
+                const defaultText = popupElement!.querySelector<HTMLInputElement>("input[name='defaultText']");
+                macroElement.dataset.macroValue = contextMacroTypeSelectElement!.options[contextMacroTypeSelectElement!.selectedIndex].value;
+                macroElement.dataset.macroDefaultValue = defaultText!.value;
+            }
         }
 
         this.kenticoMacroPlugin.hidePopups();
@@ -113,7 +120,7 @@ export const openMacroTabCommand: RegisterCommandParameters = {
     undo: false,
     focus: false,
     callback(this: FroalaEditor, button: string) {
-        showMacroForm(this);
+        showForm(this, CONFIGURATION_POPUP_NAME, DialogMode.INSERT, MacroType.CONTEXT);
     }
 };
 
@@ -123,7 +130,8 @@ export const openQueryTabCommand: RegisterCommandParameters = {
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
-        showUrlParameterForm(this, CONFIGURE_URL_MACRO_POPUP_NAME);
+        // showUrlParameterForm(this, CONFIGURE_URL_MACRO_POPUP_NAME);
+        showForm(this, CONFIGURE_URL_MACRO_POPUP_NAME, DialogMode.INSERT, MacroType.URL);
     }
 };
 
