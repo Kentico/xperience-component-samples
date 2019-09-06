@@ -4,17 +4,13 @@ import { DialogMode, MacroType } from "./macro-types";
 const macroEditModeTemplate = require("./templates/macro-element.html");
 const configureContextMacroTemplate = require("./templates/configure-context-macro-popup.html");
 
-const getDisplayValue = (macroType: MacroType, macroValue: string): string => {
-    return macroType === MacroType.URL ? `param: ${macroValue}` : macroValue;
-}
-
-export const getMacroEditModeElement = (macroType: MacroType, macroValue: string, macroDefaultValue: string): string => {
+export const getMacroEditModeElement = (macroType: MacroType, macroValue: string, macroDefaultValue: string, macroDisplayValue: string): string => {
     return macroEditModeTemplate({
         macroClass: MACRO_CLASS,
         macroType,
         macroValue,
         macroDefaultValue,
-        macroDisplayValue: getDisplayValue(macroType, macroValue),
+        macroDisplayValue,
     });
 }
 

@@ -2,7 +2,7 @@ import FroalaEditor, { RegisterCommandParameters } from "froala-editor/js/froala
 import * as constants from "./macro-constants";
 import { getMacroEditModeElement } from "./macro-templates";
 import { DialogMode, MacroType } from "./macro-types";
-import { unwrapElement } from "./macro-helpers";
+import { unwrapElement, getContextMacroDisplayName } from "./macro-helpers";
 import { showForm } from "./popups";
 
 export const openInsertMacroPopupCommand: RegisterCommandParameters = {
@@ -29,21 +29,25 @@ export const insertMacro: RegisterCommandParameters = {
 
         let macroValue = "";
         let macroDefaultValue = "";
+        let macroDisplayValue = "";
 
         if (macroType === MacroType.URL) {
             const urlParameterNameElement = popupElement!.querySelector<HTMLInputElement>("input[name='urlParameterName']");
-            macroValue = urlParameterNameElement!.value;
+            const urlParameterName = urlParameterNameElement!.value;
+            macroValue = `QueryString.${urlParameterName}`;
+            macroDisplayValue = getContextMacroDisplayName(urlParameterName);
             const defaultValue = popupElement!.querySelector<HTMLInputElement>("input[name='defaultText']");
             macroDefaultValue = defaultValue!.value;
         } else {
             const contextMacroTypeElement = popupElement!.querySelector<HTMLSelectElement>("select[name='contextMacroType']");
             macroValue = contextMacroTypeElement!.options[contextMacroTypeElement!.selectedIndex].value;
+            macroDisplayValue = getContextMacroDisplayName(macroValue)
             const defaultValue = popupElement!.querySelector<HTMLInputElement>("input[name='defaultText']");
             macroDefaultValue = defaultValue!.value;
         }
 
         this.undo.saveStep();
-        this.html.insert(`${getMacroEditModeElement(macroType, macroValue, macroDefaultValue)} `);
+        this.html.insert(`${getMacroEditModeElement(macroType, macroValue, macroDefaultValue, macroDisplayValue)} `);
         this.toolbar.hide();
         this.kenticoMacroPlugin.hideConfigurationPopup();
     }
@@ -62,16 +66,21 @@ export const updateMacro: RegisterCommandParameters = {
         if (macroElement) {
             if (commandName === constants.UPDATE_MACRO_COMMAND_NAME) {
                 const popupElement = unwrapElement(this.popups.get(constants.CONFIGURE_URL_MACRO_POPUP_NAME));
-                const urlParameterName = popupElement!.querySelector<HTMLInputElement>("input[name='urlParameterName']");
+                const urlParameterNameElement = popupElement!.querySelector<HTMLInputElement>("input[name='urlParameterName']");
                 const defaultText = popupElement!.querySelector<HTMLInputElement>("input[name='defaultText']");
-                macroElement.dataset.macroValue = urlParameterName!.value;
+                const urlParameterName = urlParameterNameElement!.value;
+                const macroValue = `QueryString.${urlParameterName}`;
+                macroElement.dataset.macroValue = macroValue;
                 macroElement.dataset.macroDefaultValue = defaultText!.value;
+                macroElement.textContent = getContextMacroDisplayName(urlParameterName);
             } else if (commandName === constants.UPDATE_CONTEXT_MACRO_COMMAND_NAME) {
                 const popupElement = unwrapElement(this.popups.get(constants.CONFIGURE_CONTEXT_MACRO_POPUP_NAME));
                 const contextMacroTypeSelectElement = popupElement!.querySelector<HTMLSelectElement>("select[name='contextMacroType']");
                 const defaultText = popupElement!.querySelector<HTMLInputElement>("input[name='defaultText']");
-                macroElement.dataset.macroValue = contextMacroTypeSelectElement!.options[contextMacroTypeSelectElement!.selectedIndex].value;
+                const macroValue = contextMacroTypeSelectElement!.options[contextMacroTypeSelectElement!.selectedIndex].value;
+                macroElement.dataset.macroValue = macroValue;
                 macroElement.dataset.macroDefaultValue = defaultText!.value;
+                macroElement.textContent = getContextMacroDisplayName(macroValue);
             }
         }
 
@@ -107,7 +116,7 @@ export const configureMacroCommand: RegisterCommandParameters = {
             const { macroValue, macroDefaultValue, macroType } = dataset;
 
             if (macroType === MacroType.URL) {
-                this.kenticoMacroPlugin.showConfigureUrlPopup(macroEl, DialogMode.UPDATE, macroValue, macroDefaultValue);
+                this.kenticoMacroPlugin.showConfigureUrlPopup(macroEl, DialogMode.UPDATE, macroValue.replace("QueryString.", ""), macroDefaultValue);
             } else {
                 this.kenticoMacroPlugin.showConfigureContextMacroPopup(macroEl, DialogMode.UPDATE, macroValue, macroDefaultValue);
             }

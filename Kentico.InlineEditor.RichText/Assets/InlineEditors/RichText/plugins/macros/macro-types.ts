@@ -19,3 +19,9 @@ export enum MacroType {
     URL = "url",
     CONTEXT = "context"
 }
+
+export enum ContextMacro {
+    FIRST_NAME = "ContactManagementContext.CurrentContact.ContactFirstName",
+    LAST_NAME = "ContactManagementContext.CurrentContact.ContactLastName",
+    FULL_NAME = "ContactManagementContext.CurrentContact.ContactDescriptiveName"
+}
