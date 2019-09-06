@@ -569,9 +569,6 @@
     <TypeScriptCompile Include="Assets\InlineEditors\RichText\plugins\macros\macro-templates.ts" />
     <TypeScriptCompile Include="Assets\InlineEditors\RichText\plugins\macros\macro-types.ts" />
     <TypeScriptCompile Include="Assets\InlineEditors\RichText\plugins\macros\popups\actions.ts" />
-    <TypeScriptCompile Include="Assets\InlineEditors\RichText\plugins\macros\popups\configure-context-macro.ts" />
-    <TypeScriptCompile Include="Assets\InlineEditors\RichText\plugins\macros\popups\configure-macro-insert.ts" />
-    <TypeScriptCompile Include="Assets\InlineEditors\RichText\plugins\macros\popups\configure-url-macro.ts" />
     <TypeScriptCompile Include="Assets\InlineEditors\RichText\plugins\macros\popups\index.ts" />
     <TypeScriptCompile Include="Assets\InlineEditors\RichText\plugins\macros\popups\popup-helper.ts" />
     <TypeScriptCompile Include="Assets\InlineEditors\RichText\plugins\plugin-types.ts" />

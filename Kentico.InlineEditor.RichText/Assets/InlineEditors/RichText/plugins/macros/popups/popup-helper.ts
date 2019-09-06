@@ -4,17 +4,9 @@ import { unwrapElement } from "../macro-helpers";
 import { getConfigureUrlParameterElement, getConfigureContextMacroElement } from "../macro-templates";
 import { SWITCH_URL_TAB_COMMAND_NAME, SWITCH_MACRO_TAB_COMMAND_NAME } from "../macro-constants";
 
-
-export const showUrlParameterForm = (editor: FroalaEditor, popupName: string, mode: DialogMode = DialogMode.INSERT, macroValue: string = "", macroDefaultValue: string = "") => {
-    const dialog = getDialogElement(editor, popupName);
-    if (dialog) {
-        const container = dialog.querySelector<HTMLElement>(".ktc-configure-popup");
-        container!.innerHTML = getConfigureUrlParameterElement(mode, macroValue, macroDefaultValue);
-
-        const button = dialog.querySelector<HTMLButtonElement>(`.fr-command[data-cmd="${SWITCH_URL_TAB_COMMAND_NAME}"]`);
-        button!.classList.add("fr-active", "fr-selected");
-    }
-}
+const getDialogElement = (editor: FroalaEditor, popupName: string) => {
+    return unwrapElement(editor.popups.get(popupName));
+};
 
 export const showForm = (editor: FroalaEditor, popupName: string, mode: DialogMode = DialogMode.INSERT, macroType: MacroType, macroValue: string = "", macroDefaultValue: string = "") => {
     const dialog = getDialogElement(editor, popupName);
@@ -35,11 +27,6 @@ export const showForm = (editor: FroalaEditor, popupName: string, mode: DialogMo
         button!.classList.add("fr-active", "fr-selected");
     }
 }
-
-export const getDialogElement = (editor: FroalaEditor, popupName: string) => {
-    return unwrapElement(editor.popups.get(popupName));
-};
-
 
 export function getShowDialog(editor: FroalaEditor, popupName: string, buttons: any[], macroType: MacroType) {
     function initPopup(editor: FroalaEditor) {

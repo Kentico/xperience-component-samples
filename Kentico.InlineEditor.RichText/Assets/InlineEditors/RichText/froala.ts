@@ -5,7 +5,7 @@ import { UPDATE_WIDGET_PROPERTY_EVENT_NAME } from "@/shared/constants";
 import { imageReplaceCommand, insertImageCommand } from "./commands";
 import { initializeMacroPlugin } from "./plugins/macros";
 import { replaceMacroElements, replaceMacrosWithElements } from "./plugins/macros/macro-services";
-import { MACRO_CLASS, OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, ACTIONS_POPUP_NAME, MACRO_ACTIVE_CLASS, CONFIGURE_CONTEXT_MACRO_POPUP_NAME, CONFIGURATION_POPUP_NAME } from "./plugins/macros/macro-constants";
+import { MACRO_CLASS, OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, MACRO_ACTIVE_CLASS, CONFIGURE_CONTEXT_MACRO_POPUP_NAME } from "./plugins/macros/macro-constants";
 
 import "./style.less";
 
@@ -51,8 +51,7 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
                 bindMacroClickListener(this);
             },
             // [`popups.hide.${CONFIGURE_URL_MACRO_POPUP_NAME}`]: showActionsPopup,
-            [`popups.hide.${CONFIGURE_CONTEXT_MACRO_POPUP_NAME}`]: showActionsPopup,
-            // [`popups.hide.${CONFIGURATION_POPUP_NAME}`]: showActionsPopup,
+            // [`popups.hide.${CONFIGURE_CONTEXT_MACRO_POPUP_NAME}`]: showActionsPopup,
             contentChanged(this: FroalaEditor) {
                 bindMacroClickListener(this);
                 const event = new CustomEvent(UPDATE_WIDGET_PROPERTY_EVENT_NAME, {

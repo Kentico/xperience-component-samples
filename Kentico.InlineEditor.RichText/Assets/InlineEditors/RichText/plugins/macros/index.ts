@@ -1,5 +1,3 @@
-import * as f from "froala-editor/js/froala_editor.pkgd.min";
-
 import * as commands from "./macro-commands";
 import * as constants from "./macro-constants";
 import { macroPlugin } from "./macro-plugin";
@@ -15,16 +13,16 @@ export const initializeMacroPlugin = (froala: Froala) => {
     });
 
     // Define popup buttons.
-    Object.assign(f.DEFAULTS, {
+    Object.assign(froala.DEFAULTS, {
         popupActionButtons: [constants.REMOVE_MACRO_COMMAND_NAME, constants.CONFIGURE_MACRO_COMMAND_NAME],
-        popupConfigureButtons: [constants.CLOSE_CONFIGURE_POPUP_COMMAND_NAME, "|", constants.SWITCH_URL_TAB_COMMAND_NAME, constants.SWITCH_MACRO_TAB_COMMAND_NAME ],
+        popupConfigureButtons: [constants.CLOSE_CONFIGURE_POPUP_COMMAND_NAME, "|", constants.SWITCH_URL_TAB_COMMAND_NAME, constants.SWITCH_MACRO_TAB_COMMAND_NAME],
         popupEditUrlMacroButtons: [constants.CLOSE_CONFIGURE_POPUP_COMMAND_NAME, "|", constants.SWITCH_URL_TAB_COMMAND_NAME],
         popupEditContextMacroButtons: [constants.CLOSE_CONFIGURE_POPUP_COMMAND_NAME, "|", constants.SWITCH_MACRO_TAB_COMMAND_NAME]
     });
 
     froala.DefineIcon(constants.OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, {
-        NAME: "plus",
-        SVG_KEY: "add"
+        PATH: constants.ICON_MACRO,
+        template: "svg",
     });
     froala.RegisterCommand(constants.OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, commands.openInsertMacroPopupCommand);
     froala.RegisterCommand(constants.REMOVE_MACRO_COMMAND_NAME, commands.removeMacroCommand);
@@ -38,10 +36,10 @@ export const initializeMacroPlugin = (froala: Froala) => {
     froala.DefineIcon('popupConfigureClose', { NAME: 'times', SVG_KEY: 'back' });
     froala.RegisterCommand(constants.CLOSE_CONFIGURE_POPUP_COMMAND_NAME, commands.closeConfigurePopupCommand);
 
-    froala.DefineIcon("macro", { NAME: "macro",  SVG_KEY: "help"});
+    froala.DefineIcon("macro", { PATH: constants.ICON_MACRO, template: "svg" });
     froala.RegisterCommand(constants.SWITCH_MACRO_TAB_COMMAND_NAME, commands.openMacroTabCommand);
 
-    froala.DefineIcon("queryString", { NAME: "query",  SVG_KEY: "help"});
+    froala.DefineIcon("queryString", { PATH: constants.ICON_URL_PARAM, template: "svg" });
     froala.RegisterCommand(constants.SWITCH_URL_TAB_COMMAND_NAME, commands.openQueryTabCommand);
 
     froala.RegisterCommand(constants.INSERT_MACRO_COMMAND_NAME, commands.insertMacro);

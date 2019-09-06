@@ -2,7 +2,7 @@ import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 import { MacrosPlugin, MacroType } from "./macro-types";
 import { showActionsPopup, hideActionsPopup } from "./popups";
 import { CONFIGURE_URL_MACRO_POPUP_NAME, CONFIGURE_CONTEXT_MACRO_POPUP_NAME, CONFIGURATION_POPUP_NAME, ACTIONS_POPUP_NAME } from "./macro-constants";
-import { getShowDialog } from "./popups/popup-helper";
+import { getShowDialog } from "./popups";
 
 function hidePopups(this: FroalaEditor) {
     if (this.popups.isVisible(ACTIONS_POPUP_NAME)) {
