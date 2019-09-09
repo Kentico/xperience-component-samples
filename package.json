@@ -37,6 +37,9 @@
     "webpack-cli": "^3.3.7",
     "webpack-fix-style-only-entries": "^0.3.0"
   },
+  "engines": {
+    "node": ">= 10.0.0"
+  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
