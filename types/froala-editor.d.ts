@@ -926,7 +926,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
     }
   
     export interface Position {
-      getBoundingRect(): Element;
+      getBoundingRect(): DOMRect;
       refresh(): object;
     }
   

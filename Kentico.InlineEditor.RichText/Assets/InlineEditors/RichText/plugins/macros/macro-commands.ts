@@ -13,7 +13,7 @@ export const openInsertMacroPopupCommand: RegisterCommandParameters = {
     plugin: constants.MACROS_PLUGIN_NAME,
     refreshAfterCallback: true,
     callback(this: FroalaEditor) {
-        this.kenticoMacroPlugin.showConfigurationPopup(this.el, DialogMode.INSERT);
+        this.kenticoMacroPlugin.showConfigurationPopup(this.position.getBoundingRect(), DialogMode.INSERT);
     }
 }
 
@@ -120,11 +120,12 @@ export const configureMacroCommand: RegisterCommandParameters = {
         if (macroEl) {
             const dataset = macroEl.dataset as { macroType: MacroType, macroValue: string, macroDefaultValue: string };
             const { macroValue, macroDefaultValue, macroType } = dataset;
+            const macroElementRect = macroEl.getBoundingClientRect();
 
             if (macroType === MacroType.URL) {
-                this.kenticoMacroPlugin.showConfigureUrlPopup(macroEl, DialogMode.UPDATE, macroValue.replace("QueryString.", ""), macroDefaultValue);
+                this.kenticoMacroPlugin.showConfigureUrlPopup(macroElementRect, DialogMode.UPDATE, macroValue.replace("QueryString.", ""), macroDefaultValue);
             } else {
-                this.kenticoMacroPlugin.showConfigureContextMacroPopup(macroEl, DialogMode.UPDATE, macroValue, macroDefaultValue);
+                this.kenticoMacroPlugin.showConfigureContextMacroPopup(macroElementRect, DialogMode.UPDATE, macroValue, macroDefaultValue);
             }
         }
     }
@@ -134,8 +135,8 @@ export const openMacroTabCommand: RegisterCommandParameters = {
     title: "Insert macro",
     icon: "macro",
     undo: false,
-    focus: false,
-    callback(this: FroalaEditor, button: string) {
+    focus: true,
+    callback(this: FroalaEditor) {
         showForm(this, constants.CONFIGURATION_POPUP_NAME, DialogMode.INSERT, MacroType.CONTEXT);
     }
 };
@@ -144,7 +145,7 @@ export const openQueryTabCommand: RegisterCommandParameters = {
     title: "URL parameter",
     icon: "queryString",
     undo: false,
-    focus: false,
+    focus: true,
     callback(this: FroalaEditor) {
         showForm(this, constants.CONFIGURATION_POPUP_NAME, DialogMode.INSERT, MacroType.URL);
     }

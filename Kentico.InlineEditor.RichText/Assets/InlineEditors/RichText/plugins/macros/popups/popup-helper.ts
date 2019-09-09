@@ -64,7 +64,7 @@ export function getShowDialog(editor: FroalaEditor, popupName: string, buttons: 
         return $popup;
     }
 
-    return function (this: FroalaEditor, relatedElement: HTMLElement, mode: DialogMode, macroValue: string, macroDefaultValue: string) {
+    return function (this: FroalaEditor, relatedElement: DOMRect, mode: DialogMode, macroValue: string, macroDefaultValue: string) {
         // Get the popup object defined above.
         var $popup = this.popups.get(popupName);
 
@@ -77,13 +77,13 @@ export function getShowDialog(editor: FroalaEditor, popupName: string, buttons: 
         this.popups.setContainer(popupName, this.$oel);
 
         // Compute the popup's position.
-        const { top, left } = relatedElement.getBoundingClientRect();
-        const offsetLeft = left + relatedElement.offsetWidth / 2;
+        const { top, left, width, height } = relatedElement;
+        const offsetLeft = left + width / 2;
         const offsetTop = top + window.pageYOffset;
 
         // Show the custom popup.
         // The button's outerHeight is required in case the popup needs to be displayed above it.
-        this.popups.show(popupName, offsetLeft, offsetTop, relatedElement.offsetHeight);
+        this.popups.show(popupName, offsetLeft, offsetTop, height);
 
         showForm(this, popupName, mode, macroType, macroValue, macroDefaultValue);
     };

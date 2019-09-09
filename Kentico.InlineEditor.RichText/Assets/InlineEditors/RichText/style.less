@@ -37,3 +37,40 @@
 .fr-toolbar.fr-inline.ktc-hidden {
     display: none !important;
 }
+
+
+.ktc-select {
+    height: 46px;
+    width: 100%;
+    margin-bottom: 1px;
+    border-radius: 2px;
+    background: #FFF;
+    background-clip: padding-box;
+    border: solid 1px #999999;
+    color: #222222;
+    font-size: 14px;
+    position: relative;
+    z-index: 2;
+    padding: 4px 12px;
+    box-sizing: border-box;
+
+    &:focus {
+        outline: none;
+        border: solid 2px #0098f7;
+        padding: 3px 11px;        
+    }
+
+    + label {
+        position: absolute;
+        z-index: 3;
+        display: block;
+        background: #FFF;
+        cursor: text;
+        color: gray;
+        width: auto;
+        left: 4px;
+        padding: 0 4px;
+        font-size: 11px;
+        top: 9px;
+    }
+}
