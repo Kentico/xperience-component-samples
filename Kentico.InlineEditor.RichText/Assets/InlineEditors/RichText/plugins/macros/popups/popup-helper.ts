@@ -1,10 +1,22 @@
 import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 import { DialogMode, MacroType } from "../macro-types";
-import { unwrapElement } from "../macro-helpers";
 import { getConfigureUrlParameterElement, getConfigureContextMacroElement } from "../macro-templates";
 import { SWITCH_URL_TAB_COMMAND_NAME, SWITCH_MACRO_TAB_COMMAND_NAME } from "../macro-constants";
 
-const getDialogElement = (editor: FroalaEditor, popupName: string) => {
+/**
+ * Returns native HTML element which is wrapped by provided jQuery object.
+ * @param $element jQuery object which targets the element.
+ * @returns HTML element or null.
+ */
+const unwrapElement = <T extends HTMLElement>($element: JQuery): T | null => {
+    if ($element) {
+        return ($element as any)[0] as T;
+    }
+
+    return null;
+}
+
+export const getDialogElement = (editor: FroalaEditor, popupName: string) => {
     return unwrapElement(editor.popups.get(popupName));
 };
 
