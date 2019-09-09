@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 using System.Web.Mvc;
 
 using CMS.DataEngine;
@@ -29,7 +30,8 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
                     .WithData(new SettingsKeyInfo { KeyName = "CMSRichTextEditorLicense", KeyValue = LICENSE_KEY });
 
-                htmlHelperMock = HtmlHelperMock.GetHtmlHelper();
+                var writer = new StringWriter(new StringBuilder());
+                htmlHelperMock = HtmlHelperMock.GetHtmlHelper(textWriter: writer);
                 writerMock = htmlHelperMock.ViewContext.Writer;
             }
 
@@ -59,8 +61,8 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 
                 Received.InOrder(() =>
                 {
-                    writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\" data-rich-text-editor-license=\"{LICENSE_KEY}\">");
-                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\">{propertyValue}</div>");
+                    writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
+                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-rich-text-editor-license=\"{LICENSE_KEY}\">{propertyValue}</div>");
                     writerMock.Write("</div>");
                 });
             }
