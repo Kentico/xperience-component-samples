@@ -25,3 +25,5 @@ export enum ContextMacro {
     LAST_NAME = "ContactManagementContext.CurrentContact.ContactLastName",
     FULL_NAME = "ContactManagementContext.CurrentContact.ContactDescriptiveName"
 }
+
+export type MacroElementTemplateResolver = (macroType: MacroType, macroValue: string, macroDefaultValue: string, macroDisplayValue: string) => string;

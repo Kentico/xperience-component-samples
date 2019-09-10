@@ -1,6 +1,5 @@
 import { MACRO_CLASS } from "./macro-constants";
-import { getMacroEditModeElement } from "./macro-templates";
-import { MacroType } from "./macro-types";
+import { MacroType, MacroElementTemplateResolver } from "./macro-types";
 import { getMacroDisplayName } from "./macro-helpers";
 
 const macroTextRegex = /{%\s*(?<pattern>[\S]*)\s*(\|\s*\(default\)\s*(?<defaultValue>\S*)\s*)?%}/g;
@@ -20,11 +19,11 @@ export const replaceMacroElements = (html: string): string => {
     return tempWrapper.innerHTML;
 }
 
-export const replaceMacrosWithElements = (html: string): string => {
+export const replaceMacrosWithElements = (html: string, macroElementTemplateResolver: MacroElementTemplateResolver): string => {
     return html.replace(macroTextRegex, (match, pattern: string, defaultValueMatch: string, defaultValue: string) => {
         const macroType = pattern.startsWith("QueryString") ? MacroType.URL : MacroType.CONTEXT;
         const macroValue = macroType === MacroType.URL ? pattern.split(".")[1] : pattern;
 
-        return getMacroEditModeElement(macroType, macroValue, defaultValue, getMacroDisplayName(macroValue))
+        return macroElementTemplateResolver(macroType, pattern, defaultValue, getMacroDisplayName(macroValue))
     });
 }

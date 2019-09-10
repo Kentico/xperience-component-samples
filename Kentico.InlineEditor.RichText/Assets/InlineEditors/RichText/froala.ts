@@ -6,6 +6,7 @@ import { imageReplaceCommand, insertImageCommand } from "./commands";
 import { initializeMacroPlugin } from "./plugins/macros";
 import { replaceMacroElements, replaceMacrosWithElements } from "./plugins/macros/macro-services";
 import { MACRO_CLASS, OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, MACRO_ACTIVE_CLASS, CONFIGURE_CONTEXT_MACRO_POPUP_NAME } from "./plugins/macros/macro-constants";
+import { getMacroEditModeElement } from "./plugins/macros/macro-templates";
 
 import "./style.less";
 
@@ -44,7 +45,7 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
         },
         events: {
             initialized(this: FroalaEditor) {
-                const editModePropertyValue = replaceMacrosWithElements(propertyValue);
+                const editModePropertyValue = replaceMacrosWithElements(propertyValue, getMacroEditModeElement);
                 this.html.set(editModePropertyValue);
             },
             ["html.set"](this: FroalaEditor) {
