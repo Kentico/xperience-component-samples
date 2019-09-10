@@ -2,7 +2,7 @@ import FroalaEditor, { RegisterCommandParameters } from "froala-editor/js/froala
 import * as constants from "./macro-constants";
 import { getMacroEditModeElement } from "./macro-templates";
 import { DialogMode, MacroType } from "./macro-types";
-import { getContextMacroDisplayName } from "./macro-helpers";
+import { getMacroDisplayName } from "./macro-helpers";
 import { showForm, getDialogElement } from "./popups";
 
 export const openInsertMacroPopupCommand: RegisterCommandParameters = {
@@ -23,32 +23,32 @@ export const insertMacro: RegisterCommandParameters = {
     undo: true,
     refreshAfterCallback: true,
     callback(this: FroalaEditor, commandName: string) {
-        const macroType = commandName === constants.INSERT_URL_MACRO_COMMAND_NAME ? MacroType.URL : MacroType.CONTEXT;
-
         const popupElement = getDialogElement(this, constants.CONFIGURATION_POPUP_NAME);
+        
+        if (popupElement) {
+            this.undo.saveStep();
+            const form = popupElement.querySelector<HTMLFormElement>("#ktc-form");
+            const formData = new FormData(form!);
+            const macroType = commandName === constants.INSERT_URL_MACRO_COMMAND_NAME ? MacroType.URL : MacroType.CONTEXT;
 
-        let macroValue = "";
-        let macroDefaultValue = "";
-        let macroDisplayValue = "";
+            let macroValue = "";
+            let macroDisplayValue = "";
 
-        if (macroType === MacroType.URL) {
-            const urlParameterNameElement = popupElement!.querySelector<HTMLInputElement>("input[name='urlParameterName']");
-            const urlParameterName = urlParameterNameElement!.value;
-            macroValue = `QueryString.${urlParameterName}`;
-            macroDisplayValue = getContextMacroDisplayName(urlParameterName);
-        } else {
-            const contextMacroTypeElement = popupElement!.querySelector<HTMLSelectElement>("select[name='contextMacroType']");
-            macroValue = contextMacroTypeElement!.options[contextMacroTypeElement!.selectedIndex].value;
-            macroDisplayValue = getContextMacroDisplayName(macroValue)
+            if (macroType === MacroType.URL) {
+                const urlParameterName = formData.get("urlParameterName") as string;
+                macroValue = `QueryString.${urlParameterName}`;
+                macroDisplayValue = getMacroDisplayName(urlParameterName);
+            } else if (macroType === MacroType.CONTEXT) {
+                macroValue = formData.get("contextMacroType") as string;
+                macroDisplayValue = getMacroDisplayName(macroValue);
+            }
+
+            const macroDefaultValue = formData.get("defaultText") as string;
+
+            this.html.insert(`${getMacroEditModeElement(macroType, macroValue, macroDefaultValue, macroDisplayValue)} `);
+            this.toolbar.hide();
+            this.kenticoMacroPlugin.hideConfigurationPopup();
         }
-
-        const defaultValue = popupElement!.querySelector<HTMLInputElement>("input[name='defaultText']");
-        macroDefaultValue = defaultValue!.value;
-
-        this.undo.saveStep();
-        this.html.insert(`${getMacroEditModeElement(macroType, macroValue, macroDefaultValue, macroDisplayValue)} `);
-        this.toolbar.hide();
-        this.kenticoMacroPlugin.hideConfigurationPopup();
     }
 }
 
@@ -58,39 +58,28 @@ export const updateMacro: RegisterCommandParameters = {
     undo: true,
     refreshAfterCallback: true,
     callback(this: FroalaEditor, commandName) {
-        this.undo.saveStep();
-
         const macroElement = this.el.querySelector<HTMLElement>(`.${constants.MACRO_ACTIVE_CLASS}`);
-        let data: any;
-        let macroValue: string = "";
+        const popupName = commandName === constants.UPDATE_URL_MACRO_COMMAND_NAME
+        ? constants.CONFIGURE_URL_MACRO_POPUP_NAME
+        : commandName === constants.UPDATE_CONTEXT_MACRO_COMMAND_NAME
+        ? constants.CONFIGURE_CONTEXT_MACRO_POPUP_NAME : "";
+        const popupElement = getDialogElement(this, popupName);
+        
+        if (popupElement && macroElement) {
+            this.undo.saveStep();
+            const form = popupElement.querySelector<HTMLFormElement>("#ktc-form");
+            const formData = new FormData(form!);
+            const macroValue = formData.get(commandName === constants.UPDATE_URL_MACRO_COMMAND_NAME ? "urlParameterName" : "contextMacroType") as string;
 
-        if (macroElement) {
-            if (commandName === constants.UPDATE_MACRO_COMMAND_NAME) {
-                const popupElement = getDialogElement(this, constants.CONFIGURE_URL_MACRO_POPUP_NAME);
-                const urlParameterNameElement = popupElement!.querySelector<HTMLInputElement>("input[name='urlParameterName']");
-                const defaultText = popupElement!.querySelector<HTMLInputElement>("input[name='defaultText']");
-                macroValue = urlParameterNameElement!.value;
-                data = {
-                    macroValue: `QueryString.${macroValue}`,
-                    macroDefaultValue: defaultText!.value,
-                };
-                
-            } else if (commandName === constants.UPDATE_CONTEXT_MACRO_COMMAND_NAME) {
-                const popupElement = getDialogElement(this, constants.CONFIGURE_CONTEXT_MACRO_POPUP_NAME);
-                const contextMacroTypeSelectElement = popupElement!.querySelector<HTMLSelectElement>("select[name='contextMacroType']");
-                const defaultText = popupElement!.querySelector<HTMLInputElement>("input[name='defaultText']");
-                macroValue = contextMacroTypeSelectElement!.options[contextMacroTypeSelectElement!.selectedIndex].value;
-                data = {
-                    macroValue,
-                    macroDefaultValue: defaultText!.value,
-                };
-            }
+            const data = {
+                macroValue: commandName === constants.UPDATE_URL_MACRO_COMMAND_NAME ? `QueryString.${macroValue}` : macroValue,
+                macroDefaultValue: formData.get("defaultText"),
+            };
 
-            macroElement.textContent = getContextMacroDisplayName(macroValue);
+            macroElement.textContent = getMacroDisplayName(macroValue);
             Object.assign(macroElement.dataset, data);
+            this.kenticoMacroPlugin.hidePopups();
         }
-
-        this.kenticoMacroPlugin.hidePopups();
     }
 }
 

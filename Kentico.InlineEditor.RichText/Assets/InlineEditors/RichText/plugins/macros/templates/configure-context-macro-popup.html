@@ -1,20 +1,30 @@
-<div class="fr-layer fr-active" id="ktc-configuration-macro-layer-1" data-mouseenter-event-set="true">
-    <div class="fr-input-line">
-        <select id="ktc-configuration-macro-layer-type-1" class="ktc-select" name="contextMacroType" tabindex="1">
-            <option value="ContactManagementContext.CurrentContact.ContactFirstName" <%= macroValue === "ContactManagementContext.CurrentContact.ContactFirstName" ? "selected" : "" %>>First name</option>
-            <option value="ContactManagementContext.CurrentContact.ContactLastName" <%= macroValue === "ContactManagementContext.CurrentContact.ContactLastName" ? "selected" : "" %>>Last name</option>
-            <option value="ContactManagementContext.CurrentContact.ContactDescriptiveName" <%= macroValue === "ContactManagementContext.CurrentContact.ContactDescriptiveName" ? "selected" : "" %>>Full name</option>
-        </select>
-        <label for="ktc-configuration-macro-layer-type-1"><%= macroTypeLabel %></label>
+<form id="ktc-form" onsubmit="event.preventDefault()">
+    <div class="fr-layer fr-active" id="ktc-configuration-macro-layer-1" data-mouseenter-event-set="true">
+        <div class="fr-input-line">
+            <select id="ktc-configuration-macro-layer-type-1" class="ktc-select" name="contextMacroType" tabindex="1">
+                <option value="ContactManagementContext.CurrentContact.ContactFirstName"
+                    <%= macroValue === "ContactManagementContext.CurrentContact.ContactFirstName" ? "selected" : "" %>>
+                    First name</option>
+                <option value="ContactManagementContext.CurrentContact.ContactLastName"
+                    <%= macroValue === "ContactManagementContext.CurrentContact.ContactLastName" ? "selected" : "" %>>
+                    Last name</option>
+                <option value="ContactManagementContext.CurrentContact.ContactDescriptiveName"
+                    <%= macroValue === "ContactManagementContext.CurrentContact.ContactDescriptiveName" ? "selected" : "" %>>
+                    Full name</option>
+            </select>
+            <label for="ktc-configuration-macro-layer-type-1"><%= macroTypeLabel %></label>
+        </div>
+        <div class="fr-input-line" style="display: block;">
+            <input id="ktc-configuration-macro-layer-text-1" name="defaultText" type="text"
+                class="fr-link-attr fr-not-empty" placeholder="" tabindex="2" dir="auto"
+                value="<%= macroDefaultValue %>"><label
+                for="ktc-configuration-macro-layer-text-1"><%= defaultTextLabel %></label>
+        </div>
+        <div class="fr-action-buttons">
+            <button class="fr-command fr-submit" role="button" data-cmd="<%= command %>" href="#" tabindex="4"
+                type="button">
+                <%= actionButtonText %>
+            </button>
+        </div>
     </div>
-    <div class="fr-input-line" style="display: block;">
-        <input id="ktc-configuration-macro-layer-text-1" name="defaultText" type="text"
-               class="fr-link-attr fr-not-empty" placeholder="" tabindex="2" dir="auto" value="<%= macroDefaultValue %>"><label for="ktc-configuration-macro-layer-text-1"><%= defaultTextLabel %></label>
-    </div>
-    <div class="fr-action-buttons">
-        <button class="fr-command fr-submit" role="button" data-cmd="<%= command %>" href="#"
-                tabindex="4" type="button">
-            <%= actionButtonText %>
-        </button>
-    </div>
-</div>
+</form>

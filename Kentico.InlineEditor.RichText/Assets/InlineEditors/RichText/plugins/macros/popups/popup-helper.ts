@@ -40,7 +40,7 @@ export const showForm = (editor: FroalaEditor, popupName: string, mode: DialogMo
     }
 }
 
-export function getShowDialog(editor: FroalaEditor, popupName: string, buttons: any[], macroType: MacroType) {
+export function getShowDialog(popupName: string, buttons: any[], macroType: MacroType) {
     function initPopup(editor: FroalaEditor) {
         // Popup buttons.
         let popup_buttons = "";

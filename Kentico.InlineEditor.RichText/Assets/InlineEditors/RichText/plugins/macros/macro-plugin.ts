@@ -28,9 +28,9 @@ function hideConfigurationPopup(this: FroalaEditor) {
 
 export const macroPlugin = (editor: FroalaEditor): MacrosPlugin => {
 
-    const showConfigureContextMacroPopup = getShowDialog(editor, CONFIGURE_CONTEXT_MACRO_POPUP_NAME, editor.opts.popupEditContextMacroButtons, MacroType.CONTEXT);
-    const showConfigureUrlPopup = getShowDialog(editor, CONFIGURE_URL_MACRO_POPUP_NAME, editor.opts.popupEditUrlMacroButtons, MacroType.URL);
-    const showConfigurationPopup = getShowDialog(editor, CONFIGURATION_POPUP_NAME, editor.opts.popupConfigureButtons, MacroType.URL);
+    const showConfigureContextMacroPopup = getShowDialog(CONFIGURE_CONTEXT_MACRO_POPUP_NAME, editor.opts.popupEditContextMacroButtons, MacroType.CONTEXT);
+    const showConfigureUrlPopup = getShowDialog(CONFIGURE_URL_MACRO_POPUP_NAME, editor.opts.popupEditUrlMacroButtons, MacroType.URL);
+    const showConfigurationPopup = getShowDialog(CONFIGURATION_POPUP_NAME, editor.opts.popupConfigureButtons, MacroType.URL);
 
     const macroPlugin = {
         showConfigureContextMacroPopup: showConfigureContextMacroPopup.bind(editor),

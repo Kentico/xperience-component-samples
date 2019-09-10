@@ -43,7 +43,7 @@ export const initializeMacroPlugin = (froala: Froala) => {
     froala.RegisterCommand(constants.SWITCH_URL_TAB_COMMAND_NAME, commands.openQueryTabCommand);
 
     froala.RegisterCommand(constants.INSERT_MACRO_COMMAND_NAME, commands.insertMacro);
-    froala.RegisterCommand(constants.UPDATE_MACRO_COMMAND_NAME, commands.updateMacro);
+    froala.RegisterCommand(constants.UPDATE_URL_MACRO_COMMAND_NAME, commands.updateMacro);
 
     froala.RegisterCommand(constants.INSERT_URL_MACRO_COMMAND_NAME, commands.insertMacro);
     froala.RegisterCommand(constants.INSERT_CONTEXT_MACRO_COMMAND_NAME, commands.insertMacro);
