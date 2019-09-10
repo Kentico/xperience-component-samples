@@ -35,5 +35,14 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
                 htmlHelper.ViewContext.Writer.Write(tagBuidler.ToString(TagRenderMode.SelfClosing));
             }
         }
+
+
+
+        public static string ResolveRichText(this ExtensionPoint<HtmlHelper> instance, string content)
+        {
+            instance = instance ?? throw new ArgumentNullException(nameof(instance));
+
+            return new DynamicTextResolver(DynamicTextPatternRegister.Instance).ResolveRichText(content);
+        }
     }
 }

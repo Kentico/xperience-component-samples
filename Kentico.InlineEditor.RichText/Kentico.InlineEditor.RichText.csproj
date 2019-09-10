@@ -526,6 +526,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DynamicText\DynamicTextPattern.cs" />
+    <Compile Include="DynamicText\DynamicTextPatternRegister.cs" />
+    <Compile Include="DynamicText\DynamicTextResolver.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
