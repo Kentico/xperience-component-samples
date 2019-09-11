@@ -1,27 +1,46 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
+using CMS.Base;
 using CMS.Helpers;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors
 {
+    /// <summary>
+    /// Represents the resolver class for the dynamic text in the rich text inline editor.
+    /// </summary>
     internal class DynamicTextResolver
     {
         private const string PATTERN_GROUP_NAME = "pattern";
         private const string DEFAULT_VALUE_GROUP_NAME = "defaultValue";
 
-        private Regex patternRegex = RegexHelper.GetRegex($@"{{%\s*(?<{PATTERN_GROUP_NAME}>\S*)\s*(\|\s*\(default\)\s*(?<{DEFAULT_VALUE_GROUP_NAME}>\S*)\s*)?%}}");
+        private Regex patternRegex = RegexHelper.GetRegex($@"{{%\s*(?<{PATTERN_GROUP_NAME}>[\w\.]+)\s*(\|\(default\)(?<{DEFAULT_VALUE_GROUP_NAME}>.*?))?%}}");
+
         private readonly DynamicTextPatternRegister patternRegister;
+        private readonly IDataContainer queryParameters;
 
 
-        public DynamicTextResolver(DynamicTextPatternRegister patternRegister)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicTextResolver"/> class.
+        /// </summary>
+        public DynamicTextResolver()
+            : this(DynamicTextPatternRegister.Instance, QueryHelper.Instance)
         {
-            this.patternRegister = patternRegister;
         }
 
 
         /// <summary>
-        /// Resolves dynamic text patterns in the given text.
+        /// Initializes a new instance of the <see cref="DynamicTextResolver"/> class with injected dependencies for the pattern register <see cref="DynamicTextPatternRegister"/> and query string data container <see cref="DataContainer"/>.
+        /// </summary>
+        internal DynamicTextResolver(DynamicTextPatternRegister patternRegister, IDataContainer queryParameters)
+        {
+            this.patternRegister = patternRegister;
+            this.queryParameters = queryParameters;
+        }
+
+
+        /// <summary>
+        /// Resolves the dynamic text in the given text.
         /// </summary>
         /// <param name="text">The text to resolve.</param>
         public string ResolveRichText(string text)
@@ -43,23 +62,23 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         private string ReplaceDynamicTextPattern(Match match)
         {
             string pattern = match.Groups[PATTERN_GROUP_NAME]?.ToString();
-            string defaultValue = match.Groups[DEFAULT_VALUE_GROUP_NAME]?.ToString();
-            string resolvedValue = match.Value;
+            string defaultValue = match.Groups[DEFAULT_VALUE_GROUP_NAME]?.ToString().Trim();
+            string resolvedValue = String.Empty;
 
             if (!String.IsNullOrEmpty(pattern))
             {
                 Func<string> replace = patternRegister.GetReplacementFunction(pattern);
                 if (replace != null)
                 {
-                    string replacement = replace();
-                    resolvedValue = GetNotEmpty(replacement, defaultValue);
+                    resolvedValue = replace();
                 }
                 else if (pattern.StartsWith("QueryString."))
                 {
-                    string paramName = pattern.Substring(pattern.IndexOf('.'));
-                    string replacement = QueryHelper.GetString(paramName, null);
-                    resolvedValue = GetNotEmpty(replacement, defaultValue);
+                    string paramName = pattern.Substring(pattern.IndexOf('.') + 1);
+                    resolvedValue = queryParameters[paramName]?.ToString();
                 }
+
+                resolvedValue = GetNotEmpty(resolvedValue, defaultValue);
             }
 
             return resolvedValue;
