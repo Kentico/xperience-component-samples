@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Web.Mvc;
 
+using CMS.DataEngine;
+using CMS.SiteProvider;
+
 using Kentico.PageBuilder.Web.Mvc;
 using Kentico.Web.Mvc;
 
@@ -10,6 +13,8 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
     {
         private const string RICH_TEXT_EDITOR_NAME = "Kentico.InlineEditor.RichText";
         private const string RICH_TEXT_EDITOR_CLASS_NAME = "ktc-rich-text-wrapper";
+        private const string RICH_TEXT_EDITOR_LICENSE_ATTRIBUTE = "data-rich-text-editor-license";
+        private static readonly string richTextEditorLicense = SettingsKeyInfoProvider.GetValue("CMSRichTextEditorLicense", SiteContext.CurrentSiteName);
 
 
         /// <summary>
@@ -32,6 +37,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
             {
                 var tagBuidler = new TagBuilder("div");
                 tagBuidler.AddCssClass(RICH_TEXT_EDITOR_CLASS_NAME);
+                tagBuidler.Attributes.Add(RICH_TEXT_EDITOR_LICENSE_ATTRIBUTE, richTextEditorLicense);
 
                 htmlHelper.ViewContext.Writer.Write(tagBuidler.ToString(TagRenderMode.SelfClosing));
             }

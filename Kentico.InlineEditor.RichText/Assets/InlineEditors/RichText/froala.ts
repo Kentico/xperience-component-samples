@@ -18,6 +18,7 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
     initializeMacroPlugin(Froala);
 
     new FroalaEditor(element, {
+        key: element.dataset.richTextEditorLicense,
         toolbarInline: true,
         charCounterCount: false,
         quickInsertButtons: ["imageKentico", "video", "embedly", "table", "ul", "ol", "hr"],
