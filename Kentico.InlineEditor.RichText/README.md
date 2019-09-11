@@ -2,7 +2,10 @@
 
 The rich text inline editor for editing rich text in a "WYSIWYG" manner.
 
-### Download & installation
+## Requirements
+* **Kentico 12.0.38** or later versions contain the [Froala editor](https://www.froala.com/wysiwyg-editor) license and are required to use this component.
+
+## Download & installation
 1. Clone this repository to your file system.
     - `git clone https://github.com/Kentico/ems-mvc-components.git`
 1. Open the `Kentico.Components.sln` solution in Visual Studio and build the solution.
