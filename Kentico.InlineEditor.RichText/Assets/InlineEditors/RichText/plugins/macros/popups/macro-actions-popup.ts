@@ -1,28 +1,7 @@
 import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
+
 import { MACRO_ACTIVE_CLASS, ACTIONS_POPUP_NAME } from "../macro-constants";
-
-// Create custom popup.
-function initPopup(this: FroalaEditor) {
-    // Popup buttons.
-    let popup_buttons = "";
-
-    // Create the list of buttons.
-    if (this.opts.popupActionButtons.length > 1) {
-        popup_buttons += "<div class=\"fr-buttons\">";
-        popup_buttons += this.button.buildList(this.opts.popupActionButtons);
-        popup_buttons += "</div>";
-    }
-
-    // Load popup template.
-    const template = {
-        buttons: popup_buttons,
-    };
-
-    // Create popup.
-    var $popup = this.popups.create(ACTIONS_POPUP_NAME, template);
-
-    return $popup;
-}
+import { initializePopup } from "./popup-helper";
 
 export function showActionsPopup(this: FroalaEditor, macroElement: HTMLElement) {
     // Get the popup object defined above.
@@ -32,7 +11,7 @@ export function showActionsPopup(this: FroalaEditor, macroElement: HTMLElement) 
     // To improve performance it is best to create the popup when it is first needed
     // and not when the editor is initialized.
     if (!$popup) {
-        $popup = initPopup.call(this);
+        $popup = initializePopup(this, ACTIONS_POPUP_NAME, this.opts.popupActionButtons);
     }
 
     // Set the editor toolbar as the popup's container.

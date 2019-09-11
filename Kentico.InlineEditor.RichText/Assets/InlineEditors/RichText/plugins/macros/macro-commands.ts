@@ -1,11 +1,17 @@
 import FroalaEditor, { RegisterCommandParameters } from "froala-editor/js/froala_editor.pkgd.min";
+
 import * as constants from "./macro-constants";
 import { getMacroEditModeElement } from "./macro-templates";
 import { DialogMode, MacroType } from "./macro-types";
 import { getMacroDisplayName } from "./macro-helpers";
 import { showForm, getDialogElement } from "./popups";
+import { FroalaIcon } from "../../froala-icon";
+import { FroalaCommand } from "../../froala-command";
 
-export const openInsertMacroPopupCommand: RegisterCommandParameters = {
+// Open insert macro popup
+
+const openInsertMacroPopupCommandIcon = new FroalaIcon(constants.OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, { PATH: constants.ICON_MACRO, template: "svg" });
+const openInsertMacroPopupCommand = new FroalaCommand(constants.OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, {
     title: 'Insert Dynamic Text',
     icon: constants.OPEN_INSERT_MACRO_POPUP_COMMAND_NAME,
     focus: true,
@@ -15,16 +21,18 @@ export const openInsertMacroPopupCommand: RegisterCommandParameters = {
     callback(this: FroalaEditor) {
         this.kenticoMacroPlugin.showConfigurationPopup(this.position.getBoundingRect(), DialogMode.INSERT);
     }
-}
+}, openInsertMacroPopupCommandIcon);
 
-export const insertMacro: RegisterCommandParameters = {
+// Insert macro
+
+const insertMacroCommandParameters: RegisterCommandParameters = {
     title: "",
     focus: true,
     undo: true,
     refreshAfterCallback: true,
     callback(this: FroalaEditor, commandName: string) {
         const popupElement = getDialogElement(this, constants.CONFIGURATION_POPUP_NAME);
-        
+
         if (popupElement) {
             this.undo.saveStep();
             const form = popupElement.querySelector<HTMLFormElement>("#ktc-form");
@@ -51,8 +59,13 @@ export const insertMacro: RegisterCommandParameters = {
         }
     }
 }
+const insertMacroCommand = new FroalaCommand(constants.INSERT_MACRO_COMMAND_NAME, insertMacroCommandParameters);
+const insertUrlMacroCommand = new FroalaCommand(constants.INSERT_URL_MACRO_COMMAND_NAME, insertMacroCommandParameters);
+const insertContextMacroCommand = new FroalaCommand(constants.INSERT_CONTEXT_MACRO_COMMAND_NAME, insertMacroCommandParameters);
 
-export const updateMacro: RegisterCommandParameters = {
+// Update macro
+
+const updateMacroCommandParameters: RegisterCommandParameters = {
     title: "",
     focus: true,
     undo: true,
@@ -60,11 +73,11 @@ export const updateMacro: RegisterCommandParameters = {
     callback(this: FroalaEditor, commandName) {
         const macroElement = this.el.querySelector<HTMLElement>(`.${constants.MACRO_ACTIVE_CLASS}`);
         const popupName = commandName === constants.UPDATE_URL_MACRO_COMMAND_NAME
-        ? constants.CONFIGURE_URL_MACRO_POPUP_NAME
-        : commandName === constants.UPDATE_CONTEXT_MACRO_COMMAND_NAME
-        ? constants.CONFIGURE_CONTEXT_MACRO_POPUP_NAME : "";
+            ? constants.CONFIGURE_URL_MACRO_POPUP_NAME
+            : commandName === constants.UPDATE_CONTEXT_MACRO_COMMAND_NAME
+                ? constants.CONFIGURE_CONTEXT_MACRO_POPUP_NAME : "";
         const popupElement = getDialogElement(this, popupName);
-        
+
         if (popupElement && macroElement) {
             this.undo.saveStep();
             const form = popupElement.querySelector<HTMLFormElement>("#ktc-form");
@@ -82,8 +95,12 @@ export const updateMacro: RegisterCommandParameters = {
         }
     }
 }
+const updateUrlMacroCommand = new FroalaCommand(constants.UPDATE_URL_MACRO_COMMAND_NAME, updateMacroCommandParameters);
+const updateContextMacroCommand = new FroalaCommand(constants.UPDATE_CONTEXT_MACRO_COMMAND_NAME, updateMacroCommandParameters);
 
-export const removeMacroCommand: RegisterCommandParameters = {
+// Remove macro
+
+const removeMacroCommand = new FroalaCommand(constants.REMOVE_MACRO_COMMAND_NAME, {
     title: "Remove",
     icon: "remove",
     focus: false,
@@ -98,9 +115,12 @@ export const removeMacroCommand: RegisterCommandParameters = {
 
         this.kenticoMacroPlugin.hideActionsPopup();
     }
-}
+});
 
-export const configureMacroCommand: RegisterCommandParameters = {
+// Configure macro
+
+const configureMacroCommandIcon = new FroalaIcon(constants.CONFIGURE_MACRO_COMMAND_NAME, { NAME: "cog-wheel", SVG_KEY: "cogs" });
+const configureMacroCommand = new FroalaCommand(constants.CONFIGURE_MACRO_COMMAND_NAME, {
     title: "Configure",
     undo: false,
     focus: false,
@@ -118,9 +138,12 @@ export const configureMacroCommand: RegisterCommandParameters = {
             }
         }
     }
-}
+}, configureMacroCommandIcon);
 
-export const openMacroTabCommand: RegisterCommandParameters = {
+// Open macro tab command
+
+const openMacroTabCommandIcon = new FroalaIcon("macro", { PATH: constants.ICON_MACRO, template: "svg" });
+const openMacroTabCommand = new FroalaCommand(constants.SWITCH_MACRO_TAB_COMMAND_NAME, {
     title: "Insert macro",
     icon: "macro",
     undo: false,
@@ -128,9 +151,12 @@ export const openMacroTabCommand: RegisterCommandParameters = {
     callback(this: FroalaEditor) {
         showForm(this, constants.CONFIGURATION_POPUP_NAME, DialogMode.INSERT, MacroType.CONTEXT);
     }
-};
+}, openMacroTabCommandIcon);
 
-export const openQueryTabCommand: RegisterCommandParameters = {
+// Open query tab
+
+const openQueryTabCommandIcon = new FroalaIcon("queryString", { PATH: constants.ICON_URL_PARAM, template: "svg" });
+const openQueryTabCommand = new FroalaCommand(constants.SWITCH_URL_TAB_COMMAND_NAME, {
     title: "URL parameter",
     icon: "queryString",
     undo: false,
@@ -138,13 +164,30 @@ export const openQueryTabCommand: RegisterCommandParameters = {
     callback(this: FroalaEditor) {
         showForm(this, constants.CONFIGURATION_POPUP_NAME, DialogMode.INSERT, MacroType.URL);
     }
-};
+}, openQueryTabCommandIcon);
 
-export const closeConfigurePopupCommand: RegisterCommandParameters = {
+// Close configure popup
+
+const closeConfigurePopupCommandIcon = new FroalaIcon("popupConfigureClose", { NAME: "arrow-left", SVG_KEY: "back" });
+const closeConfigurePopupCommand = new FroalaCommand(constants.CLOSE_CONFIGURE_POPUP_COMMAND_NAME, {
     title: 'Back',
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
         this.kenticoMacroPlugin.hideConfigurationPopup();
     }
-}
+}, closeConfigurePopupCommandIcon);
+
+export const macroCommands = [
+    openInsertMacroPopupCommand,
+    removeMacroCommand,
+    configureMacroCommand,
+    closeConfigurePopupCommand,
+    openMacroTabCommand,
+    openQueryTabCommand,
+    insertMacroCommand,
+    insertUrlMacroCommand,
+    insertContextMacroCommand,
+    updateUrlMacroCommand,
+    updateContextMacroCommand,
+]
