@@ -14,7 +14,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         private const string PATTERN_GROUP_NAME = "pattern";
         private const string DEFAULT_VALUE_GROUP_NAME = "defaultValue";
 
-        private Regex patternRegex = RegexHelper.GetRegex($@"{{%\s*(?<{PATTERN_GROUP_NAME}>[\w\.]+)\s*(\|\(default\)(?<{DEFAULT_VALUE_GROUP_NAME}>.*?))?%}}");
+        private Regex patternRegex = RegexHelper.GetRegex($@"{{%\s*(?<{PATTERN_GROUP_NAME}>[\w\.\[\]""]+)\s*(\|\(default\)(?<{DEFAULT_VALUE_GROUP_NAME}>.*?))?%}}");
 
         private readonly DynamicTextPatternRegister patternRegister;
         private readonly IDataContainer queryParameters;
@@ -72,10 +72,15 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
                 {
                     resolvedValue = replace();
                 }
-                else if (pattern.StartsWith("QueryString."))
+                else if (pattern.StartsWith("QueryString[\""))
                 {
-                    string paramName = pattern.Substring(pattern.IndexOf('.') + 1);
-                    resolvedValue = queryParameters[paramName]?.ToString();
+                    int paramNameStartIndex = pattern.IndexOf("[\"") + 2;
+                    int paramNameEndIndex = pattern.IndexOf("\"]");
+                    if ((paramNameStartIndex > 0) && (paramNameEndIndex > 0))
+                    {
+                        string paramName = pattern.Substring(paramNameStartIndex, paramNameEndIndex - paramNameStartIndex);
+                        resolvedValue = queryParameters[paramName]?.ToString();
+                    }
                 }
 
                 resolvedValue = GetNotEmpty(resolvedValue, defaultValue);

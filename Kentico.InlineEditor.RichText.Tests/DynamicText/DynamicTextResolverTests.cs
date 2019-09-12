@@ -105,11 +105,11 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             }
 
 
-            [TestCase("{% QueryString.ABC %}", "VALUE")]
-            [TestCase("{% QueryString.NOTREGISTERED %}", "")]
-            [TestCase("{% QueryString.NOTREGISTERED |(default) DEF%}", "DEF")]
-            [TestCase("{% QueryString.ABC %} {% QueryString.ABC %}", "VALUE VALUE")]
-            [TestCase("{% QueryString.ABC %} \n {% QueryString.NOTREGISTERED|(default)DEF %}", "VALUE \n DEF")]
+            [TestCase("{% QueryString[\"ABC\"] %}", "VALUE")]
+            [TestCase("{% QueryString[\"NOTREGISTERED\"] %}", "")]
+            [TestCase("{% QueryString[\"NOTREGISTERED\"] |(default) DEF%}", "DEF")]
+            [TestCase("{% QueryString[\"ABC\"] %} {% QueryString[\"ABC\"] %}", "VALUE VALUE")]
+            [TestCase("{% QueryString[\"ABC\"] %} \n {% QueryString[\"NOTREGISTERED\"]|(default)DEF %}", "VALUE \n DEF")]
             public void ResolveRichText_QueryStringPattern_ReturnsCorrectResult(string text, string expectedResult)
             {
                 var register = GetPatternRegister();
@@ -126,6 +126,22 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                     Assert.That(macroResult, Is.EqualTo(result));
                 });
             }
+
+
+            [TestCase("{% QueryString[\"INVALID %}", "")]
+            // Regex matches but contains invalid indexer part
+            [TestCase("{% QueryString[\"INVALID \" %}", "{% QueryString[\"INVALID \" %}")]
+            // Regex matches but contains invalid indexer part
+            [TestCase("{% QueryString[\"INVALID \"|(default) DEF %}", "{% QueryString[\"INVALID \"|(default) DEF %}")]
+            public void ResolveRichText_InvalidQueryStringPattern_ReturnsCorrectResult(string text, string expectedResult)
+            {
+                var register = GetPatternRegister();
+
+                string result = new DynamicTextResolver(register, new DataContainer()).ResolveRichText(text);
+
+                Assert.That(result, Is.EqualTo(expectedResult));
+            }
+
 
 
             private DynamicTextPatternRegister GetPatternRegister(string pattern = "FIRSTNAME", string resolvedValue = "RESOLVED")
