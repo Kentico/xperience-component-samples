@@ -21,9 +21,9 @@ export enum MacroType {
 }
 
 export enum ContextMacro {
-    FIRST_NAME = "ContactManagementContext.CurrentContact.ContactFirstName",
-    LAST_NAME = "ContactManagementContext.CurrentContact.ContactLastName",
-    FULL_NAME = "ContactManagementContext.CurrentContact.ContactDescriptiveName"
+    FIRST_NAME = "ContactFirstName",
+    LAST_NAME = "ContactLastName",
+    FULL_NAME = "ContactDescriptiveName"
 }
 
 export type MacroElementTemplateResolver = (macroType: MacroType, macroValue: string, macroDefaultValue: string, macroDisplayValue: string) => string;

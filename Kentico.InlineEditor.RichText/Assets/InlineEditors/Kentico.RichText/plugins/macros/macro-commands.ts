@@ -46,7 +46,7 @@ const insertMacroCommandParameters: RegisterCommandParameters = {
 
             if (macroType === MacroType.URL) {
                 const urlParameterName = formData.get("urlParameterName") as string;
-                macroValue = `QueryString.${urlParameterName}`;
+                macroValue = encodeURI(urlParameterName);
                 macroDisplayValue = getMacroDisplayName(urlParameterName);
             } else if (macroType === MacroType.CONTEXT) {
                 macroValue = formData.get("contextMacroType") as string;
@@ -54,8 +54,9 @@ const insertMacroCommandParameters: RegisterCommandParameters = {
             }
 
             const macroDefaultValue = formData.get("defaultText") as string;
+            const macroElement = getMacroEditModeElement(macroType, macroValue, macroDefaultValue, macroDisplayValue);
 
-            this.html.insert(`${getMacroEditModeElement(macroType, macroValue, macroDefaultValue, macroDisplayValue)} `);
+            this.html.insert(macroElement);
             this.toolbar.hide();
             this.kenticoMacroPlugin.hideConfigurationPopup();
         }
@@ -87,7 +88,7 @@ const updateMacroCommandParameters: RegisterCommandParameters = {
             const macroValue = formData.get(commandName === constants.UPDATE_URL_MACRO_COMMAND_NAME ? "urlParameterName" : "contextMacroType") as string;
 
             const data = {
-                macroValue: commandName === constants.UPDATE_URL_MACRO_COMMAND_NAME ? `QueryString.${macroValue}` : macroValue,
+                macroValue: encodeURI(macroValue),
                 macroDefaultValue: formData.get("defaultText"),
             };
 
@@ -134,7 +135,7 @@ const configureMacroCommand = new FroalaCommand(constants.CONFIGURE_MACRO_COMMAN
             const macroElementRect = macroEl.getBoundingClientRect();
 
             if (macroType === MacroType.URL) {
-                this.kenticoMacroPlugin.showConfigureUrlPopup(macroElementRect, DialogMode.UPDATE, macroValue.replace("QueryString.", ""), macroDefaultValue);
+                this.kenticoMacroPlugin.showConfigureUrlPopup(macroElementRect, DialogMode.UPDATE, macroValue, macroDefaultValue);
             } else {
                 this.kenticoMacroPlugin.showConfigureContextMacroPopup(macroElementRect, DialogMode.UPDATE, macroValue, macroDefaultValue);
             }
