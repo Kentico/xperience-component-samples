@@ -19,7 +19,8 @@ const openInsertMacroPopupCommand = new FroalaCommand(constants.OPEN_INSERT_MACR
     plugin: constants.MACROS_PLUGIN_NAME,
     refreshAfterCallback: true,
     callback(this: FroalaEditor) {
-        this.kenticoMacroPlugin.showConfigurationPopup(this.position.getBoundingRect(), DialogMode.INSERT);
+        this.selection.save();
+        this.kenticoMacroPlugin.showConfigurationPopup(this.position.getBoundingRect(), DialogMode.INSERT, undefined, this.selection.text());
     }
 }, openInsertMacroPopupCommandIcon);
 
@@ -31,6 +32,7 @@ const insertMacroCommandParameters: RegisterCommandParameters = {
     undo: true,
     refreshAfterCallback: true,
     callback(this: FroalaEditor, commandName: string) {
+        this.selection.restore();
         const popupElement = getDialogElement(this, constants.CONFIGURATION_POPUP_NAME);
 
         if (popupElement) {
@@ -149,7 +151,8 @@ const openMacroTabCommand = new FroalaCommand(constants.SWITCH_MACRO_TAB_COMMAND
     undo: false,
     focus: true,
     callback(this: FroalaEditor) {
-        showForm(this, constants.CONFIGURATION_POPUP_NAME, DialogMode.INSERT, MacroType.CONTEXT);
+        this.selection.restore();
+        showForm(this, constants.CONFIGURATION_POPUP_NAME, DialogMode.INSERT, MacroType.CONTEXT, undefined, this.selection.text());
     }
 }, openMacroTabCommandIcon);
 
@@ -162,7 +165,7 @@ const openQueryTabCommand = new FroalaCommand(constants.SWITCH_URL_TAB_COMMAND_N
     undo: false,
     focus: true,
     callback(this: FroalaEditor) {
-        showForm(this, constants.CONFIGURATION_POPUP_NAME, DialogMode.INSERT, MacroType.URL);
+        showForm(this, constants.CONFIGURATION_POPUP_NAME, DialogMode.INSERT, MacroType.URL, undefined, this.selection.text());
     }
 }, openQueryTabCommandIcon);
 
