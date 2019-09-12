@@ -536,49 +536,49 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\InlineEditors\RichText\main.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\main.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <Content Include="Assets\InlineEditors\RichText\plugins\macros\templates\configure-context-macro-popup.html" />
-    <Content Include="Assets\InlineEditors\RichText\plugins\macros\templates\configure-url-parameter-popup.html" />
-    <Content Include="Assets\InlineEditors\RichText\plugins\macros\templates\macro-element.html" />
-    <Content Include="Assets\InlineEditors\RichText\style.less" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\templates\configure-context-macro-popup.html" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\templates\configure-url-parameter-popup.html" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\templates\macro-element.html" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\style.less" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\AWSSDK.S3.3.1.9.0\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\InlineEditors\RichText\commands\helpers.ts" />
-    <Content Include="Assets\InlineEditors\RichText\commands\image-replace.ts" />
-    <Content Include="Assets\InlineEditors\RichText\commands\index.ts" />
-    <Content Include="Assets\InlineEditors\RichText\commands\insert-image.ts" />
-    <Content Include="Assets\InlineEditors\RichText\constants.ts" />
-    <Content Include="Assets\InlineEditors\RichText\froala.ts" />
-    <Content Include="Assets\InlineEditors\RichText\toolbar-helpers.ts" />
-    <Content Include="Assets\InlineEditors\RichText\plugins\macros\index.ts" />
-    <Content Include="Assets\InlineEditors\RichText\plugins\macros\macro-commands.ts" />
-    <Content Include="Assets\InlineEditors\RichText\plugins\macros\macro-constants.ts" />
-    <Content Include="Assets\InlineEditors\RichText\plugins\macros\macro-plugin.ts" />
-    <Content Include="Assets\InlineEditors\RichText\plugins\macros\macro-services.ts" />
-    <Content Include="Assets\InlineEditors\RichText\plugins\macros\macro-types.ts" />
-    <Content Include="Assets\InlineEditors\RichText\plugins\plugin-types.ts" />
-    <Content Include="Assets\InlineEditors\RichText\froala-command.ts" />
-    <Content Include="Assets\InlineEditors\RichText\froala-icon.ts" />
-    <Content Include="Assets\InlineEditors\RichText\plugins\macros\popups\macro-actions-popup.ts" />
-    <Content Include="Assets\InlineEditors\RichText\plugins\macros\popups\macro-configuration-popup.ts" />
-    <Content Include="Assets\InlineEditors\RichText\plugins\macros\popups\popup-helper.ts" />
-    <Content Include="Assets\InlineEditors\RichText\plugins\macros\__tests__\macro-services.spec.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\commands\helpers.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\commands\image-replace.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\commands\index.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\commands\insert-image.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\constants.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\froala.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\toolbar-helpers.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\index.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\macro-commands.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\macro-constants.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\macro-plugin.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\macro-services.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\macro-types.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\plugin-types.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\froala-command.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\froala-icon.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\popups\macro-actions-popup.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\popups\macro-configuration-popup.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\popups\popup-helper.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\__tests__\macro-services.spec.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\InlineEditors\RichText\plugins\macros\popups\index.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\popups\index.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\InlineEditors\RichText\plugins\macros\macro-helpers.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\macro-helpers.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\InlineEditors\RichText\plugins\macros\macro-templates.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\macro-templates.ts" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Kentico.LanguagePack.English.12.0.38\build\Kentico.LanguagePack.English.targets" Condition="Exists('..\packages\Kentico.LanguagePack.English.12.0.38\build\Kentico.LanguagePack.English.targets')" />

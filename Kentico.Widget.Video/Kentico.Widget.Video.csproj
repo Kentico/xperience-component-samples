@@ -543,7 +543,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <Content Include="Assets\InlineEditors\Kentico.VideoUrlEditor\style.less" />
-    <Content Include="Assets\Widgets\Video\main.less" />
+    <Content Include="Assets\Widgets\Kentico.Video\main.less" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

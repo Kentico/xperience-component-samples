@@ -541,7 +541,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <Content Include="Assets\Widgets\RichText\main.less" />
+    <Content Include="Assets\Widgets\Kentico.RichText\main.less" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
