@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Web;
 
-namespace Kentico.Widget.Video.Helpers
+namespace Kentico.Components.Web.Mvc.Widgets.Helpers
 {
     /// <summary>
     /// Helper methods for working with YouTube videos.

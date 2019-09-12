@@ -91,7 +91,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       focus: boolean;
   
       // Show the button on mobile or not.
-      showOnMobile: boolean;
+      showOnMobile?: boolean;
   
       // Refresh the buttons state after the callback.
       refreshAfterCallback: boolean;
@@ -101,7 +101,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       callback: (buttonName: string) => void;
   
       // Called when the button state might have changed.
-      refresh: (button: JQuery) => void;
+      refresh?: (button: JQuery) => void;
     }
   
     /**
@@ -538,7 +538,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
     export interface FroalaEvents {
       blur: () => void,
       click: (clickEvent: any) => void,
-      contentChanged: (this: FroalaEditor) => void,
+      contentChanged: () => void,
       destroy: () => void,
       drop: (dropEvent: JQueryEventObject) => void,
       focus: () => void,
@@ -809,7 +809,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       applyStyle(className: string): object;
       display(displayType: DisplayType): any ;
       get(): object;
-      insert(link: string, sanitize: boolean, data: { [key: string]: any }, existingImage: any, response: object): object;
+      insert(link: string, sanitize?: boolean, data?: { [key: string]: any }, existingImage?: any, response?: object): object;
       remove(image: any): object;
       setAlt(alternateText: string): object;
       setSize(width: string, height: string): object;
