@@ -1,7 +1,7 @@
 // TEMP: Temporary type definitions until Froala provides their official type definitions
 
 declare module 'froala-editor/js/froala_editor.pkgd.min' {
-    import { MacrosPlugin } from "@/Kentico.InlineEditor.RichText/Assets/InlineEditors/RichText/plugins/macros/macro-types";
+    import { MacrosPlugin } from "@/Kentico.InlineEditor.RichText/Assets/InlineEditors/Kentico.RichText/plugins/macros/macro-types";
     
     /**
      * Define a custom icon.
