@@ -4,14 +4,14 @@ import { MacroElementTemplateResolver, MacroType } from "../macro-types";
 const htmlWithMacros =
 `<div>
     <p>Hello</p>
-    <p>{% QueryString.Test %}</p>
-    <p>{% QueryString.Test |(default) TestQueryString %}</p>
-    <p>{% ContactManagementContext.CurrentContact.ContactFirstName %}</p>
-    <p>{% ContactManagementContext.CurrentContact.ContactFirstName |(default) TestFirstName %}</p>
-    <p>{% ContactManagementContext.CurrentContact.ContactLastName %}</p>
-    <p>{% ContactManagementContext.CurrentContact.ContactLastName |(default) TestLastName %}</p>
-    <p>{% ContactManagementContext.CurrentContact.ContactDescriptiveName %}</p>
-    <p>{% ContactManagementContext.CurrentContact.ContactDescriptiveName |(default) TestDescriptiveName %}</p>
+    <p>{% GetDynamicText("url", "Test", "") %}</p>
+    <p>{% GetDynamicText("url", "Test", "TestQueryString") %}</p>
+    <p>{% GetDynamicText("context", "ContactFirstName", "") %}</p>
+    <p>{% GetDynamicText("context", "ContactFirstName", "TestFirstName") %}</p>
+    <p>{% GetDynamicText("context", "ContactLastName", "") %}</p>
+    <p>{% GetDynamicText("context", "ContactLastName", "TestLastName") %}</p>
+    <p>{% GetDynamicText("context", "ContactDescriptiveName", "") %}</p>
+    <p>{% GetDynamicText("context", "ContactDescriptiveName", "TestDescriptiveName") %}</p>
 </div>`;
 
 const fakeMacroElementTemplateResolver: MacroElementTemplateResolver = (macroType, macroValue, macroDefaultValue, macroDisplayValue) => {
@@ -24,14 +24,14 @@ const getMacroElementAttributes = (macroType: MacroType, macroValue: string, mac
 const htmlWithMacroElements = 
 `<div>
     <p>Hello</p>
-    <p><span ${getMacroElementAttributes(MacroType.URL, "QueryString.Test")}>param: Test</span></p>
-    <p><span ${getMacroElementAttributes(MacroType.URL, "QueryString.Test", "TestQueryString")}>param: Test</span></p>
-    <p><span ${getMacroElementAttributes(MacroType.CONTEXT, "ContactManagementContext.CurrentContact.ContactFirstName")}>First name</span></p>
-    <p><span ${getMacroElementAttributes(MacroType.CONTEXT, "ContactManagementContext.CurrentContact.ContactFirstName", "TestFirstName")}>First name</span></p>
-    <p><span ${getMacroElementAttributes(MacroType.CONTEXT, "ContactManagementContext.CurrentContact.ContactLastName")}>Last name</span></p>
-    <p><span ${getMacroElementAttributes(MacroType.CONTEXT, "ContactManagementContext.CurrentContact.ContactLastName", "TestLastName")}>Last name</span></p>
-    <p><span ${getMacroElementAttributes(MacroType.CONTEXT, "ContactManagementContext.CurrentContact.ContactDescriptiveName")}>Full name</span></p>
-    <p><span ${getMacroElementAttributes(MacroType.CONTEXT, "ContactManagementContext.CurrentContact.ContactDescriptiveName", "TestDescriptiveName")}>Full name</span></p>
+    <p><span ${getMacroElementAttributes(MacroType.URL, "Test")}>param: Test</span></p>
+    <p><span ${getMacroElementAttributes(MacroType.URL, "Test", "TestQueryString")}>param: Test</span></p>
+    <p><span ${getMacroElementAttributes(MacroType.CONTEXT, "ContactFirstName")}>First name</span></p>
+    <p><span ${getMacroElementAttributes(MacroType.CONTEXT, "ContactFirstName", "TestFirstName")}>First name</span></p>
+    <p><span ${getMacroElementAttributes(MacroType.CONTEXT, "ContactLastName")}>Last name</span></p>
+    <p><span ${getMacroElementAttributes(MacroType.CONTEXT, "ContactLastName", "TestLastName")}>Last name</span></p>
+    <p><span ${getMacroElementAttributes(MacroType.CONTEXT, "ContactDescriptiveName")}>Full name</span></p>
+    <p><span ${getMacroElementAttributes(MacroType.CONTEXT, "ContactDescriptiveName", "TestDescriptiveName")}>Full name</span></p>
 </div>`
 
 describe("macro services", () => {
