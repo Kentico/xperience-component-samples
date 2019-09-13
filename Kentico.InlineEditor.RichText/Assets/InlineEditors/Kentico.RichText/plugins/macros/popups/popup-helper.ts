@@ -5,7 +5,7 @@ import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
  * @param $element jQuery object which targets the element.
  * @returns HTML element or null.
  */
-const unwrapElement = <T extends HTMLElement>($element: JQuery): T | null => {
+export const unwrapElement = <T extends HTMLElement>($element: JQuery): T | null => {
     if ($element) {
         return ($element as any)[0] as T;
     }

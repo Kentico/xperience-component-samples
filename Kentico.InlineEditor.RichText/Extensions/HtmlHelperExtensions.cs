@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
-
+using CMS.Base;
+using CMS.Core;
 using CMS.DataEngine;
 using CMS.SiteProvider;
 
@@ -39,6 +40,11 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
                 tagBuidler.AddCssClass(RICH_TEXT_EDITOR_CLASS_NAME);
                 tagBuidler.Attributes.Add(RICH_TEXT_EDITOR_LICENSE_ATTRIBUTE, richTextEditorLicense);
 
+                if (AllowContextMacros())
+                {
+                    tagBuidler.Attributes.Add("data-allow-context-macros", "true");
+                }
+
                 htmlHelper.ViewContext.Writer.Write(tagBuidler.ToString(TagRenderMode.SelfClosing));
             }
         }
@@ -55,6 +61,16 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
             instance = instance ?? throw new ArgumentNullException(nameof(instance));
 
             return new DynamicTextResolver().ResolveRichText(text);
+        }
+
+
+        private static bool AllowContextMacros()
+        {
+            var licenseService = ObjectFactory<ILicenseService>.StaticSingleton();
+            var settingsService = Service.Resolve<ISettingsService>();
+            var siteService = Service.Resolve<ISiteService>();
+
+            return licenseService.IsFeatureAvailable(FeatureEnum.FullContactManagement) && settingsService[siteService.CurrentSite?.SiteName + ".CMSEnableOnlineMarketing"].ToBoolean(false);
         }
     }
 }
