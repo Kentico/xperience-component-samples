@@ -10,6 +10,8 @@ import { FroalaCommand } from "../../froala-command";
 
 // Open insert macro popup
 
+let defaultValueText: string;
+
 const openInsertMacroPopupCommandIcon = new FroalaIcon(constants.OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, { PATH: constants.ICON_MACRO, template: "svg" });
 const openInsertMacroPopupCommand = new FroalaCommand(constants.OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, {
     title: 'Insert Dynamic Text',
@@ -20,7 +22,8 @@ const openInsertMacroPopupCommand = new FroalaCommand(constants.OPEN_INSERT_MACR
     refreshAfterCallback: true,
     callback(this: FroalaEditor) {
         this.selection.save();
-        this.kenticoMacroPlugin.showConfigurationPopup(this.position.getBoundingRect(), DialogMode.INSERT, undefined, this.selection.text());
+        defaultValueText = this.selection.text();
+        this.kenticoMacroPlugin.showConfigurationPopup(this.position.getBoundingRect(), DialogMode.INSERT, undefined, defaultValueText);
     }
 }, openInsertMacroPopupCommandIcon);
 
@@ -54,9 +57,12 @@ const insertMacroCommandParameters: RegisterCommandParameters = {
             }
 
             const macroDefaultValue = formData.get("defaultText") as string;
-            const macroElement = getMacroEditModeElement(macroType, macroValue, macroDefaultValue, macroDisplayValue);
 
-            this.html.insert(macroElement);
+            if (macroValue) {
+                const macroElement = getMacroEditModeElement(macroType, macroValue, macroDefaultValue, macroDisplayValue);
+                this.html.insert(macroElement);
+            }
+
             this.toolbar.hide();
             this.kenticoMacroPlugin.hideConfigurationPopup();
         }
@@ -150,10 +156,9 @@ const openMacroTabCommand = new FroalaCommand(constants.SWITCH_MACRO_TAB_COMMAND
     title: "Insert macro",
     icon: "macro",
     undo: false,
-    focus: true,
+    focus: false,
     callback(this: FroalaEditor) {
-        this.selection.restore();
-        showForm(this, constants.CONFIGURATION_POPUP_NAME, DialogMode.INSERT, MacroType.CONTEXT, undefined, this.selection.text());
+        showForm(this, constants.CONFIGURATION_POPUP_NAME, DialogMode.INSERT, MacroType.CONTEXT, undefined, defaultValueText);
     }
 }, openMacroTabCommandIcon);
 
@@ -164,9 +169,9 @@ const openQueryTabCommand = new FroalaCommand(constants.SWITCH_URL_TAB_COMMAND_N
     title: "URL parameter",
     icon: "queryString",
     undo: false,
-    focus: true,
+    focus: false,
     callback(this: FroalaEditor) {
-        showForm(this, constants.CONFIGURATION_POPUP_NAME, DialogMode.INSERT, MacroType.URL, undefined, this.selection.text());
+        showForm(this, constants.CONFIGURATION_POPUP_NAME, DialogMode.INSERT, MacroType.URL, undefined, defaultValueText);
     }
 }, openQueryTabCommandIcon);
 
