@@ -2,7 +2,7 @@
     <div class="fr-layer fr-active" id="ktc-configuration-layer-1" data-mouseenter-event-set="true">
         <div class="fr-input-line">
             <input id="ktc-configuration-url-layer-url-1" name="urlParameterName" type="text"
-                class="fr-link-attr fr-not-empty" placeholder="" tabindex="1" dir="auto" value="<%= value %>"><label
+                class="fr-link-attr <%= value ? 'fr-not-empty' : '' %>" placeholder="" tabindex="1" dir="auto" value="<%= value %>"><label
                 for="ktc-configuration-url-layer-url-1"><%= urlParameterLabel %></label>
         </div>
         <div class="fr-input-line" style="display: block;">

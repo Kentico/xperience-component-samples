@@ -30,5 +30,24 @@ export const showForm = (editor: FroalaEditor, popupName: string, mode: DialogMo
 
         const button = dialog.querySelector<HTMLButtonElement>(`.fr-command[data-cmd="${tabCommand}"]`);
         button!.classList.add("fr-active", "fr-selected");
+
+        const inputs = dialog.querySelectorAll<HTMLInputElement>(".fr-input-line input");
+        inputs.forEach((inputEl) => {
+            inputEl.addEventListener("focus", function () {
+                if (!this.value) {
+                    this.classList.add("fr-not-empty");
+                }
+            });
+
+            inputEl.addEventListener("blur", function () {
+                if (!this.value) {
+                    this.classList.remove("fr-not-empty");
+                }
+            });
+        });
+
+        if (macroType === MacroType.URL) {
+            inputs[0].focus();
+        }
     }
 }
