@@ -20,7 +20,7 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
     new FroalaEditor(element, {
         key: element.dataset.richTextEditorLicense,
         toolbarInline: true,
-        charCounterCount: false,
+        pasteDeniedAttrs: [ "id", "style"],
         quickInsertButtons: ["imageKentico", "video", "embedly", "table", "ul", "ol", "hr"],
         imageEditButtons: ["imageReplaceKentico", "imageAlign", "imageCaption", "imageRemove", "|", "imageLink", "linkOpen", "linkEdit",
             "linkRemove", "-", "imageDisplay", "imageStyle", "imageAlt", "imageSize"],
