@@ -1,4 +1,8 @@
+import CodeMirror from "codemirror";
+import "codemirror/mode/xml/xml";
 import FroalaEditor, * as Froala from "froala-editor/js/froala_editor.pkgd.min";
+
+import "codemirror/lib/codemirror.css";
 import "froala-editor/css/froala_editor.pkgd.css";
 
 import { UPDATE_WIDGET_PROPERTY_EVENT_NAME } from "@/shared/constants";
@@ -20,6 +24,7 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
     new FroalaEditor(element, {
         key: element.dataset.richTextEditorLicense,
         toolbarInline: true,
+        codeMirror: CodeMirror,
         pasteDeniedAttrs: [ "id", "style"],
         quickInsertButtons: ["imageKentico", "video", "embedly", "table", "ul", "ol", "hr"],
         imageEditButtons: ["imageReplaceKentico", "imageAlign", "imageCaption", "imageRemove", "|", "imageLink", "linkOpen", "linkEdit",

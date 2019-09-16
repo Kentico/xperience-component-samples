@@ -11,7 +11,7 @@ export const replaceMacroElements = (html: string): string => {
     const macroElements = tempWrapper.querySelectorAll<HTMLElement>(`.${MACRO_CLASS}`);
     macroElements.forEach((macro) => {
         const { macroType, macroValue, macroDefaultValue} = macro.dataset as { macroType: MacroType, macroValue: string, macroDefaultValue: string };
-        macro.replaceWith(`{% GetDynamicText("${macroType}", "${macroValue}", "${macroDefaultValue}") %}`);
+        macro.replaceWith(`{% ResolveDynamicText("${macroType}", "${macroValue}", "${macroDefaultValue}") %}`);
     });
 
     return tempWrapper.innerHTML;
