@@ -64,14 +64,44 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         /// </summary>
         private void PopulatePatterns()
         {
-            var firstName = new DynamicTextPattern("ContactManagementContext.CurrentContact.ContactFirstName", () => GetCurrentContact()?.ContactFirstName);
+            var firstName = new DynamicTextPattern("ContactFirstName", () => GetCurrentContact()?.ContactFirstName);
             register.Add(new KeyValuePair<string, DynamicTextPattern>(firstName.Pattern, firstName));
 
-            var lastName = new DynamicTextPattern("ContactManagementContext.CurrentContact.ContactLastName", () => GetCurrentContact()?.ContactLastName);
+            var lastName = new DynamicTextPattern("ContactLastName", () => GetContactLastName(GetCurrentContact()));
             register.Add(new KeyValuePair<string, DynamicTextPattern>(lastName.Pattern, lastName));
 
-            var fullName = new DynamicTextPattern("ContactManagementContext.CurrentContact.ContactDescriptiveName", () => GetCurrentContact()?.ContactDescriptiveName);
+            var fullName = new DynamicTextPattern("ContactDescriptiveName", () => GetContactFullName(GetCurrentContact()));
             register.Add(new KeyValuePair<string, DynamicTextPattern>(fullName.Pattern, fullName));
+        }
+
+
+        private string GetContactLastName(ContactInfo contact)
+        {
+            if (contact == null)
+            {
+                return String.Empty;
+            }
+
+            // Do not return the default "Anonymous - {Date}" contact last name for anonymous contacts
+            return (!IsAnonymousContact(contact)) ? contact.ContactLastName : String.Empty;
+        }
+
+
+        private string GetContactFullName(ContactInfo contact)
+        {
+            if (contact == null)
+            {
+                return String.Empty;
+            }
+
+            // Do not return the default "Anonymous - {Date}" contact last name for anonymous contacts
+            return (!IsAnonymousContact(contact)) ? contact.ContactDescriptiveName : String.Empty;
+        }
+
+
+        private static bool IsAnonymousContact(ContactInfo contact)
+        {
+            return contact.ContactLastName.StartsWith(ContactHelper.ANONYMOUS, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

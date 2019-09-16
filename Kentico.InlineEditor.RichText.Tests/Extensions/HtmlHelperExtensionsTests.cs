@@ -104,10 +104,10 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 Assert.Multiple(() =>
                 {
                     Assert.That(htmlHelperMock.Kentico().ResolveRichText(
-                                        "{% ContactManagementContext.CurrentContact.ContactFirstName |(default) RESOLVED %}"),
+                                        @"{% ResolveDynamicText(""pattern"", ""ContactFirstName"", ""RESOLVED"") %}"),
                                         Is.EqualTo("FIRSTNAME"));
                     Assert.That(htmlHelperMock.Kentico().ResolveRichText(
-                                        "{% ContactManagementContext.CurrentContact.ContactLastName |(default) DEFAULT %}"),
+                                        @"{% ResolveDynamicText(""pattern"", ""ContactLastName"", ""DEFAULT"") %}"),
                                         Is.EqualTo("DEFAULT"));
                 });
             }

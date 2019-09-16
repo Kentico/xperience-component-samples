@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using System.Web;
 
 using CMS.Base;
 using CMS.Helpers;
@@ -11,10 +12,13 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
     /// </summary>
     internal class DynamicTextResolver
     {
-        private const string PATTERN_GROUP_NAME = "pattern";
-        private const string DEFAULT_VALUE_GROUP_NAME = "defaultValue";
+        private const string MACRO_GROUP_NAME = "pattern";
+        private const string TYPE_GROUP_NAME = "type";
+        private const string PARAM_NAME_GROUP_NAME = "param_name";
+        private const string DEFAULT_VALUE_GROUP_NAME = "default_value";
 
-        private Regex patternRegex = RegexHelper.GetRegex($@"{{%\s*(?<{PATTERN_GROUP_NAME}>[\w\.\[\]""]+)\s*(\|\(default\)(?<{DEFAULT_VALUE_GROUP_NAME}>.*?))?%}}");
+        private readonly Regex macroPatternRegex = RegexHelper.GetRegex($@"{{%(?<{MACRO_GROUP_NAME}>.*?)%}}");
+        private readonly Regex resolveDynamicTextPatternRegex = RegexHelper.GetRegex($@"ResolveDynamicText\(\s*""(?<{TYPE_GROUP_NAME}>[^""]*)""\s*,\s*""(?<{PARAM_NAME_GROUP_NAME}>[^""]*)""\s*,\s*""(?<{DEFAULT_VALUE_GROUP_NAME}>[^""]*)""\s*\)");
 
         private readonly DynamicTextPatternRegister patternRegister;
         private readonly IDataContainer queryParameters;
@@ -52,52 +56,59 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
 
             if (text.Contains("{%"))
             {
-                text = patternRegex.Replace(text, ReplaceDynamicTextPattern);
+                text = macroPatternRegex.Replace(text, ReplaceMacroPattern);
             }
 
             return text;
         }
 
 
-        private string ReplaceDynamicTextPattern(Match match)
+        private string ReplaceMacroPattern(Match match)
         {
-            string pattern = match.Groups[PATTERN_GROUP_NAME]?.ToString();
-            string defaultValue = match.Groups[DEFAULT_VALUE_GROUP_NAME]?.ToString().Trim();
-            string resolvedValue = String.Empty;
+            string macro = match.Groups[MACRO_GROUP_NAME]?.ToString().Trim();
 
-            if (!String.IsNullOrEmpty(pattern))
+            var resolveDynamicTextMatch = resolveDynamicTextPatternRegex.Match(macro);
+
+            if (resolveDynamicTextMatch.Success)
             {
-                Func<string> replace = patternRegister.GetReplacementFunction(pattern);
-                if (replace != null)
-                {
-                    resolvedValue = replace();
-                }
-                else if (pattern.StartsWith("QueryString[\""))
-                {
-                    int paramNameStartIndex = pattern.IndexOf("[\"") + 2;
-                    int paramNameEndIndex = pattern.IndexOf("\"]");
-                    if ((paramNameStartIndex > 0) && (paramNameEndIndex > 0))
-                    {
-                        string paramName = pattern.Substring(paramNameStartIndex, paramNameEndIndex - paramNameStartIndex);
-                        resolvedValue = queryParameters[paramName]?.ToString();
-                    }
-                }
-
-                resolvedValue = GetNotEmpty(resolvedValue, defaultValue);
+                return resolveDynamicTextPatternRegex.Replace(macro, ReplaceGetDynamicTextPattern);
             }
-
-            return resolvedValue;
+            else
+            {
+                // Return an empty string for all non-matching "macros" to align the dynamic text resolver with the standard macro resolver behavior
+                return String.Empty;
+            }
         }
 
 
-        private string GetNotEmpty(string value, string defaultValue)
+        private string ReplaceGetDynamicTextPattern(Match match)
         {
-            if (String.IsNullOrEmpty(value))
+            string patternType = match.Groups[TYPE_GROUP_NAME]?.ToString();
+            string paramName = match.Groups[PARAM_NAME_GROUP_NAME]?.ToString();
+            string defaultValue = match.Groups[DEFAULT_VALUE_GROUP_NAME]?.ToString();
+            string resolvedValue = String.Empty;
+
+            switch (patternType)
             {
-                return defaultValue;
+                case "pattern":
+                    Func<string> replace = patternRegister.GetReplacementFunction(paramName);
+                    if (replace != null)
+                    {
+                        resolvedValue = replace();
+                    }
+                    break;
+
+                case "query":
+                    resolvedValue = queryParameters[paramName]?.ToString();
+                    break;
             }
 
-            return value;
+            if (String.IsNullOrEmpty(resolvedValue))
+            {
+                resolvedValue = defaultValue;
+            }
+
+            return HttpUtility.HtmlEncode(resolvedValue);
         }
     }
 }

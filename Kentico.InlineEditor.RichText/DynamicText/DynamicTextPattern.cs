@@ -24,7 +24,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
 
 
         /// <summary>
-        /// Gets the function that replaces the given pattern string.
+        /// Gets the function that replaces the given pattern.
         /// </summary>
         public Func<string> GetReplacement { get; }
     }

@@ -16,13 +16,6 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             public void SetUp()
             {
                 Fake<ContactInfo>();
-                var currentContact = new ContactInfo
-                {
-                    ContactFirstName = "FIRSTNAME",
-                    ContactLastName = "LASTNAME"
-                };
-
-                DynamicTextPatternRegister.Instance.GetCurrentContact = () => currentContact;
             }
 
 
@@ -32,20 +25,56 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             [TestCase("UserName")]
             public void GetReplacementFunction_NotRegisteredPattern_ReturnsNull(string pattern)
             {
+                DynamicTextPatternRegister.Instance.GetCurrentContact = () => GetFullContact();
+
                 Func<string> replace = DynamicTextPatternRegister.Instance.GetReplacementFunction(pattern);
 
                 Assert.That(() => replace, Is.Null);
             }
 
 
-            [TestCase("ContactManagementContext.CurrentContact.ContactFirstName", "FIRSTNAME")]
-            [TestCase("ContactManagementContext.CurrentContact.ContactLastName", "LASTNAME")]
-            [TestCase("ContactManagementContext.CurrentContact.ContactDescriptiveName", "FIRSTNAME LASTNAME")]
-            public void GetReplacementFunction_RegisteredPattern_ReturnsResolvedPattern(string pattern, string expectedResult)
+            [TestCase("ContactFirstName", "FIRSTNAME")]
+            [TestCase("ContactLastName", "LASTNAME")]
+            [TestCase("ContactDescriptiveName", "FIRSTNAME LASTNAME")]
+            public void GetReplacementFunction_FullContact_ReturnsResolvedPattern(string pattern, string expectedResult)
             {
+                DynamicTextPatternRegister.Instance.GetCurrentContact = () => GetFullContact();
+
                 Func<string> replace = DynamicTextPatternRegister.Instance.GetReplacementFunction(pattern);
 
                 Assert.That(() => replace(), Is.EqualTo(expectedResult));
+            }
+
+
+            [TestCase("ContactFirstName")]
+            [TestCase("ContactLastName")]
+            [TestCase("ContactDescriptiveName")]
+            public void GetReplacementFunction_AnonyousContact_ReturnsResolvedPattern(string pattern)
+            {
+                DynamicTextPatternRegister.Instance.GetCurrentContact = () => GetAnonymousContact();
+
+                Func<string> replace = DynamicTextPatternRegister.Instance.GetReplacementFunction(pattern);
+
+                Assert.That(() => replace(), Is.Empty);
+            }
+
+
+            private ContactInfo GetFullContact()
+            {
+                return new ContactInfo
+                {
+                    ContactFirstName = "FIRSTNAME",
+                    ContactLastName = "LASTNAME"
+                };
+            }
+
+
+            private ContactInfo GetAnonymousContact()
+            {
+                return new ContactInfo
+                {
+                    ContactLastName = "Anonymous - {Date}"
+                };
             }
         }
     }

@@ -10,61 +10,49 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
         [TestFixture]
         public class ResolveRichTextTests
         {
-            [TestCase(null)]
-            [TestCase("")]
-            [TestCase(" ")]
-            [TestCase("UserName")]
-            [TestCase("FIRSTNAME")]
-            [TestCase(" FIRSTNAME ")]
-            [TestCase(" {% FIRSTNAME ")]
-            [TestCase(" { % FIRSTNAME %} ")]
-            [TestCase(" {% FIRSTNAME % } ")]
-            public void ResolveRichText_PatternNotRecognized_ReturnsDefaultValue(string text)
+            [OneTimeSetUp]
+            public void OneTimeSetUp()
             {
-                var register = GetPatternRegister();
-                var macroResolver = GetMacroResolver();
-
-                string result = new DynamicTextResolver(register, new DataContainer()).ResolveRichText(text);
-                string macroResult = macroResolver.ResolveMacros(text);
-
-                Assert.Multiple(() =>
-                {
-                    Assert.That(result, Is.EqualTo(text));
-                    Assert.That(macroResult, Is.EqualTo(result));
-                });
+                // Register the dynamic text test macro method
+                Extend<string>.With<DynamicTextTestMacroMethods>();
             }
 
 
-            [TestCase("{% BLANK %}", "")]
-            [TestCase("{% FIRSTNAME.ABC %}", "")]
-            [TestCase("{% FIRSTNAME.ABC |(default) 1 %}", "1")]
-            public void ResolveRichText_NotRegisteredPattern_ReturnsDefaultValue(string text, string expectedResult)
+            [TestCase(null, null)]
+            [TestCase("", "")]
+            [TestCase(" ", " ")]
+            [TestCase(" {% ResolveDynamicText %} ", "  ")]
+            [TestCase("-{% ResolveDynamicText() %}=", "-=")]
+            [TestCase(" {% ResolveDynamicText(\"1\") %} ", "  ")]
+            [TestCase(" {% ResolveDynamicText(\"1\", \"2\") %} ", "  ")]
+            [TestCase(" {% ResolveDynamicText(\"1\", \"2\", \"3\") % } ", " {% ResolveDynamicText(\"1\", \"2\", \"3\") % } ")]
+            [TestCase(" { % ResolveDynamicText(\"1\", \"2\", \"3\") %} ", " { % ResolveDynamicText(\"1\", \"2\", \"3\") %} ")]
+            [TestCase("{%ResolveDynamicText('pattern','FIRSTNAME','DEF')%}", "")]
+            public void ResolveRichText_PatternNotRecognized_ReturnsDefaultValue(string text, string expectedResult)
             {
-                var register = GetPatternRegister();
-                var macroResolver = GetMacroResolver();
+                 var register = GetPatternRegister();
 
                 string result = new DynamicTextResolver(register, new DataContainer()).ResolveRichText(text);
-                string macroResult = macroResolver.ResolveMacros(text);
 
-                Assert.Multiple(() =>
-                {
-                    Assert.That(result, Is.EqualTo(expectedResult));
-                    Assert.That(macroResult, Is.EqualTo(expectedResult));
-                });
+                Assert.That(result, Is.EqualTo(expectedResult));
             }
 
 
-            [TestCase("{%FIRSTNAME%}", "RESOLVED")]
-            [TestCase("{% FIRSTNAME%}", "RESOLVED")]
-            [TestCase("{%FIRSTNAME %}", "RESOLVED")]
-            [TestCase("{% FIRSTNAME %}", "RESOLVED")]
-            [TestCase(" {%FIRSTNAME%} ", " RESOLVED ")]
-            [TestCase(" {% FIRSTNAME%} ", " RESOLVED ")]
-            [TestCase(" {%FIRSTNAME %} ", " RESOLVED ")]
-            [TestCase(" {% FIRSTNAME %} ", " RESOLVED ")]
-            [TestCase(" {% FIRSTNAME %} {% FIRSTNAME %} ", " RESOLVED RESOLVED ")]
-            [TestCase(" {% FIRSTNAME %} \n {% FIRSTNAME %} ", " RESOLVED \n RESOLVED ")]
-            public void ResolveRichText_SimplePattern_ReturnsCorrectResult(string text, string expectedResult)
+            [TestCase("{%ResolveDynamicText(\"pattern\",\"REGISTERED\",\"DEF\")%}", "RESOLVED")]
+            [TestCase("{% ResolveDynamicText(\"pattern\",\"REGISTERED\",\"DEF\")%}", "RESOLVED")]
+            [TestCase("{%ResolveDynamicText( \"pattern\",\"REGISTERED\",\"DEF\")%}", "RESOLVED")]
+            [TestCase("{%ResolveDynamicText(\"pattern\" ,\"REGISTERED\",\"DEF\")%}", "RESOLVED")]
+            [TestCase("{%ResolveDynamicText(\"pattern\", \"REGISTERED\",\"DEF\")%}", "RESOLVED")]
+            [TestCase("{%ResolveDynamicText(\"pattern\",\"REGISTERED\" ,\"DEF\")%}", "RESOLVED")]
+            [TestCase("{%ResolveDynamicText(\"pattern\",\"REGISTERED\", \"DEF\")%}", "RESOLVED")]
+            [TestCase("{%ResolveDynamicText(\"pattern\",\"REGISTERED\",\"DEF\" )%}", "RESOLVED")]
+            [TestCase("{%ResolveDynamicText(\"pattern\",\"REGISTERED\",\"DEF\") %}", "RESOLVED")]
+            [TestCase("{% ResolveDynamicText(\"pattern\", \"REGISTERED\", \"DEF\") %} {% ResolveDynamicText(\"pattern\", \"REGISTERED\", \"DEF\") %}", "RESOLVED RESOLVED")]
+            [TestCase("{% ResolveDynamicText(\"pattern\", \"REGISTERED\", \"DEF\")%} \n {% ResolveDynamicText(\"pattern\", \"REGISTERED\", \"DEF\")%}", "RESOLVED \n RESOLVED")]
+            // Not registered patterns return the default value
+            [TestCase("{% ResolveDynamicText(\"pattern\", \"NOTREGISTERED\", \"DEF\") %}", "DEF")]
+            [TestCase("{% ResolveDynamicText(\"NOTREGISTERED\", \"REGISTERED\", \"DEF\") %}", "DEF")]
+            public void ResolveRichText_Pattern_ReturnsCorrectResult(string text, string expectedResult)
             {
                 var register = GetPatternRegister();
                 var macroResolver = GetMacroResolver();
@@ -80,42 +68,16 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             }
 
 
-            [TestCase("{% FIRSTNAME |(default) DEF%}", "DEF")]
-            [TestCase("{% FIRSTNAME |(default) DEF %}", "DEF")]
-            [TestCase("{% FIRSTNAME |(default)DEF%}", "DEF")]
-            [TestCase("{% FIRSTNAME |(default)DEF %}", "DEF")]
-            [TestCase("{% FIRSTNAME|(default)DEF%}", "DEF")]
-            [TestCase("{% FIRSTNAME|(default)%}", "")]
-            [TestCase("{% FIRSTNAME|(default) %}", "")]
-            [TestCase("{% FIRSTNAME|(default)DEF1%} {% FIRSTNAME|(default)DEF2%}", "DEF1 DEF2")]
-            [TestCase("{% FIRSTNAME|(default)DEF1%} \n {% FIRSTNAME|(default)DEF2%}", "DEF1 \n DEF2")]
-            public void ResolveRichText_PatternWithDefaultValue_ReturnsCorrectResult(string text, string expectedResult)
-            {
-                var register = GetPatternRegister(resolvedValue: "");
-                var macroResolver = GetMacroResolver(resolvedValue: "");
-
-                string result = new DynamicTextResolver(register, new DataContainer()).ResolveRichText(text);
-                string macroResult = macroResolver.ResolveMacros(text);
-
-                Assert.Multiple(() =>
-                {
-                    Assert.That(result, Is.EqualTo(expectedResult));
-                    Assert.That(macroResult, Is.EqualTo(result));
-                });
-            }
-
-
-            [TestCase("{% QueryString[\"ABC\"] %}", "VALUE")]
-            [TestCase("{% QueryString[\"NOTREGISTERED\"] %}", "")]
-            [TestCase("{% QueryString[\"NOTREGISTERED\"] |(default) DEF%}", "DEF")]
-            [TestCase("{% QueryString[\"ABC\"] %} {% QueryString[\"ABC\"] %}", "VALUE VALUE")]
-            [TestCase("{% QueryString[\"ABC\"] %} \n {% QueryString[\"NOTREGISTERED\"]|(default)DEF %}", "VALUE \n DEF")]
-            public void ResolveRichText_QueryStringPattern_ReturnsCorrectResult(string text, string expectedResult)
+            [TestCase("{% ResolveDynamicText(\"query\", \"REGISTERED\", \"DEF\") %}", "RESOLVED")]
+            [TestCase("{% ResolveDynamicText(\"query\", \"NOTREGISTERED\", \"DEF\") %}", "DEF")]
+            [TestCase("{% ResolveDynamicText(\"query\", \"NOTREGISTERED\", \"\") %}", "")]
+            [TestCase("{% ResolveDynamicText(\"query\", \"REGISTERED\", \"DEF\") %} {% ResolveDynamicText(\"query\", \"REGISTERED\", \"DEF\") %}", "RESOLVED RESOLVED")]
+            [TestCase("{% ResolveDynamicText(\"query\", \"REGISTERED\", \"DEF\") %} \n {% ResolveDynamicText(\"query\", \"NOTREGISTERED\", \"DEF\") %}", "RESOLVED \n DEF")]
+            public void ResolveRichText_QueryString_ReturnsCorrectResult(string text, string expectedResult)
             {
                 var register = GetPatternRegister();
-                var queryString = GetQueryStringDataContainer("ABC", "VALUE");
                 var macroResolver = GetMacroResolver();
-                macroResolver.SetNamedSourceData("QueryString", queryString);
+                var queryString = GetQueryStringDataContainer("REGISTERED", "RESOLVED");
 
                 string result = new DynamicTextResolver(register, queryString).ResolveRichText(text);
                 string macroResult = macroResolver.ResolveMacros(text);
@@ -128,42 +90,20 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             }
 
 
-            [TestCase("{% QueryString[\"INVALID %}", "")]
-            // Regex matches but contains invalid indexer part
-            [TestCase("{% QueryString[\"INVALID \" %}", "{% QueryString[\"INVALID \" %}")]
-            // Regex matches but contains invalid indexer part
-            [TestCase("{% QueryString[\"INVALID \"|(default) DEF %}", "{% QueryString[\"INVALID \"|(default) DEF %}")]
-            public void ResolveRichText_InvalidQueryStringPattern_ReturnsCorrectResult(string text, string expectedResult)
-            {
-                var register = GetPatternRegister();
-
-                string result = new DynamicTextResolver(register, new DataContainer()).ResolveRichText(text);
-
-                Assert.That(result, Is.EqualTo(expectedResult));
-            }
-
-
-
-            private DynamicTextPatternRegister GetPatternRegister(string pattern = "FIRSTNAME", string resolvedValue = "RESOLVED")
+            private DynamicTextPatternRegister GetPatternRegister()
             {
                 var patterns = new List<KeyValuePair<string, DynamicTextPattern>>();
 
-                var firstName = new DynamicTextPattern("FIRSTNAME", () => resolvedValue);
+                var firstName = new DynamicTextPattern("REGISTERED", () => "RESOLVED");
                 patterns.Add(new KeyValuePair<string, DynamicTextPattern>(firstName.Pattern, firstName));
 
                 return new DynamicTextPatternRegister(patterns);
             }
 
 
-            private MacroResolver GetMacroResolver(string pattern = "FIRSTNAME", string resolvedValue = "RESOLVED")
+            private MacroResolver GetMacroResolver()
             {
-                var macroResolver = MacroResolver.GetInstance(false);
-                macroResolver.SetNamedSourceData(new Dictionary<string, object>
-                {
-                    { pattern, resolvedValue }
-                });
-
-                return macroResolver;
+                return MacroResolver.GetInstance(false);
             }
 
 
