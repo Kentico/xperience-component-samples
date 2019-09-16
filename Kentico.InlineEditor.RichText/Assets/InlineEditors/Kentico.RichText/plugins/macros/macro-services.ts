@@ -2,7 +2,7 @@ import { MACRO_CLASS } from "./macro-constants";
 import { MacroType, MacroElementTemplateResolver } from "./macro-types";
 import { getMacroDisplayName } from "./macro-helpers";
 
-const dynamicTextRegex = /{% GetDynamicText\("(?<macroType>\w+)", "(?<macroValue>\w+)", "(?<macroDefaultValue>.*?)"\) %}/g
+const dynamicTextRegex = /{%\s*ResolveDynamicText\(\s*"(query|pattern)"\s*,\s*"([^"]+)"\s*,\s*"([^"]*)"\s*\)\s*%}/g
 
 export const replaceMacroElements = (html: string): string => {
     const tempWrapper = document.createElement("div");
@@ -18,7 +18,7 @@ export const replaceMacroElements = (html: string): string => {
 }
 
 export const replaceMacrosWithElements = (html: string, macroElementTemplateResolver: MacroElementTemplateResolver): string => {
-    return html.replace(dynamicTextRegex, (match, macroType: MacroType, macroValue: string, macroDefaultValue: string) => {
+    return html.replace(dynamicTextRegex, (_, macroType: MacroType, macroValue: string, macroDefaultValue: string) => {
         return macroElementTemplateResolver(macroType, macroValue, macroDefaultValue, getMacroDisplayName(macroValue));
     });
 }

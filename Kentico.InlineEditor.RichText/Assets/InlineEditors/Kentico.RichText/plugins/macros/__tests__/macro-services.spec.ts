@@ -4,14 +4,14 @@ import { MacroElementTemplateResolver, MacroType } from "../macro-types";
 const htmlWithMacros =
 `<div>
     <p>Hello</p>
-    <p>{% GetDynamicText("url", "Test", "") %}</p>
-    <p>{% GetDynamicText("url", "Test", "TestQueryString") %}</p>
-    <p>{% GetDynamicText("context", "ContactFirstName", "") %}</p>
-    <p>{% GetDynamicText("context", "ContactFirstName", "TestFirstName") %}</p>
-    <p>{% GetDynamicText("context", "ContactLastName", "") %}</p>
-    <p>{% GetDynamicText("context", "ContactLastName", "TestLastName") %}</p>
-    <p>{% GetDynamicText("context", "ContactDescriptiveName", "") %}</p>
-    <p>{% GetDynamicText("context", "ContactDescriptiveName", "TestDescriptiveName") %}</p>
+    <p>{% ResolveDynamicText("query", "Test", "") %}</p>
+    <p>{% ResolveDynamicText("query", "Test", "TestQueryString") %}</p>
+    <p>{% ResolveDynamicText("pattern", "ContactFirstName", "") %}</p>
+    <p>{% ResolveDynamicText("pattern", "ContactFirstName", "TestFirstName") %}</p>
+    <p>{% ResolveDynamicText("pattern", "ContactLastName", "") %}</p>
+    <p>{% ResolveDynamicText("pattern", "ContactLastName", "TestLastName") %}</p>
+    <p>{% ResolveDynamicText("pattern", "ContactDescriptiveName", "") %}</p>
+    <p>{% ResolveDynamicText("pattern", "ContactDescriptiveName", "TestDescriptiveName") %}</p>
 </div>`;
 
 const fakeMacroElementTemplateResolver: MacroElementTemplateResolver = (macroType, macroValue, macroDefaultValue, macroDisplayValue) => {
