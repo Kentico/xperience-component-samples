@@ -16,8 +16,8 @@ export enum DialogMode {
 }
 
 export enum MacroType {
-    URL = "url",
-    CONTEXT = "context"
+    URL = "query",
+    CONTEXT = "pattern"
 }
 
 export enum ContextMacro {
