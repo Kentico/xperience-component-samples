@@ -98,8 +98,11 @@ const updateMacroCommandParameters: RegisterCommandParameters = {
                 macroDefaultValue: formData.get("defaultText"),
             };
 
-            macroElement.textContent = getMacroDisplayName(macroValue);
-            Object.assign(macroElement.dataset, data);
+            if (data.macroValue) {
+                macroElement.textContent = getMacroDisplayName(macroValue);
+                Object.assign(macroElement.dataset, data);
+            }
+            
             this.kenticoMacroPlugin.hidePopups();
         }
     }
