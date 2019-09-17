@@ -50,7 +50,6 @@ export const showPopup = (editor: FroalaEditor, popupName: string, relatedElemen
     // If popup doesn't exist then create it.
     // To improve performance it is best to create the popup when it is first needed
     // and not when the this is initialized.
-                //  const customLayer = "<div class=\"ktc-configure-popup\"></div>";
     if (!$popup) {
         initializePopup(editor, popupName, buttons, customLayer);
     }

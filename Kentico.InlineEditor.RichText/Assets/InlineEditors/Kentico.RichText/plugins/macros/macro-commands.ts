@@ -16,7 +16,7 @@ const openInsertMacroPopupCommandIcon = new FroalaIcon(constants.OPEN_INSERT_MAC
 const openInsertMacroPopupCommand = new FroalaCommand(constants.OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, {
     title: 'Insert Dynamic Text',
     icon: constants.OPEN_INSERT_MACRO_POPUP_COMMAND_NAME,
-    focus: true,
+    focus: false,
     undo: false,
     plugin: constants.MACROS_PLUGIN_NAME,
     refreshAfterCallback: true,
@@ -31,7 +31,7 @@ const openInsertMacroPopupCommand = new FroalaCommand(constants.OPEN_INSERT_MACR
 
 const insertMacroCommandParameters: RegisterCommandParameters = {
     title: "",
-    focus: true,
+    focus: false,
     undo: true,
     refreshAfterCallback: true,
     callback(this: FroalaEditor, commandName: string) {
@@ -76,7 +76,7 @@ const insertContextMacroCommand = new FroalaCommand(constants.INSERT_CONTEXT_MAC
 
 const updateMacroCommandParameters: RegisterCommandParameters = {
     title: "",
-    focus: true,
+    focus: false,
     undo: true,
     refreshAfterCallback: true,
     callback(this: FroalaEditor, commandName) {

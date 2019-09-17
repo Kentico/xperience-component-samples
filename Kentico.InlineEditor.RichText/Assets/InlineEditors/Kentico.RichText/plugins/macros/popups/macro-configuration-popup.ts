@@ -47,7 +47,8 @@ export const showForm = (editor: FroalaEditor, popupName: string, mode: DialogMo
         });
 
         if (macroType === MacroType.URL) {
-            inputs[0].focus();
+            const popup = editor.popups.get(popupName);
+            editor.accessibility.focusPopup(popup);
         }
     }
 }
