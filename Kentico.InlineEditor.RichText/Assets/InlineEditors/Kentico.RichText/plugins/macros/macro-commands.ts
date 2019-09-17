@@ -151,9 +151,9 @@ const configureMacroCommand = new FroalaCommand(constants.CONFIGURE_MACRO_COMMAN
 
 // Open macro tab command
 
-const openMacroTabCommandIcon = new FroalaIcon("macro", { PATH: constants.ICON_MACRO, template: "svg" });
+const openMacroTabCommandIcon = new FroalaIcon("macro", { PATH: constants.ICON_CONTACT_ATTRIBUTES, template: "svg" });
 const openMacroTabCommand = new FroalaCommand(constants.SWITCH_MACRO_TAB_COMMAND_NAME, {
-    title: "Insert macro",
+    title: "Contact attribute",
     icon: "macro",
     undo: false,
     focus: false,

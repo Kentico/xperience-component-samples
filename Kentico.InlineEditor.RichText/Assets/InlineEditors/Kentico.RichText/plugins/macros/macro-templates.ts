@@ -53,7 +53,7 @@ export const getConfigureContextMacroElement = (mode: DialogMode, macroValue: st
                 macroDefaultValue,
                 actionButtonText: "Insert",
                 defaultTextLabel: "Default text",
-                macroTypeLabel: "Macro",
+                macroTypeLabel: "Contact attribute",
                 command: INSERT_CONTEXT_MACRO_COMMAND_NAME,
             }
         break;
@@ -63,7 +63,7 @@ export const getConfigureContextMacroElement = (mode: DialogMode, macroValue: st
                 macroDefaultValue,
                 actionButtonText: "Save",
                 defaultTextLabel: "Default text",
-                macroTypeLabel: "Macro",
+                macroTypeLabel: "Contact attribute",
                 command: UPDATE_CONTEXT_MACRO_COMMAND_NAME,
             }
         break;
