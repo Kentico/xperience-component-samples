@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Web.Mvc;
+
 using CMS.Base;
 using CMS.Core;
 using CMS.DataEngine;
+using CMS.LicenseProvider;
 using CMS.SiteProvider;
 
 using Kentico.PageBuilder.Web.Mvc;
@@ -15,7 +17,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         private const string RICH_TEXT_EDITOR_NAME = "Kentico.InlineEditor.RichText";
         private const string RICH_TEXT_EDITOR_CLASS_NAME = "ktc-rich-text-wrapper";
         private const string RICH_TEXT_EDITOR_LICENSE_ATTRIBUTE = "data-rich-text-editor-license";
-        private static readonly string richTextEditorLicense = SettingsKeyInfoProvider.GetValue("CMSRichTextEditorLicense", SiteContext.CurrentSiteName);
+        private static readonly Lazy<string> richTextEditorLicense = new Lazy<string>(() => SettingsKeyInfoProvider.GetValue("CMSRichTextEditorLicense", SiteContext.CurrentSiteName));
 
 
         /// <summary>
@@ -36,16 +38,16 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
 
             using (htmlHelper.Kentico().BeginInlineEditor(RICH_TEXT_EDITOR_NAME, propertyName))
             {
-                var tagBuidler = new TagBuilder("div");
-                tagBuidler.AddCssClass(RICH_TEXT_EDITOR_CLASS_NAME);
-                tagBuidler.Attributes.Add(RICH_TEXT_EDITOR_LICENSE_ATTRIBUTE, richTextEditorLicense);
+                var tagBuilder = new TagBuilder("div");
+                tagBuilder.AddCssClass(RICH_TEXT_EDITOR_CLASS_NAME);
+                tagBuilder.Attributes.Add(RICH_TEXT_EDITOR_LICENSE_ATTRIBUTE, richTextEditorLicense.Value);
 
                 if (AllowContextMacros())
                 {
-                    tagBuidler.Attributes.Add("data-allow-context-macros", "true");
+                    tagBuilder.Attributes.Add("data-allow-context-macros", "true");
                 }
 
-                htmlHelper.ViewContext.Writer.Write(tagBuidler.ToString(TagRenderMode.SelfClosing));
+                htmlHelper.ViewContext.Writer.Write(tagBuilder.ToString(TagRenderMode.SelfClosing));
             }
         }
 
@@ -66,11 +68,12 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
 
         private static bool AllowContextMacros()
         {
-            var licenseService = ObjectFactory<ILicenseService>.StaticSingleton();
             var settingsService = Service.Resolve<ISettingsService>();
             var siteService = Service.Resolve<ISiteService>();
+            var site = siteService.CurrentSite as SiteInfo;
+            var license = LicenseKeyInfoProvider.GetLicenseKeyInfo(site?.DomainName);
 
-            return licenseService.IsFeatureAvailable(FeatureEnum.FullContactManagement) && settingsService[siteService.CurrentSite?.SiteName + ".CMSEnableOnlineMarketing"].ToBoolean(false);
+            return (license?.Edition == ProductEditionEnum.EnterpriseMarketingSolution) && settingsService[siteService.CurrentSite?.SiteName + ".CMSEnableOnlineMarketing"].ToBoolean(false);
         }
     }
 }

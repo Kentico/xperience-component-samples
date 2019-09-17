@@ -1,9 +1,12 @@
 ﻿using System.IO;
-using System.Text;
 using System.Web.Mvc;
 
+using CMS.Base;
 using CMS.ContactManagement;
+using CMS.Core;
 using CMS.DataEngine;
+using CMS.LicenseProvider;
+using CMS.SiteProvider;
 using CMS.Tests;
 
 using Kentico.Web.Mvc;
@@ -25,6 +28,9 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             private HtmlHelper htmlHelperMock;
             private TextWriter writerMock;
 
+            private ISettingsService settingsService;
+            private SiteInfo site;
+
 
             [SetUp]
             public void SetUp()
@@ -32,8 +38,25 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
                     .WithData(new SettingsKeyInfo { KeyName = "CMSRichTextEditorLicense", KeyValue = LICENSE_KEY });
 
-                var writer = new StringWriter(new StringBuilder());
-                htmlHelperMock = HtmlHelperMock.GetHtmlHelper(textWriter: writer);
+                FakeEMSLicense();
+
+                Fake<SiteInfo>();
+
+                site = new SiteInfo {
+                    DomainName = "testdomain",
+                    SiteName = "Site1",
+                };
+
+                var siteService = Substitute.For<ISiteService>();
+                siteService.CurrentSite.Returns(site);
+
+                settingsService = Substitute.For<ISettingsService>();
+                settingsService[$"{site.SiteName}.CMSEnableOnlineMarketing"].Returns("true");
+
+                Service.Use<ISiteService>(siteService);
+                Service.Use<ISettingsService>(settingsService);
+
+                htmlHelperMock = HtmlHelperMock.GetHtmlHelper();
                 writerMock = htmlHelperMock.ViewContext.Writer;
             }
 
@@ -55,16 +78,66 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 
 
             [Test]
-            public void RichTextEditor_PropertyNameIsValid_WritesToViewContext()
+            public void RichTextEditor_PropertyNameIsValidAndLicenseIsEMSAndOnlineMarketingEnabled_WritesToViewContext()
             {
                 htmlHelperMock.Kentico().RichTextEditor(PROPERTY_NAME);
 
                 Received.InOrder(() =>
                 {
                     writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
-                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-rich-text-editor-license=\"{LICENSE_KEY}\"></div>");
+                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-allow-context-macros=\"true\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
                     writerMock.Write("</div>");
                 });
+            }
+
+
+            [Test]
+            public void RichTextEditor_PropertyNameIsValidAndLicenseWithoutFullContactManagementFeature_WritesToViewContext()
+            {
+                Fake<LicenseKeyInfo, LicenseKeyInfoProvider>().WithData();
+
+                htmlHelperMock.Kentico().RichTextEditor(PROPERTY_NAME);
+
+                Received.InOrder(() =>
+                {
+                    writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
+                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
+                    writerMock.Write("</div>");
+                });
+            }
+
+
+            [Test]
+            public void RichTextEditor_PropertyNameIsValidAndOnlineMarketingDisabled_WritesToViewContext()
+            {
+                settingsService[$"{site.SiteName}.CMSEnableOnlineMarketing"].Returns("false");
+
+                htmlHelperMock.Kentico().RichTextEditor(PROPERTY_NAME);
+
+                Received.InOrder(() =>
+                {
+                    writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
+                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
+                    writerMock.Write("</div>");
+                });
+            }
+
+
+            private void FakeEMSLicense()
+            {
+                var licenseFakeProvider = Fake<LicenseKeyInfo, LicenseKeyInfoProvider>();
+                var license = new LicenseKeyInfo();
+                license.SetValue("LicenseDomain", "testdomain");
+                license.SetValue("LicenseExpiration", LicenseKeyInfo.TIME_UNLIMITED_LICENSE);
+                license.SetValue("LicenseServers", 0);
+                license.SetValue("LicenseEdition", 'X');
+                license.SetValue("LicenseKey",
+@"DOMAIN:testdomain
+PRODUCT:CX12
+EXPIRATION:00000000
+SERVERS:0
+abcdefghijklmnopqrstuvwxyz==");
+                licenseFakeProvider.WithData(license);
             }
         }
 
