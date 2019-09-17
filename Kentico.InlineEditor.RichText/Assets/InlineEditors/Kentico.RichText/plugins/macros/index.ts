@@ -29,4 +29,8 @@ export const initializeMacroPlugin = (froala: Froala) => {
     })
 
     froala.PLUGINS[constants.MACROS_PLUGIN_NAME] = macroPlugin;
+
+    // Hide specific buttons in the built-in plugins
+    const videoInsertButtons = froala.DEFAULTS.videoInsertButtons || [];
+    delete videoInsertButtons[videoInsertButtons.indexOf("videoUpload")];
 }

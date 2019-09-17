@@ -26,7 +26,7 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
         toolbarInline: true,
         codeMirror: CodeMirror,
         pasteDeniedAttrs: [ "id", "style"],
-        quickInsertButtons: ["imageKentico", "video", "embedly", "table", "ul", "ol", "hr"],
+        quickInsertButtons: ["imageKentico", "video", "table", "ul", "ol", "hr"],
         imageEditButtons: ["imageReplaceKentico", "imageAlign", "imageCaption", "imageRemove", "|", "imageLink", "linkOpen", "linkEdit",
             "linkRemove", "-", "imageDisplay", "imageStyle", "imageAlt", "imageSize"],
         toolbarButtons:
@@ -36,15 +36,15 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
                     "backgroundColor", "inlineClass", "inlineStyle", "clearFormatting"]
             },
             moreParagraph: {
-                buttons: ["alignLeft", "alignCenter", "formatOLSimple", "alignRight", "alignJustify", "formatOL", "formatUL", "paragraphFormat",
-                    "paragraphStyle", "lineHeight", "outdent", "indent", "quote"]
+                buttons: ["formatOL", "formatUL", "paragraphFormat", "alignLeft", "alignCenter", "formatOLSimple", "alignRight", "alignJustify",
+                    "paragraphStyle", "lineHeight", "outdent", "indent", "quote"],
+                buttonsVisible: 2,
             },
             moreRich: {
-                buttons: [OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, "insertLink", "insertImageKentico", "insertVideo", "insertTable", "emoticons", "fontAwesome", "specialCharacters",
-                    "embedly", "insertFile", "insertHR"]
+                buttons: ["insertLink", "insertImageKentico", OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, "insertVideo", "insertTable", "emoticons", "specialCharacters", "insertHR"]
             },
             moreMisc: {
-                buttons: ["undo", "redo", "fullscreen", "print", "getPDF", "spellChecker", "selectAll", "html", "help"],
+                buttons: ["undo", "redo", "selectAll", "html", "help"],    
                 align: "right",
                 buttonsVisible: 2,
             }
@@ -57,8 +57,6 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
             ["html.set"](this: FroalaEditor) {
                 bindMacroClickListener(this);
             },
-            // [`popups.hide.${CONFIGURE_URL_MACRO_POPUP_NAME}`]: showActionsPopup,
-            // [`popups.hide.${CONFIGURE_CONTEXT_MACRO_POPUP_NAME}`]: showActionsPopup,
             contentChanged(this: FroalaEditor) {
                 bindMacroClickListener(this);
                 const event = new CustomEvent(UPDATE_WIDGET_PROPERTY_EVENT_NAME, {
@@ -91,10 +89,3 @@ const bindMacroClickListener = (editor: FroalaEditor) => {
     });
 }
 
-function showActionsPopup(this: FroalaEditor) {
-    const macroEl = this.el.querySelector<HTMLElement>(`.${MACRO_ACTIVE_CLASS}`);
-
-    if (macroEl) {
-        this.kenticoMacroPlugin.showActionsPopup(macroEl);
-    }
-}
