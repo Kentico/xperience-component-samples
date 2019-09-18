@@ -3,7 +3,7 @@
 The rich text widget allows content editors to edit rich text in a "WYSIWYG" manner.
 
 ## Requirements
-* The **[Froala editor](https://www.froala.com/wysiwyg-editor) license** is included in **Kentico 12.0.38** and later versions. You do not need to buy your own license to use this component.
+* **Kentico 12.0.38** or later versions is required to use this component. The **[Froala editor](https://www.froala.com/wysiwyg-editor) license** is also included in these versions, you do not need to buy your own license to use this component.
 
 ## Download & installation
 Prerequisite: You need to have [NodeJS runtime](https://nodejs.org/en/) installed to be able to use this widget.
