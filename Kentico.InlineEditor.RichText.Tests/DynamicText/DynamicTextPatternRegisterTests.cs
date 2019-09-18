@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using CMS.ContactManagement;
 using CMS.Tests;
@@ -75,6 +77,56 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 {
                     ContactLastName = "Anonymous - {Date}"
                 };
+            }
+        }
+
+
+        [TestFixture]
+        public class GetRegisteredPatternsTests : UnitTests
+        {
+            [Test]
+            public void GetRegisteredPatterns_NoPatternRegistered_ReturnsEmptyCollection()
+            {
+                var patternRegister = GetPatternRegister(0);
+                var registeredPatterns = patternRegister.GetRegisteredPatterns();
+
+                Assert.That(registeredPatterns, Is.Empty);
+            }
+
+
+            [Test]
+            public void GetRegisteredPatterns_SinglePatternRegistered_ReturnsCollectionWithOnePattern()
+            {
+                var patternRegister = GetPatternRegister(1);
+                var registeredPatterns = patternRegister.GetRegisteredPatterns();
+
+                Assert.That(registeredPatterns.Count(), Is.EqualTo(1));
+            }
+
+
+            [Test]
+            public void GetRegisteredPatterns_MultiplePatternsAreRegistered_ReturnsCollectionWithMultiplePatternsInCorrectOrder()
+            {
+                var patternRegister = GetPatternRegister(3);
+                var registeredPatterns = patternRegister.GetRegisteredPatterns();
+                var patternsInOrder = registeredPatterns.Select(p => p.Pattern);
+
+                Assert.That(registeredPatterns.Count(), Is.EqualTo(3));
+                Assert.That(patternsInOrder, Is.EquivalentTo(new string[] { "PATTERN1", "PATTERN2", "PATTERN3" }));
+            }
+
+
+            private DynamicTextPatternRegister GetPatternRegister(int patternsCount)
+            {
+                var patterns = new List<KeyValuePair<string, DynamicTextPattern>>();
+                for (int i = 1; i <= patternsCount; i++)
+                {
+                    var dynamicTextPattern = new DynamicTextPattern($"PATTERN{i}", "DISPLAY_NAME", () => "RESOLVED");
+                    patterns.Add(new KeyValuePair<string, DynamicTextPattern>(dynamicTextPattern.Pattern, dynamicTextPattern));
+
+                }
+
+                return new DynamicTextPatternRegister(patterns);
             }
         }
     }

@@ -49,11 +49,14 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
                 if (AllowContextMacros())
                 {
                     var registeredPatterns = DynamicTextPatternRegister.Instance.GetRegisteredPatterns();
-                    var contextMacros = registeredPatterns.ToDictionary(p => p.Pattern, p => p.PatternDisplayName);
-                    var contractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy() };
-                    var contextMacrosJson = JsonConvert.SerializeObject(contextMacros, new JsonSerializerSettings { ContractResolver = contractResolver });
+                    if (registeredPatterns.Any())
+                    {
+                        var contextMacros = registeredPatterns.ToDictionary(p => p.Pattern, p => p.PatternDisplayName);
+                        var contractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy() };
+                        var contextMacrosJson = JsonConvert.SerializeObject(contextMacros, new JsonSerializerSettings { ContractResolver = contractResolver });
 
-                    tagBuilder.Attributes.Add("data-context-macros", contextMacrosJson);
+                        tagBuilder.Attributes.Add("data-context-macros", contextMacrosJson);
+                    }
                 }
 
                 htmlHelper.ViewContext.Writer.Write(tagBuilder.ToString(TagRenderMode.SelfClosing));

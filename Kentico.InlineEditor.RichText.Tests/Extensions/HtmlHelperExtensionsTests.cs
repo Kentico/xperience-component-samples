@@ -85,7 +85,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 Received.InOrder(() =>
                 {
                     writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
-                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-allow-context-macros=\"true\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
+                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-context-macros=\"{{&quot;ContactFirstName&quot;:&quot;First name&quot;,&quot;ContactLastName&quot;:&quot;Last name&quot;,&quot;ContactDescriptiveName&quot;:&quot;Full name&quot;}}\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
                     writerMock.Write("</div>");
                 });
             }
