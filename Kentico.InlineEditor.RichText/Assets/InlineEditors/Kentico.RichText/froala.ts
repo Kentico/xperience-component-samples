@@ -19,7 +19,7 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
     Froala.RegisterCommand("imageReplaceKentico", imageReplaceCommand);
     Froala.RegisterQuickInsertButton("imageKentico", insertImageCommand);
 
-    initializeMacroPlugin(Froala);
+    initializeMacroPlugin(Froala, element);
 
     new FroalaEditor(element, {
         key: element.dataset.richTextEditorLicense,
@@ -51,7 +51,7 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
         },
         events: {
             initialized(this: FroalaEditor) {
-                const editModePropertyValue = replaceMacrosWithElements(propertyValue, getMacroEditModeElement);
+                const editModePropertyValue = replaceMacrosWithElements(propertyValue, this.opts.contextMacros, getMacroEditModeElement);
                 this.html.set(editModePropertyValue);
             },
             ["html.set"](this: FroalaEditor) {

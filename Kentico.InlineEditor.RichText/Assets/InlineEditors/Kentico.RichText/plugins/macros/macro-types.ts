@@ -10,6 +10,10 @@ export interface MacrosPlugin extends CustomPlugin {
     readonly hidePopups: () => void;
 }
 
+export interface ContextMacros {
+    [key: string]: string;
+}
+
 export enum DialogMode {
     INSERT,
     UPDATE
@@ -18,12 +22,6 @@ export enum DialogMode {
 export enum MacroType {
     URL = "query",
     CONTEXT = "pattern"
-}
-
-export enum ContextMacro {
-    FIRST_NAME = "ContactFirstName",
-    LAST_NAME = "ContactLastName",
-    FULL_NAME = "ContactDescriptiveName"
 }
 
 export type MacroElementTemplateResolver = (macroType: MacroType, macroValue: string, macroDefaultValue: string, macroDisplayValue: string) => string;

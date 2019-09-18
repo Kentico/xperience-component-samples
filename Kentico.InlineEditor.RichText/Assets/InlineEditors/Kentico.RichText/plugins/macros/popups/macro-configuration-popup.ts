@@ -22,9 +22,8 @@ export const showForm = (editor: FroalaEditor, popupName: string, mode: DialogMo
         if (macroType === MacroType.URL) {
             container!.innerHTML = getConfigureUrlParameterElement(mode, macroValue, macroDefaultValue);
             tabCommand = SWITCH_URL_TAB_COMMAND_NAME;
-
         } else {
-            container!.innerHTML = getConfigureContextMacroElement(mode, macroValue, macroDefaultValue);
+            container!.innerHTML = getConfigureContextMacroElement(mode, editor.opts.contextMacros, macroValue, macroDefaultValue);
             tabCommand = SWITCH_MACRO_TAB_COMMAND_NAME;
         }
 

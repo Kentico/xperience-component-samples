@@ -10,9 +10,10 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicTextPattern"/> class.
         /// </summary>
-        public DynamicTextPattern(string pattern, Func<string> getReplacement)
+        public DynamicTextPattern(string pattern, string displayName, Func<string> getReplacement)
         {
             Pattern = pattern;
+            PatternDisplayName = displayName;
             GetReplacement = getReplacement;
         }
 
@@ -21,6 +22,12 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         /// Gets the pattern the can be resolved.
         /// </summary>
         public string Pattern { get; }
+
+
+        /// <summary>
+        /// Gets the pattern display name.
+        /// </summary>
+        public string PatternDisplayName { get; }
 
 
         /// <summary>

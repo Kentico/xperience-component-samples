@@ -43,6 +43,7 @@ const insertMacroCommandParameters: RegisterCommandParameters = {
             const form = popupElement.querySelector<HTMLFormElement>("#ktc-form");
             const formData = new FormData(form!);
             const macroType = commandName === constants.INSERT_URL_MACRO_COMMAND_NAME ? MacroType.URL : MacroType.CONTEXT;
+            const contextMacros = this.opts.contextMacros;
 
             let macroValue = "";
             let macroDisplayValue = "";
@@ -50,10 +51,10 @@ const insertMacroCommandParameters: RegisterCommandParameters = {
             if (macroType === MacroType.URL) {
                 const urlParameterName = formData.get("urlParameterName") as string;
                 macroValue = encodeURI(urlParameterName);
-                macroDisplayValue = getMacroDisplayName(urlParameterName);
+                macroDisplayValue = getMacroDisplayName(contextMacros, urlParameterName);
             } else if (macroType === MacroType.CONTEXT) {
                 macroValue = formData.get("contextMacroType") as string;
-                macroDisplayValue = getMacroDisplayName(macroValue);
+                macroDisplayValue = getMacroDisplayName(contextMacros, macroValue);
             }
 
             const macroDefaultValue = formData.get("defaultText") as string;
@@ -99,7 +100,7 @@ const updateMacroCommandParameters: RegisterCommandParameters = {
             };
 
             if (data.macroValue) {
-                macroElement.textContent = getMacroDisplayName(macroValue);
+                macroElement.textContent = getMacroDisplayName(this.opts.contextMacros, macroValue);
                 Object.assign(macroElement.dataset, data);
             }
             

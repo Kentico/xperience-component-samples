@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using CMS.ContactManagement;
 
@@ -60,17 +61,26 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
 
 
         /// <summary>
+        /// Reuturns registered patterns.
+        /// </summary>
+        public IEnumerable<DynamicTextPattern> GetRegisteredPatterns()
+        {
+            return register.Select(p => p.Value);
+        }
+
+
+        /// <summary>
         /// Populates the register data with the default set of patterns.
         /// </summary>
         private void PopulatePatterns()
         {
-            var firstName = new DynamicTextPattern("ContactFirstName", () => GetCurrentContact()?.ContactFirstName);
+            var firstName = new DynamicTextPattern("ContactFirstName", "First name", () => GetCurrentContact()?.ContactFirstName);
             register.Add(new KeyValuePair<string, DynamicTextPattern>(firstName.Pattern, firstName));
 
-            var lastName = new DynamicTextPattern("ContactLastName", () => GetContactLastName(GetCurrentContact()));
+            var lastName = new DynamicTextPattern("ContactLastName", "Last name", () => GetContactLastName(GetCurrentContact()));
             register.Add(new KeyValuePair<string, DynamicTextPattern>(lastName.Pattern, lastName));
 
-            var fullName = new DynamicTextPattern("ContactDescriptiveName", () => GetContactFullName(GetCurrentContact()));
+            var fullName = new DynamicTextPattern("ContactDescriptiveName", "Full name", () => GetContactFullName(GetCurrentContact()));
             register.Add(new KeyValuePair<string, DynamicTextPattern>(fullName.Pattern, fullName));
         }
 

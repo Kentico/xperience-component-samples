@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 using CMS.Base;
 using CMS.Core;
@@ -44,7 +48,12 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
 
                 if (AllowContextMacros())
                 {
-                    tagBuilder.Attributes.Add("data-allow-context-macros", "true");
+                    var registeredPatterns = DynamicTextPatternRegister.Instance.GetRegisteredPatterns();
+                    var contextMacros = registeredPatterns.ToDictionary(p => p.Pattern, p => p.PatternDisplayName);
+                    var contractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy() };
+                    var contextMacrosJson = JsonConvert.SerializeObject(contextMacros, new JsonSerializerSettings { ContractResolver = contractResolver });
+
+                    tagBuilder.Attributes.Add("data-context-macros", contextMacrosJson);
                 }
 
                 htmlHelper.ViewContext.Writer.Write(tagBuilder.ToString(TagRenderMode.SelfClosing));
@@ -60,7 +69,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         /// <exception cref="ArgumentNullException">Thrown when the <paramref name="instance"/> is null.</exception>
         public static string ResolveRichText(this ExtensionPoint<HtmlHelper> instance, string text)
         {
-            instance = instance ?? throw new ArgumentNullException(nameof(instance));
+            _ = instance ?? throw new ArgumentNullException(nameof(instance));
 
             return new DynamicTextResolver().ResolveRichText(text);
         }

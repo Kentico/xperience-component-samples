@@ -94,7 +94,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             {
                 var patterns = new List<KeyValuePair<string, DynamicTextPattern>>();
 
-                var firstName = new DynamicTextPattern("REGISTERED", () => "RESOLVED");
+                var firstName = new DynamicTextPattern("REGISTERED", "DISPLAY_NAME", () => "RESOLVED");
                 patterns.Add(new KeyValuePair<string, DynamicTextPattern>(firstName.Pattern, firstName));
 
                 return new DynamicTextPatternRegister(patterns);

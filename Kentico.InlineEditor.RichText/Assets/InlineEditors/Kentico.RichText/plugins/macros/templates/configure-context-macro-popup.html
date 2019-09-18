@@ -2,15 +2,9 @@
     <div class="fr-layer fr-active" id="ktc-configuration-macro-layer-1" data-mouseenter-event-set="true">
         <div class="fr-input-line">
             <select id="ktc-configuration-macro-layer-type-1" class="ktc-select" name="contextMacroType" tabindex="1">
-                <option value="ContactFirstName"
-                    <%= macroValue === "ContactFirstName" ? "selected" : "" %>>
-                    First name</option>
-                <option value="ContactLastName"
-                    <%= macroValue === "ContactLastName" ? "selected" : "" %>>
-                    Last name</option>
-                <option value="ContactDescriptiveName"
-                    <%= macroValue === "ContactDescriptiveName" ? "selected" : "" %>>
-                    Full name</option>
+                <% Object.keys(macros).forEach((value) => { %>
+                    <option value="<%= value %>" <%= macroValue === value ? "selected" : "" %>><%- macros[value] %></option>
+                <% }); %>
             </select>
             <label for="ktc-configuration-macro-layer-type-1"><%= macroTypeLabel %></label>
         </div>

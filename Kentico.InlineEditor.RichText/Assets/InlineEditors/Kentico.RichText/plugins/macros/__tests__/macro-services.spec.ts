@@ -1,6 +1,12 @@
 import { replaceMacrosWithElements, replaceMacroElements } from "../macro-services";
 import { MacroElementTemplateResolver, MacroType } from "../macro-types";
 
+const contextMacros = {
+    "ContactFirstName": "First name",
+    "ContactLastName": "Last name",
+    "ContactDescriptiveName": "Full name",
+}
+
 const htmlWithMacros =
 `<div>
     <p>Hello</p>
@@ -45,7 +51,7 @@ describe("macro services", () => {
 
     describe("replaceMacrosWithElements", () => {
         it("should replace macros with macro elements", () => {
-            const result = replaceMacrosWithElements(htmlWithMacros, fakeMacroElementTemplateResolver);
+            const result = replaceMacrosWithElements(htmlWithMacros, contextMacros, fakeMacroElementTemplateResolver);
             
             expect(result).toBe(htmlWithMacroElements);
         });
