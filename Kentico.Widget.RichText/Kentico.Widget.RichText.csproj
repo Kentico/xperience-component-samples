@@ -548,10 +548,10 @@
     <Analyzer Include="..\packages\AWSSDK.S3.3.1.9.0\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App_Data\Global\Resources\Kentico.Widget.RichText.resx">
+    <Content Include="App_Data\Global\Resources\Kentico.Widget.RichText.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Kentico.Widget.RichText.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Targets\Kentico.ResourceFiles.targets" />

@@ -1,5 +1,6 @@
 import { PageBuilder } from "./page-builder";
 import { ModalDialog } from "./modal-dialog";
+import { Localization } from "./localization";
 
 export interface Kentico {
     /**
@@ -11,4 +12,9 @@ export interface Kentico {
      * Modal dialog.
      */
     readonly modalDialog: ModalDialog;
+
+    /**
+     * Localization.
+     */
+    readonly localization: Localization;
 }

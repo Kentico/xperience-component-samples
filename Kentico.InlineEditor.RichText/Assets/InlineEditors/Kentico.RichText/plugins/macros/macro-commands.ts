@@ -3,7 +3,7 @@ import FroalaEditor, { RegisterCommandParameters } from "froala-editor/js/froala
 import * as constants from "./macro-constants";
 import { getMacroEditModeElement } from "./macro-templates";
 import { DialogMode, MacroType } from "./macro-types";
-import { getMacroDisplayName } from "./macro-helpers";
+import { getMacroDisplayName, getString } from "./macro-helpers";
 import { showForm, getDialogElement } from "./popups";
 import { FroalaIcon } from "../../froala-icon";
 import { FroalaCommand } from "../../froala-command";
@@ -14,7 +14,7 @@ let defaultValueText: string;
 
 const openInsertMacroPopupCommandIcon = new FroalaIcon(constants.OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, { PATH: constants.ICON_MACRO, template: "svg" });
 const openInsertMacroPopupCommand = new FroalaCommand(constants.OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, {
-    title: 'Insert Dynamic Text',
+    title: getString("Command.InsertDynamicText"),
     icon: constants.OPEN_INSERT_MACRO_POPUP_COMMAND_NAME,
     focus: false,
     undo: false,
@@ -114,7 +114,7 @@ const updateContextMacroCommand = new FroalaCommand(constants.UPDATE_CONTEXT_MAC
 // Remove macro
 
 const removeMacroCommand = new FroalaCommand(constants.REMOVE_MACRO_COMMAND_NAME, {
-    title: "Remove",
+    title: getString("Command.RemoveMacro"),
     icon: "remove",
     focus: false,
     undo: true,
@@ -134,7 +134,7 @@ const removeMacroCommand = new FroalaCommand(constants.REMOVE_MACRO_COMMAND_NAME
 
 const configureMacroCommandIcon = new FroalaIcon(constants.CONFIGURE_MACRO_COMMAND_NAME, { NAME: "cog-wheel", SVG_KEY: "cogs" });
 const configureMacroCommand = new FroalaCommand(constants.CONFIGURE_MACRO_COMMAND_NAME, {
-    title: "Configure",
+    title: getString("Command.ConfigureMacro"),
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
@@ -157,7 +157,7 @@ const configureMacroCommand = new FroalaCommand(constants.CONFIGURE_MACRO_COMMAN
 
 const openMacroTabCommandIcon = new FroalaIcon("macro", { PATH: constants.ICON_CONTACT_ATTRIBUTES, template: "svg" });
 const openMacroTabCommand = new FroalaCommand(constants.SWITCH_MACRO_TAB_COMMAND_NAME, {
-    title: "Contact attribute",
+    title: getString("Command.ContactAttribute"),
     icon: "macro",
     undo: false,
     focus: false,
@@ -170,7 +170,7 @@ const openMacroTabCommand = new FroalaCommand(constants.SWITCH_MACRO_TAB_COMMAND
 
 const openQueryTabCommandIcon = new FroalaIcon("queryString", { PATH: constants.ICON_URL_PARAM, template: "svg" });
 const openQueryTabCommand = new FroalaCommand(constants.SWITCH_URL_TAB_COMMAND_NAME, {
-    title: "URL parameter",
+    title: getString("Command.UrlParameter"),
     icon: "queryString",
     undo: false,
     focus: false,
@@ -183,7 +183,7 @@ const openQueryTabCommand = new FroalaCommand(constants.SWITCH_URL_TAB_COMMAND_N
 
 const closeConfigurePopupCommandIcon = new FroalaIcon("popupConfigureClose", { NAME: "arrow-left", SVG_KEY: "back" });
 const closeConfigurePopupCommand = new FroalaCommand(constants.CLOSE_CONFIGURE_POPUP_COMMAND_NAME, {
-    title: 'Back',
+    title: getString("Command.PopupBack"),
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {

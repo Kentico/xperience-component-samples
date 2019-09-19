@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using CMS.ContactManagement;
+using CMS.Helpers;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors
 {
@@ -14,13 +15,17 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         // List of all registered patterns
         private readonly List<DynamicTextPattern> register = new List<DynamicTextPattern>();
 
-        private static readonly Lazy<DynamicTextPatternRegister> mInstance = new Lazy<DynamicTextPatternRegister>(() => new DynamicTextPatternRegister());
+        private static Lazy<DynamicTextPatternRegister> mInstance = new Lazy<DynamicTextPatternRegister>(() => new DynamicTextPatternRegister());
 
 
         /// <summary>
         /// Gets current instance of the <see cref="DynamicTextPatternRegister"/> class.
         /// </summary>
-        public static DynamicTextPatternRegister Instance => mInstance.Value;
+        public static DynamicTextPatternRegister Instance
+        {
+            get { return mInstance.Value; }
+            internal set { mInstance = new Lazy<DynamicTextPatternRegister>(() => value); }
+        }
 
 
         /// <summary>
@@ -74,9 +79,9 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         /// </summary>
         private void PopulatePatterns()
         {
-            register.Add(new DynamicTextPattern("ContactFirstName", "First name", () => GetCurrentContact()?.ContactFirstName));
-            register.Add(new DynamicTextPattern("ContactLastName", "Last name", () => GetContactLastName(GetCurrentContact())));
-            register.Add(new DynamicTextPattern("ContactDescriptiveName", "Full name", () => GetContactFullName(GetCurrentContact())));
+            register.Add(new DynamicTextPattern("ContactFirstName", GetPatternDisplayName("ContactFirstName"), () => GetCurrentContact()?.ContactFirstName));
+            register.Add(new DynamicTextPattern("ContactLastName", GetPatternDisplayName("ContactLastName"), () => GetContactLastName(GetCurrentContact())));
+            register.Add(new DynamicTextPattern("ContactDescriptiveName", GetPatternDisplayName("ContactDescriptiveName"), () => GetContactFullName(GetCurrentContact())));
         }
 
 
@@ -107,6 +112,12 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         private static bool IsAnonymousContact(ContactInfo contact)
         {
             return contact.ContactLastName.StartsWith(ContactHelper.ANONYMOUS, StringComparison.OrdinalIgnoreCase);
+        }
+
+
+        private static string GetPatternDisplayName(string pattern)
+        {
+            return ResHelper.GetString($"Kentico.InlineEditor.RichText.MacroPlugin.Pattern.{pattern}");
         }
     }
 }

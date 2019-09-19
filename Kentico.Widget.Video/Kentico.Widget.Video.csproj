@@ -547,9 +547,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App_Data\Global\Resources\Kentico.Widget.Video.resx">
+    <Content Include="App_Data\Global\Resources\Kentico.Widget.Video.resx">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Web.Mvc;
 
 using CMS.Base;
@@ -80,12 +81,33 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             [Test]
             public void RichTextEditor_PropertyNameIsValidAndLicenseIsEMSAndOnlineMarketingEnabled_WritesToViewContext()
             {
+                DynamicTextPatternRegister.Instance = new DynamicTextPatternRegister(new List<DynamicTextPattern>
+                {
+                   new DynamicTextPattern("Test", "TestDisplayName", null)
+                });
+
                 htmlHelperMock.Kentico().RichTextEditor(PROPERTY_NAME);
 
                 Received.InOrder(() =>
                 {
                     writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
-                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-context-macros=\"{{&quot;ContactFirstName&quot;:&quot;First name&quot;,&quot;ContactLastName&quot;:&quot;Last name&quot;,&quot;ContactDescriptiveName&quot;:&quot;Full name&quot;}}\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
+                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-context-macros=\"{{&quot;Test&quot;:&quot;TestDisplayName&quot;}}\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
+                    writerMock.Write("</div>");
+                });
+            }
+
+
+            [Test]
+            public void RichTextEditor_PropertyNameIsValidAndLicenseIsEMSAndOnlineMarketingEnabledAndNoPatternsRegistered_WritesToViewContext()
+            {
+                DynamicTextPatternRegister.Instance = new DynamicTextPatternRegister(new List<DynamicTextPattern>());
+
+                htmlHelperMock.Kentico().RichTextEditor(PROPERTY_NAME);
+
+                Received.InOrder(() =>
+                {
+                    writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
+                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
                     writerMock.Write("</div>");
                 });
             }
