@@ -3,7 +3,7 @@
         <div class="fr-input-line">
             <select id="ktc-configuration-macro-layer-type-1" class="ktc-select" name="contextMacroType" tabindex="1">
                 <% Object.keys(macros).forEach((value) => { %>
-                    <option value="<%= value %>" <%= macroValue === value ? "selected" : "" %>><%- macros[value] %></option>
+                    <option value="<%- value %>" <%= macroValue === value ? "selected" : "" %>><%- macros[value] %></option>
                 <% }); %>
             </select>
             <label for="ktc-configuration-macro-layer-type-1"><%= macroTypeLabel %></label>

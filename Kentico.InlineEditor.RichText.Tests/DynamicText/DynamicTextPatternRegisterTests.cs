@@ -110,9 +110,14 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 var patternRegister = GetPatternRegister(3);
                 var registeredPatterns = patternRegister.GetRegisteredPatterns();
                 var patternsInOrder = registeredPatterns.Select(p => p.Pattern);
+                var displayNamesInOrder = registeredPatterns.Select(p => p.PatternDisplayName);
 
-                Assert.That(registeredPatterns.Count(), Is.EqualTo(3));
-                Assert.That(patternsInOrder, Is.EquivalentTo(new string[] { "PATTERN1", "PATTERN2", "PATTERN3" }));
+                Assert.Multiple(() =>
+                {
+                    Assert.That(registeredPatterns.Count(), Is.EqualTo(3));
+                    Assert.That(patternsInOrder, Is.EquivalentTo(new string[] { "PATTERN1", "PATTERN2", "PATTERN3" }));
+                    Assert.That(displayNamesInOrder, Is.EquivalentTo(new string[] { "DISPLAY_NAME1", "DISPLAY_NAME2", "DISPLAY_NAME3" }));
+                });
             }
 
 
@@ -121,7 +126,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 var patterns = new List<KeyValuePair<string, DynamicTextPattern>>();
                 for (int i = 1; i <= patternsCount; i++)
                 {
-                    var dynamicTextPattern = new DynamicTextPattern($"PATTERN{i}", "DISPLAY_NAME", () => "RESOLVED");
+                    var dynamicTextPattern = new DynamicTextPattern($"PATTERN{i}", $"DISPLAY_NAME{i}", () => "RESOLVED");
                     patterns.Add(new KeyValuePair<string, DynamicTextPattern>(dynamicTextPattern.Pattern, dynamicTextPattern));
 
                 }
