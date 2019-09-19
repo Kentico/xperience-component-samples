@@ -4,6 +4,7 @@ using System.Linq;
 
 using CMS.ContactManagement;
 using CMS.Helpers;
+using CMS.Membership;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors
 {
@@ -117,7 +118,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
 
         private static string GetPatternDisplayName(string pattern)
         {
-            return ResHelper.GetString($"Kentico.InlineEditor.RichText.MacroPlugin.Pattern.{pattern}");
+            return ResHelper.GetString($"Kentico.InlineEditor.RichText.MacroPlugin.Pattern.{pattern}", MembershipContext.AuthenticatedUser.PreferredUICultureCode);
         }
     }
 }
