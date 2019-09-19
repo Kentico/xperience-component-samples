@@ -12,7 +12,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
     internal class DynamicTextPatternRegister
     {
         // List of all registered patterns
-        private List<KeyValuePair<string, DynamicTextPattern>> register = new List<KeyValuePair<string, DynamicTextPattern>>();
+        private readonly List<DynamicTextPattern> register = new List<DynamicTextPattern>();
 
         private static readonly Lazy<DynamicTextPatternRegister> mInstance = new Lazy<DynamicTextPatternRegister>(() => new DynamicTextPatternRegister());
 
@@ -38,9 +38,9 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         }
 
 
-        internal DynamicTextPatternRegister(List<KeyValuePair<string, DynamicTextPattern>> data)
+        internal DynamicTextPatternRegister(List<DynamicTextPattern> data)
         {
-            register.AddRange(data);
+            register = data;
         }
 
 
@@ -50,10 +50,10 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         /// <param name="pattern">The pattern.</param>
         public Func<string> GetReplacementFunction(string pattern)
         {
-            var patternItem = register.Find(p => p.Key.Equals(pattern));
-            if (patternItem.Value != null)
+            var patternItem = register.FirstOrDefault(p => p.Pattern.Equals(pattern));
+            if (patternItem != null)
             {
-                return patternItem.Value.GetReplacement;
+                return patternItem.GetReplacement;
             }
 
             return null;
@@ -61,11 +61,11 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
 
 
         /// <summary>
-        /// Reuturns registered patterns.
+        /// Returns registered patterns.
         /// </summary>
         public IEnumerable<DynamicTextPattern> GetRegisteredPatterns()
         {
-            return register.Select(p => p.Value);
+            return register;
         }
 
 
@@ -74,14 +74,9 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         /// </summary>
         private void PopulatePatterns()
         {
-            var firstName = new DynamicTextPattern("ContactFirstName", "First name", () => GetCurrentContact()?.ContactFirstName);
-            register.Add(new KeyValuePair<string, DynamicTextPattern>(firstName.Pattern, firstName));
-
-            var lastName = new DynamicTextPattern("ContactLastName", "Last name", () => GetContactLastName(GetCurrentContact()));
-            register.Add(new KeyValuePair<string, DynamicTextPattern>(lastName.Pattern, lastName));
-
-            var fullName = new DynamicTextPattern("ContactDescriptiveName", "Full name", () => GetContactFullName(GetCurrentContact()));
-            register.Add(new KeyValuePair<string, DynamicTextPattern>(fullName.Pattern, fullName));
+            register.Add(new DynamicTextPattern("ContactFirstName", "First name", () => GetCurrentContact()?.ContactFirstName));
+            register.Add(new DynamicTextPattern("ContactLastName", "Last name", () => GetContactLastName(GetCurrentContact())));
+            register.Add(new DynamicTextPattern("ContactDescriptiveName", "Full name", () => GetContactFullName(GetCurrentContact())));
         }
 
 

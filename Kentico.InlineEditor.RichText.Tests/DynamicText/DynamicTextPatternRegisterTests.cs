@@ -123,12 +123,11 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 
             private DynamicTextPatternRegister GetPatternRegister(int patternsCount)
             {
-                var patterns = new List<KeyValuePair<string, DynamicTextPattern>>();
+                var patterns = new List<DynamicTextPattern>();
                 for (int i = 1; i <= patternsCount; i++)
                 {
                     var dynamicTextPattern = new DynamicTextPattern($"PATTERN{i}", $"DISPLAY_NAME{i}", () => "RESOLVED");
-                    patterns.Add(new KeyValuePair<string, DynamicTextPattern>(dynamicTextPattern.Pattern, dynamicTextPattern));
-
+                    patterns.Add(dynamicTextPattern);
                 }
 
                 return new DynamicTextPatternRegister(patterns);

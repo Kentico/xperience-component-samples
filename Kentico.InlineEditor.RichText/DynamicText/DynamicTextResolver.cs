@@ -17,7 +17,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         private const string PARAM_NAME_GROUP_NAME = "param_name";
         private const string DEFAULT_VALUE_GROUP_NAME = "default_value";
 
-        private readonly Regex macroPatternRegex = RegexHelper.GetRegex($@"{{%(?<{MACRO_GROUP_NAME}>.*?)%}}");
+        private readonly Regex macroPatternRegex = RegexHelper.GetRegex($"{{%(?<{MACRO_GROUP_NAME}>.*?)%}}");
         private readonly Regex resolveDynamicTextPatternRegex = RegexHelper.GetRegex($@"ResolveDynamicText\(\s*""(?<{TYPE_GROUP_NAME}>[^""]*)""\s*,\s*""(?<{PARAM_NAME_GROUP_NAME}>[^""]*)""\s*,\s*""(?<{DEFAULT_VALUE_GROUP_NAME}>[^""]*)""\s*\)");
 
         private readonly DynamicTextPatternRegister patternRegister;
