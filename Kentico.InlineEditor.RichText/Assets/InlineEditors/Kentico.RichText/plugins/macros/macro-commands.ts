@@ -124,6 +124,12 @@ const removeMacroCommand = new FroalaCommand(constants.REMOVE_MACRO_COMMAND_NAME
         if (macroEl) {
             this.undo.saveStep();
             macroEl.remove();
+
+            // This ensures that the editor in correct state when deleting
+            // macro element which was the only element inside the editor
+            if (this.core.isEmpty()) {
+                this.html.set("");
+            }
         }
 
         this.kenticoMacroPlugin.hideActionsPopup();
