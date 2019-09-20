@@ -529,11 +529,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Data\Global\Resources\Kentico.InlineEditor.RichText.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Kentico.InlineEditor.RichText.resx</DependentUpon>
-    </Compile>
     <Compile Include="DynamicText\DynamicTextPattern.cs" />
     <Compile Include="DynamicText\DynamicTextPatternRegister.cs" />
     <Compile Include="DynamicText\DynamicTextResolver.cs" />
@@ -586,10 +581,7 @@
     <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\macro-templates.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Global\Resources\Kentico.InlineEditor.RichText.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Kentico.InlineEditor.RichText.Designer.cs</LastGenOutput>
-    </Content>
+    <Content Include="App_Data\Global\Resources\Kentico.InlineEditor.RichText.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Targets\Kentico.ResourceFiles.targets" />
