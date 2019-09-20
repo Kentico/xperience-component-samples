@@ -21,23 +21,23 @@ const htmlWithMacros =
 </div>`;
 
 const fakeMacroElementTemplateResolver: MacroElementTemplateResolver = (macroType, macroValue, macroDefaultValue, macroDisplayValue) => {
-    return `<span contenteditable="false" class="ktc-macro fr-deletable" data-macro-type="${macroType}" data-macro-value="${macroValue}" data-macro-default-value="${macroDefaultValue || ""}">${macroDisplayValue}</span>`
+    return `<input class="ktc-macro" value="${macroDisplayValue}" data-macro-type="${macroType}" data-macro-value="${macroValue}" data-macro-default-value="${macroDefaultValue || ""}" />`;
 }
 
-const getMacroElementAttributes = (macroType: MacroType, macroValue: string, macroDefaultValue: string = "") =>
-    `contenteditable="false" class="ktc-macro fr-deletable" data-macro-type="${macroType}" data-macro-value="${macroValue}" data-macro-default-value="${macroDefaultValue}"`
+const getMacroElementAttributes = (macroType: MacroType, macroValue: string, macroDisplayValue: string, macroDefaultValue: string = "") =>
+    `class="ktc-macro" value="${macroDisplayValue}" data-macro-type="${macroType}" data-macro-value="${macroValue}" data-macro-default-value="${macroDefaultValue}"`
 
 const htmlWithMacroElements = 
 `<div>
     <p>Hello</p>
-    <p><span ${getMacroElementAttributes(MacroType.URL, "Test")}>param: Test</span></p>
-    <p><span ${getMacroElementAttributes(MacroType.URL, "Test", "TestQueryString")}>param: Test</span></p>
-    <p><span ${getMacroElementAttributes(MacroType.CONTEXT, "ContactFirstName")}>First name</span></p>
-    <p><span ${getMacroElementAttributes(MacroType.CONTEXT, "ContactFirstName", "TestFirstName")}>First name</span></p>
-    <p><span ${getMacroElementAttributes(MacroType.CONTEXT, "ContactLastName")}>Last name</span></p>
-    <p><span ${getMacroElementAttributes(MacroType.CONTEXT, "ContactLastName", "TestLastName")}>Last name</span></p>
-    <p><span ${getMacroElementAttributes(MacroType.CONTEXT, "ContactDescriptiveName")}>Full name</span></p>
-    <p><span ${getMacroElementAttributes(MacroType.CONTEXT, "ContactDescriptiveName", "TestDescriptiveName")}>Full name</span></p>
+    <p><input ${getMacroElementAttributes(MacroType.URL, "Test", "param: Test")} /></p>
+    <p><input ${getMacroElementAttributes(MacroType.URL, "Test", "param: Test", "TestQueryString")} /></p>
+    <p><input ${getMacroElementAttributes(MacroType.CONTEXT, "ContactFirstName", "First name")} /></p>
+    <p><input ${getMacroElementAttributes(MacroType.CONTEXT, "ContactFirstName", "First name", "TestFirstName")} /></p>
+    <p><input ${getMacroElementAttributes(MacroType.CONTEXT, "ContactLastName", "Last name")} /></p>
+    <p><input ${getMacroElementAttributes(MacroType.CONTEXT, "ContactLastName", "Last name", "TestLastName")} /></p>
+    <p><input ${getMacroElementAttributes(MacroType.CONTEXT, "ContactDescriptiveName", "Full name")} /></p>
+    <p><input ${getMacroElementAttributes(MacroType.CONTEXT, "ContactDescriptiveName", "Full name", "TestDescriptiveName")} /></p>
 </div>`
 
 describe("macro services", () => {

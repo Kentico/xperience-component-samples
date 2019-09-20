@@ -84,10 +84,12 @@ export const destroyFroalaEditor = (element: HTMLElement) => {
 }
 
 const bindMacroClickListener = (editor: FroalaEditor) => {
-    const macros = editor.el.querySelectorAll<HTMLElement>(`.${MACRO_CLASS}`);
+    const macros = editor.el.querySelectorAll<HTMLInputElement>(`.${MACRO_CLASS}`);
 
     macros.forEach((macroEl) => {
         macroEl.onclick = () => editor.kenticoMacroPlugin.showActionsPopup(macroEl);
+        // Prevents from showing the default froala button popup on right click 
+        macroEl.onmousedown = (event) => event.stopPropagation();
     });
 }
 

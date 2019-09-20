@@ -81,7 +81,7 @@ const updateMacroCommandParameters: RegisterCommandParameters = {
     undo: true,
     refreshAfterCallback: true,
     callback(this: FroalaEditor, commandName) {
-        const macroElement = this.el.querySelector<HTMLElement>(`.${constants.MACRO_ACTIVE_CLASS}`);
+        const macroElement = this.el.querySelector<HTMLInputElement>(`.${constants.MACRO_ACTIVE_CLASS}`);
         const popupName = commandName === constants.UPDATE_URL_MACRO_COMMAND_NAME
             ? constants.CONFIGURE_URL_MACRO_POPUP_NAME
             : commandName === constants.UPDATE_CONTEXT_MACRO_COMMAND_NAME
@@ -100,7 +100,7 @@ const updateMacroCommandParameters: RegisterCommandParameters = {
             };
 
             if (data.macroValue) {
-                macroElement.textContent = getMacroDisplayName(this.opts.contextMacros, macroValue);
+                macroElement.value = getMacroDisplayName(this.opts.contextMacros, macroValue);
                 Object.assign(macroElement.dataset, data);
             }
             
@@ -124,12 +124,6 @@ const removeMacroCommand = new FroalaCommand(constants.REMOVE_MACRO_COMMAND_NAME
         if (macroEl) {
             this.undo.saveStep();
             macroEl.remove();
-
-            // This ensures that the editor in correct state when deleting
-            // macro element which was the only element inside the editor
-            if (this.core.isEmpty()) {
-                this.html.set("");
-            }
         }
 
         this.kenticoMacroPlugin.hideActionsPopup();
