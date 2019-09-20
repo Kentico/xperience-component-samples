@@ -7,6 +7,7 @@ using CMS.ContactManagement;
 using CMS.Core;
 using CMS.DataEngine;
 using CMS.LicenseProvider;
+using CMS.Membership;
 using CMS.SiteProvider;
 using CMS.Tests;
 
@@ -42,6 +43,8 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 FakeEMSLicense();
 
                 Fake<SiteInfo>();
+                Fake<UserInfo>();
+                MembershipContext.AuthenticatedUser = new CurrentUserInfo(new UserInfo(), false);
 
                 site = new SiteInfo {
                     DomainName = "testdomain",
@@ -173,14 +176,16 @@ abcdefghijklmnopqrstuvwxyz==");
             [SetUp]
             public void SetUp()
             {
+                Fake<UserInfo>();
                 Fake<ContactInfo>();
                 var currentContact = new ContactInfo
                 {
                     ContactFirstName = "FIRSTNAME",
                 };
 
+                // First mock the user before accessing the instance
+                MembershipContext.AuthenticatedUser = new CurrentUserInfo(new UserInfo(), false);
                 DynamicTextPatternRegister.Instance.GetCurrentContact = () => currentContact;
-
 
                 htmlHelperMock = HtmlHelperMock.GetHtmlHelper();
             }

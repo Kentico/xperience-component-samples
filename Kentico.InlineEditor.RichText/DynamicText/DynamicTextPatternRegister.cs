@@ -32,6 +32,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         /// <summary>
         /// Gets or sets the function which gets the current contact.
         /// </summary>
+        /// <remarks>Using delegate here to ensure the correct current user is resolved since this class is a singleton.</remarks>
         internal Func<ContactInfo> GetCurrentContact { get; set; } = () => ContactManagementContext.CurrentContact;
 
 
@@ -116,7 +117,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         }
 
 
-        private static string GetPatternDisplayName(string pattern)
+        private string GetPatternDisplayName(string pattern)
         {
             return ResHelper.GetString($"Kentico.InlineEditor.RichText.MacroPlugin.Pattern.{pattern}", MembershipContext.AuthenticatedUser.PreferredUICultureCode);
         }

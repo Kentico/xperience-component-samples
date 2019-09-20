@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using CMS.ContactManagement;
+using CMS.Membership;
 using CMS.Tests;
 
 using NUnit.Framework;
@@ -18,6 +19,8 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             public void SetUp()
             {
                 Fake<ContactInfo>();
+                Fake<UserInfo>();
+                MembershipContext.AuthenticatedUser = new CurrentUserInfo(new UserInfo(), false);
             }
 
 
@@ -84,6 +87,14 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
         [TestFixture]
         public class GetRegisteredPatternsTests : UnitTests
         {
+            [SetUp]
+            public void SetUp()
+            {
+                Fake<UserInfo>();
+                MembershipContext.AuthenticatedUser = new CurrentUserInfo(new UserInfo(), false);
+            }
+
+
             [Test]
             public void GetRegisteredPatterns_NoPatternRegistered_ReturnsEmptyCollection()
             {

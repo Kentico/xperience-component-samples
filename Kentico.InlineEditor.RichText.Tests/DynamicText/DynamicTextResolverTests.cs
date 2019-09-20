@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
+
 using CMS.Base;
 using CMS.MacroEngine;
+using CMS.Membership;
+using CMS.Tests;
+
 using NUnit.Framework;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
@@ -8,11 +12,14 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
     public class DynamicTextResolverTests
     {
         [TestFixture]
-        public class ResolveRichTextTests
+        public class ResolveRichTextTests : UnitTests
         {
-            [OneTimeSetUp]
-            public void OneTimeSetUp()
+            [SetUp]
+            public void SetUp()
             {
+                Fake<UserInfo>();
+                MembershipContext.AuthenticatedUser = new CurrentUserInfo(new UserInfo(), false);
+                
                 // Register the dynamic text test macro method
                 Extend<string>.With<DynamicTextTestMacroMethods>();
             }
