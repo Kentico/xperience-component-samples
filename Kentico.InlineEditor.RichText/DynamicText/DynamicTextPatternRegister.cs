@@ -81,9 +81,9 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         /// </summary>
         private void PopulatePatterns()
         {
-            register.Add(new DynamicTextPattern("ContactFirstName", GetPatternDisplayName("ContactFirstName"), () => GetCurrentContact()?.ContactFirstName));
-            register.Add(new DynamicTextPattern("ContactLastName", GetPatternDisplayName("ContactLastName"), () => GetContactLastName(GetCurrentContact())));
-            register.Add(new DynamicTextPattern("ContactDescriptiveName", GetPatternDisplayName("ContactDescriptiveName"), () => GetContactFullName(GetCurrentContact())));
+            register.Add(new DynamicTextPattern("ContactFirstName", GetPatternResourceString("ContactFirstName"), () => GetCurrentContact()?.ContactFirstName));
+            register.Add(new DynamicTextPattern("ContactLastName", GetPatternResourceString("ContactLastName"), () => GetContactLastName(GetCurrentContact())));
+            register.Add(new DynamicTextPattern("ContactDescriptiveName", GetPatternResourceString("ContactDescriptiveName"), () => GetContactFullName(GetCurrentContact())));
         }
 
 
@@ -117,9 +117,9 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         }
 
 
-        private string GetPatternDisplayName(string pattern)
+        private string GetPatternResourceString(string pattern)
         {
-            return ResHelper.GetString($"Kentico.InlineEditor.RichText.MacroPlugin.Pattern.{pattern}", MembershipContext.AuthenticatedUser.PreferredUICultureCode);
+            return $"{{$Kentico.InlineEditor.RichText.MacroPlugin.Pattern.{pattern}$}}";
         }
     }
 }

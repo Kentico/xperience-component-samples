@@ -8,6 +8,8 @@ using Newtonsoft.Json.Serialization;
 using CMS.Base;
 using CMS.Core;
 using CMS.DataEngine;
+using CMS.Helpers;
+using CMS.Membership;
 using CMS.LicenseProvider;
 using CMS.SiteProvider;
 
@@ -51,7 +53,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
                     var registeredPatterns = DynamicTextPatternRegister.Instance.GetRegisteredPatterns();
                     if (registeredPatterns.Any())
                     {
-                        var contextMacros = registeredPatterns.ToDictionary(p => p.Pattern, p => p.PatternDisplayName);
+                        var contextMacros = registeredPatterns.ToDictionary(p => p.Pattern, p => ResHelper.LocalizeString(p.PatternDisplayName, MembershipContext.AuthenticatedUser.PreferredUICultureCode));
                         var contractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy() };
                         var contextMacrosJson = JsonConvert.SerializeObject(contextMacros, new JsonSerializerSettings { ContractResolver = contractResolver });
 

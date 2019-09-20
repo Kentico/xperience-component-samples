@@ -150,6 +150,9 @@
   <data name="Kentico.InlineEditor.RichText.MacroPlugin.Label.UrlParameter" xml:space="preserve">
     <value>URL parameter</value>
   </data>
+  <data name="Kentico.InlineEditor.RichText.MacroPlugin.MacroElement.UrlParameterPrefix" xml:space="preserve">
+    <value>param</value>
+  </data>
   <data name="Kentico.InlineEditor.RichText.MacroPlugin.Pattern.ContactDescriptiveName" xml:space="preserve">
     <value>Full name</value>
   </data>

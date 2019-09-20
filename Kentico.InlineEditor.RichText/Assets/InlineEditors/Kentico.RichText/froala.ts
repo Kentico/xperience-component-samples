@@ -9,7 +9,7 @@ import { UPDATE_WIDGET_PROPERTY_EVENT_NAME } from "@/shared/constants";
 import { imageReplaceCommand, insertImageCommand } from "./commands";
 import { initializeMacroPlugin } from "./plugins/macros";
 import { replaceMacroElements, replaceMacrosWithElements } from "./plugins/macros/macro-services";
-import { MACRO_CLASS, OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, CONFIGURATION_POPUP_NAME } from "./plugins/macros/macro-constants";
+import { MACRO_CLASS, OPEN_INSERT_MACRO_POPUP_COMMAND_NAME } from "./plugins/macros/macro-constants";
 import { getMacroEditModeElement } from "./plugins/macros/macro-templates";
 
 import "./style.less";
