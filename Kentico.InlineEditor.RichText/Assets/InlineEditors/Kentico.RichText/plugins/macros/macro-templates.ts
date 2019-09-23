@@ -2,12 +2,8 @@ import * as constants from "./macro-constants";
 import { DialogMode, MacroType, ContextMacros } from "./macro-types";
 import { getString } from "./macro-helpers";
 
-const macroEditModeTemplate = require("./templates/macro-element.html");
-const configureUrlMacroTemplate = require("./templates/configure-url-parameter-popup.html");
-const configureContextMacroTemplate = require("./templates/configure-context-macro-popup.html");
-
 export const getMacroEditModeElement = (macroType: MacroType, macroValue: string, macroDefaultValue: string, macroDisplayValue: string): string =>
-    macroEditModeTemplate({
+    require("./templates/macro-element.html")({
         macroClass: constants.MACRO_CLASS,
         macroType,
         macroValue,
@@ -16,7 +12,7 @@ export const getMacroEditModeElement = (macroType: MacroType, macroValue: string
     });
 
 export const getConfigureUrlParameterElement = (mode: DialogMode = DialogMode.INSERT, macroValue: string = "", macroDefaultValue: string = ""): string =>
-    configureUrlMacroTemplate({
+    require("./templates/configure-url-parameter-popup.html")({
         value: macroValue,
         defaultValue: macroDefaultValue,
         actionButtonText: mode === DialogMode.INSERT ? getString("ActionButton.Insert") : getString("ActionButton.Save"),
@@ -26,7 +22,7 @@ export const getConfigureUrlParameterElement = (mode: DialogMode = DialogMode.IN
     });
 
 export const getConfigureContextMacroElement = (mode: DialogMode, macros: ContextMacros, macroValue: string = "", macroDefaultValue: string = ""): string =>
-    configureContextMacroTemplate({
+    require("./templates/configure-context-macro-popup.html")({
         macros,
         macroValue,
         macroDefaultValue,

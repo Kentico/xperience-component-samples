@@ -1,5 +1,7 @@
+import * as macroHelpers from "../macro-helpers";
+import * as macroTemplateResolvers from "../macro-templates";
 import { replaceMacrosWithElements, replaceMacroElements } from "../macro-services";
-import { MacroElementTemplateResolver, MacroType } from "../macro-types";
+import { MacroType } from "../macro-types";
 
 const contextMacros = {
     "ContactFirstName": "First name",
@@ -20,7 +22,7 @@ const htmlWithMacros =
     <p>{% ResolveDynamicText("pattern", "ContactDescriptiveName", "TestDescriptiveName") %}</p>
 </div>`;
 
-const fakeMacroElementTemplateResolver: MacroElementTemplateResolver = (macroType, macroValue, macroDefaultValue, macroDisplayValue) => {
+const fakeMacroElementTemplateResolver = (macroType: MacroType, macroValue: string, macroDefaultValue: string, macroDisplayValue: string) => {
     return `<input class="ktc-macro" value="${macroDisplayValue}" data-macro-type="${macroType}" data-macro-value="${macroValue}" data-macro-default-value="${macroDefaultValue || ""}" />`;
 }
 
@@ -51,7 +53,10 @@ describe("macro services", () => {
 
     describe("replaceMacrosWithElements", () => {
         it("should replace macros with macro elements", () => {
-            const result = replaceMacrosWithElements(htmlWithMacros, contextMacros, fakeMacroElementTemplateResolver);
+            jest.spyOn(macroHelpers, "getString").mockImplementation(() => "param");
+            jest.spyOn(macroTemplateResolvers, "getMacroEditModeElement").mockImplementation(fakeMacroElementTemplateResolver);
+
+            const result = replaceMacrosWithElements(htmlWithMacros, contextMacros);
             
             expect(result).toBe(htmlWithMacroElements);
         });

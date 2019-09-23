@@ -23,5 +23,3 @@ export enum MacroType {
     URL = "query",
     CONTEXT = "pattern"
 }
-
-export type MacroElementTemplateResolver = (macroType: MacroType, macroValue: string, macroDefaultValue: string, macroDisplayValue: string) => string;
