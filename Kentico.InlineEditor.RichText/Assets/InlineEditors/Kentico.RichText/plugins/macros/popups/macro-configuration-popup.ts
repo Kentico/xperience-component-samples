@@ -14,7 +14,9 @@ export function getShowPopup(popupName: string, buttons: any[], macroType: Macro
 }
 
 export const showForm = (editor: FroalaEditor, popupName: string, mode: DialogMode = DialogMode.INSERT, macroType: MacroType, macroValue: string = "", macroDefaultValue: string = "") => {
+    macroDefaultValue = macroDefaultValue.trim();
     const dialog = getDialogElement(editor, popupName);
+    
     if (dialog) {
         const container = dialog.querySelector<HTMLElement>(".ktc-configure-popup");
         let tabCommand = "";
