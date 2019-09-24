@@ -543,12 +543,11 @@
   <ItemGroup>
     <None Include="app.config" />
     <Content Include="Assets\InlineEditors\Kentico.VideoUrlEditor\style.less" />
+    <Content Include="Assets\Widgets\Kentico.Video\main.less" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App_Data\Global\Resources\Kentico.Widget.Video.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <Content Include="App_Data\Global\Resources\Kentico.Widget.Video.resx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

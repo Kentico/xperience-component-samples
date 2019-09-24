@@ -555,6 +555,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DynamicText\DynamicTextResolverTests.cs" />
+    <Compile Include="DynamicText\DynamicTextPatternRegisterTests.cs" />
+    <Compile Include="DynamicText\DynamicTextTestMacroMethods.cs" />
     <Compile Include="Extensions\HtmlHelperExtensionsTests.cs" />
     <Compile Include="Mocks\HtmlHelperMock.cs" />
     <Compile Include="Mocks\HttpContextMock.cs" />

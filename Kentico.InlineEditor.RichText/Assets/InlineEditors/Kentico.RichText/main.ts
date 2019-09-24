@@ -5,11 +5,11 @@ import { initializeFroalaEditor, destroyFroalaEditor } from "./froala";
 const RICH_TEXT_WRAPPER_SELECTOR = ".ktc-rich-text-wrapper";
 
 window.kentico.pageBuilder.registerInlineEditor("Kentico.InlineEditor.RichText", {
-    init({ editor, propertyName }) {
+    init({ editor, propertyName, propertyValue }) {
         const richTextWrapper = editor.querySelector<HTMLElement>(RICH_TEXT_WRAPPER_SELECTOR);
 
         if (richTextWrapper) {
-            initializeFroalaEditor(richTextWrapper, editor, propertyName);
+            initializeFroalaEditor(richTextWrapper, editor, propertyName, propertyValue);
         }
     },
     destroy({ editor }) {
