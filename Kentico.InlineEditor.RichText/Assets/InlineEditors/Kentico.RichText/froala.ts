@@ -12,7 +12,7 @@ import { replaceMacroElements, replaceMacrosWithElements } from "./plugins/macro
 import { MACRO_CLASS, OPEN_INSERT_MACRO_POPUP_COMMAND_NAME } from "./plugins/macros/macro-constants";
 
 import { initializeLinkPlugin } from "./plugins/links";
-import { OPEN_INSERT_LINK_POPUP_COMMAND_NAME } from "./plugins/links/link-constants";
+import { OPEN_INSERT_LINK_POPUP_COMMAND_NAME, OPEN_EDIT_LINK_POPUP_COMMAND_NAME } from "./plugins/links/link-constants";
 
 import "./style.less";
 
@@ -32,6 +32,7 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
         quickInsertButtons: ["imageKentico", "video", "table", "ul", "ol", "hr"],
         imageEditButtons: ["imageReplaceKentico", "imageAlign", "imageCaption", "imageRemove", "|", "imageLink", "linkOpen", "linkEdit",
             "linkRemove", "-", "imageDisplay", "imageStyle", "imageAlt", "imageSize"],
+        linkEditButtons: ["linkOpen", "linkStyle", OPEN_EDIT_LINK_POPUP_COMMAND_NAME, "linkRemove"],
         toolbarButtons:
         {
             moreText: {

@@ -1,6 +1,7 @@
 import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 
-import { DialogMode, MacroType } from "../macro-types";
+import { MacroType } from "../macro-types";
+import { DialogMode } from "../../plugin-types";
 import { getDialogElement } from "../../popup-helper";
 import { showPopup } from "../../popup-helper";
 import { getConfigureUrlParameterElement, getConfigureContextMacroElement } from "../macro-templates";

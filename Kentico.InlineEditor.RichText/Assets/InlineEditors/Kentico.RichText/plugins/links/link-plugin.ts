@@ -1,10 +1,11 @@
 import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 
-import { showInsertLinkPopup } from "./popups/link-edit-popup";
+import { showLinkPopup, hideLinkConfigurationPopup } from "./popups/link-edit-popup";
 
 export const linkPlugin = (editor: FroalaEditor): any => {
     const linkPlugin: any = {
-        showInsertLinkPopup
+        showLinkPopup,
+        hideLinkConfigurationPopup
     };
 
     Object.keys(linkPlugin).forEach((key) => {

@@ -1,5 +1,6 @@
 import * as constants from "./macro-constants";
-import { DialogMode, MacroType, ContextMacros } from "./macro-types";
+import { MacroType, ContextMacros } from "./macro-types";
+import { DialogMode } from "../plugin-types";
 import { getString } from "./macro-helpers";
 
 export const getMacroEditModeElement = (macroType: MacroType, macroValue: string, macroDefaultValue: string, macroDisplayValue: string): string =>

@@ -8,11 +8,13 @@ export const initializeLinkPlugin = (froala: Froala, element: HTMLElement) => {
     // Define popup templates.
     Object.assign(froala.POPUP_TEMPLATES, {
         [constants.INSERT_LINK_POPUP_NAME]: "[_BUTTONS_][_CUSTOM_LAYER_]",
+        [constants.UPDATE_LINK_POPUP_NAME]: "[_BUTTONS_][_CUSTOM_LAYER_]",
     });
 
     // Define popup buttons.
     Object.assign(froala.DEFAULTS, {
         popupInsertLinkButtons: [constants.CLOSE_CONFIGURE_LINK_POPUP_COMMAND_NAME, "|", constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME],
+        popupUpdateLinkButtons: [constants.CLOSE_CONFIGURE_LINK_POPUP_COMMAND_NAME, "|", constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME],
     });
 
     linkCommands.forEach(({ commandName, commandParameters, commandIcon }) => {
