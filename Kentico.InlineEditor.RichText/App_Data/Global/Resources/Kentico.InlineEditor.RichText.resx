@@ -125,6 +125,7 @@
   </data>
   <data name="Kentico.InlineEditor.RichText.LinkPlugin.Command.InsertLink" xml:space="preserve">
     <value>Insert Link</value>
+  </data>
   <data name="Kentico.InlineEditor.RichText.LinkPlugin.ActionButton.Save" xml:space="preserve">
     <value>Save</value>
   </data>
