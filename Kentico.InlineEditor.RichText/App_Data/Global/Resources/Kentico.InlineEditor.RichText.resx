@@ -117,6 +117,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.ActionButton.Insert" xml:space="preserve">
+    <value>Insert</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Command.Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Command.InsertLink" xml:space="preserve">
+    <value>Insert Link</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Label.Path" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Label.Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
   <data name="Kentico.InlineEditor.RichText.MacroPlugin.ActionButton.Insert" xml:space="preserve">
     <value>Insert</value>
   </data>

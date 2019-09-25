@@ -4,11 +4,12 @@ import * as constants from "./link-constants";
 
 import { FroalaCommand } from "../../froala-command";
 import { FroalaIcon } from "../../froala-icon";
+import { getString } from "./link-helpers";
 
 let linkText: string;
 const openInsertLinkPopupCommandIcon = new FroalaIcon(constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME, {NAME: "link", SVG_KEY: "insertLink"});
 const openInsertLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME, {
-    title: "Insert link",
+    title: getString("Command.InsertLink"),
     focus: false,
     undo: false,
     plugin: constants.LINK_PLUGIN_NAME,
@@ -23,7 +24,7 @@ const openInsertLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_LINK_
 
 const closeLinkConfigurationPopupCommandIcon = new FroalaIcon(constants.CLOSE_CONFIGURE_LINK_POPUP_COMMAND_NAME, { NAME: "arrow-left", SVG_KEY: "back" });
 const closeLinkConfigurationPopupCommand = new FroalaCommand(constants.CLOSE_CONFIGURE_LINK_POPUP_COMMAND_NAME, {
-    title: "Back",
+    title: getString("Command.Back"),
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {

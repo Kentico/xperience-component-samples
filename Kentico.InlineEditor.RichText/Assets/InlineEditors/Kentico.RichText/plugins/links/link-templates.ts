@@ -1,3 +1,5 @@
+import { getString } from "./link-helpers";
+
 export const getLinkConfigurationPopupTemplate = (linkUrl: string, linkText: string, linkUrlLabel: string, linkTextLabel: string): string =>
     require("./templates/configure-link-popup.html")({
         linkUrl,
@@ -5,5 +7,5 @@ export const getLinkConfigurationPopupTemplate = (linkUrl: string, linkText: str
         linkUrlLabel,
         linkTextLabel,
         command: "Insert",
-        actionButtonText: "Insert",
+        actionButtonText: getString("ActionButton.Insert"),
     });
