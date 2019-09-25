@@ -1,6 +1,9 @@
+
 // TEMP: Temporary type definitions until Froala provides their official type definitions
 
 declare module 'froala-editor/js/froala_editor.pkgd.min' {
+    import { MACROS_PLUGIN_NAME } from "@/Kentico.InlineEditor.RichText/Assets/InlineEditors/Kentico.RichText/plugins/macros/macro-constants";
+    import { LINK_PLUGIN_NAME } from "@/Kentico.InlineEditor.RichText/Assets/InlineEditors/Kentico.RichText/plugins/links/link-constants";
     import { MacrosPlugin } from "@/Kentico.InlineEditor.RichText/Assets/InlineEditors/Kentico.RichText/plugins/macros/macro-types";
     
     /**
@@ -159,8 +162,9 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       destroy(): object;
 
       // Custom props
-      kenticoMacroPlugin: MacrosPlugin;
-      
+      [MACROS_PLUGIN_NAME]: MacrosPlugin;
+      [LINK_PLUGIN_NAME]: any;
+
       accessibility: Accessibility;
       align: Align;
       button: Button;
