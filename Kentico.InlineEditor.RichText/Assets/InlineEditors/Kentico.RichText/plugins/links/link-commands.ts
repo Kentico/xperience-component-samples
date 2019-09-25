@@ -1,4 +1,4 @@
-import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
+import FroalaEditor, { RegisterCommandParameters } from "froala-editor/js/froala_editor.pkgd.min";
 
 import * as constants from "./link-constants";
 
@@ -8,7 +8,7 @@ import { getString } from "./link-helpers";
 import { getDialogElement } from "../popup-helper";
 import { DialogMode } from "../plugin-types";
 
-const openInsertLinkPopupCommandIcon = new FroalaIcon(constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME, {NAME: "link", SVG_KEY: "insertLink"});
+const openInsertLinkPopupCommandIcon = new FroalaIcon(constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME, { NAME: "link", SVG_KEY: "insertLink" });
 const openInsertLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME, {
     title: getString("Command.InsertLink"),
     focus: false,
@@ -33,16 +33,39 @@ const closeLinkConfigurationPopupCommand = new FroalaCommand(constants.CLOSE_CON
     }
 }, closeLinkConfigurationPopupCommandIcon);
 
-const insertPageLinkCommand = new FroalaCommand(constants.INSERT_PAGE_LINK_COMMAND_NAME, { 
-    title: "Insert",
+const insertOrUpdateLinkCommandParameters: RegisterCommandParameters = {
+    title: "",
     undo: true,
     focus: false,
-    callback: insertOrUpdateCallback,
-});
+    callback(this: FroalaEditor, command: string) {
+        const popupElement = getDialogElement(this, command === constants.INSERT_PAGE_LINK_COMMAND_NAME ? constants.INSERT_LINK_POPUP_NAME : constants.UPDATE_LINK_POPUP_NAME);
+
+        if (popupElement) {
+            this.undo.saveStep();
+            const form = popupElement.querySelector<HTMLFormElement>("#ktc-form");
+            const formData = new FormData(form!);
+            const path = formData.get("path") as string;
+            const text = formData.get("defaultText") as string;
+
+            if (command === constants.INSERT_PAGE_LINK_COMMAND_NAME) {
+                this.html.insert(`<a href="${path}">${text}</a>`);
+            } else if (command === constants.UPDATE_LINK_COMMAND_NAME) {
+                const link = this.link.get() as HTMLAnchorElement;
+                link.setAttribute("href", path);
+                link.innerText = text;
+            }
+
+            this.kenticoLinkPlugin.hideLinkConfigurationPopup();
+        }
+    }
+};
+
+const insertPageLinkCommand = new FroalaCommand(constants.INSERT_PAGE_LINK_COMMAND_NAME, insertOrUpdateLinkCommandParameters);
+const updatePageLinkCommand = new FroalaCommand(constants.UPDATE_LINK_COMMAND_NAME, insertOrUpdateLinkCommandParameters);
 
 const editPageLinkIcon = new FroalaIcon(constants.OPEN_EDIT_LINK_POPUP_COMMAND_NAME, { NAME: "edit", SVG_KEY: "editLink" });
 const editPageLinkCommand = new FroalaCommand(constants.OPEN_EDIT_LINK_POPUP_COMMAND_NAME, {
-    title: "Edit",
+    title: getString("Command.EditLink"),
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
@@ -52,35 +75,6 @@ const editPageLinkCommand = new FroalaCommand(constants.OPEN_EDIT_LINK_POPUP_COM
         this.kenticoLinkPlugin.showLinkPopup(this.position.getBoundingRect(), { linkText, path }, DialogMode.UPDATE);
     }
 }, editPageLinkIcon);
-
-const updatePageLinkCommand = new FroalaCommand(constants.UPDATE_LINK_COMMAND_NAME, {
-    title: "Edit",
-    undo: true,
-    focus: false,
-    callback: insertOrUpdateCallback,
-});
-
-function insertOrUpdateCallback(this: FroalaEditor, command: string) {
-    const popupElement = getDialogElement(this, command === constants.INSERT_PAGE_LINK_COMMAND_NAME ? constants.INSERT_LINK_POPUP_NAME : constants.UPDATE_LINK_POPUP_NAME);
-    
-    if (popupElement) {
-        this.undo.saveStep();
-        const form = popupElement.querySelector<HTMLFormElement>("#ktc-form");
-        const formData = new FormData(form!);
-        const path = formData.get("path") as string;
-        const text = formData.get("defaultText") as string;
-
-        if (command === constants.INSERT_PAGE_LINK_COMMAND_NAME) {
-            this.html.insert(`<a href="${path}">${text}</a>`);
-        } else if (command === constants.UPDATE_LINK_COMMAND_NAME) {
-            const link = this.link.get() as HTMLAnchorElement;
-            link.setAttribute("href", path);
-            link.innerText = text;
-        }
-
-        this.kenticoLinkPlugin.hideLinkConfigurationPopup();
-    }
-}
 
 export const linkCommands = [
     openInsertLinkPopupCommand,

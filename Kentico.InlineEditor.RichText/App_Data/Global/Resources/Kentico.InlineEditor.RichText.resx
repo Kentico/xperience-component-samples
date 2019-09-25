@@ -180,4 +180,7 @@
   <data name="Kentico.InlineEditor.RichText.MacroPlugin.Pattern.ContactLastName" xml:space="preserve">
     <value>Last name</value>
   </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Command.EditLink" xml:space="preserve">
+    <value>Edit link</value>
+  </data>
 </root>
