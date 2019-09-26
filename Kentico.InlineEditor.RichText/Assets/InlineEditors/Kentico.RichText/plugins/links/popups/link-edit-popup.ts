@@ -6,17 +6,17 @@ import { getLinkConfigurationPopupTemplate } from "../link-templates";
 import { DialogMode } from "../../plugin-types";
 import * as constants from "../link-constants";
 
-export function showLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRect | ClientRect, 
-  { linkText, path }: { linkText: string, path: string }, dialogMode: DialogMode = DialogMode.INSERT) {
+export function showLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRect | ClientRect,
+    { linkText, path }: { linkText: string, path: string }, dialogMode: DialogMode = DialogMode.INSERT) {
 
-  const popupName = dialogMode === DialogMode.INSERT ? INSERT_LINK_POPUP_NAME : UPDATE_LINK_POPUP_NAME;
-  const popupButtons = dialogMode === DialogMode.INSERT ? this.opts.popupInsertLinkButtons : this.opts.popupUpdateLinkButtons;
-  const customLayer = "<div class=\"ktc-configure-popup\"></div>";
+    const popupName = dialogMode === DialogMode.INSERT ? INSERT_LINK_POPUP_NAME : UPDATE_LINK_POPUP_NAME;
+    const popupButtons = dialogMode === DialogMode.INSERT ? this.opts.popupInsertLinkButtons : this.opts.popupUpdateLinkButtons;
+    const customLayer = "<div class=\"ktc-configure-popup\"></div>";
 
-  showPopup(this, popupName, relatedElementPosition, popupButtons, customLayer);
+    showPopup(this, popupName, relatedElementPosition, popupButtons, customLayer);
 
-  const dialog = getDialogElement(this, popupName);
-    
+    const dialog = getDialogElement(this, popupName);
+
     if (dialog) {
         const container = dialog.querySelector<HTMLElement>(".ktc-configure-popup");
         container!.innerHTML = getLinkConfigurationPopupTemplate(path, linkText, dialogMode);
@@ -39,11 +39,27 @@ export function showLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRec
             });
         });
 
-        // this.accessibility.focusPopup(popupName);
+        const pageSelector = container!.querySelector<HTMLElement>(".ktc-page-selector");
+        pageSelector!.addEventListener("click", () => {
+            window.kentico.modalDialog.pageSelector.open({
+                applyCallback(selectedPages) {
+                    if (selectedPages) {
+                        const pageNameField = container!.querySelector<HTMLLabelElement>(".ktc-page-name");
+                        const pageUrlField = container!.querySelector<HTMLInputElement>("input[name='pageUrl']");
+                        const selectedPage = selectedPages[0];
+
+                        pageNameField!.textContent = selectedPage.name;
+                        pageUrlField!.value = selectedPage.url;
+
+                        pageSelector!.classList.remove("ktc-page-selector--empty");
+                    }
+                }
+            });
+        });
     }
 }
 
 export function hideLinkConfigurationPopup(this: FroalaEditor) {
-  this.popups.hide(INSERT_LINK_POPUP_NAME);
-  this.popups.hide(UPDATE_LINK_POPUP_NAME);
+    this.popups.hide(INSERT_LINK_POPUP_NAME);
+    this.popups.hide(UPDATE_LINK_POPUP_NAME);
 }

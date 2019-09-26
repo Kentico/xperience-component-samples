@@ -44,8 +44,8 @@ const insertOrUpdateLinkCommandParameters: RegisterCommandParameters = {
             this.undo.saveStep();
             const form = popupElement.querySelector<HTMLFormElement>("#ktc-form");
             const formData = new FormData(form!);
-            const path = formData.get("path") as string;
-            const text = formData.get("defaultText") as string;
+            const path = formData.get("pageUrl") as string;
+            const text = formData.get("linkText") as string;
 
             if (command === constants.INSERT_PAGE_LINK_COMMAND_NAME) {
                 this.html.insert(`<a href="${path}">${text}</a>`);

@@ -1,17 +1,19 @@
 <form id="ktc-form" onsubmit="event.preventDefault()">
-  <div class="fr-layer fr-active" id="ktc-configuration-layer-1" data-mouseenter-event-set="true">
-      <div class="fr-input-line">
-          <input id="ktc-configuration-url-layer-url-1" name="path" type="text"
-              class="fr-link-attr <%= linkUrl ? 'fr-not-empty' : '' %>" placeholder="" tabindex="1" dir="auto" value="<%= linkUrl %>"><label
-              for="ktc-configuration-url-layer-url-1"><%= linkUrlLabel %></label>
-      </div>
+  <div class="fr-layer fr-active" id="ktc-link-configuration-layer" data-mouseenter-event-set="true">
+      <div class="fr-action-buttons ktc-page-selector <%= pageUrl ? '' : 'ktc-page-selector--empty' %>">
+            <label class="ktc-page-name"><%= pageName %></label>
+            <button class="fr-command fr-submit ktc-page-selection" role="button" href="#" tabindex="1" type="button">
+                <%= pageSelectionButtonText %>
+            </button>
+            <input name="pageUrl" value="<%= pageUrl %>" hidden>
+        </div>
       <div class="fr-input-line" style="display: block;">
-          <input id="ktc-configuration-url-text-1" name="defaultText" type="text" class="fr-link-attr fr-not-empty"
+          <input id="ktc-configuration-url-text-1" name="linkText" type="text" class="fr-link-attr fr-not-empty"
               placeholder="" tabindex="2" dir="auto" value="<%= linkText %>">
           <label for="ktc-configuration-url-text-1"><%= linkTextLabel %></label>
       </div>
       <div class="fr-action-buttons">
-          <button class="fr-command fr-submit" role="button" data-cmd="<%= command %>" href="#" tabindex="4"
+          <button class="fr-command fr-submit" role="button" data-cmd="<%= command %>" href="#" tabindex="3"
               type="button">
               <%= actionButtonText %>
           </button>
