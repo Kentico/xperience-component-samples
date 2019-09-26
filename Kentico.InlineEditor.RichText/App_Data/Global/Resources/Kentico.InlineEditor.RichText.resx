@@ -183,4 +183,7 @@
   <data name="Kentico.InlineEditor.RichText.LinkPlugin.Command.EditLink" xml:space="preserve">
     <value>Edit link</value>
   </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Command.PathTab" xml:space="preserve">
+    <value>Insert Link</value>
+  </data>
 </root>

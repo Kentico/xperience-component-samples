@@ -76,10 +76,22 @@ const editPageLinkCommand = new FroalaCommand(constants.OPEN_EDIT_LINK_POPUP_COM
     }
 }, editPageLinkIcon);
 
+// Open path tab command
+const openPathTabCommandIcon = new FroalaIcon(constants.SWITCH_PATH_TAB_COMMAND_NAME, { NAME: "link", SVG_KEY: "insertLink" });
+const openPathTabCommand = new FroalaCommand(constants.SWITCH_PATH_TAB_COMMAND_NAME, {
+    title: getString("Command.PathTab"),
+    undo: false,
+    focus: false,
+    callback(this: FroalaEditor) {
+        // TODO: implement switching logic 
+    }
+}, openPathTabCommandIcon);
+
 export const linkCommands = [
     openInsertLinkPopupCommand,
     closeLinkConfigurationPopupCommand,
     insertPageLinkCommand,
     editPageLinkCommand,
     updatePageLinkCommand,
+    openPathTabCommand
 ]
