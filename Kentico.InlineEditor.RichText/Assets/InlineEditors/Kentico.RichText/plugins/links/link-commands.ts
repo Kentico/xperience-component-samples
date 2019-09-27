@@ -8,6 +8,8 @@ import { getString } from "./link-helpers";
 import { getDialogElement } from "../popup-helper";
 import { DialogMode } from "../plugin-types";
 
+let selectedLink: HTMLAnchorElement;
+
 const openInsertLinkPopupCommandIcon = new FroalaIcon(constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME, { NAME: "link", SVG_KEY: "insertLink" });
 const openInsertLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME, {
     title: getString("Command.InsertLink"),
@@ -49,10 +51,9 @@ const insertOrUpdateLinkCommandParameters: RegisterCommandParameters = {
 
             if (command === constants.INSERT_PAGE_LINK_COMMAND_NAME) {
                 this.html.insert(`<a href="${path}">${text}</a>`);
-            } else if (command === constants.UPDATE_LINK_COMMAND_NAME) {
-                const link = this.link.get() as HTMLAnchorElement;
-                link.setAttribute("href", path);
-                link.innerText = text;
+            } else if (command === constants.UPDATE_LINK_COMMAND_NAME && selectedLink) {
+                selectedLink.setAttribute("href", path);
+                selectedLink.innerText = text;
             }
 
             this.kenticoLinkPlugin.hideLinkConfigurationPopup();
@@ -69,9 +70,9 @@ const editPageLinkCommand = new FroalaCommand(constants.OPEN_EDIT_LINK_POPUP_COM
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
-        const linkElement = this.link.get() as HTMLAnchorElement;
-        const path = linkElement.getAttribute("href");
-        const linkText = linkElement.innerText;
+        selectedLink = this.link.get() as HTMLAnchorElement;
+        const path = selectedLink.href;
+        const linkText = selectedLink.text;
         this.kenticoLinkPlugin.showLinkPopup(this.position.getBoundingRect(), { linkText, path }, DialogMode.UPDATE);
     }
 }, editPageLinkIcon);
