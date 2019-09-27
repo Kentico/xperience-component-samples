@@ -32,7 +32,7 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
         quickInsertButtons: ["imageKentico", "video", "table", "ul", "ol", "hr"],
         imageEditButtons: ["imageReplaceKentico", "imageAlign", "imageCaption", "imageRemove", "|", "imageLink", "linkOpen", "linkEdit",
             "linkRemove", "-", "imageDisplay", "imageStyle", "imageAlt", "imageSize"],
-        linkEditButtons: ["linkOpen", "linkStyle", OPEN_EDIT_LINK_POPUP_COMMAND_NAME, "linkRemove"],
+        linkEditButtons: ["linkOpen", OPEN_EDIT_LINK_POPUP_COMMAND_NAME, "linkRemove"],
         toolbarButtons:
         {
             moreText: {
