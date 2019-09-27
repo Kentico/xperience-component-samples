@@ -2,9 +2,11 @@
   <div class="fr-layer fr-active" id="ktc-link-configuration-layer" data-mouseenter-event-set="true">
       <div class="fr-action-buttons ktc-page-selector <%= pageUrl ? '' : 'ktc-page-selector--empty' %>">
             <label class="ktc-page-name"><%= pageName %></label>
-            <button class="fr-command fr-submit ktc-page-selection" role="button" href="#" tabindex="1" type="button">
-                <%= pageSelectionButtonText %>
-            </button>
+            <span>
+                <button class="fr-command fr-submit ktc-page-selection" role="button" href="#" tabindex="1" type="button">
+                    <%= pageSelectionButtonText %>
+                </button>
+            </span>
             <input name="pageUrl" value="<%= pageUrl %>" hidden>
         </div>
       <div class="fr-input-line" style="display: block;">

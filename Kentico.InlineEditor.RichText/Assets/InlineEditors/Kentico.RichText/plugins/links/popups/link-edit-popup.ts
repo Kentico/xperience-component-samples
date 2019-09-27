@@ -40,7 +40,9 @@ export function showLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRec
         });
 
         const pageSelector = container!.querySelector<HTMLElement>(".ktc-page-selector");
-        pageSelector!.addEventListener("click", () => {
+        const pageSelectButton = container!.querySelector<HTMLInputElement>(".ktc-page-selection");
+
+        pageSelectButton!.addEventListener("click", () => {
             window.kentico.modalDialog.pageSelector.open({
                 applyCallback(selectedPages) {
                     if (selectedPages) {
@@ -48,8 +50,9 @@ export function showLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRec
                         const pageUrlField = container!.querySelector<HTMLInputElement>("input[name='pageUrl']");
                         const selectedPage = selectedPages[0];
 
-                        pageNameField!.textContent = selectedPage.name;
+                        pageNameField!.textContent = `📄 ${selectedPage.name}`;
                         pageUrlField!.value = selectedPage.url;
+                        pageSelectButton!.textContent = "Change";
 
                         pageSelector!.classList.remove("ktc-page-selector--empty");
                     }
