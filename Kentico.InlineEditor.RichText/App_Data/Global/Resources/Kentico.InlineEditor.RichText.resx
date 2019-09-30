@@ -192,4 +192,7 @@
   <data name="Kentico.InlineEditor.RichText.LinkPlugin.ActionButton.SelectPage" xml:space="preserve">
     <value>Select page</value>
   </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Label.OpenInNewTab" xml:space="preserve">
+    <value>Open in new tab</value>
+  </data>
 </root>

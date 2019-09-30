@@ -7,7 +7,7 @@ import { DialogMode } from "../../plugin-types";
 import * as constants from "../link-constants";
 
 export function showLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRect | ClientRect,
-    { linkText, path }: { linkText: string, path: string }, dialogMode: DialogMode = DialogMode.INSERT) {
+    { linkText, openInNewTab, path }: { linkText: string, openInNewTab: boolean, path: string }, dialogMode: DialogMode = DialogMode.INSERT) {
 
     const popupName = dialogMode === DialogMode.INSERT ? INSERT_LINK_POPUP_NAME : UPDATE_LINK_POPUP_NAME;
     const popupButtons = dialogMode === DialogMode.INSERT ? this.opts.popupInsertLinkButtons : this.opts.popupUpdateLinkButtons;
@@ -19,7 +19,7 @@ export function showLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRec
 
     if (dialog) {
         const container = dialog.querySelector<HTMLElement>(".ktc-configure-popup");
-        container!.innerHTML = getLinkConfigurationPopupTemplate(path, linkText, dialogMode);
+        container!.innerHTML = getLinkConfigurationPopupTemplate(path, linkText, openInNewTab, dialogMode);
 
         const button = dialog.querySelector<HTMLButtonElement>(`.fr-command[data-cmd="${constants.SWITCH_PATH_TAB_COMMAND_NAME}"]`);
         button!.classList.add("fr-active", "fr-selected");
