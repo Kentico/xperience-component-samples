@@ -10,5 +10,5 @@ export const getLinkConfigurationPopupTemplate = (linkUrl: string, linkText: str
         linkTextLabel: getString("Label.Text"),
         command: dialogMode === DialogMode.INSERT ? INSERT_PAGE_LINK_COMMAND_NAME : UPDATE_LINK_COMMAND_NAME,
         actionButtonText: getString(dialogMode === DialogMode.INSERT ? "ActionButton.Insert" : "ActionButton.Save"),
-        pageSelectionButtonText: linkUrl ? "Change" : "Select page",
+        pageSelectionButtonText: getString(linkUrl ? "ActionButton.ChangePage" : "ActionButton.SelectPage"),
     });

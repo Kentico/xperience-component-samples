@@ -186,4 +186,10 @@
   <data name="Kentico.InlineEditor.RichText.LinkPlugin.Command.PathTab" xml:space="preserve">
     <value>Insert Link</value>
   </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.ActionButton.ChangePage" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.ActionButton.SelectPage" xml:space="preserve">
+    <value>Select page</value>
+  </data>
 </root>
