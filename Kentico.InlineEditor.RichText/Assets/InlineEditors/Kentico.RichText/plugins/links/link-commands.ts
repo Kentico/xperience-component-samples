@@ -84,7 +84,10 @@ const openPathTabCommand = new FroalaCommand(constants.SWITCH_PATH_TAB_COMMAND_N
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
-        // TODO: implement switching logic 
+        selectedLink = this.link.get() as HTMLAnchorElement;
+        const path = selectedLink.href;
+        const linkText = selectedLink.text;
+        this.kenticoLinkPlugin.showLinkPopup(this.position.getBoundingRect(), { linkText, path }, DialogMode.UPDATE);
     }
 }, openPathTabCommandIcon);
 
