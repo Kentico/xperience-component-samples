@@ -5,6 +5,7 @@ import { INSERT_LINK_POPUP_NAME, UPDATE_LINK_POPUP_NAME } from "../link-constant
 import { getLinkConfigurationPopupTemplate } from "../link-templates";
 import { DialogMode, LinkDescriptor } from "../../plugin-types";
 import * as constants from "../link-constants";
+import { getString } from "../../links/link-helpers";
 
 export function showLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRect | ClientRect,
     { linkText, openInNewTab, path }: LinkDescriptor, dialogMode: DialogMode = DialogMode.INSERT) {
@@ -52,7 +53,7 @@ export function showLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRec
 
                         pageNameField!.textContent = `📄 ${selectedPage.name}`;
                         pageUrlField!.value = selectedPage.url;
-                        pageSelectButton!.textContent = "Change";
+                        pageSelectButton!.textContent = getString("ActionButton.ChangePage");
 
                         pageSelector!.classList.remove("ktc-page-selector--empty");
                     }
