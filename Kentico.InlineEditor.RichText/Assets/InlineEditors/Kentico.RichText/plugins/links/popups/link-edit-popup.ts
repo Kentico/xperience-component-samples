@@ -3,11 +3,11 @@ import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 import { showPopup, getDialogElement } from "../../popup-helper";
 import { INSERT_LINK_POPUP_NAME, UPDATE_LINK_POPUP_NAME } from "../link-constants";
 import { getLinkConfigurationPopupTemplate } from "../link-templates";
-import { DialogMode } from "../../plugin-types";
+import { DialogMode, LinkDescriptor } from "../../plugin-types";
 import * as constants from "../link-constants";
 
 export function showLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRect | ClientRect,
-    { linkText, openInNewTab, path }: { linkText: string, openInNewTab: boolean, path: string }, dialogMode: DialogMode = DialogMode.INSERT) {
+    { linkText, openInNewTab, path }: LinkDescriptor, dialogMode: DialogMode = DialogMode.INSERT) {
 
     const popupName = dialogMode === DialogMode.INSERT ? INSERT_LINK_POPUP_NAME : UPDATE_LINK_POPUP_NAME;
     const popupButtons = dialogMode === DialogMode.INSERT ? this.opts.popupInsertLinkButtons : this.opts.popupUpdateLinkButtons;

@@ -7,6 +7,7 @@ import { FroalaIcon } from "../../froala-icon";
 import { getString } from "./link-helpers";
 import { getDialogElement } from "../popup-helper";
 import { DialogMode } from "../plugin-types";
+import { getInsertLinkMarkup } from "./link-templates";
 
 let selectedLink: HTMLAnchorElement;
 
@@ -51,7 +52,7 @@ const insertOrUpdateLinkCommandParameters: RegisterCommandParameters = {
             const openInNewTab = Boolean(formData.get("openInNewTab"));
 
             if (command === constants.INSERT_PAGE_LINK_COMMAND_NAME) {
-                this.html.insert(`<a href="${path}" ${ openInNewTab ? 'target="_blank"' : ''}>${text}</a>`);
+                this.html.insert(getInsertLinkMarkup(text, path, openInNewTab));
             } else if (command === constants.UPDATE_LINK_COMMAND_NAME && selectedLink) {
                 selectedLink.setAttribute("href", path);
                 selectedLink.innerText = text;

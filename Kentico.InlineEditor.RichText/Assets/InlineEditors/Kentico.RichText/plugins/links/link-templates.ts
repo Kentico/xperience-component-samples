@@ -14,3 +14,10 @@ export const getLinkConfigurationPopupTemplate = (linkUrl: string, linkText: str
         actionButtonText: getString(dialogMode === DialogMode.INSERT ? "ActionButton.Insert" : "ActionButton.Save"),
         pageSelectionButtonText: getString(linkUrl ? "ActionButton.ChangePage" : "ActionButton.SelectPage"),
     });
+
+export const getInsertLinkMarkup = (text: string, path: string, openInNewTab: boolean): string =>
+    require("./templates/insert-link-markup.html")({
+        text,
+        path,
+        openInNewTab
+    });

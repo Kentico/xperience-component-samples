@@ -9,6 +9,12 @@ export enum PluginType {
 
 
 export enum DialogMode {
-    INSERT,
-    UPDATE
+  INSERT,
+  UPDATE
+}
+
+export interface LinkDescriptor {
+  readonly linkText: string;
+  readonly path: string;
+  readonly openInNewTab: boolean;
 }
