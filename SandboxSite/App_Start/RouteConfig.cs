@@ -1,3 +1,4 @@
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -10,6 +11,12 @@ namespace Kentico.AspNet.Mvc.SandboxSite
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapHttpRoute(
+                name: "DefaultApi",
+                routeTemplate: "api/RichText",
+                defaults: new { controller = "RichText", action = "GetPage" }
+            );
 
             // Maps routes to Kentico HTTP handlers and features enabled in ApplicationConfig.cs
             // Always map the Kentico routes before adding other routes. Issues may occur if Kentico URLs are matched by a general route, for example images might not be displayed on pages

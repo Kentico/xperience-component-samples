@@ -15,6 +15,7 @@ using CMS.SiteProvider;
 
 using Kentico.PageBuilder.Web.Mvc;
 using Kentico.Web.Mvc;
+using Kentico.Content.Web.Mvc;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors
 {
@@ -23,6 +24,8 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         private const string RICH_TEXT_EDITOR_NAME = "Kentico.InlineEditor.RichText";
         private const string RICH_TEXT_EDITOR_CLASS_NAME = "ktc-rich-text-wrapper";
         private const string RICH_TEXT_EDITOR_LICENSE_ATTRIBUTE = "data-rich-text-editor-license";
+        private const string RICH_TEXT_API_ENDPOINT_ATTRIBUTE = "data-api-endpoint";
+        private const string RICH_TEXT_API_ENDPOINT = "~/api/RichText";
         private static readonly Lazy<string> richTextEditorLicense = new Lazy<string>(() => SettingsKeyInfoProvider.GetValue("CMSRichTextEditorLicense", SiteContext.CurrentSiteName));
 
 
@@ -41,12 +44,14 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
             }
 
             var htmlHelper = instance.Target;
+            var urlHelper = new UrlHelper(htmlHelper.ViewContext.RequestContext, htmlHelper.RouteCollection);
 
             using (htmlHelper.Kentico().BeginInlineEditor(RICH_TEXT_EDITOR_NAME, propertyName))
             {
                 var tagBuilder = new TagBuilder("div");
                 tagBuilder.AddCssClass(RICH_TEXT_EDITOR_CLASS_NAME);
                 tagBuilder.Attributes.Add(RICH_TEXT_EDITOR_LICENSE_ATTRIBUTE, richTextEditorLicense.Value);
+                tagBuilder.Attributes.Add(RICH_TEXT_API_ENDPOINT_ATTRIBUTE, urlHelper.Kentico().AuthenticateUrl(RICH_TEXT_API_ENDPOINT).ToString());
 
                 if (AllowContextMacros())
                 {
