@@ -7,7 +7,6 @@ import { FroalaIcon } from "../../froala-icon";
 import { getString } from "./link-helpers";
 import { getDialogElement } from "../popup-helper";
 import { DialogMode } from "../plugin-types";
-import { getInsertLinkMarkup } from "./link-templates";
 
 let selectedLink: HTMLAnchorElement;
 
@@ -21,7 +20,7 @@ const openInsertLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_LINK_
     callback(this: FroalaEditor) {
         this.selection.save();
         const linkText = this.selection.text();
-        this.kenticoLinkPlugin.showLinkPopup(this.position.getBoundingRect(), { linkText, openInNewTab : false });
+        this.kenticoLinkPlugin.showLinkPopup(this.position.getBoundingRect(), { linkText, path: "", openInNewTab: false });
     }
 }, openInsertLinkPopupCommandIcon);
 
@@ -41,7 +40,8 @@ const insertOrUpdateLinkCommandParameters: RegisterCommandParameters = {
     undo: true,
     focus: false,
     callback(this: FroalaEditor, command: string) {
-        const popupElement = getDialogElement(this, command === constants.INSERT_PAGE_LINK_COMMAND_NAME ? constants.INSERT_LINK_POPUP_NAME : constants.UPDATE_LINK_POPUP_NAME);
+        const popupName = command === constants.INSERT_PAGE_LINK_COMMAND_NAME ? constants.INSERT_LINK_POPUP_NAME : constants.UPDATE_LINK_POPUP_NAME;
+        const popupElement = getDialogElement(this, popupName);
 
         if (popupElement) {
             this.undo.saveStep();
@@ -52,7 +52,7 @@ const insertOrUpdateLinkCommandParameters: RegisterCommandParameters = {
             const openInNewTab = Boolean(formData.get("openInNewTab"));
 
             if (command === constants.INSERT_PAGE_LINK_COMMAND_NAME) {
-                this.html.insert(getInsertLinkMarkup(text, path, openInNewTab));
+                this.link.insert(path, text, openInNewTab ? {target: "_blank"} : undefined);
             } else if (command === constants.UPDATE_LINK_COMMAND_NAME && selectedLink) {
                 selectedLink.setAttribute("href", path);
                 selectedLink.innerText = text;
@@ -98,7 +98,8 @@ const openPathTabCommand = new FroalaCommand(constants.SWITCH_PATH_TAB_COMMAND_N
         selectedLink = this.link.get() as HTMLAnchorElement;
         const path = selectedLink.href;
         const linkText = selectedLink.text;
-        this.kenticoLinkPlugin.showLinkPopup(this.position.getBoundingRect(), { linkText, path }, DialogMode.UPDATE);
+        const openInNewTab = selectedLink.target === "_blank";
+        this.kenticoLinkPlugin.showLinkPopup(this.position.getBoundingRect(), { linkText, path, openInNewTab }, DialogMode.UPDATE);
     }
 }, openPathTabCommandIcon);
 

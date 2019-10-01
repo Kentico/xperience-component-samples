@@ -1,11 +1,11 @@
 import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 
 import { showPopup, getDialogElement } from "../../popup-helper";
-import { INSERT_LINK_POPUP_NAME, UPDATE_LINK_POPUP_NAME } from "../link-constants";
+import { INSERT_LINK_POPUP_NAME, UPDATE_LINK_POPUP_NAME, SWITCH_PATH_TAB_COMMAND_NAME } from "../link-constants";
 import { getLinkConfigurationPopupTemplate } from "../link-templates";
-import { DialogMode, LinkDescriptor } from "../../plugin-types";
-import * as constants from "../link-constants";
+import { DialogMode } from "../../plugin-types";
 import { getString } from "../../links/link-helpers";
+import { LinkDescriptor } from "../link-types";
 
 export function showLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRect | ClientRect,
     { linkText, openInNewTab, path }: LinkDescriptor, dialogMode: DialogMode = DialogMode.INSERT) {
@@ -22,7 +22,7 @@ export function showLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRec
         const container = dialog.querySelector<HTMLElement>(".ktc-configure-popup");
         container!.innerHTML = getLinkConfigurationPopupTemplate(path, linkText, openInNewTab, dialogMode);
 
-        const button = dialog.querySelector<HTMLButtonElement>(`.fr-command[data-cmd="${constants.SWITCH_PATH_TAB_COMMAND_NAME}"]`);
+        const button = dialog.querySelector<HTMLButtonElement>(`.fr-command[data-cmd="${SWITCH_PATH_TAB_COMMAND_NAME}"]`);
         button!.classList.add("fr-active", "fr-selected");
 
         const inputs = dialog.querySelectorAll<HTMLInputElement>(".fr-input-line input");

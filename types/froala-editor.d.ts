@@ -3,6 +3,7 @@
 
 declare module 'froala-editor/js/froala_editor.pkgd.min' {
     import { MACROS_PLUGIN_NAME } from "@/Kentico.InlineEditor.RichText/Assets/InlineEditors/Kentico.RichText/plugins/macros/macro-constants";
+    import { LinkPlugin } from "@/Kentico.InlineEditor.RichText/Assets/InlineEditors/Kentico.RichText/plugins/links/link-types";
     import { LINK_PLUGIN_NAME } from "@/Kentico.InlineEditor.RichText/Assets/InlineEditors/Kentico.RichText/plugins/links/link-constants";
     import { MacrosPlugin } from "@/Kentico.InlineEditor.RichText/Assets/InlineEditors/Kentico.RichText/plugins/macros/macro-types";
     
@@ -163,7 +164,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
 
       // Custom props
       [MACROS_PLUGIN_NAME]: MacrosPlugin;
-      [LINK_PLUGIN_NAME]: any;
+      [LINK_PLUGIN_NAME]: LinkPlugin;
 
       accessibility: Accessibility;
       align: Align;
