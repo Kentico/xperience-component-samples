@@ -49,7 +49,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
                 var tagBuilder = new TagBuilder("div");
                 tagBuilder.AddCssClass(RICH_TEXT_EDITOR_CLASS_NAME);
                 tagBuilder.Attributes.Add(RICH_TEXT_EDITOR_LICENSE_ATTRIBUTE, richTextEditorLicense.Value);
-                tagBuilder.Attributes.Add(RICH_TEXT_API_ENDPOINT_ATTRIBUTE, new RichTextApiService().GetApiEndpointUrl(urlHelper));
+                tagBuilder.Attributes.Add(RICH_TEXT_API_ENDPOINT_ATTRIBUTE, Service.Resolve<IRichTextApiService>().GetApiEndpointUrl(urlHelper));
 
                 if (AllowContextMacros())
                 {

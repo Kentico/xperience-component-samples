@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Web.Routing;
 
+using CMS.Core;
+
 using Kentico.Web.Mvc;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors
@@ -11,7 +13,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         {
             instance = instance ?? throw new ArgumentNullException(nameof(instance));
 
-            new RichTextApiService().MapEndpointRoute(instance.Target);
+            Service.Resolve<IRichTextApiService>().MapEndpointRoute(instance.Target);
         }
     }
 }

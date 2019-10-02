@@ -3,12 +3,17 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 
+using CMS;
+
+using Kentico.Components.Web.Mvc.InlineEditors;
 using Kentico.Content.Web.Mvc;
 using Kentico.Web.Mvc;
 
+[assembly: RegisterImplementation(typeof(IRichTextApiService), typeof(RichTextApiService))]
+
 namespace Kentico.Components.Web.Mvc.InlineEditors
 {
-    internal sealed class RichTextApiService
+    internal sealed class RichTextApiService : IRichTextApiService
     {
         private const string RICH_TEXT_API_ENDPOINT = "api/RichText";
 

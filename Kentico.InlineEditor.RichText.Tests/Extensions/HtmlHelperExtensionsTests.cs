@@ -62,6 +62,10 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 
                 htmlHelperMock = HtmlHelperMock.GetHtmlHelper();
                 writerMock = htmlHelperMock.ViewContext.Writer;
+
+                var richTextApiServiceMock = Substitute.For<IRichTextApiService>();
+                richTextApiServiceMock.GetApiEndpointUrl(Arg.Any<UrlHelper>()).Returns("/testApi");
+                Service.Use<IRichTextApiService>(richTextApiServiceMock);
             }
 
 
@@ -94,7 +98,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 Received.InOrder(() =>
                 {
                     writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
-                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-context-macros=\"{{&quot;Test&quot;:&quot;TestDisplayName&quot;}}\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
+                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-api-endpoint=\"/testApi\" data-context-macros=\"{{&quot;Test&quot;:&quot;TestDisplayName&quot;}}\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
                     writerMock.Write("</div>");
                 });
             }
@@ -110,7 +114,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 Received.InOrder(() =>
                 {
                     writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
-                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
+                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-api-endpoint=\"/testApi\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
                     writerMock.Write("</div>");
                 });
             }
@@ -126,7 +130,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 Received.InOrder(() =>
                 {
                     writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
-                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
+                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-api-endpoint=\"/testApi\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
                     writerMock.Write("</div>");
                 });
             }
@@ -142,7 +146,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 Received.InOrder(() =>
                 {
                     writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
-                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
+                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-api-endpoint=\"/testApi\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
                     writerMock.Write("</div>");
                 });
             }
