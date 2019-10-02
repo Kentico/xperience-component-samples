@@ -534,6 +534,8 @@
     <Compile Include="DynamicText\DynamicTextPatternRegister.cs" />
     <Compile Include="DynamicText\DynamicTextResolver.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
+    <Compile Include="Extensions\RouteCollectionExtensions.cs" />
+    <Compile Include="Services\RichTextApiService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
