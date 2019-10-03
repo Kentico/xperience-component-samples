@@ -1,6 +1,7 @@
 ﻿using System.Web.Routing;
 
 using CMS.Core;
+using CMS.Tests;
 
 using NSubstitute;
 using NUnit.Framework;
@@ -12,18 +13,26 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
     public class RouteCollectionExtensionsTests
     {
         [TestFixture]
-        public class MapRichTextEditorRoutesTests
+        public class MapRichTextEditorRoutesTests : UnitTests
         {
+            private IRichTextApiService richTextApiService;
+
+
+            [SetUp]
+            public void SetUp()
+            {
+                richTextApiService = Substitute.For<IRichTextApiService>();
+                Service.Use<IRichTextApiService>(richTextApiService);
+            }
+
+
             [Test]
             public void MapRichTextEditorRoutes()
             {
-                var richTextApiServiceMock = Substitute.For<IRichTextApiService>();
-                Service.Use<IRichTextApiService>(richTextApiServiceMock);
-
                 var routes = new RouteCollection();
                 routes.Kentico().MapRichTextEditorRoutes();
 
-                richTextApiServiceMock.Received(1).MapEndpointRoute(routes);
+                richTextApiService.Received(1).MapEndpointRoute(routes);
             }
         }
     }

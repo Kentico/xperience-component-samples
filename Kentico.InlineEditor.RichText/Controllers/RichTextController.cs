@@ -3,8 +3,11 @@ using System.Net;
 using System.Web.Http;
 
 using CMS.Core;
+using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.Helpers;
+using CMS.Membership;
+using CMS.SiteProvider;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors.Controllers
 {
@@ -37,6 +40,11 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Controllers
             if (page == null)
             {
                 return NotFound();
+            }
+
+            if (!page.CheckPermissions(PermissionsEnum.Read, SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser))
+            {
+                return Unauthorized();
             }
 
             return Ok<dynamic>(new

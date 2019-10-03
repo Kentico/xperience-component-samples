@@ -2,9 +2,11 @@
 using System.Net;
 using System.Web.Http.Results;
 
+using CMS.Base;
 using CMS.Core;
 using CMS.DocumentEngine;
 using CMS.Helpers;
+using CMS.Membership;
 using CMS.Tests;
 
 using NSubstitute;
@@ -26,6 +28,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             public void SetUp()
             {
                 VirtualContext.SetItem(VirtualContext.PARAM_PREVIEW_LINK, "test");
+                MembershipContext.AuthenticatedUser = Substitute.For<CurrentUserInfo>();
 
                 richTextApiServiceMock = Substitute.For<IRichTextApiService>();
                 Service.Use<IRichTextApiService>(richTextApiServiceMock);
@@ -68,11 +71,25 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 
 
             [Test]
-            public void GetPage_PageExists_ReturnsOkResult()
+            public void GetPage_UserWithInsufficientPermissions_ReturnsUnauthorizedResult()
+            {
+                var pageMock = Substitute.For<TreeNode>();
+                pageMock.CheckPermissions(CMS.DataEngine.PermissionsEnum.Read, Arg.Any<string>(), Arg.Any<IUserInfo>()).Returns(false);
+                richTextApiServiceMock.GetPage(Arg.Any<string>()).Returns(pageMock);
+
+                var result = new RichTextController().GetPage("/-/Page/Test");
+
+                Assert.That(result, Is.TypeOf<UnauthorizedResult>());
+            }
+
+
+            [Test]
+            public void GetPage_PageExistsAndUserHasPermissions_ReturnsOkResult()
             {
                 var pageMock = Substitute.For<TreeNode>();
                 pageMock.DocumentName = "Test";
                 pageMock.NodeGUID = Guid.Parse("2ADFE965-BBA3-425C-B834-1551E513E72F");
+                pageMock.CheckPermissions(CMS.DataEngine.PermissionsEnum.Read, Arg.Any<string>(), Arg.Any<IUserInfo>()).Returns(true);
 
                 richTextApiServiceMock.GetPage(Arg.Any<string>()).Returns(pageMock);
 
