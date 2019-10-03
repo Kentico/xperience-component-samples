@@ -6,23 +6,23 @@ using NUnit.Framework;
 namespace Kentico.Components.Web.Mvc.Widgets.Helpers.Tests
 {
     [TestFixture]
-    public static class YoutubeVideoHelperTests
+    public static class VideoHelperTests
     {
         public class GetVideoIdTests
         {
             [Test]
-            public void GetVideoId_YoutubeUrlIsNull_ThrowsArgumentNullException()
+            public void GetVideoId_VideoUrlIsNull_ThrowsArgumentNullException()
             {
                 // Act & Assert
-                Assert.Throws<ArgumentNullException>(() => YoutubeVideoHelper.GetVideoId(null));
+                Assert.Throws<ArgumentNullException>(() => VideoHelper.GetVideoId(null));
             }
 
 
             [Test]
-            public void GetVideoId_YoutubeUrlIsMalformatted_ThrowsUriFormatException()
+            public void GetVideoId_VideoUrlIsMalformatted_ThrowsUriFormatException()
             {
                 // Act & Assert
-                Assert.Throws<UriFormatException>(() => YoutubeVideoHelper.GetVideoId("blah blah..."));
+                Assert.Throws<UriFormatException>(() => VideoHelper.GetVideoId("blah blah..."));
             }
 
 
@@ -39,10 +39,16 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers.Tests
             [TestCase("http://www.youtube.com/watch?v=t-ZRX8984sc", "t-ZRX8984sc")]
             [TestCase("http://youtu.be/t-ZRX8984sc", "t-ZRX8984sc")]
             [TestCase("https://m.youtube.com/iwGFalTRHDA", "iwGFalTRHDA")]
-            public void GetVideoId_ProvidedYoutubeUrl_GetCorrectVideoId(string youtubeUrl, string expected)
+            [TestCase("https://vimeo.com/62092214", "62092214")]
+            [TestCase("http://vimeo.com/62092214", "62092214")]
+            [TestCase("https://www.vimeo.com/62092214", "62092214")]
+            [TestCase("https://vimeo.com/channels/documentaryfilm/128373915", "128373915")]
+            [TestCase("https://vimeo.com/groups/musicvideo/videos/126199390", "126199390")]
+            [TestCase("https://vimeo.com/62092214?query=foo", "62092214")]
+            public void GetVideoId_ProvidedYoutubeUrl_GetCorrectVideoId(string videoURL, string expected)
             {
                 // Act
-                var videoId = YoutubeVideoHelper.GetVideoId(youtubeUrl);
+                var videoId = VideoHelper.GetVideoId(videoURL);
 
                 // Assert
                 Assert.AreEqual(expected, videoId);
@@ -50,9 +56,9 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers.Tests
         }
 
 
-        public class RegexYouTubeURLTests
+        public class RegexVideoURLTests
         {
-            private readonly Regex regex = new Regex(YoutubeVideoHelper.REGEX_YOUTUBE_URL);
+            private readonly Regex regex = new Regex(VideoHelper.REGEX_VIDEO_URL);
 
 
             [TestCase("http://youtube.com", false)]
@@ -68,12 +74,22 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers.Tests
             [TestCase("https://m.youtube.com/iwGFalTRHDA", true)]
             [TestCase("http://www.youtube.com/embed/watch?feature=player_embedded&v=r5nB9u4jjy4", true)]
             [TestCase("http://www.youtube.com/watch?v=t-ZRX8984sc", true)]
-            [TestCase("http://youtu.be/t-ZRX8984sc", true)]
             [TestCase("http://youtu.ce/t-ZRX8984sc", false)]
-            public void RegexYouTubeURL_AllPossibleYouTubeURLs_ReturnsCorrectResult(string url, bool isValidYouTubeURL)
+            [TestCase("https://vimeo.com/62092214", true)]
+            [TestCase("http://vimeo.com/62092214", true)]
+            [TestCase("https://www.vimeo.com/62092214", true)]
+            [TestCase("https://vimeo.com/channels/documentaryfilm/128373915", true)]
+            [TestCase("https://vimeo.com/groups/musicvideo/videos/126199390", true)]
+            [TestCase("https://vimeo.com/62092214?query=foo", true)]
+            [TestCase("http://vimeo/62092214", false)]
+            [TestCase("http://vimeo.com/foo", false)]
+            [TestCase("https://vimeo.com/channels/foo-barr/documentaryfilm/128373915", false)]
+            [TestCase("http://vimeo.com/groups/musicvideo/vid/126199390", false)]
+            [TestCase("https://vimeo.com.omomom/62092214?query=foo", false)]
+            public void RegexYouTubeURL_AllPossibleVideoURLs_ReturnsCorrectResult(string url, bool isValidVideoURL)
             {
                 // Act & Assert
-                Assert.That(regex.IsMatch(url), Is.EqualTo(isValidYouTubeURL));
+                Assert.That(regex.IsMatch(url), Is.EqualTo(isValidVideoURL));
             }
         }
     }

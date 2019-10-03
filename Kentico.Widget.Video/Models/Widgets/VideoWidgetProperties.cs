@@ -17,7 +17,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Models
         [Required]
         [EditingComponent(TextInputComponent.IDENTIFIER, Label = "{$Kentico.Widget.Video.Label$}", Order = 1)]
         [EditingComponentProperty(nameof(TextInputProperties.Placeholder), "{$Kentico.Widget.Video.VideoUrl.Placeholder$}")]
-        [RegularExpression(YoutubeVideoHelper.REGEX_YOUTUBE_URL, ErrorMessage = "Kentico.Widget.Video.VideoUrl.InvalidFormatMessage")]
+        [RegularExpression(VideoHelper.REGEX_VIDEO_URL, ErrorMessage = "Kentico.Widget.Video.VideoUrl.InvalidFormatMessage")]
         public string VideoUrl { get; set; }
     }
 }

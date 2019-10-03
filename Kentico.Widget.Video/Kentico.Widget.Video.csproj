@@ -532,7 +532,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\VideoWidgetController.cs" />
-    <Compile Include="Helpers\YoutubeVideoHelper.cs" />
+    <Compile Include="Helpers\VideoHelper.cs" />
     <Compile Include="Models\Widgets\VideoWidgetProperties.cs" />
     <Compile Include="Models\Widgets\VideoWidgetViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
