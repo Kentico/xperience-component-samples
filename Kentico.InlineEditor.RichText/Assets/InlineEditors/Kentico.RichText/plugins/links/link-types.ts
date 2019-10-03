@@ -1,3 +1,7 @@
+export interface PathSelectorMetadata {
+  readonly name: string;
+  readonly nodeGuid: string
+}
 import { CustomPlugin } from "froala-editor/js/froala_editor.pkgd.min";
 
 import { DialogMode } from "../plugin-types";

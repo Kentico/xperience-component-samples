@@ -17,6 +17,13 @@ export const initializeLinkPlugin = (froala: Froala, element: HTMLElement) => {
         popupUpdateLinkButtons: [constants.CLOSE_CONFIGURE_LINK_POPUP_COMMAND_NAME, "|", constants.SWITCH_PATH_TAB_COMMAND_NAME],
     });
 
+    const apiEndpoint = element.dataset.apiEndpoint;
+    if (apiEndpoint) {
+        Object.assign(froala.DEFAULTS, {
+            apiEndpoint
+        });
+    }
+
     linkCommands.forEach(({ commandName, commandParameters, commandIcon }) => {
         froala.RegisterCommand(commandName, commandParameters);
         
