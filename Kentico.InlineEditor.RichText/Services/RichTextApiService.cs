@@ -21,7 +21,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
     /// </summary>
     internal sealed class RichTextApiService : IRichTextApiService
     {
-        private const string RICH_TEXT_API_ENDPOINT = "api/RichText";
+        private const string RICH_TEXT_API_ENDPOINT = "KenticoComponent/Kentico.InlineEditor.RichText/GetPage";
 
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         public void MapEndpointRoute(RouteCollection routeCollection)
         {
             routeCollection.MapHttpRoute(
-                name: "RichTextApi",
+                name: "Kentico.InlineEditor.RichText",
                 routeTemplate: RICH_TEXT_API_ENDPOINT,
                 defaults: new { controller = "RichText", action = "GetPage" }
             );

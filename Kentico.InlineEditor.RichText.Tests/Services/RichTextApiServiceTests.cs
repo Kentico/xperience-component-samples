@@ -18,7 +18,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 service.MapEndpointRoute(routes);
 
                 Assert.That(routes.Count, Is.EqualTo(1));
-                Assert.That((routes[0] as Route).Url, Is.EqualTo("api/RichText"));
+                Assert.That((routes[0] as Route).Url, Is.EqualTo("KenticoComponent/Kentico.InlineEditor.RichText/GetPage"));
             }
         }
     }
