@@ -2,15 +2,23 @@
 using System.Net;
 using System.Web.Http;
 
+using CMS.Core;
 using CMS.DocumentEngine;
-using CMS.DocumentEngine.Internal;
 using CMS.Helpers;
-using CMS.SiteProvider;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors.Controllers
 {
     public class RichTextController : ApiController
     {
+        private readonly IRichTextApiService richTextApiService;
+
+        
+        public RichTextController()
+        {
+            richTextApiService = Service.Resolve<IRichTextApiService>();
+        }
+
+
         [HttpGet]
         public IHttpActionResult GetPage(string pageUrl)
         {
@@ -25,18 +33,13 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Controllers
                 return BadRequest("Invalid page URL.");
             }
 
-            TreeNode page = AlternativeUrlHelper.GetConflictingPage(new AlternativeUrlInfo()
-            {
-                AlternativeUrlSiteID = SiteContext.CurrentSiteID,
-                AlternativeUrlUrl = AlternativeUrlHelper.NormalizeAlternativeUrl(pageUrl),
-            });
-
+            TreeNode page = richTextApiService.GetPage(pageUrl);
             if (page == null)
             {
                 return NotFound();
             }
 
-            return Ok(new
+            return Ok<dynamic>(new
             {
                 name = page.DocumentName,
                 nodeGuid = page.NodeGUID

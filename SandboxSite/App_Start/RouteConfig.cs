@@ -13,7 +13,7 @@ namespace Kentico.AspNet.Mvc.SandboxSite
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.Kentico().MapRichTextRoutes();
+            routes.Kentico().MapRichTextEditorRoutes();
             
             // Maps routes to Kentico HTTP handlers and features enabled in ApplicationConfig.cs
             // Always map the Kentico routes before adding other routes. Issues may occur if Kentico URLs are matched by a general route, for example images might not be displayed on pages
