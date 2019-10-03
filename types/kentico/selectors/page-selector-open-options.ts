@@ -6,4 +6,6 @@ export interface PageSelectorOpenOptions {
      * @param selectedPages Selected pages.
      */
     readonly applyCallback: (selectedPages: Page[] | null) => void;
+    readonly identifierMode: string;
+    readonly selectedValues: [{ identifier: string }];
 }

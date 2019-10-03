@@ -4,10 +4,10 @@ import { showPopup, getDialogElement } from "../../popup-helper";
 import { INSERT_LINK_POPUP_NAME, UPDATE_LINK_POPUP_NAME, SWITCH_PATH_TAB_COMMAND_NAME } from "../link-constants";
 import { getLinkConfigurationPopupTemplate } from "../link-templates";
 import { DialogMode } from "../../plugin-types";
-import { getString } from "../../links/link-helpers";
+import { getString, getPathSelectorMetadata } from "../../links/link-helpers";
 import { LinkDescriptor } from "../link-types";
 
-export function showLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRect | ClientRect,
+export async function showLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRect | ClientRect,
     { linkText, openInNewTab, path }: LinkDescriptor, dialogMode: DialogMode = DialogMode.INSERT) {
 
     const popupName = dialogMode === DialogMode.INSERT ? INSERT_LINK_POPUP_NAME : UPDATE_LINK_POPUP_NAME;
@@ -17,10 +17,13 @@ export function showLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRec
     showPopup(this, popupName, relatedElementPosition, popupButtons, customLayer);
 
     const dialog = getDialogElement(this, popupName);
+    const apiEndpoint = this.opts.apiEndpoint;
 
     if (dialog) {
         const container = dialog.querySelector<HTMLElement>(".ktc-configure-popup");
-        container!.innerHTML = getLinkConfigurationPopupTemplate(path, linkText, openInNewTab, dialogMode);
+        const pathSelectorMetadata = await getPathSelectorMetadata(apiEndpoint, path, dialogMode);
+
+        container!.innerHTML = getLinkConfigurationPopupTemplate(pathSelectorMetadata.name, path, linkText, openInNewTab, dialogMode);
 
         const button = dialog.querySelector<HTMLButtonElement>(`.fr-command[data-cmd="${SWITCH_PATH_TAB_COMMAND_NAME}"]`);
         button!.classList.add("fr-active", "fr-selected");
@@ -45,6 +48,8 @@ export function showLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRec
 
         pageSelectButton!.addEventListener("click", () => {
             window.kentico.modalDialog.pageSelector.open({
+                identifierMode: "guid",
+                selectedValues: [{identifier: pathSelectorMetadata.nodeGuid}],
                 applyCallback(selectedPages) {
                     if (selectedPages) {
                         const pageNameField = container!.querySelector<HTMLLabelElement>(".ktc-page-name");

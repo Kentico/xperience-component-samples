@@ -2,9 +2,9 @@ import { DialogMode } from "../plugin-types";
 import { INSERT_PAGE_LINK_COMMAND_NAME, UPDATE_LINK_COMMAND_NAME } from "./link-constants";
 import { getString } from "./link-helpers";
 
-export const getLinkConfigurationPopupTemplate = (linkUrl: string, linkText: string, openInNewTab: boolean, dialogMode: DialogMode): string =>
+export const getLinkConfigurationPopupTemplate = (pageName: string, linkUrl: string, linkText: string, openInNewTab: boolean, dialogMode: DialogMode): string =>
     require("./templates/configure-link-popup.html")({
-        pageName: linkUrl ? "📄 Page name" : "",
+        pageName,
         pageUrl: linkUrl,
         linkText,
         linkTextLabel: getString("Label.Text"),
