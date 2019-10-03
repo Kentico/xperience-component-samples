@@ -80,7 +80,7 @@ const editPageLinkCommand = new FroalaCommand(constants.OPEN_EDIT_LINK_POPUP_COM
     focus: false,
     callback(this: FroalaEditor) {
         selectedLink = this.link.get() as HTMLAnchorElement;
-        const path = selectedLink.href;
+        const path = selectedLink.getAttribute("href") || ""; // Don't use href property because it contains a complete URL including a domain.
         const linkText = selectedLink.text;
         const openInNewTab = selectedLink.target === "_blank";
 

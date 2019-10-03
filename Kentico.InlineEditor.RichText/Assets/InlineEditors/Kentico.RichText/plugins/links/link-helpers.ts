@@ -15,9 +15,11 @@ export const getPathSelectorMetadata = async (endpoint: string, path: string, di
     return { name: "", nodeGuid: "" };
   }
 
-  const url = endpoint.includes("?") ? `${endpoint}&pageUrl=${encodeURIComponent(path)}` : `${endpoint}?pageUrl=${encodeURIComponent(path)}`;
+  const queryParameter = `pageUrl=${encodeURIComponent(path)}`;
+  const queryDelimiter = endpoint.includes("?") ? "&" : "?";
+  const url = endpoint.concat(queryDelimiter, queryParameter);
   const json = await getData(url);
-  
+
   return {
     name: json.name,
     nodeGuid: json.nodeGuid,
@@ -27,15 +29,16 @@ export const getPathSelectorMetadata = async (endpoint: string, path: string, di
 const getData = async (url: string): Promise<any> => {
   try {
     const response = await fetch(url);
-    
-    if (!response.ok)
-    {
+
+    if (!response.ok) {
       throw new Error(response.statusText);
     }
-    
+
     return await response.json();
   }
   catch (error) {
     console.error(error);
   }
+
+  return { name: "", nodeGuid: ""};
 }

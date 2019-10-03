@@ -6,6 +6,7 @@ import { getLinkConfigurationPopupTemplate } from "../link-templates";
 import { DialogMode } from "../../plugin-types";
 import { getString, getPathSelectorMetadata } from "../../links/link-helpers";
 import { LinkDescriptor } from "../link-types";
+import { IdentifierMode } from "@/types/kentico/selectors/page-selector-open-options";
 
 export async function showLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRect | ClientRect,
     { linkText, openInNewTab, path }: LinkDescriptor, dialogMode: DialogMode = DialogMode.INSERT) {
@@ -48,7 +49,7 @@ export async function showLinkPopup(this: FroalaEditor, relatedElementPosition: 
 
         pageSelectButton!.addEventListener("click", () => {
             window.kentico.modalDialog.pageSelector.open({
-                identifierMode: "guid",
+                identifierMode: IdentifierMode.Guid,
                 selectedValues: [{identifier: pathSelectorMetadata.nodeGuid}],
                 applyCallback(selectedPages) {
                     if (selectedPages) {
