@@ -1,76 +1,39 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Web.Http;
 
-using CMS.Core;
-using CMS.DataEngine;
 using CMS.DocumentEngine;
-using CMS.Helpers;
-using CMS.Membership;
-using CMS.SiteProvider;
+
+using Kentico.Components.Web.Mvc.InlineEditors.Internal;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors.Controllers
 {
     public class RichTextController : ApiController
     {
-        private readonly IRichTextApiService richTextApiService;
-
-        
-        public RichTextController()
-        {
-            richTextApiService = Service.Resolve<IRichTextApiService>();
-        }
+        public const string COMPONENT_IDENTIFIER = "Kentico.InlineEditor.RichText";
+        private readonly RichTextActionsHandler richTextActionsHelper = new RichTextActionsHandler();
 
 
         [HttpGet]
         public IHttpActionResult GetPage(string pageUrl)
         {
-            if (!VirtualContext.IsPreviewLinkInitialized)
+            TreeNode page = null;
+            HttpStatusCode statusCode = richTextActionsHelper.HandleGetPageAction(pageUrl, ref page);
+            
+            switch (statusCode)
             {
-                return StatusCode(HttpStatusCode.Forbidden);
+                case HttpStatusCode.OK:
+                    return Ok<dynamic>(new
+                    {
+                        name = page.DocumentName,
+                        nodeGuid = page.NodeGUID
+                    });
+
+                case HttpStatusCode.BadRequest:
+                    return BadRequest("Invalid page URL.");
+
+                default:
+                    return StatusCode(statusCode);
             }
-
-            pageUrl = ExtractPageUrl(pageUrl);
-            if (pageUrl == null)
-            {
-                return BadRequest("Invalid page URL.");
-            }
-
-            TreeNode page = richTextApiService.GetPage(pageUrl);
-            if (page == null)
-            {
-                return NotFound();
-            }
-
-            if (!page.CheckPermissions(PermissionsEnum.Read, SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser))
-            {
-                return Unauthorized();
-            }
-
-            return Ok<dynamic>(new
-            {
-                name = page.DocumentName,
-                nodeGuid = page.NodeGUID
-            });
-        }
-
-
-        public string ExtractPageUrl(string pagePreviewUrl)
-        {
-            if (String.IsNullOrWhiteSpace(pagePreviewUrl))
-            {
-                return null;
-            }
-
-            var virtualContextSeparator = new string[] { $"/{VirtualContext.VirtualContextSeparator}/" };
-            var pageUrlSplit = pagePreviewUrl.Split(virtualContextSeparator, StringSplitOptions.None);
-
-            if (pageUrlSplit.Length < 2)
-            {
-                return null;
-            }
-
-            return pageUrlSplit[1];
         }
     }
 }

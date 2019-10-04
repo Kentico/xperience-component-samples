@@ -1,5 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using System.Net;
+using System.Web.Mvc;
 
+using CMS.DocumentEngine;
+
+using Kentico.Components.Web.Mvc.InlineEditors.Internal;
 using Kentico.Components.Web.Mvc.Widgets.Controllers;
 using Kentico.Components.Web.Mvc.Widgets.Models;
 using Kentico.PageBuilder.Web.Mvc;
@@ -13,6 +17,9 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
     /// </summary>
     public class RichTextWidgetController : WidgetController<RichTextWidgetProperties>
     {
+        private readonly RichTextActionsHandler richTextActionsHelper = new RichTextActionsHandler();
+
+
         // GET: RichTextWidget
         public ActionResult Index()
         {
@@ -24,6 +31,29 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
             };
 
             return PartialView("~/Views/Shared/Kentico/Widgets/_RichTextWidget.cshtml", viewModel);
+        }
+
+
+        public ActionResult GetPage(string pageUrl)
+        {
+            TreeNode page = null;
+            HttpStatusCode statusCode = richTextActionsHelper.HandleGetPageAction(pageUrl, ref page);
+
+            switch (statusCode)
+            {
+                case HttpStatusCode.OK:
+                    return Json(new
+                    {
+                        name = page.DocumentName,
+                        nodeGuid = page.NodeGUID
+                    }, JsonRequestBehavior.AllowGet);
+
+                case HttpStatusCode.BadRequest:
+                    return new HttpStatusCodeResult(statusCode, "Invalid page URL.");
+
+                default:
+                    return new HttpStatusCodeResult(statusCode);
+            }
         }
     }
 }

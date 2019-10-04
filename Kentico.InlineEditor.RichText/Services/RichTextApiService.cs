@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -9,6 +10,7 @@ using CMS.DocumentEngine.Internal;
 using CMS.SiteProvider;
 
 using Kentico.Components.Web.Mvc.InlineEditors;
+using Kentico.Components.Web.Mvc.InlineEditors.Controllers;
 using Kentico.Content.Web.Mvc;
 using Kentico.Web.Mvc;
 
@@ -21,7 +23,8 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
     /// </summary>
     internal sealed class RichTextApiService : IRichTextApiService
     {
-        private const string RICH_TEXT_API_ENDPOINT = "KenticoComponent/Kentico.InlineEditor.RichText/GetPage";
+        private readonly string richTextApiEndpoint = $"KenticoComponent/{RichTextController.COMPONENT_IDENTIFIER}/GetPage";
+        private readonly string richTextApiEndpointFallback = $"Kentico.PageBuilder/Widgets/{Thread.CurrentThread.CurrentCulture.Name}/Kentico.Widget.RichText/GetPage";
 
 
         /// <summary>
@@ -31,8 +34,8 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         public void MapEndpointRoute(RouteCollection routeCollection)
         {
             routeCollection.MapHttpRoute(
-                name: "Kentico.InlineEditor.RichText",
-                routeTemplate: RICH_TEXT_API_ENDPOINT,
+                name: RichTextController.COMPONENT_IDENTIFIER,
+                routeTemplate: richTextApiEndpoint,
                 defaults: new { controller = "RichText", action = "GetPage" }
             );
         }
@@ -47,7 +50,10 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         {
             urlHelper = urlHelper ?? throw new ArgumentNullException(nameof(urlHelper));
 
-            return urlHelper.Kentico().AuthenticateUrl($"~/{RICH_TEXT_API_ENDPOINT}").ToString();
+            var richTextEditorRoute = urlHelper.RouteCollection[RichTextController.COMPONENT_IDENTIFIER];
+            var endpointUrl = richTextEditorRoute == null ? richTextApiEndpointFallback : richTextApiEndpoint;
+
+            return urlHelper.Kentico().AuthenticateUrl($"~/{endpointUrl}").ToString();
         }
 
 

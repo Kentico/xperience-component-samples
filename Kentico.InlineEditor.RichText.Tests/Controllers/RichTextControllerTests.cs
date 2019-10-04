@@ -64,9 +64,10 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             {
                 richTextApiServiceMock.GetPage(Arg.Any<string>()).Returns((callInfo) => null);
 
-                var result = new RichTextController().GetPage("/-/Page/Test");
+                var result = new RichTextController().GetPage("/-/Page/Test") as StatusCodeResult;
 
-                Assert.That(result, Is.TypeOf<NotFoundResult>());
+                Assert.That(result, Is.Not.Null);
+                Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
             }
 
 
@@ -77,9 +78,10 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 pageMock.CheckPermissions(CMS.DataEngine.PermissionsEnum.Read, Arg.Any<string>(), Arg.Any<IUserInfo>()).Returns(false);
                 richTextApiServiceMock.GetPage(Arg.Any<string>()).Returns(pageMock);
 
-                var result = new RichTextController().GetPage("/-/Page/Test");
+                var result = new RichTextController().GetPage("/-/Page/Test") as StatusCodeResult;
 
-                Assert.That(result, Is.TypeOf<UnauthorizedResult>());
+                Assert.That(result, Is.Not.Null);
+                Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
             }
 
 
