@@ -51,6 +51,12 @@ const insertOrUpdateLinkCommandParameters: RegisterCommandParameters = {
             const text = formData.get("linkText") as string;
             const openInNewTab = Boolean(formData.get("openInNewTab"));
 
+            if (!path || !text)
+            {
+                this.kenticoLinkPlugin.hideLinkConfigurationPopup();
+                return;
+            }
+
             if (command === constants.INSERT_PAGE_LINK_COMMAND_NAME) {
                 this.link.insert(path, text, openInNewTab ? {target: "_blank"} : undefined);
             } else if (command === constants.UPDATE_LINK_COMMAND_NAME && selectedLink) {
@@ -96,10 +102,17 @@ const openPathTabCommand = new FroalaCommand(constants.SWITCH_PATH_TAB_COMMAND_N
     focus: false,
     callback(this: FroalaEditor) {
         selectedLink = this.link.get() as HTMLAnchorElement;
-        const path = selectedLink.href;
-        const linkText = selectedLink.text;
-        const openInNewTab = selectedLink.target === "_blank";
-        this.kenticoLinkPlugin.showLinkPopup(this.position.getBoundingRect(), { linkText, path, openInNewTab }, DialogMode.UPDATE);
+
+        if(selectedLink) {
+            const path = selectedLink.href;
+            const linkText = selectedLink.text;
+            const openInNewTab = selectedLink.target === "_blank";
+            this.kenticoLinkPlugin.showLinkPopup(this.position.getBoundingRect(), { linkText, path, openInNewTab }, DialogMode.UPDATE);
+        }
+        else {
+            const linkText = this.selection.text();
+            this.kenticoLinkPlugin.showLinkPopup(this.position.getBoundingRect(), { linkText, path: "", openInNewTab: false }, DialogMode.INSERT);
+        }
     }
 }, openPathTabCommandIcon);
 
