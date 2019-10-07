@@ -4,6 +4,8 @@ import { PathSelectorMetadata } from "./link-types";
 
 export const getString = (resourceKey: string) => getStringForPlugin(resourceKey, PluginType.LinkPlugin);
 
+const EMPTY_PAGE_DATA = { name: "", nodeGuid: "" };
+
 /**
  * Gets page name and node GUID for specific URL path from server when DialogMode=UPDATE
  * @param endpoint Server endpoint for retrieving data.
@@ -11,8 +13,9 @@ export const getString = (resourceKey: string) => getStringForPlugin(resourceKey
  * @param dialogMode Dialog mode.
  */
 export const getPathSelectorMetadata = async (endpoint: string, path: string, dialogMode: DialogMode): Promise<PathSelectorMetadata> => {
+
   if (dialogMode === DialogMode.INSERT) {
-    return { name: "", nodeGuid: "" };
+    return EMPTY_PAGE_DATA;
   }
 
   const queryParameter = `pageUrl=${encodeURIComponent(path)}`;
@@ -40,5 +43,5 @@ const getData = async (url: string): Promise<any> => {
     console.error(error);
   }
 
-  return { name: "", nodeGuid: ""};
+  return EMPTY_PAGE_DATA;
 }
