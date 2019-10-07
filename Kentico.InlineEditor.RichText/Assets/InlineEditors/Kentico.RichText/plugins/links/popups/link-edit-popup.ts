@@ -57,7 +57,7 @@ export async function showLinkPopup(this: FroalaEditor, relatedElementPosition: 
                         const pageUrlField = container!.querySelector<HTMLInputElement>("input[name='pageUrl']");
                         const selectedPage = selectedPages[0];
 
-                        pageNameField!.textContent = `📄 ${selectedPage.name}`;
+                        pageNameField!.textContent = selectedPage.name;
                         pageUrlField!.value = selectedPage.url;
                         pageSelectButton!.textContent = getString("ActionButton.ChangePage");
 
