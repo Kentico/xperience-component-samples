@@ -18,7 +18,7 @@ describe("getPathSelectorMetadata", () => {
     });
 
     it("path is encoded", async () => {
-        const result = await getPathSelectorMetadata("/api/fooget", "path%&", DialogMode.UPDATE);
+        await getPathSelectorMetadata("/api/fooget", "path%&", DialogMode.UPDATE);
 
         expect(fetchMock).toHaveBeenCalledWith("/api/fooget?pageUrl=path%25%26");
     });
@@ -42,10 +42,11 @@ describe("getPathSelectorMetadata", () => {
     it("doesn't produce unhandled error", async () => {
         fetchMock.resetMocks();
         fetchMock.mockReject(new Error("MyError"));
-        const mockErrorConsole = jest.spyOn(global.console, "error");
-        await getPathSelectorMetadata("/api/fooget", "path", DialogMode.UPDATE); 
+        const mockErrorConsole = jest.spyOn(global.console, "error").mockImplementation();
+        const result = await getPathSelectorMetadata("/api/fooget", "path", DialogMode.UPDATE); 
 
         expect(mockErrorConsole).toHaveBeenCalledWith(new Error("MyError"));
+        expect(result).toEqual({ name: "", nodeGuid: ""});
     });
 
     it("does something", async () => {
