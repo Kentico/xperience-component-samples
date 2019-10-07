@@ -4,7 +4,7 @@ import * as constants from "./link-constants";
 
 import { FroalaCommand } from "../../froala-command";
 import { FroalaIcon } from "../../froala-icon";
-import { getString } from "./link-helpers";
+import { getString, getPathSelectorMetadata } from "./link-helpers";
 import { getDialogElement } from "../popup-helper";
 import { DialogMode } from "../plugin-types";
 
@@ -39,7 +39,7 @@ const insertOrUpdateLinkCommandParameters: RegisterCommandParameters = {
     title: "",
     undo: true,
     focus: false,
-    callback(this: FroalaEditor, command: string) {
+    async callback(this: FroalaEditor, command: string) {
         const popupName = command === constants.INSERT_PAGE_LINK_COMMAND_NAME ? constants.INSERT_LINK_POPUP_NAME : constants.UPDATE_LINK_POPUP_NAME;
         const popupElement = getDialogElement(this, popupName);
 
@@ -48,13 +48,18 @@ const insertOrUpdateLinkCommandParameters: RegisterCommandParameters = {
             const form = popupElement.querySelector<HTMLFormElement>("#ktc-form");
             const formData = new FormData(form!);
             const path = formData.get("pageUrl") as string;
-            const text = formData.get("linkText") as string;
+            let text = formData.get("linkText") as string;
             const openInNewTab = Boolean(formData.get("openInNewTab"));
 
-            if (!path || !text)
+            if (!path)
             {
                 this.kenticoLinkPlugin.hideLinkConfigurationPopup();
                 return;
+            }
+            if (!text) {
+                const apiEndpoint = this.opts.apiEndpoint;
+                const pathSelectorMetadata  = await getPathSelectorMetadata(apiEndpoint, path, DialogMode.UPDATE);
+                text = pathSelectorMetadata.name;
             }
 
             if (command === constants.INSERT_PAGE_LINK_COMMAND_NAME) {

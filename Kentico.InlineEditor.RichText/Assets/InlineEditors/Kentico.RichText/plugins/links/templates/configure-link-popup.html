@@ -14,7 +14,7 @@
                    placeholder="" tabindex="2" dir="auto" value="<%= linkText %>">
             <label for="ktc-configuration-url-text-1"><%= linkTextLabel %></label>
         </div>
-        <div class="fr-checkbox-line ktc-checkbox">
+        <div class="fr-checkbox-line">
             <span class="fr-checkbox">
                 <input name="openInNewTab" class="fr-link-attr fr-not-empty" type="checkbox"
                        id="ktc-configuration-openInNewTab" tabindex="3" dir="auto" <%= openInNewTab ? 'checked' : '' %>>
@@ -24,8 +24,7 @@
                         <path d="M27 4l-15 15-7-7-5 5 12 12 20-20z" fill="#FFF"></path>
                     </svg>
                 </span>
-            </span>
-            <label id="ktc-lbl-configuration-openInNewTab"><%= openInNewTabLabel %></label>
+            </span><label id="ktc-lbl-configuration-openInNewTab"><%= openInNewTabLabel %></label>
         </div>
         <div class="fr-action-buttons">
             <button class="fr-command fr-submit" role="button" data-cmd="<%= command %>" href="#" tabindex="3"
