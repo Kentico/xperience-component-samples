@@ -1,8 +1,6 @@
 ﻿using System.Net;
 using System.Web.Mvc;
 
-using CMS.DocumentEngine;
-
 using Kentico.Components.Web.Mvc.InlineEditors.Internal;
 using Kentico.Components.Web.Mvc.Widgets.Controllers;
 using Kentico.Components.Web.Mvc.Widgets.Models;
@@ -36,17 +34,13 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
 
         public ActionResult GetPage(string pageUrl)
         {
-            TreeNode page = null;
-            HttpStatusCode statusCode = richTextActionsHelper.HandleGetPageAction(pageUrl, ref page);
+            object responseData = null;
+            HttpStatusCode statusCode = richTextActionsHelper.HandleGetPageAction(pageUrl, ref responseData);
 
             switch (statusCode)
             {
                 case HttpStatusCode.OK:
-                    return Json(new
-                    {
-                        name = page.DocumentName,
-                        nodeGuid = page.NodeGUID
-                    }, JsonRequestBehavior.AllowGet);
+                    return Json(responseData, JsonRequestBehavior.AllowGet);
 
                 case HttpStatusCode.BadRequest:
                     return new HttpStatusCodeResult(statusCode, "Invalid page URL.");

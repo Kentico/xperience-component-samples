@@ -27,6 +27,9 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         private readonly string richTextApiEndpointFallback = $"Kentico.PageBuilder/Widgets/{Thread.CurrentThread.CurrentCulture.Name}/Kentico.Widget.RichText/GetPage";
 
 
+        public string CurrentCulture => Thread.CurrentThread.CurrentCulture.Name;
+
+
         /// <summary>
         /// Maps the rich text editor API endpoint route.
         /// </summary>
@@ -66,10 +69,16 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         {
             pageUrl = pageUrl ?? throw new ArgumentNullException(nameof(pageUrl));
 
+            NormalizedAlternativeUrl alternativeUrl = AlternativeUrlHelper.NormalizeAlternativeUrl(pageUrl);
+            if (String.IsNullOrEmpty(alternativeUrl.NormalizedUrl))
+            {
+                return new TreeProvider().SelectSingleNode(SiteContext.CurrentSiteName, "/", CurrentCulture);
+            }
+
             return AlternativeUrlHelper.GetConflictingPage(new AlternativeUrlInfo()
             {
                 AlternativeUrlSiteID = SiteContext.CurrentSiteID,
-                AlternativeUrlUrl = AlternativeUrlHelper.NormalizeAlternativeUrl(pageUrl),
+                AlternativeUrlUrl = alternativeUrl,
             });
         }
     }

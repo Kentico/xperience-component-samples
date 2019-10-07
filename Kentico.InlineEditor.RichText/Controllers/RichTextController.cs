@@ -1,8 +1,6 @@
 ﻿using System.Net;
 using System.Web.Http;
 
-using CMS.DocumentEngine;
-
 using Kentico.Components.Web.Mvc.InlineEditors.Internal;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors.Controllers
@@ -16,17 +14,13 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Controllers
         [HttpGet]
         public IHttpActionResult GetPage(string pageUrl)
         {
-            TreeNode page = null;
-            HttpStatusCode statusCode = richTextActionsHelper.HandleGetPageAction(pageUrl, ref page);
+            object responseData = null;
+            HttpStatusCode statusCode = richTextActionsHelper.HandleGetPageAction(pageUrl, ref responseData);
             
             switch (statusCode)
             {
                 case HttpStatusCode.OK:
-                    return Ok<dynamic>(new
-                    {
-                        name = page.DocumentName,
-                        nodeGuid = page.NodeGUID
-                    });
+                    return Ok<dynamic>(responseData);
 
                 case HttpStatusCode.BadRequest:
                     return BadRequest("Invalid page URL.");

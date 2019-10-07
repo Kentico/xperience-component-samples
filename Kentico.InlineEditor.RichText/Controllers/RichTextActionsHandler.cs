@@ -15,7 +15,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Internal
         private readonly IRichTextApiService richTextApiService = Service.Resolve<IRichTextApiService>();
         
         
-        public HttpStatusCode HandleGetPageAction(string pagePreviewUrl, ref TreeNode page)
+        public HttpStatusCode HandleGetPageAction(string pagePreviewUrl, ref object responseData)
         {
             if (!VirtualContext.IsPreviewLinkInitialized)
             {
@@ -28,18 +28,20 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Internal
                 return HttpStatusCode.BadRequest;
             }
 
-            TreeNode treeNode = richTextApiService.GetPage(pageUrl);
-            if (treeNode == null)
+            TreeNode page = richTextApiService.GetPage(pageUrl);
+            if (page == null)
             {
                 return HttpStatusCode.NotFound;
             }
 
-            if (!treeNode.CheckPermissions(PermissionsEnum.Read, SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser))
+            if (!page.CheckPermissions(PermissionsEnum.Read, SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser))
             {
                 return HttpStatusCode.Unauthorized;
             }
 
-            page = treeNode;
+            string pageName = page.IsRoot() ? SiteContext.CurrentSite.DisplayName : page.DocumentName;
+            responseData = new { name = pageName, nodeGuid = page.NodeGUID };
+
             return HttpStatusCode.OK;
         }
 
