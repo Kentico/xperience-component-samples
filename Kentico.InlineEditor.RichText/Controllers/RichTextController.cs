@@ -8,14 +8,25 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Controllers
     public class RichTextController : ApiController
     {
         public const string COMPONENT_IDENTIFIER = "Kentico.InlineEditor.RichText";
-        private readonly RichTextActionsHandler richTextActionsHelper = new RichTextActionsHandler();
+        private readonly IRichTextActionsHandler actionsHandler;
+
+
+        public RichTextController() : this(new RichTextActionsHandler())
+        {
+        }
+
+
+        internal RichTextController(IRichTextActionsHandler actionsHandler)
+        {
+            this.actionsHandler = actionsHandler;
+        }
 
 
         [HttpGet]
         public IHttpActionResult GetPage(string pageUrl)
         {
             object responseData = null;
-            HttpStatusCode statusCode = richTextActionsHelper.HandleGetPageAction(pageUrl, ref responseData);
+            HttpStatusCode statusCode = actionsHandler.HandleGetPageAction(pageUrl, ref responseData);
             
             switch (statusCode)
             {

@@ -10,11 +10,11 @@ using CMS.SiteProvider;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors.Internal
 {
-    public class RichTextActionsHandler
+    public class RichTextActionsHandler : IRichTextActionsHandler
     {
         private readonly IRichTextApiService richTextApiService = Service.Resolve<IRichTextApiService>();
-        
-        
+
+
         public HttpStatusCode HandleGetPageAction(string pagePreviewUrl, ref object responseData)
         {
             if (!VirtualContext.IsPreviewLinkInitialized)
