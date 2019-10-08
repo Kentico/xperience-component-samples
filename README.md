@@ -10,6 +10,7 @@ To help you get started with [MVC page builder](https://kentico.com/CMSPages/Doc
 - [Video widget](/Kentico.Widget.Video)
 - [Rich Text widget](/Kentico.Widget.RichText)
 - [Rich Text inline editor](/Kentico.InlineEditor.RichText)
+- [Rich Text widget and inline editor NuGet package generator](/NuGetPackageBuilder)
 
 ## Contribution
 - [Guidelines](/CONTRIBUTING.md)
