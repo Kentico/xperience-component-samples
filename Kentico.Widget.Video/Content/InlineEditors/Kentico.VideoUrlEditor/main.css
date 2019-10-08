@@ -1,0 +1,53 @@
+.ktc-videoWidget-urlEditor {
+  font-size: 14px;
+  font-family: "Segoe UI", Helvetica, Verdana, Arial, sans-serif;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.ktc-videoWidget-urlEditor .ktc-form-group {
+  width: 40%;
+  padding-bottom: 16px;
+  text-align: center;
+  color: #bdbbbb;
+}
+.ktc-videoWidget-urlEditor .ktc-form-group input {
+  background-color: #f7f7f7;
+  border: 2px solid #bdbbbb;
+  border-radius: 3px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #262524;
+  display: block;
+  height: 32px;
+  line-height: 20px;
+  padding: 4px 8px;
+  -webkit-transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  width: 100%;
+  margin-bottom: 4px;
+}
+.ktc-videoWidget-urlEditor .ktc-form-group input:focus {
+  background-color: #ffffff;
+  border-bottom: 2px solid #1175ae;
+  outline: 0;
+}
+.ktc-videoWidget-urlEditor .ktc-form-group .ktc-hidden {
+  display: none;
+}
+.ktc-videoWidget-urlEditor .ktc-form-group .ktc-error {
+  border-color: #D12127;
+}
+.ktc-videoWidget-urlEditor .ktc-form-group .ktc-error-label {
+  color: #D12127;
+  text-align: left;
+}
+

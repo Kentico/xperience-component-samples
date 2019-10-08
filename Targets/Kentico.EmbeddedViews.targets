@@ -24,6 +24,9 @@
     <Exec LogStandardErrorAsError="true" Command="$(ILRepack) /noRepackRes /parallel /wildcards /out:$(IntermediateOutputPath)\Precompiled\bin\$(AssemblyName).dll $(IntermediateOutputPath)\Precompiled\bin\$(AssemblyName).dll $(IntermediateOutputPath)\Precompiled\bin\App_Web_*.dll" />
     <Copy SourceFiles="$(IntermediateOutputPath)\Precompiled\bin\$(AssemblyName).dll" DestinationFolder="$(MSBuildProjectDirectory)\..\SandboxSite\bin\" />
     <Copy SourceFiles="$(IntermediateOutputPath)\Precompiled\bin\$(AssemblyName).pdb" DestinationFolder="$(MSBuildProjectDirectory)\..\SandboxSite\bin\" />
+    <!-- Adding view to main project for nuget packaging -->
+    <Copy SourceFiles="$(IntermediateOutputPath)\Precompiled\bin\$(AssemblyName).dll" DestinationFolder="$(MSBuildProjectDirectory)\..\NugetPackageBuilder\RichText\bin\" />
+    <Copy SourceFiles="$(IntermediateOutputPath)\Precompiled\bin\$(AssemblyName).pdb" DestinationFolder="$(MSBuildProjectDirectory)\..\NugetPackageBuilder\RichText\bin\" />
   </Target>
   <!-- Fix missing ILRepack property.
        This happens only for the first build when the project is opened for the very first time and NuGet packages are restored. -->

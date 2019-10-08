@@ -2,5 +2,7 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Target Name="AfterBuild" Condition="'$(DeployOnBuild)' != 'true'">
     <Copy SourceFiles="$(MSBuildProjectDirectory)\App_Data\Global\Resources\$(AssemblyName).resx" DestinationFolder="$(MSBuildProjectDirectory)\..\SandboxSite\App_Data\Global\Resources\" />
+    <!-- Copy into nuget builder -->
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\App_Data\Global\Resources\$(AssemblyName).resx" DestinationFolder="$(MSBuildProjectDirectory)\..\NugetPackageBuilder\RichText\App_Data\Global\Resources\" />
   </Target>
 </Project>

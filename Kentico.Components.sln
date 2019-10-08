@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.InlineEditor.RichTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.InlineEditor.RichText.Tests", "Kentico.InlineEditor.RichText.Tests\Kentico.InlineEditor.RichText.Tests.csproj", "{A74C858C-91DF-4614-9689-718CB8B9B328}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RichText", "NugetPackageBuilder\RichText\RichText.csproj", "{60D45549-BB62-4999-8F29-987B58B33127}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{A74C858C-91DF-4614-9689-718CB8B9B328}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A74C858C-91DF-4614-9689-718CB8B9B328}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A74C858C-91DF-4614-9689-718CB8B9B328}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60D45549-BB62-4999-8F29-987B58B33127}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60D45549-BB62-4999-8F29-987B58B33127}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60D45549-BB62-4999-8F29-987B58B33127}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60D45549-BB62-4999-8F29-987B58B33127}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
