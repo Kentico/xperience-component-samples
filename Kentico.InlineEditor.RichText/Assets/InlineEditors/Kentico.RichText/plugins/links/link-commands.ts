@@ -104,18 +104,7 @@ const openPathTabCommand = new FroalaCommand(constants.SWITCH_PATH_TAB_COMMAND_N
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
-        selectedLink = this.link.get() as HTMLAnchorElement;
-
-        if(selectedLink) {
-            const path = selectedLink.href;
-            const linkText = selectedLink.text;
-            const openInNewTab = selectedLink.target === "_blank";
-            this.kenticoLinkPlugin.showLinkPopup(this.position.getBoundingRect(), { linkText, path, openInNewTab }, DialogMode.UPDATE);
-        }
-        else {
-            const linkText = this.selection.text();
-            this.kenticoLinkPlugin.showLinkPopup(this.position.getBoundingRect(), { linkText, path: "", openInNewTab: false }, DialogMode.INSERT);
-        }
+        // todo: Implement switch logic
     }
 }, openPathTabCommandIcon);
 
