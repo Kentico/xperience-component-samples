@@ -28,6 +28,7 @@ export async function showLinkPopup(this: FroalaEditor, relatedElementPosition: 
 
         const button = dialog.querySelector<HTMLButtonElement>(`.fr-command[data-cmd="${SWITCH_PATH_TAB_COMMAND_NAME}"]`);
         button!.classList.add("fr-active", "fr-selected");
+        button!.disabled = true;
 
         const inputs = dialog.querySelectorAll<HTMLInputElement>(".fr-input-line input");
         inputs.forEach((inputEl) => {

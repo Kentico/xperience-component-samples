@@ -4,7 +4,7 @@ import * as constants from "./link-constants";
 
 import { FroalaCommand } from "../../froala-command";
 import { FroalaIcon } from "../../froala-icon";
-import { getString, getPathSelectorMetadata } from "./link-helpers";
+import { getString } from "./link-helpers";
 import { getDialogElement } from "../popup-helper";
 import { DialogMode } from "../plugin-types";
 
@@ -39,7 +39,7 @@ const insertOrUpdateLinkCommandParameters: RegisterCommandParameters = {
     title: "",
     undo: true,
     focus: false,
-    async callback(this: FroalaEditor, command: string) {
+    callback(this: FroalaEditor, command: string) {
         const popupName = command === constants.INSERT_PAGE_LINK_COMMAND_NAME ? constants.INSERT_LINK_POPUP_NAME : constants.UPDATE_LINK_POPUP_NAME;
         const popupElement = getDialogElement(this, popupName);
 
@@ -57,9 +57,7 @@ const insertOrUpdateLinkCommandParameters: RegisterCommandParameters = {
                 return;
             }
             if (!text) {
-                const apiEndpoint = this.opts.apiEndpoint;
-                const pathSelectorMetadata  = await getPathSelectorMetadata(apiEndpoint, path, DialogMode.UPDATE);
-                text = pathSelectorMetadata.name;
+                text = popupElement.querySelector<HTMLElement>(".ktc-page-name")!.innerText;
             }
 
             if (command === constants.INSERT_PAGE_LINK_COMMAND_NAME) {
