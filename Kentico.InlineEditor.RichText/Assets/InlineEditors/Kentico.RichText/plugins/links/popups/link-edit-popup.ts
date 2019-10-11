@@ -56,10 +56,16 @@ export async function showLinkPopup(this: FroalaEditor, relatedElementPosition: 
                         const pageNameField = container!.querySelector<HTMLLabelElement>(".ktc-page-name");
                         const pageUrlField = container!.querySelector<HTMLInputElement>("input[name='pageUrl']");
                         const selectedPage = selectedPages[0];
+                        const linkText = container!.querySelector<HTMLInputElement>("input[name='linkText']");
 
                         pageNameField!.textContent = selectedPage.name;
                         pageUrlField!.value = selectedPage.url;
                         pageSelectButton!.textContent = getString("ActionButton.ChangePage");
+                        if(!linkText!.value)
+                        {
+                            linkText!.value = selectedPage.name;
+                            linkText!.classList.add("fr-not-empty");
+                        }
 
                         pageSelector!.classList.remove("ktc-page-selector--empty");
                     }

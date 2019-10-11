@@ -20,7 +20,11 @@ const openInsertLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_LINK_
     callback(this: FroalaEditor) {
         this.selection.save();
         const linkText = this.selection.text();
-        this.kenticoLinkPlugin.showLinkPopup(this.position.getBoundingRect(), { linkText, path: "", openInNewTab: false });
+        this.kenticoLinkPlugin.showLinkPopup(this.position.getBoundingRect(), { 
+            linkText: (linkText.trim().length == 0) ? "" : linkText,
+            path: "",
+            openInNewTab: false
+        });
     }
 }, openInsertLinkPopupCommandIcon);
 
@@ -56,7 +60,7 @@ const insertOrUpdateLinkCommandParameters: RegisterCommandParameters = {
                 this.kenticoLinkPlugin.hideLinkConfigurationPopup();
                 return;
             }
-            if (!text || (text.trim().length == 0)) {
+            if (!text) {
                 text = popupElement.querySelector<HTMLElement>(".ktc-page-name")!.innerText;
             }
 
