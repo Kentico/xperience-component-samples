@@ -8,19 +8,19 @@ const EMPTY_PAGE_DATA = { name: "", nodeGuid: "" };
 
 /**
  * Gets page name and node GUID for specific URL path from server when DialogMode=UPDATE
- * @param endpoint Server endpoint for retrieving data.
+ * @param endpointUrl Server endpoint for retrieving data.
  * @param path URL path.
  * @param dialogMode Dialog mode.
  */
-export const getPathSelectorMetadata = async (endpoint: string, path: string, dialogMode: DialogMode): Promise<PathSelectorMetadata> => {
+export const getPathSelectorMetadata = async (endpointUrl: string, path: string, dialogMode: DialogMode): Promise<PathSelectorMetadata> => {
 
   if (dialogMode === DialogMode.INSERT) {
     return EMPTY_PAGE_DATA;
   }
 
   const queryParameter = `pageUrl=${encodeURIComponent(path)}`;
-  const queryDelimiter = endpoint.includes("?") ? "&" : "?";
-  const url = endpoint.concat(queryDelimiter, queryParameter);
+  const queryDelimiter = endpointUrl.includes("?") ? "&" : "?";
+  const url = endpointUrl.concat(queryDelimiter, queryParameter);
   const json = await getData(url);
 
   return {

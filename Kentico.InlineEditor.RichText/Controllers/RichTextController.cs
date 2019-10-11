@@ -1,44 +1,48 @@
 ﻿using System.Net;
 using System.Web.Http;
 
-using Kentico.Components.Web.Mvc.InlineEditors.Internal;
+using CMS.Core;
+using CMS.EventLog;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors.Controllers
 {
+    /// <summary>
+    /// The rich text inline editor API controller.
+    /// </summary>
+    [UseCamelCasePropertyNamesContractResolver]
     public class RichTextController : ApiController
     {
-        public const string COMPONENT_IDENTIFIER = "Kentico.InlineEditor.RichText";
-        private readonly IRichTextActionsHandler actionsHandler;
+        private readonly IRichTextGetPageActionExecutor richTextGetPageAction;
+        private readonly IEventLogService eventLogService;
 
 
-        public RichTextController() : this(new RichTextActionsHandler())
+        public RichTextController() : this(new RichTextGetPageActionExecutor(new PagesRetriever()), Service.Resolve<IEventLogService>())
         {
         }
 
 
-        internal RichTextController(IRichTextActionsHandler actionsHandler)
+        internal RichTextController(IRichTextGetPageActionExecutor richTextGetPageAction, IEventLogService eventLogService)
         {
-            this.actionsHandler = actionsHandler;
+            this.richTextGetPageAction = richTextGetPageAction;
+            this.eventLogService = eventLogService;
         }
 
 
-        [HttpGet]
+        /// <summary>
+        /// Serves the page meta data for the given page URL.
+        /// </summary>
+        /// <param name="pageUrl">The page URL.</param>
         public IHttpActionResult GetPage(string pageUrl)
         {
-            object responseData = null;
-            HttpStatusCode statusCode = actionsHandler.HandleGetPageAction(pageUrl, ref responseData);
-            
-            switch (statusCode)
+            var actionResult = richTextGetPageAction.ProcessAction(pageUrl);
+            if (actionResult.StatusCode == HttpStatusCode.OK)
             {
-                case HttpStatusCode.OK:
-                    return Ok<dynamic>(responseData);
-
-                case HttpStatusCode.BadRequest:
-                    return BadRequest("Invalid page URL.");
-
-                default:
-                    return StatusCode(statusCode);
+                return Ok(actionResult.Page);
             }
+
+            eventLogService.LogEvent(EventType.ERROR, nameof(RichTextController), nameof(GetPage), actionResult.StatusCodeMessage);
+
+            return StatusCode(actionResult.StatusCode);
         }
     }
 }

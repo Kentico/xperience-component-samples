@@ -26,3 +26,5 @@ using CMS;
 
 [assembly: InternalsVisibleTo("Kentico.InlineEditor.RichText.Tests")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+[assembly: InternalsVisibleTo("Kentico.Widget.RichText")]
+[assembly: InternalsVisibleTo("Kentico.Widget.RichText.Tests")]

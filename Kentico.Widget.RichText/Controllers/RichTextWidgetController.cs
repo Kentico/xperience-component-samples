@@ -1,12 +1,15 @@
 ﻿using System.Net;
 using System.Web.Mvc;
 
-using Kentico.Components.Web.Mvc.InlineEditors.Internal;
+using CMS.Core;
+using CMS.EventLog;
+
+using Kentico.Components.Web.Mvc.InlineEditors;
 using Kentico.Components.Web.Mvc.Widgets.Controllers;
 using Kentico.Components.Web.Mvc.Widgets.Models;
 using Kentico.PageBuilder.Web.Mvc;
 
-[assembly: RegisterWidget("Kentico.Widget.RichText", typeof(RichTextWidgetController), "{$Kentico.Widget.RichText.Name$}", Description = "{$Kentico.Widget.RichText.Description$}", IconClass = "icon-l-text")]
+[assembly: RegisterWidget(RichTextWidgetController.IDENTIFIER, typeof(RichTextWidgetController), "{$Kentico.Widget.RichText.Name$}", Description = "{$Kentico.Widget.RichText.Description$}", IconClass = "icon-l-text")]
 
 namespace Kentico.Components.Web.Mvc.Widgets.Controllers
 {
@@ -15,7 +18,25 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
     /// </summary>
     public class RichTextWidgetController : WidgetController<RichTextWidgetProperties>
     {
-        private readonly RichTextActionsHandler richTextActionsHelper = new RichTextActionsHandler();
+        private readonly IRichTextGetPageActionExecutor getPageAction;
+        private readonly IEventLogService eventLogService;
+
+        /// <summary>
+        /// The rich text widget identifier.
+        /// </summary>
+        public const string IDENTIFIER = "Kentico.Widget.RichText";
+
+
+        public RichTextWidgetController() : this(new RichTextGetPageActionExecutor(new PagesRetriever()), Service.Resolve<IEventLogService>())
+        {
+        }
+
+
+        internal RichTextWidgetController(IRichTextGetPageActionExecutor getPageAction, IEventLogService eventLogService)
+        {
+            this.getPageAction = getPageAction;
+            this.eventLogService = eventLogService;
+        }
 
 
         // GET: RichTextWidget
@@ -32,22 +53,23 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
         }
 
 
+        /// <summary>
+        /// Serves the page meta data for the given page URL.
+        /// </summary>
+        /// <param name="pageUrl">The page URL.</param>
+        [HttpGet]
         public ActionResult GetPage(string pageUrl)
         {
-            object responseData = null;
-            HttpStatusCode statusCode = richTextActionsHelper.HandleGetPageAction(pageUrl, ref responseData);
+            var actionResult = getPageAction.ProcessAction(pageUrl);
 
-            switch (statusCode)
+            if (actionResult.StatusCode == HttpStatusCode.OK)
             {
-                case HttpStatusCode.OK:
-                    return Json(responseData, JsonRequestBehavior.AllowGet);
-
-                case HttpStatusCode.BadRequest:
-                    return new HttpStatusCodeResult(statusCode, "Invalid page URL.");
-
-                default:
-                    return new HttpStatusCodeResult(statusCode);
+                return new JsonCamelCaseResult(actionResult.Page, JsonRequestBehavior.AllowGet);
             }
+
+            eventLogService.LogEvent(EventType.ERROR, nameof(RichTextWidgetController), nameof(GetPage), actionResult.StatusCodeMessage);
+
+            return new HttpStatusCodeResult(actionResult.StatusCode);
         }
     }
 }

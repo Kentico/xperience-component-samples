@@ -15,7 +15,6 @@ using CMS.SiteProvider;
 
 using Kentico.PageBuilder.Web.Mvc;
 using Kentico.Web.Mvc;
-using Kentico.Components.Web.Mvc.InlineEditors.Controllers;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors
 {
@@ -23,8 +22,8 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
     {
         private const string RICH_TEXT_EDITOR_CLASS_NAME = "ktc-rich-text-wrapper";
         private const string RICH_TEXT_EDITOR_LICENSE_ATTRIBUTE = "data-rich-text-editor-license";
-        private const string RICH_TEXT_API_ENDPOINT_ATTRIBUTE = "data-api-endpoint";
-        private static readonly Lazy<string> richTextEditorLicense = new Lazy<string>(() => SettingsKeyInfoProvider.GetValue("CMSRichTextEditorLicense", SiteContext.CurrentSiteName));
+        private const string RICH_TEXT_GET_PAGE_ENDPOINT_URL_ATTRIBUTE = "data-get-page-endpoint-url";
+        private static readonly Lazy<string> richTextEditorLicense = new Lazy<string>(() => SettingsKeyInfoProvider.GetValue(RichTextInlineEditorConstants.LICENSE_SETTINGS_KEY_NAME, SiteContext.CurrentSiteName));
 
 
         /// <summary>
@@ -42,14 +41,21 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
             }
 
             var htmlHelper = instance.Target;
-            var urlHelper = new UrlHelper(htmlHelper.ViewContext.RequestContext, htmlHelper.RouteCollection);
+            var requestContext = htmlHelper.ViewContext.RequestContext;
+            var urlHelper = new UrlHelper(requestContext, htmlHelper.RouteCollection);
+            var previewPathDecorator = Service.Resolve<IPreviewPathDecorator>();
+            var urlRetriever = Service.Resolve<IRichTextUrlRetriever>();
 
-            using (htmlHelper.Kentico().BeginInlineEditor(RichTextController.COMPONENT_IDENTIFIER, propertyName))
+            string getPageEndpointUrl = urlRetriever.GetPageEndpointUrl(urlHelper);
+            // Add the preview virtual context URL prefix
+            getPageEndpointUrl = previewPathDecorator.Decorate(getPageEndpointUrl, urlHelper);
+
+            using (htmlHelper.Kentico().BeginInlineEditor(RichTextInlineEditorConstants.IDENTIFIER, propertyName))
             {
                 var tagBuilder = new TagBuilder("div");
                 tagBuilder.AddCssClass(RICH_TEXT_EDITOR_CLASS_NAME);
                 tagBuilder.Attributes.Add(RICH_TEXT_EDITOR_LICENSE_ATTRIBUTE, richTextEditorLicense.Value);
-                tagBuilder.Attributes.Add(RICH_TEXT_API_ENDPOINT_ATTRIBUTE, Service.Resolve<IRichTextApiService>().GetApiEndpointUrl(urlHelper));
+                tagBuilder.Attributes.Add(RICH_TEXT_GET_PAGE_ENDPOINT_URL_ATTRIBUTE, getPageEndpointUrl);
 
                 if (AllowContextMacros())
                 {

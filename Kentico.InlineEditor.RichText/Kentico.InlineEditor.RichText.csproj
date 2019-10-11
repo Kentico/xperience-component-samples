@@ -529,27 +529,37 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\IRichTextActionsHandler.cs" />
-    <Compile Include="Controllers\RichTextActionsHandler.cs" />
+    <Compile Include="PageLink\IRichTextGetPageActionExecutor.cs" />
     <Compile Include="Controllers\RichTextController.cs" />
+    <Compile Include="PageLink\RichTextGetPageActionExecutor.cs" />
     <Compile Include="DynamicText\DynamicTextPattern.cs" />
     <Compile Include="DynamicText\DynamicTextPatternRegister.cs" />
     <Compile Include="DynamicText\DynamicTextResolver.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Extensions\RouteCollectionExtensions.cs" />
-    <Compile Include="Services\IRichTextApiService.cs" />
-    <Compile Include="Services\RichTextApiService.cs" />
+    <Compile Include="PageLink\UseCamelCasePropertyNamesContractResolverAttribute.cs" />
+    <Compile Include="PageLink\GetPageActionResult.cs" />
+    <Compile Include="PageLink\PageLinkModel.cs" />
+    <Compile Include="RichTextInlineEditorConstants.cs" />
+    <Compile Include="Security\IPreviewPathDecorator.cs" />
+    <Compile Include="Security\PreviewPathDecorator.cs" />
+    <Compile Include="PageLink\IPagesRetriever.cs" />
+    <Compile Include="PageLink\PagesRetriever.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PageLink\IRichTextUrlRetriever.cs" />
+    <Compile Include="PageLink\RichTextInlineEditorUrlRetriever.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\InlineEditors\Kentico.RichText\main.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\links\templates\configure-link-popup.html" />
     <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\templates\configure-context-macro-popup.html" />
     <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\templates\configure-url-parameter-popup.html" />
     <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\templates\macro-element.html" />
     <Content Include="Assets\InlineEditors\Kentico.RichText\style.less" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\links\link-styles.less" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -589,7 +599,19 @@
   <ItemGroup>
     <Content Include="App_Data\Global\Resources\Kentico.InlineEditor.RichText.resx" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\links\index.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\links\link-commands.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\links\link-constants.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\links\link-helpers.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\links\link-plugin.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\links\link-templates.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\links\link-types.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\links\popups\link-edit-popup.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\links\__tests__\link-helpers.spec.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\plugin-helpers.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\popup-helper.ts" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Targets\Kentico.ResourceFiles.targets" />
   <Import Project="..\packages\Kentico.LanguagePack.English.12.0.41\build\Kentico.LanguagePack.English.targets" Condition="Exists('..\packages\Kentico.LanguagePack.English.12.0.41\build\Kentico.LanguagePack.English.targets')" />

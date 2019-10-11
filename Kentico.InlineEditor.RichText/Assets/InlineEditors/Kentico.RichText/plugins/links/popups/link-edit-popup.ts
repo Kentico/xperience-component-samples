@@ -18,11 +18,11 @@ export async function showLinkPopup(this: FroalaEditor, relatedElementPosition: 
     showPopup(this, popupName, relatedElementPosition, popupButtons, customLayer);
 
     const dialog = getDialogElement(this, popupName);
-    const apiEndpoint = this.opts.apiEndpoint;
+    const getPageEndpointUrl = this.opts.getPageEndpointUrl;
 
     if (dialog) {
         const container = dialog.querySelector<HTMLElement>(".ktc-configure-popup");
-        const pathSelectorMetadata = await getPathSelectorMetadata(apiEndpoint, path, dialogMode);
+        const pathSelectorMetadata = await getPathSelectorMetadata(getPageEndpointUrl, path, dialogMode);
 
         container!.innerHTML = getLinkConfigurationPopupTemplate(pathSelectorMetadata.name, path, linkText, openInNewTab, dialogMode);
 

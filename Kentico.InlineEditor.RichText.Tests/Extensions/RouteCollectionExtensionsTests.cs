@@ -1,12 +1,11 @@
 ﻿using System.Web.Routing;
 
-using CMS.Core;
-using CMS.Tests;
-
-using NSubstitute;
 using NUnit.Framework;
 
+using CMS.Tests;
+
 using Kentico.Web.Mvc;
+using Kentico.Components.Web.Mvc.InlineEditors.Controllers;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 {
@@ -15,24 +14,21 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
         [TestFixture]
         public class MapRichTextEditorRoutesTests : UnitTests
         {
-            private IRichTextApiService richTextApiService;
-
-
-            [SetUp]
-            public void SetUp()
-            {
-                richTextApiService = Substitute.For<IRichTextApiService>();
-                Service.Use<IRichTextApiService>(richTextApiService);
-            }
-
-
             [Test]
-            public void MapRichTextEditorRoutes()
+            public void MapRichTextInlineEditorRoutes_RegisteresRoutes()
             {
+                // Act
                 var routes = new RouteCollection();
-                routes.Kentico().MapRichTextEditorRoutes();
+                routes.Kentico().MapRichTextInlineEditorRoutes();
 
-                richTextApiService.Received(1).MapEndpointRoute(routes);
+                // Assert
+                var route = routes[RichTextInlineEditorConstants.GET_PAGE_ROUTE_NAME] as Route;
+                Assert.Multiple(() =>
+                {
+                    Assert.That(route.Url, Is.EqualTo(RichTextInlineEditorConstants.GET_PAGE_ROUTE_TEMPLATE));
+                    Assert.That(route.Defaults["controller"], Is.EqualTo(RichTextInlineEditorConstants.CONTROLLER_NAME));
+                    Assert.That(route.Defaults["action"], Is.EqualTo(nameof(RichTextController.GetPage)));
+                });
             }
         }
     }
