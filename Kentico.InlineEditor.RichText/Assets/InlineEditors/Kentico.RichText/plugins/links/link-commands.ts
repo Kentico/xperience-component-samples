@@ -56,7 +56,7 @@ const insertOrUpdateLinkCommandParameters: RegisterCommandParameters = {
                 this.kenticoLinkPlugin.hideLinkConfigurationPopup();
                 return;
             }
-            if (!text) {
+            if (!text || (text.trim().length == 0)) {
                 text = popupElement.querySelector<HTMLElement>(".ktc-page-name")!.innerText;
             }
 
