@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KenticoInternal/OndrejMTest.git"
+    "url": "git+https://github.com/Kentico/ems-mvc-components.git"
   },
   "keywords": [],
   "author": "Ondrej Machala",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/KenticoInternal/OndrejMTest/issues"
+    "url": "https://github.com/Kentico/ems-mvc-components/issues"
   },
-  "homepage": "https://github.com/KenticoInternal/OndrejMTest#readme",
+  "homepage": "https://github.com/Kentico/ems-mvc-components#readme",
   "dependencies": {
     "@actions/core": "^1.1.3",
     "@actions/github": "^1.1.0",

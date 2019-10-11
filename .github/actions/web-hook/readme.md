@@ -33,6 +33,9 @@ npm i
 npm run build
 ```
 
+Before running the commands ensure that you had `cd`-ed to `.github/actions/web-hook` folder.
+
+
 ### Files to commit
 - index.js
 - dist/index.js
