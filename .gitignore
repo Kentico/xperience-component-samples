@@ -40,13 +40,13 @@ packages/
 
 # Ignore Nuget packages Kentico content files
 # kentico.languagepack.english
-MyCompany.*/CMSResources/*
 SandboxSite/CMSResources/*
+/*.Views/CMSResources/*
+
 # kentico.aspnet.mvc
 SandboxSite/App_Data/Global/Resources/Kentico.*
 
 # Ignore component development files
-SandboxSite/App_Data/Global/Resources/MyCompany.*
 SandboxSite/Content/*
 
 # Kentico application data files
@@ -62,8 +62,5 @@ SandboxSite/Content/*
 
 # build artifacts
 /artifacts
-
-# Webpack outputs
-MyCompany.Components/Content
 
 node_modules/

@@ -35,7 +35,16 @@ module.exports = {
           MiniCssExtractPlugin.loader,
           'css-loader',
         ]
-      }
+      },
+      {
+        test: /\.html$/,
+        use: {
+          loader: "underscore-template-loader",
+          query: {
+              engine: 'lodash',
+          }
+        }
+      },
     ]
   },
   resolve: {

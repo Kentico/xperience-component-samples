@@ -14,7 +14,7 @@ using CMS;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Kentico.Widget.Video")]
-[assembly: AssemblyCopyright("Kentico ©  2019")]
+[assembly: AssemblyCopyright("Kentico © 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

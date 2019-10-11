@@ -1,7 +1,8 @@
 // TEMP: Temporary type definitions until Froala provides their official type definitions
 
 declare module 'froala-editor/js/froala_editor.pkgd.min' {
-
+    import { MacrosPlugin } from "@/Kentico.InlineEditor.RichText/Assets/InlineEditors/Kentico.RichText/plugins/macros/macro-types";
+    
     /**
      * Define a custom icon.
      *
@@ -25,6 +26,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       ALT: string;
       FA5NAME: string;
       SVG_KEY: string;
+      PATH: string,
     }
   
     /**
@@ -49,6 +51,8 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
      *   }
      */
     export const ICON_TEMPLATES: GenericObject<string>;
+
+    export const POPUP_TEMPLATES: GenericObject<string>
   
     /**
      * Registers a button
@@ -70,7 +74,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
      * - videoEditButtons
      * - videoInsertButtons or videoSizeButtons
      *
-     * @param name Label given to the commang to be used in registering in button options
+     * @param name Label given to the command to be used in registering in button options
      * @param parameters
      */
     export function RegisterCommand(name: string, parameters: Partial<RegisterCommandParameters>): void;
@@ -82,19 +86,22 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
   
       // Specify the icon for the button.
       // If this option is not specified, the button name will be used.
-      icon: string;
+      icon?: string;
   
       // Save the button action into undo stack.
       undo: boolean;
   
       // Focus inside the editor before the callback.
       focus: boolean;
+      
+      // Buttons which are included in the editor toolbar should have the plugin property set.
+      plugin?: string, 
   
       // Show the button on mobile or not.
       showOnMobile?: boolean;
   
       // Refresh the buttons state after the callback.
-      refreshAfterCallback: boolean;
+      refreshAfterCallback?: boolean;
   
       // Called when the button is hit.
       // The current context is the editor instance.
@@ -135,8 +142,8 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
     // Froala config defaults
     export const DEFAULTS: Partial<FroalaOptions>;
   
-    export interface CustomPlugin {
-      _init(): void;
+    export interface CustomPlugin extends GenericObject {
+      _init?(): void;
     }
   
     // Froala Plugins
@@ -148,9 +155,13 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
     export default class FroalaEditor {
       constructor(element: any, options: Partial<FroalaOptions>);
       $oel: JQuery;
+      $tb: JQuery;
       destroy(): object;
-  
-      opts: FroalaOptions;
+
+      // Custom props
+      kenticoMacroPlugin: MacrosPlugin;
+      
+      accessibility: Accessibility;
       align: Align;
       button: Button;
       charCounter: ChartCounter;
@@ -162,6 +173,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       cursor: Cursor;
       edit: Edit;
       editInPopup: EditInPopup;
+      el: HTMLElement;      
       embedly: Embedly;
       emoticons: Emoticons;
       events: Events;
@@ -184,6 +196,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       markers: Markers;
       modals: Modals;
       node: Node;
+      opts: FroalaOptions;      
       paragraphFormat: Apply<string>;
       paragraphStyle: Apply<string>;
       placeholder: Placeholder;
@@ -230,6 +243,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
     }
   
     export interface FroalaOptions {
+      [x: string]: any,
       // Aviary Editor
       aviaryKey: boolean,
       aviaryOptions: { [key: string]: any },
@@ -553,6 +567,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       shortcut: (event: Event, commandName: string, shortcutValue: any) => void,
       touchstart: (touchstartEvent: JQueryEventObject) => void,
       touchend: (touchendEvent: JQueryEventObject) => void,
+      "html.set": () => void;
     }
   
     interface Apply<T> {
@@ -562,6 +577,24 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
     export type MediaAlign = 'left' | 'right' | 'center';
     export type AlignType = 'left' | 'right' | 'center' | 'justify';
   
+    export interface Accessibility {
+      _init: () => void;
+      registerPopup: (e: any) => void;
+      registerToolbar: (r: any) => void;
+      focusToolbarElement: (t: any) => void;
+      focusToolbar: (e: any, t: any) => void;
+      focusContent: (e: any, t: any) => void;
+      focusPopup: (r: JQuery) => void;
+      focusModal: (e: any) => void;
+      focusEditor: () => void;
+      focusPopupButton: (e: any) => void;
+      focusModalButton: (e: any) => void;
+      hasFocus: () => boolean;
+      exec: (e: any, t: any) => void;
+      saveSelection: () => void;
+      restoreSelection: () => void;
+    }
+
     export interface Align {
       // Set the alignment of the selected paragraphs.
       apply(alignType: AlignType): object;
@@ -908,12 +941,12 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       onHide(id: string, callback: () => void): object;
       onRefresh(id: string, callback: () => void): object;
       refresh(id: string): object;
-      setContainer(id: string): void;
+      setContainer(id: string, container: JQuery): void;
       show(id: string, leftOffset: number, topOffset: number, heigh: number): object;
     }
   
     export interface Position {
-      getBoundingRect(): Element;
+      getBoundingRect(): DOMRect;
       refresh(): object;
     }
   

@@ -7,11 +7,13 @@ build:
   verbosity: minimal
 
 # .NET Tests
-test: auto
-
+test:
+  assemblies:
+    only:
+    - '**\kentico.*.Tests.dll'
 # Test against the latest version of this Node.js version
 environment:
-  nodejs_version: "8"
+  nodejs_version: "10"
 
 # Install scripts. (runs after repo cloning)
 install:
