@@ -61,10 +61,10 @@ export async function showLinkPopup(this: FroalaEditor, relatedElementPosition: 
                         pageNameField!.textContent = selectedPage.name;
                         pageUrlField!.value = selectedPage.url;
                         pageSelectButton!.textContent = getString("ActionButton.ChangePage");
-                        if(!linkText!.value)
-                        {
-                            linkText!.value = selectedPage.name;
-                            linkText!.classList.add("fr-not-empty");
+                        
+                        if (linkText && !linkText.value) {
+                            linkText.value = selectedPage.name;
+                            linkText.classList.add("fr-not-empty");
                         }
 
                         pageSelector!.classList.remove("ktc-page-selector--empty");

@@ -21,7 +21,7 @@ const openInsertLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_LINK_
         this.selection.save();
         const linkText = this.selection.text();
         this.kenticoLinkPlugin.showLinkPopup(this.position.getBoundingRect(), { 
-            linkText: (linkText.trim().length == 0) ? "" : linkText,
+            linkText: (linkText.trim().length === 0) ? "" : linkText,
             path: "",
             openInNewTab: false
         });
@@ -55,8 +55,7 @@ const insertOrUpdateLinkCommandParameters: RegisterCommandParameters = {
             let text = formData.get("linkText") as string;
             const openInNewTab = Boolean(formData.get("openInNewTab"));
 
-            if (!path)
-            {
+            if (!path) {
                 this.kenticoLinkPlugin.hideLinkConfigurationPopup();
                 return;
             }
