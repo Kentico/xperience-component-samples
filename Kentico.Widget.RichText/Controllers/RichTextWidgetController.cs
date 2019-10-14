@@ -3,6 +3,7 @@ using System.Web.Mvc;
 
 using CMS.Core;
 using CMS.EventLog;
+using CMS.SiteProvider;
 
 using Kentico.Components.Web.Mvc.InlineEditors;
 using Kentico.Components.Web.Mvc.Widgets.Controllers;
@@ -27,7 +28,9 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
         public const string IDENTIFIER = "Kentico.Widget.RichText";
 
 
-        public RichTextWidgetController() : this(new RichTextGetPageActionExecutor(new PagesRetriever()), Service.Resolve<IEventLogService>())
+        public RichTextWidgetController()
+            : this(new RichTextGetPageActionExecutor(new PagesRetriever(SiteContext.CurrentSiteName)),
+                  Service.Resolve<IEventLogService>())
         {
         }
 
@@ -43,7 +46,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
         public ActionResult Index()
         {
             var properties = GetProperties();
-            var viewModel = new RichTextWidgetViewModel 
+            var viewModel = new RichTextWidgetViewModel
             {
                 ContentPropertyName = nameof(properties.Content),
                 Content = properties.Content

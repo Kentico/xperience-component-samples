@@ -3,6 +3,8 @@ using System.Web.Http;
 
 using CMS.Core;
 using CMS.EventLog;
+using CMS.Membership;
+using CMS.SiteProvider;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors.Controllers
 {
@@ -16,7 +18,9 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Controllers
         private readonly IEventLogService eventLogService;
 
 
-        public RichTextController() : this(new RichTextGetPageActionExecutor(new PagesRetriever()), Service.Resolve<IEventLogService>())
+        public RichTextController()
+            : this(new RichTextGetPageActionExecutor(new PagesRetriever(SiteContext.CurrentSiteName)),
+                  Service.Resolve<IEventLogService>())
         {
         }
 
