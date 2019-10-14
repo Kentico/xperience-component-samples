@@ -3,7 +3,6 @@ using System.Web.Http;
 
 using CMS.Core;
 using CMS.EventLog;
-using CMS.Membership;
 using CMS.SiteProvider;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors.Controllers

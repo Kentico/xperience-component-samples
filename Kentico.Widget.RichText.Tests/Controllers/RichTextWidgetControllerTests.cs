@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net;
-using System.Web.Http.Results;
+using System.Web.Mvc;
 
 using NSubstitute;
 using NUnit.Framework;
@@ -11,7 +11,6 @@ using CMS.Tests;
 
 using Kentico.Components.Web.Mvc.Widgets.Controllers;
 using Kentico.Components.Web.Mvc.InlineEditors;
-using System.Web.Mvc;
 
 namespace Kentico.Components.Web.Mvc.Widgets.Tests
 {

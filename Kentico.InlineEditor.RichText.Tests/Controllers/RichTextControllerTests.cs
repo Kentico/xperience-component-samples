@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Web.Http.Results;
 
 using NSubstitute;
@@ -9,7 +10,6 @@ using CMS.EventLog;
 using CMS.Tests;
 
 using Kentico.Components.Web.Mvc.InlineEditors.Controllers;
-using System;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 {
