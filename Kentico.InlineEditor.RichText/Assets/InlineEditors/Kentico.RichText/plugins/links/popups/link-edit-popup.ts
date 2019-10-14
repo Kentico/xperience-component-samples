@@ -22,7 +22,7 @@ export async function showLinkPopup(this: FroalaEditor, relatedElementPosition: 
 
     if (dialog) {
         const container = dialog.querySelector<HTMLElement>(".ktc-configure-popup");
-        const pathSelectorMetadata = await getPathSelectorMetadata(getPageEndpointUrl, path, dialogMode);
+        let pathSelectorMetadata = await getPathSelectorMetadata(getPageEndpointUrl, path, dialogMode);
 
         container!.innerHTML = getLinkConfigurationPopupTemplate(pathSelectorMetadata.name, path, linkText, openInNewTab, dialogMode);
 
@@ -50,20 +50,26 @@ export async function showLinkPopup(this: FroalaEditor, relatedElementPosition: 
         pageSelectButton!.addEventListener("click", () => {
             window.kentico.modalDialog.pageSelector.open({
                 identifierMode: IdentifierMode.Guid,
-                selectedValues: [{identifier: pathSelectorMetadata.nodeGuid}],
+                selectedValues: [{ identifier: pathSelectorMetadata.nodeGuid }],
                 applyCallback(selectedPages) {
-                    if (selectedPages) {
-                        const pageNameField = container!.querySelector<HTMLLabelElement>(".ktc-page-name");
+                    if (selectedPages && selectedPages.length) {
+                        const pageNameField = container!.querySelector<HTMLLabelElement>(".ktc-page-name")!;
                         const pageUrlField = container!.querySelector<HTMLInputElement>("input[name='pageUrl']");
-                        const selectedPage = selectedPages[0];
+                        const { name, nodeGuid, url } = selectedPages[0];
                         const linkText = container!.querySelector<HTMLInputElement>("input[name='linkText']");
 
-                        pageNameField!.textContent = selectedPage.name;
-                        pageUrlField!.value = selectedPage.url;
+                        pageNameField.textContent = pageNameField.title = name;
+                        pageUrlField!.value = url;
                         pageSelectButton!.textContent = getString("ActionButton.ChangePage");
-                        
+
+                        // Update page metadata to make them available next time the page selector is opened.
+                        pathSelectorMetadata = {
+                            name,
+                            nodeGuid,
+                        };
+
                         if (linkText && !linkText.value) {
-                            linkText.value = selectedPage.name;
+                            linkText.value = name;
                             linkText.classList.add("fr-not-empty");
                         }
 
