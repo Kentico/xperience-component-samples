@@ -12,8 +12,10 @@ The rich text inline editor for editing rich text in a "WYSIWYG" manner.
 1. Open PowerShell and navigate to the root of the repository.
 1. In the PowerShell, run the `npm install` command and then the `npm run build` command.
 1. Copy `Kentico.InlineEditor.RichText.dll` file from the `/SandboxSite/bin` folder from this repository to the `bin` folder of your MVC project.
+1. Copy contents of the `Kentico.InlineEditor.Richtext/App_Data` folder from this repository to the `App_Data` folder of your MVC project.
+    - This step ensures that resource strings required by the component are available in your project.
 1. Copy contents of the `Kentico.InlineEditor.RichText/Content` folder from this repository to the `Content` folder of your MVC project..
     - This step ensures that scripts and stylesheets required by the component are available in your project.
-1. Use the `Html.Kentico().RichTextEditor(propertyName, propertyValue)` extension method in the views of your widgets.
+1. Use the `Html.Kentico().RichTextEditor(Model.ContentPropertyName)` extension method in the views of your widgets.
 
 ![Rich Text inline editor](/Kentico.InlineEditor.RichText/RichTextInlineEditor.gif)
