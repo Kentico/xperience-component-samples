@@ -55,6 +55,59 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers.Tests
             }
         }
 
+        public class GetVideoEmbedFormatTests
+        {
+            [Test]
+            public void GetVideoEmbedFormat_VideoUrlIsNull_ThrowsArgumentNullException()
+            {
+                // Act & Assert
+                Assert.Throws<ArgumentNullException>(() => VideoHelper.GetVideoEmbedFormat(null));
+            }
+
+            [Test]
+            public void GetVideoEmbedFormat_VideoUrlIsMalformatted_ThrowsUriFormatException()
+            {
+                // Act & Assert
+                Assert.Throws<UriFormatException>(() => VideoHelper.GetVideoEmbedFormat("blah blah..."));
+            }
+
+            [Test]
+            public void GetVideoEmbedFormat_VideoUrlIsNotASupportedURL_ThrowsNotSupportedException()
+            {
+                // Act & Assert
+                Assert.Throws<System.NotSupportedException>(() => VideoHelper.GetVideoEmbedFormat("https://www.google.com/"));
+            }
+
+
+            [TestCase("http://youtube.com/watch?v=iwGFalTRHDA", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
+            [TestCase("http://www.youtube.com/watch?v=iwGFalTRHDA&feature=related", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
+            [TestCase("https://youtube.com/iwGFalTRHDA", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
+            [TestCase("http://youtu.be/n17B_uFF4cA", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
+            [TestCase("youtube.com/iwGFalTRHDA", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
+            [TestCase("youtube.com/n17B_uFF4cA", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
+            [TestCase("m.youtube.com/iwGFalTRHDA", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
+            [TestCase("m.youtube.com/n17B_uFF4cA", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
+            [TestCase("http://www.youtube.com/embed/watch?feature=player_embedded&v=r5nB9u4jjy4", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
+            [TestCase("https://www.youtube.com/embed/lkazf4nMYwU", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
+            [TestCase("http://www.youtube.com/watch?v=t-ZRX8984sc", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
+            [TestCase("http://youtu.be/t-ZRX8984sc", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
+            [TestCase("https://m.youtube.com/iwGFalTRHDA", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
+            [TestCase("https://vimeo.com/62092214", VideoHelper.VIMEO_VIDEO_EMBED_FORMAT)]
+            [TestCase("http://vimeo.com/62092214", VideoHelper.VIMEO_VIDEO_EMBED_FORMAT)]
+            [TestCase("https://www.vimeo.com/62092214", VideoHelper.VIMEO_VIDEO_EMBED_FORMAT)]
+            [TestCase("https://vimeo.com/channels/documentaryfilm/128373915", VideoHelper.VIMEO_VIDEO_EMBED_FORMAT)]
+            [TestCase("https://vimeo.com/groups/musicvideo/videos/126199390", VideoHelper.VIMEO_VIDEO_EMBED_FORMAT)]
+            [TestCase("https://vimeo.com/62092214?query=foo", VideoHelper.VIMEO_VIDEO_EMBED_FORMAT)]
+            public void GetVideoEmbedFormat_ProvidedYoutubeOrVimeoUrl_GetCorrectVideoFormat(string videoUrl, string expected)
+            {
+                // Act
+                string format = VideoHelper.GetVideoEmbedFormat(videoUrl);
+
+                // Assert
+                Assert.AreEqual(expected, format);
+            }
+        }
+
 
         public class RegexVideoUrlTests
         {
