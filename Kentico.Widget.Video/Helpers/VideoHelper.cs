@@ -12,7 +12,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers
     {
         private const string YOUTUBE_VIDEO_IDENTIFIER = "v";
         private const string REGEX_YOUTUBE_URL = @"(http(s)?:\/\/)?((w){3}.)?(m.)?youtu(be|.be)?(\.com)?\/.+";
-        private const string REGEX_VIMEO_URL = @"(http|https)?:\/\/(www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|)(\d+)(?:|\/\?)";
+        private const string REGEX_VIMEO_URL = @"(http(s)?:\/\/)?((w){3}.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|)(\d+)(?:|\/\?)";
 
         private const string YOUTUBE_VIDEO_EMBED_FORMAT = "https://www.youtube.com/embed/";
         private const string VIMEO_VIDEO_EMBED_FORMAT = "https://player.vimeo.com/video/";
@@ -20,8 +20,11 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers
         /// <summary>
         /// Gets a regular expression for all the known YouTube & Vimeo URLs.
         /// </summary>
-        public const string REGEX_VIDEO_URL = REGEX_VIMEO_URL + "|" + REGEX_YOUTUBE_URL;
+        public const string REGEX_VIDEO_URL = "(?<vimeo>" + REGEX_VIMEO_URL + ")|(?<youtube>" + REGEX_YOUTUBE_URL + ")";
 
+        private static Lazy<Regex> lazyVideoRegex = new Lazy<Regex>(() => new Regex(REGEX_VIDEO_URL, RegexOptions.Compiled | RegexOptions.IgnoreCase));
+        private static Regex VideoRegex => lazyVideoRegex.Value;
+        
         /// <summary>
         /// Gets YouTube/Vimeo video identifier from given <paramref name="videoUrl"/>.
         /// </summary>
@@ -34,18 +37,23 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers
             videoUrl = videoUrl ?? throw new ArgumentNullException(nameof(videoUrl));
             var videoUri = new UriBuilder(videoUrl).Uri;
 
-            if(Regex.IsMatch(videoUrl, REGEX_YOUTUBE_URL))
+            var match = VideoRegex.Match(videoUrl);
+
+            if (match.Success)
             {
-                // Search for ?v=XXX in URL
-                var queryDictionary = HttpUtility.ParseQueryString(videoUri.Query);
-                if (queryDictionary.Get(YOUTUBE_VIDEO_IDENTIFIER) != null)
+                if (!String.IsNullOrEmpty(match.Groups["youtube"].Value))
                 {
-                    return queryDictionary[YOUTUBE_VIDEO_IDENTIFIER];
-                }
+                    // Search for ?v=XXX in URL
+                var queryDictionary = HttpUtility.ParseQueryString(videoUri.Query);
+                    return queryDictionary[YOUTUBE_VIDEO_IDENTIFIER] ?? videoUri.AbsolutePath.Split('/').LastOrDefault();
             }
 
-            // return last segment in absolute path as a video identifier
+                if (!String.IsNullOrEmpty(match.Groups["vimeo"].Value))
+                {
+                    // return last segment in absolute path as a video identifier
             return videoUri.AbsolutePath.Split('/').LastOrDefault();
+             }
+             return String.Empty;
         }
 
         /// <summary>

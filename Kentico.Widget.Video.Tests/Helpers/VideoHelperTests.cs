@@ -45,10 +45,10 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers.Tests
             [TestCase("https://vimeo.com/channels/documentaryfilm/128373915", "128373915")]
             [TestCase("https://vimeo.com/groups/musicvideo/videos/126199390", "126199390")]
             [TestCase("https://vimeo.com/62092214?query=foo", "62092214")]
-            public void GetVideoId_ProvidedYoutubeUrl_GetCorrectVideoId(string videoURL, string expected)
+            public void GetVideoId_ProvidedYoutubeOrVimeoUrl_GetCorrectVideoId(string videoUrl, string expected)
             {
                 // Act
-                var videoId = VideoHelper.GetVideoId(videoURL);
+                var videoId = VideoHelper.GetVideoId(videoUrl);
 
                 // Assert
                 Assert.AreEqual(expected, videoId);
@@ -56,7 +56,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers.Tests
         }
 
 
-        public class RegexVideoURLTests
+        public class RegexVideoUrlTests
         {
             private readonly Regex regex = new Regex(VideoHelper.REGEX_VIDEO_URL);
 
@@ -86,10 +86,10 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers.Tests
             [TestCase("https://vimeo.com/channels/foo-barr/documentaryfilm/128373915", false)]
             [TestCase("http://vimeo.com/groups/musicvideo/vid/126199390", false)]
             [TestCase("https://vimeo.com.omomom/62092214?query=foo", false)]
-            public void RegexYouTubeURL_AllPossibleVideoURLs_ReturnsCorrectResult(string url, bool isValidVideoURL)
+            public void RegexYouTubeUrl_AllPossibleVideoUrls_ReturnsCorrectResult(string url, bool isValidVideoUrl)
             {
                 // Act & Assert
-                Assert.That(regex.IsMatch(url), Is.EqualTo(isValidVideoURL));
+                Assert.That(regex.IsMatch(url), Is.EqualTo(isValidVideoUrl));
             }
         }
     }
