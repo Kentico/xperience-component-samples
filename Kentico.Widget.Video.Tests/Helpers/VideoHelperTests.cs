@@ -1,114 +1,98 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
+using Kentico.Components.Web.Mvc.Widgets.Models;
+
 using NUnit.Framework;
+
 
 namespace Kentico.Components.Web.Mvc.Widgets.Helpers.Tests
 {
-    [TestFixture]
     public static class VideoHelperTests
     {
-        public class GetVideoIdTests
+        [TestFixture]
+        public class GetVideoModelTests
         {
             [Test]
-            public void GetVideoId_VideoUrlIsNull_ThrowsArgumentNullException()
+            public void GetVideoModel_VideoUrlIsNull_ThrowsArgumentNullException()
             {
                 // Act & Assert
-                Assert.Throws<ArgumentNullException>(() => VideoHelper.GetVideoId(null));
+                Assert.Throws<ArgumentNullException>(() => VideoHelper.GetVideoModel(null));
             }
 
 
             [Test]
-            public void GetVideoId_VideoUrlIsMalformatted_ThrowsUriFormatException()
+            public void GetVideoModel_VideoUrlIsMalformatted_ThrowsUriFormatException()
             {
                 // Act & Assert
-                Assert.Throws<UriFormatException>(() => VideoHelper.GetVideoId("blah blah..."));
+                Assert.Throws<UriFormatException>(() => VideoHelper.GetVideoModel("blah blah..."));
             }
 
 
-            [TestCase("http://youtube.com/watch?v=iwGFalTRHDA", "iwGFalTRHDA")]
-            [TestCase("http://www.youtube.com/watch?v=iwGFalTRHDA&feature=related", "iwGFalTRHDA")]
-            [TestCase("https://youtube.com/iwGFalTRHDA", "iwGFalTRHDA")]
-            [TestCase("http://youtu.be/n17B_uFF4cA", "n17B_uFF4cA")]
-            [TestCase("youtube.com/iwGFalTRHDA", "iwGFalTRHDA")]
-            [TestCase("youtube.com/n17B_uFF4cA", "n17B_uFF4cA")]
-            [TestCase("m.youtube.com/iwGFalTRHDA", "iwGFalTRHDA")]
-            [TestCase("m.youtube.com/n17B_uFF4cA", "n17B_uFF4cA")]
-            [TestCase("http://www.youtube.com/embed/watch?feature=player_embedded&v=r5nB9u4jjy4", "r5nB9u4jjy4")]
-            [TestCase("https://www.youtube.com/embed/lkazf4nMYwU", "lkazf4nMYwU")]
-            [TestCase("http://www.youtube.com/watch?v=t-ZRX8984sc", "t-ZRX8984sc")]
-            [TestCase("http://youtu.be/t-ZRX8984sc", "t-ZRX8984sc")]
-            [TestCase("https://m.youtube.com/iwGFalTRHDA", "iwGFalTRHDA")]
-            [TestCase("https://vimeo.com/62092214", "62092214")]
-            [TestCase("http://vimeo.com/62092214", "62092214")]
-            [TestCase("https://www.vimeo.com/62092214", "62092214")]
-            [TestCase("https://vimeo.com/channels/documentaryfilm/128373915", "128373915")]
-            [TestCase("https://vimeo.com/groups/musicvideo/videos/126199390", "126199390")]
-            [TestCase("https://vimeo.com/62092214?query=foo", "62092214")]
-            public void GetVideoId_ProvidedYoutubeOrVimeoUrl_GetCorrectVideoId(string videoUrl, string expected)
+            [TestCase("http://youtube.com/watch?v=iwGFalTRHDA", "iwGFalTRHDA", VideoKindEnum.Youtube)]
+            [TestCase("http://www.youtube.com/watch?v=iwGFalTRHDA&feature=related", "iwGFalTRHDA", VideoKindEnum.Youtube)]
+            [TestCase("https://youtube.com/iwGFalTRHDA", "iwGFalTRHDA", VideoKindEnum.Youtube)]
+            [TestCase("http://youtu.be/n17B_uFF4cA", "n17B_uFF4cA", VideoKindEnum.Youtube)]
+            [TestCase("youtube.com/iwGFalTRHDA", "iwGFalTRHDA", VideoKindEnum.Youtube)]
+            [TestCase("youtube.com/n17B_uFF4cA", "n17B_uFF4cA", VideoKindEnum.Youtube)]
+            [TestCase("m.youtube.com/iwGFalTRHDA", "iwGFalTRHDA", VideoKindEnum.Youtube)]
+            [TestCase("m.youtube.com/n17B_uFF4cA", "n17B_uFF4cA", VideoKindEnum.Youtube)]
+            [TestCase("http://www.youtube.com/embed/watch?feature=player_embedded&v=r5nB9u4jjy4", "r5nB9u4jjy4", VideoKindEnum.Youtube)]
+            [TestCase("https://www.youtube.com/embed/lkazf4nMYwU", "lkazf4nMYwU", VideoKindEnum.Youtube)]
+            [TestCase("http://www.youtube.com/watch?v=t-ZRX8984sc", "t-ZRX8984sc", VideoKindEnum.Youtube)]
+            [TestCase("http://youtu.be/t-ZRX8984sc", "t-ZRX8984sc", VideoKindEnum.Youtube)]
+            [TestCase("https://m.youtube.com/iwGFalTRHDA", "iwGFalTRHDA", VideoKindEnum.Youtube)]
+            [TestCase("https://vimeo.com/62092214", "62092214", VideoKindEnum.Vimeo)]
+            [TestCase("http://vimeo.com/62092214", "62092214", VideoKindEnum.Vimeo)]
+            [TestCase("https://www.vimeo.com/62092214", "62092214", VideoKindEnum.Vimeo)]
+            [TestCase("https://vimeo.com/channels/documentaryfilm/128373915", "128373915", VideoKindEnum.Vimeo)]
+            [TestCase("https://vimeo.com/groups/musicvideo/videos/126199390", "126199390", VideoKindEnum.Vimeo)]
+            [TestCase("https://vimeo.com/62092214?query=foo", "62092214", VideoKindEnum.Vimeo)]
+            public void GetVideoModel_ProvidedYoutubeOrVimeoUrl_GetCorrectVideoModel(string videoUrl, string expectedVideoId, VideoKindEnum expectedVideoKind)
             {
-                // Act
-                var videoId = VideoHelper.GetVideoId(videoUrl);
+                var actualModel = VideoHelper.GetVideoModel(videoUrl);
 
-                // Assert
-                Assert.AreEqual(expected, videoId);
-            }
-        }
-
-        public class GetVideoEmbedFormatTests
-        {
-            [Test]
-            public void GetVideoEmbedFormat_VideoUrlIsNull_ThrowsArgumentNullException()
-            {
-                // Act & Assert
-                Assert.Throws<ArgumentNullException>(() => VideoHelper.GetVideoEmbedFormat(null));
-            }
-
-            [Test]
-            public void GetVideoEmbedFormat_VideoUrlIsMalformatted_ThrowsUriFormatException()
-            {
-                // Act & Assert
-                Assert.Throws<UriFormatException>(() => VideoHelper.GetVideoEmbedFormat("blah blah..."));
-            }
-
-            [Test]
-            public void GetVideoEmbedFormat_VideoUrlIsNotASupportedURL_ThrowsNotSupportedException()
-            {
-                // Act & Assert
-                Assert.Throws<System.NotSupportedException>(() => VideoHelper.GetVideoEmbedFormat("https://www.google.com/"));
-            }
-
-
-            [TestCase("http://youtube.com/watch?v=iwGFalTRHDA", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
-            [TestCase("http://www.youtube.com/watch?v=iwGFalTRHDA&feature=related", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
-            [TestCase("https://youtube.com/iwGFalTRHDA", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
-            [TestCase("http://youtu.be/n17B_uFF4cA", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
-            [TestCase("youtube.com/iwGFalTRHDA", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
-            [TestCase("youtube.com/n17B_uFF4cA", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
-            [TestCase("m.youtube.com/iwGFalTRHDA", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
-            [TestCase("m.youtube.com/n17B_uFF4cA", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
-            [TestCase("http://www.youtube.com/embed/watch?feature=player_embedded&v=r5nB9u4jjy4", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
-            [TestCase("https://www.youtube.com/embed/lkazf4nMYwU", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
-            [TestCase("http://www.youtube.com/watch?v=t-ZRX8984sc", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
-            [TestCase("http://youtu.be/t-ZRX8984sc", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
-            [TestCase("https://m.youtube.com/iwGFalTRHDA", VideoHelper.YOUTUBE_VIDEO_EMBED_FORMAT)]
-            [TestCase("https://vimeo.com/62092214", VideoHelper.VIMEO_VIDEO_EMBED_FORMAT)]
-            [TestCase("http://vimeo.com/62092214", VideoHelper.VIMEO_VIDEO_EMBED_FORMAT)]
-            [TestCase("https://www.vimeo.com/62092214", VideoHelper.VIMEO_VIDEO_EMBED_FORMAT)]
-            [TestCase("https://vimeo.com/channels/documentaryfilm/128373915", VideoHelper.VIMEO_VIDEO_EMBED_FORMAT)]
-            [TestCase("https://vimeo.com/groups/musicvideo/videos/126199390", VideoHelper.VIMEO_VIDEO_EMBED_FORMAT)]
-            [TestCase("https://vimeo.com/62092214?query=foo", VideoHelper.VIMEO_VIDEO_EMBED_FORMAT)]
-            public void GetVideoEmbedFormat_ProvidedYoutubeOrVimeoUrl_GetCorrectVideoFormat(string videoUrl, string expected)
-            {
-                // Act
-                string format = VideoHelper.GetVideoEmbedFormat(videoUrl);
-
-                // Assert
-                Assert.AreEqual(expected, format);
+                Assert.That(actualModel, Is.Not.Null);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(actualModel.VideoUrl, Is.EqualTo(videoUrl));
+                    Assert.That(actualModel.VideoId, Is.EqualTo(expectedVideoId));
+                    Assert.That(actualModel.VideoKind, Is.EqualTo(expectedVideoKind));
+                });
             }
         }
 
 
+        [TestFixture]
+        public class GetVideoEmbedUrlTests
+        {
+            [Test]
+            public void GetVideoEmbedUrl_VideoParameterIsNull_ThrowsArgumentNullException()
+            {
+                Assert.That(() => VideoHelper.GetVideoEmbedUrl(null), Throws.ArgumentNullException.With.Property("ParamName").EqualTo("video"));
+            }
+
+            [Test]
+            public void GetVideoEmbedUrl_VideoIsNotSupported_ThrowsNotSupportedException()
+            {
+                var model = new VideoModel("foo", "bar", VideoKindEnum.Unknown);
+                Assert.Throws<NotSupportedException>(() => VideoHelper.GetVideoEmbedUrl(model));
+            }
+
+
+            [TestCase(VideoKindEnum.Youtube, VideoHelper.YOUTUBE_VIDEO_URL_EMBED_FORMAT)]
+            [TestCase(VideoKindEnum.Vimeo, VideoHelper.VIMEO_VIDEO_URL_EMBED_FORMAT)]
+            public void GetVideoEmbedUrl_ProvidedVariousVideoKinds_GetCorrectVideoFormat(VideoKindEnum kind, string embedUrlPrefix)
+            {
+                var model = new VideoModel("foo", "123456", kind);
+                string actualEmbedUrl = VideoHelper.GetVideoEmbedUrl(model);
+
+                Assert.That(actualEmbedUrl, Does.StartWith(embedUrlPrefix));
+            }
+        }
+
+
+        [TestFixture]
         public class RegexVideoUrlTests
         {
             private readonly Regex regex = new Regex(VideoHelper.REGEX_VIDEO_URL);

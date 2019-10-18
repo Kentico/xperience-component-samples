@@ -3,6 +3,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 
+using Kentico.Components.Web.Mvc.Widgets.Models;
+
 namespace Kentico.Components.Web.Mvc.Widgets.Helpers
 {
     /// <summary>
@@ -14,8 +16,8 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers
         private const string REGEX_YOUTUBE_URL = @"(http(s)?:\/\/)?((w){3}.)?(m.)?youtu(be|.be)?(\.com)?\/.+";
         private const string REGEX_VIMEO_URL = @"(http(s)?:\/\/)?((w){3}.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|)(\d+)(?:|\/\?)";
 
-        public const string YOUTUBE_VIDEO_EMBED_FORMAT = "https://www.youtube.com/embed/";
-        public const string VIMEO_VIDEO_EMBED_FORMAT = "https://player.vimeo.com/video/";
+        public const string YOUTUBE_VIDEO_URL_EMBED_FORMAT = "https://www.youtube.com/embed/";
+        public const string VIMEO_VIDEO_URL_EMBED_FORMAT = "https://player.vimeo.com/video/";
 
         /// <summary>
         /// Gets a regular expression for all the known YouTube & Vimeo URLs.
@@ -24,68 +26,69 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers
 
         private static Lazy<Regex> lazyVideoRegex = new Lazy<Regex>(() => new Regex(REGEX_VIDEO_URL, RegexOptions.Compiled | RegexOptions.IgnoreCase));
         private static Regex VideoRegex => lazyVideoRegex.Value;
-        
+
+
         /// <summary>
-        /// Gets YouTube/Vimeo video identifier from given <paramref name="videoUrl"/>.
+        /// Gets YouTube/Vimeo video embed URL for given <paramref name="video"/>.
+        /// </summary>
+        /// <param name="video">Video model.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="video"/> is <c>null</c>.</exception>
+        /// <exception cref="NotSupportedException"><paramref name="video"/> doesn't refer to a Youtube or Vimeo video.</exception>
+        public static string GetVideoEmbedUrl(VideoModel video)
+        {
+            video = video ?? throw new ArgumentNullException(nameof(video));
+
+            switch (video.VideoKind)
+            {
+                case VideoKindEnum.Youtube:
+                    return YOUTUBE_VIDEO_URL_EMBED_FORMAT + video.VideoId;
+                case VideoKindEnum.Vimeo:
+                    return VIMEO_VIDEO_URL_EMBED_FORMAT + video.VideoId;
+                default:
+                    throw new NotSupportedException($"{video.VideoUrl} is not a supported video format.");
+            }
+        }
+
+
+        /// <summary>
+        /// Gets YouTube/Vimeo video model for given <paramref name="videoUrl"/>.
         /// </summary>
         /// <param name="videoUrl">YouTube or Vimeo video URL.</param>
-        /// <returns>YouTube/Vimeo video identifier.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="videoUrl"/> is <c>null</c>.</exception>
-        /// <exception cref="UriFormatException"><paramref name="videoUrl"/> is malformed.</exception>
-        public static string GetVideoId(string videoUrl)
+        /// <exception cref="NotSupportedException"><paramref name="video"/> doesn't refer to a Youtube or Vimeo video.</exception>
+        /// <exception cref="UriFormatException"><paramref name="videoUrl"/> is malformed URL.</exception>
+        public static VideoModel GetVideoModel(string videoUrl)
         {
             videoUrl = videoUrl ?? throw new ArgumentNullException(nameof(videoUrl));
+
+            // Throws exception if videoUrl is invalid URL.
             var videoUri = new UriBuilder(videoUrl).Uri;
 
             var match = VideoRegex.Match(videoUrl);
 
             if (match.Success)
             {
+                string videoId = String.Empty;
+                VideoKindEnum videoKind = VideoKindEnum.Unknown;
+
                 if (!String.IsNullOrEmpty(match.Groups["youtube"].Value))
                 {
-                    // Search for ?v=XXX in URL
+                    // Search for ?v=XXX in URL.
                     var queryDictionary = HttpUtility.ParseQueryString(videoUri.Query);
-                    return queryDictionary[YOUTUBE_VIDEO_IDENTIFIER] ?? videoUri.AbsolutePath.Split('/').LastOrDefault();
+                    videoId = queryDictionary[YOUTUBE_VIDEO_IDENTIFIER] ?? videoUri.AbsolutePath.Split('/').LastOrDefault();
+                    videoKind = VideoKindEnum.Youtube;
                 }
-                if (!String.IsNullOrEmpty(match.Groups["vimeo"].Value))
+                else if (!String.IsNullOrEmpty(match.Groups["vimeo"].Value))
                 {
-                    // return last segment in absolute path as a video identifier
-                    return videoUri.AbsolutePath.Split('/').LastOrDefault();
+                    // Return last segment in absolute path as a video identifier.
+                    videoId = videoUri.AbsolutePath.Split('/').LastOrDefault();
+                    videoKind = VideoKindEnum.Vimeo;
                 }
-             }
-             return String.Empty;
-        }
 
-        /// <summary>
-        /// Gets YouTube/Vimeo video embed format from given <paramref name="videoUrl"/>.
-        /// </summary>
-        /// <param name="videoUrl">YouTube or Vimeo video Url.</param>
-        /// <returns>YouTube/Vimeo video identifier.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="videoUrl"/> is <c>null</c>.</exception>
-        /// <exception cref="UriFormatException"><paramref name="videoUrl"/> is malformed.</exception>
-        /// <exception cref="NotSupportedException"><paramref name="videoUrl"/> is not a youtube or viemo Url.</exception>
-        public static string GetVideoEmbedFormat(string videoUrl)
-        {
-            videoUrl = videoUrl ?? throw new ArgumentNullException(nameof(videoUrl));
-            videoUrl = new UriBuilder(videoUrl).Uri.AbsoluteUri; //Verify string is Url.
+                return new VideoModel(videoUrl, videoId, videoKind);
+            }
 
-            var match = VideoRegex.Match(videoUrl);
-            if (match.Success)
-            {
-                if (!String.IsNullOrEmpty(match.Groups["youtube"].Value))
-                {
-                    return YOUTUBE_VIDEO_EMBED_FORMAT;
-                }
-                if (!String.IsNullOrEmpty(match.Groups["vimeo"].Value))
-                {
-                    return VIMEO_VIDEO_EMBED_FORMAT;
-                }
-            }
-            else
-            {
-                throw new NotSupportedException($"{nameof(videoUrl)} {videoUrl} is not a supported url.");
-            }
-            return String.Empty;
+            throw new NotSupportedException($"{videoUrl} doesn't refer to supported video type.");
         }
     }
 }
