@@ -1,7 +1,7 @@
 import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 
 import { MACRO_ACTIVE_CLASS, ACTIONS_POPUP_NAME } from "../macro-constants";
-import { showPopup } from "./popup-helper";
+import { showPopup } from "../../popup-helper";
 
 export function showActionsPopup(this: FroalaEditor, macroElement: HTMLElement) {
     showPopup(this, ACTIONS_POPUP_NAME, macroElement.getBoundingClientRect(), this.opts.popupActionButtons);
@@ -23,4 +23,3 @@ export function hideActionsPopup(this: FroalaEditor) {
         activeMacro.classList.remove(MACRO_ACTIVE_CLASS);
     }
 }
-

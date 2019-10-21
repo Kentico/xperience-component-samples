@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.757
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandboxSite", "SandboxSite\SandboxSite.csproj", "{DAFBD0E0-F62E-4BB6-ACAD-78FBA75C4A3A}"
 EndProject
@@ -17,6 +17,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.InlineEditor.RichText", "Kentico.InlineEditor.RichText\Kentico.InlineEditor.RichText.csproj", "{CC8499D6-4F7C-4A4C-A902-D6FF1264653C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.InlineEditor.RichText.Tests", "Kentico.InlineEditor.RichText.Tests\Kentico.InlineEditor.RichText.Tests.csproj", "{A74C858C-91DF-4614-9689-718CB8B9B328}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Widget.RichText.Tests", "Kentico.Widget.RichText.Tests\Kentico.Widget.RichText.Tests.csproj", "{AB81EE19-5D1A-43C3-AB87-99D43E80DE42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +58,10 @@ Global
 		{A74C858C-91DF-4614-9689-718CB8B9B328}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A74C858C-91DF-4614-9689-718CB8B9B328}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A74C858C-91DF-4614-9689-718CB8B9B328}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB81EE19-5D1A-43C3-AB87-99D43E80DE42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB81EE19-5D1A-43C3-AB87-99D43E80DE42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB81EE19-5D1A-43C3-AB87-99D43E80DE42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB81EE19-5D1A-43C3-AB87-99D43E80DE42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
