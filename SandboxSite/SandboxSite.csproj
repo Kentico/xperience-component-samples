@@ -649,7 +649,6 @@
     <Content Include="Kentico\Scripts\builders\Core-icons.ttf" />
     <Content Include="Kentico\Scripts\builders\Core-icons.eot" />
     <None Include="packages.config" />
-    <None Include="Properties\PublishProfiles\Preview.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

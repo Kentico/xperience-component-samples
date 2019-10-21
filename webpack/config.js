@@ -64,5 +64,4 @@ module.exports = {
       filename: '[name].css'
     }),
   ],
-  devtool: '#eval-source-map',
 }
