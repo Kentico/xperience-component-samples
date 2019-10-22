@@ -1,4 +1,5 @@
 import { CustomPlugin } from "froala-editor/js/froala_editor.pkgd.min";
+import { DialogMode } from "../plugin-types";
 
 export interface MacrosPlugin extends CustomPlugin {
     readonly showActionsPopup: (macroElement: HTMLElement) => void;
@@ -12,11 +13,6 @@ export interface MacrosPlugin extends CustomPlugin {
 
 export interface ContextMacros {
     [key: string]: string;
-}
-
-export enum DialogMode {
-    INSERT,
-    UPDATE
 }
 
 export enum MacroType {
