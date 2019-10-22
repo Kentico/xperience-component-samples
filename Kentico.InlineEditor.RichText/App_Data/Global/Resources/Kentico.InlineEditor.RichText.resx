@@ -117,6 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.ActionButton.Insert" xml:space="preserve">
+    <value>Insert</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Command.Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Command.InsertLink" xml:space="preserve">
+    <value>Insert Link</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.ActionButton.Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Label.Path" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Label.Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
   <data name="Kentico.InlineEditor.RichText.MacroPlugin.ActionButton.Insert" xml:space="preserve">
     <value>Insert</value>
   </data>
@@ -161,5 +179,20 @@
   </data>
   <data name="Kentico.InlineEditor.RichText.MacroPlugin.Pattern.ContactLastName" xml:space="preserve">
     <value>Last name</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Command.EditLink" xml:space="preserve">
+    <value>Edit link</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Command.PathTab" xml:space="preserve">
+    <value>Insert Link</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.ActionButton.ChangePage" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.ActionButton.SelectPage" xml:space="preserve">
+    <value>Select page</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Label.OpenInNewTab" xml:space="preserve">
+    <value>Open in new tab</value>
   </data>
 </root>

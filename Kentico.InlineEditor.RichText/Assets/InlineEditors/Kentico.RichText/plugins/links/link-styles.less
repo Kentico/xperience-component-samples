@@ -1,0 +1,33 @@
+#ktc-link-configuration-layer {
+    .ktc-page-selector {
+        display: table;
+        width: 100%;
+
+        .ktc-page-name {
+            display: table-cell;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            max-width: 0px;
+            text-align: left;
+        }
+
+        span {
+            display: table-cell;
+            width: 1px;
+
+            button {
+                white-space: nowrap;
+            }
+        }
+
+        &.ktc-page-selector--empty {
+            text-align: center;
+            
+            .ktc-page-name {
+                display: none;
+            }
+        }
+    }
+}
+

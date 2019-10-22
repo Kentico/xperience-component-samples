@@ -2,11 +2,13 @@ import FroalaEditor, { RegisterCommandParameters } from "froala-editor/js/froala
 
 import * as constants from "./macro-constants";
 import { getMacroEditModeElement } from "./macro-templates";
-import { DialogMode, MacroType } from "./macro-types";
+import { MacroType } from "./macro-types";
+import { DialogMode } from "../plugin-types";
 import { getMacroDisplayName, getString } from "./macro-helpers";
-import { showForm, getDialogElement } from "./popups";
+import { showForm } from "./popups";
 import { FroalaIcon } from "../../froala-icon";
 import { FroalaCommand } from "../../froala-command";
+import { getDialogElement } from "../popup-helper";
 
 // Open insert macro popup
 
