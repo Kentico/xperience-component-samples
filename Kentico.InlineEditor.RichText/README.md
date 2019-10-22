@@ -16,7 +16,7 @@ The rich text inline editor for editing rich text in a "WYSIWYG" manner.
     - This step ensures that resource strings required by the component are available in your project.
 1. Copy contents of the `Kentico.InlineEditor.RichText/Content` folder from this repository to the `Content` folder of your MVC project..
     - This step ensures that scripts and stylesheets required by the component are available in your project.
-1. Register routes for this component in your MVC project's `App_Start\RouteConfig.cs` file. Add a using statement for the `Kentico.Components.Web.Mvc.InlineEditors` namespace, and call the `Kentico().MapRichTextInlineEditorRoutes()` method.
+1. Register routes for this component in your MVC project's `App_Start\RouteConfig.cs` file. Add a using statement for the `Kentico.Components.Web.Mvc.InlineEditors` namespace, and call the `routes.Kentico().MapRichTextInlineEditorRoutes()` method where `routes` is your site's RouteCollection.
     - If you also use the *Rich text* widget in your project, you do not need to register the routes, since they are registered by the widget.
 1. Use the `Html.Kentico().RichTextEditor(Model.ContentPropertyName)` extension method in the views of your widgets.
 
