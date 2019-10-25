@@ -1,0 +1,38 @@
+name: Notify the internal ticket system when issue or pull request is opened
+
+on: 
+  issues:
+    types: [opened]
+
+  pull_request:
+    types: [opened]
+
+jobs:
+  issue-webhook:
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: Send data
+        uses: ./.github/actions/web-hook
+        with:
+          url: ${{ secrets.ISSUES_ENDPOINT }}
+  
+  pull-request-webhook:
+    if: (github.event_name == 'pull_request') && !startsWith(github.event.pull_request.title, 'MAE-')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: Send data
+        uses: ./.github/actions/web-hook
+        with:
+          url: ${{ secrets.PULL_REQUEST_ENDPOINT }}
+
+        
+    
