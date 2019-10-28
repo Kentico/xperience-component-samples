@@ -1,0 +1,13 @@
+name: Kentico Webhook
+author: Ondrej Machala
+description: Posts related GitHub event data to the given endpoint (acts like a webhook)
+inputs:
+  url:
+    description: "URL where to post the data"
+    required: true
+runs:
+  using: "node12"
+  main: "dist/index.js"
+brand:
+  icon: "send"
+  color: "blue"
