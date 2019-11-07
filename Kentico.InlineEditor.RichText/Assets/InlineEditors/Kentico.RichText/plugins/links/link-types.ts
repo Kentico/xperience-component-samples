@@ -8,8 +8,15 @@ export interface LinkDescriptor {
   readonly openInNewTab: boolean;
 }
 
+export interface ExternalLinkDescriptor {
+  readonly linkUrl: string;
+  readonly linkText: string;
+  readonly openInNewTab: boolean;
+}
+
 export interface LinkPlugin extends CustomPlugin {
   readonly showLinkPopup: (relatedElementPosition: DOMRect | ClientRect, linkDescriptor: LinkDescriptor, dialogMode?: DialogMode) => void;
+  readonly showExternalLinkPopup: (relatedElementPosition: DOMRect | ClientRect, externalLinkDescriptor: ExternalLinkDescriptor, dialogMode?: DialogMode) => void;
   readonly hideLinkConfigurationPopup: () => void;
 }
 

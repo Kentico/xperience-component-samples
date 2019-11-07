@@ -14,3 +14,14 @@ export const getLinkConfigurationPopupTemplate = (pageName: string, linkUrl: str
         actionButtonText: getString(dialogMode === DialogMode.INSERT ? "ActionButton.Insert" : "ActionButton.Save"),
         pageSelectionButtonText: getString(linkUrl ? "ActionButton.ChangePage" : "ActionButton.SelectPage"),
     });
+
+export const getExternalLinkConfigurationPopupTemplate = (linkUrl: string, linkText: string, openInNewTab: boolean, dialogMode: DialogMode): string =>
+require("./templates/configure-external-link-popup.html")({
+    linkUrl,
+    linkText,
+    linkTextLabel: getString("Label.Text"),
+    openInNewTabLabel: getString("Label.OpenInNewTab"),
+    openInNewTab,
+    command: dialogMode === DialogMode.INSERT ? INSERT_PAGE_LINK_COMMAND_NAME : UPDATE_LINK_COMMAND_NAME,
+    actionButtonText: getString(dialogMode === DialogMode.INSERT ? "ActionButton.Insert" : "ActionButton.Save"),
+});

@@ -195,4 +195,7 @@
   <data name="Kentico.InlineEditor.RichText.LinkPlugin.Label.OpenInNewTab" xml:space="preserve">
     <value>Open in new tab</value>
   </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Command.ExternalLinkTab" xml:space="preserve">
+    <value>External link</value>
+  </data>
 </root>

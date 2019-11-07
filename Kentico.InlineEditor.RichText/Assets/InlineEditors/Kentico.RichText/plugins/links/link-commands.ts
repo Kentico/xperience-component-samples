@@ -7,6 +7,7 @@ import { FroalaIcon } from "../../froala-icon";
 import { getString } from "./link-helpers";
 import { getDialogElement } from "../popup-helper";
 import { DialogMode } from "../plugin-types";
+import { ExternalLinkDescriptor } from "./link-types";
 
 let selectedLink: HTMLAnchorElement;
 
@@ -111,11 +112,29 @@ const openPathTabCommand = new FroalaCommand(constants.SWITCH_PATH_TAB_COMMAND_N
     }
 }, openPathTabCommandIcon);
 
+// Open external link tab command
+const openExternalLinkTabCommandIcon = new FroalaIcon(constants.SWITCH_EXTERNAL_LINK_TAB_COMMAND_NAME, { NAME: "link", SVG_KEY: "openLink" });
+const openExternalLinkTabCommand = new FroalaCommand(constants.SWITCH_EXTERNAL_LINK_TAB_COMMAND_NAME, {
+    title: getString("Command.ExternalLinkTab"),
+    undo: false,
+    focus: false,
+    callback(this: FroalaEditor) {
+        // todo: Implement switch logic
+        const externalLinkDescriptor: ExternalLinkDescriptor = {
+            linkUrl: "#",
+            linkText: "LINK",
+            openInNewTab: true
+        }
+        this.kenticoLinkPlugin.showExternalLinkPopup(this.position.getBoundingRect(), externalLinkDescriptor, DialogMode.INSERT)
+    }
+}, openExternalLinkTabCommandIcon);
+
 export const linkCommands = [
     openInsertLinkPopupCommand,
     closeLinkConfigurationPopupCommand,
     insertPageLinkCommand,
     editPageLinkCommand,
     updatePageLinkCommand,
-    openPathTabCommand
+    openPathTabCommand,
+    openExternalLinkTabCommand
 ]

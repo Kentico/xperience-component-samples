@@ -2,14 +2,33 @@ import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 
 import { showPopup, getDialogElement } from "../../popup-helper";
 import { INSERT_LINK_POPUP_NAME, UPDATE_LINK_POPUP_NAME, SWITCH_PATH_TAB_COMMAND_NAME } from "../link-constants";
-import { getLinkConfigurationPopupTemplate } from "../link-templates";
+import { getLinkConfigurationPopupTemplate, getExternalLinkConfigurationPopupTemplate } from "../link-templates";
 import { DialogMode } from "../../plugin-types";
 import { getString, getPathSelectorMetadata } from "../../links/link-helpers";
-import { LinkDescriptor } from "../link-types";
+import { LinkDescriptor, ExternalLinkDescriptor } from "../link-types";
 import { IdentifierMode } from "@/types/kentico/selectors/page-selector-open-options";
 
-export async function showLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRect | ClientRect,
-    { linkText, openInNewTab, path }: LinkDescriptor, dialogMode: DialogMode = DialogMode.INSERT) {
+export async function showExternalLinkPopup(
+        this: FroalaEditor, 
+        relatedElementPosition: DOMRect | ClientRect, 
+        { linkText, openInNewTab, linkUrl }: ExternalLinkDescriptor, 
+        dialogMode: DialogMode = DialogMode.INSERT
+    ) {        
+    console.log("clicked external");
+    const dialog = getDialogElement(this, INSERT_LINK_POPUP_NAME);
+
+    if (dialog) {
+        const container = dialog.querySelector<HTMLElement>(".ktc-configure-popup");
+        container!.innerHTML = getExternalLinkConfigurationPopupTemplate(linkUrl, linkText, openInNewTab, dialogMode);
+    }
+}
+
+export async function showLinkPopup(
+        this: FroalaEditor,
+        relatedElementPosition: DOMRect | ClientRect,
+        { linkText, openInNewTab, path }: LinkDescriptor, 
+        dialogMode: DialogMode = DialogMode.INSERT
+    ) {
 
     const popupName = dialogMode === DialogMode.INSERT ? INSERT_LINK_POPUP_NAME : UPDATE_LINK_POPUP_NAME;
     const popupButtons = dialogMode === DialogMode.INSERT ? this.opts.popupInsertLinkButtons : this.opts.popupUpdateLinkButtons;
