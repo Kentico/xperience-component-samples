@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net;
-using System.Web.Mvc;
+using System.Web.Http.Results;
 
 using NSubstitute;
 using NUnit.Framework;
@@ -9,17 +9,16 @@ using CMS.Core;
 using CMS.EventLog;
 using CMS.Tests;
 
-using Kentico.Components.Web.Mvc.Widgets.Controllers;
-using Kentico.Components.Web.Mvc.InlineEditors;
+using Kentico.Components.Web.Mvc.InlineEditors.Controllers;
 
-namespace Kentico.Components.Web.Mvc.Widgets.Tests
+namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 {
-    public class RichTextWidgetControllerTests
+    public static class KenticoRichTextControllerTests
     {
         [TestFixture]
         public class GetPageTests : UnitTests
         {
-            private RichTextWidgetController richTextController;
+            private KenticoRichTextController richTextController;
             private IRichTextGetPageActionExecutor getPageMockAction;
             private IEventLogService eventLogService;
 
@@ -30,7 +29,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Tests
                 getPageMockAction = Substitute.For<IRichTextGetPageActionExecutor>();
                 eventLogService = Substitute.For<IEventLogService>();
 
-                richTextController = new RichTextWidgetController(getPageMockAction, eventLogService);
+                richTextController = new KenticoRichTextController(getPageMockAction, eventLogService);
             }
 
 
@@ -52,8 +51,8 @@ namespace Kentico.Components.Web.Mvc.Widgets.Tests
                 // Assert
                 Assert.Multiple(() =>
                 {
-                    Assert.That(result, Is.TypeOf<JsonCamelCaseResult>());
-                    Assert.That((result as JsonCamelCaseResult).Data, Is.EqualTo(pageModel));
+                    Assert.That(result, Is.TypeOf<OkNegotiatedContentResult<PageLinkModel>>());
+                    Assert.That((result as OkNegotiatedContentResult<PageLinkModel>).Content, Is.EqualTo(pageModel));
                 });
             }
 
@@ -70,9 +69,9 @@ namespace Kentico.Components.Web.Mvc.Widgets.Tests
                 // Assert
                 Assert.Multiple(() =>
                 {
-                    Assert.That(result, Is.TypeOf<HttpStatusCodeResult>());
-                    Assert.That((result as HttpStatusCodeResult).StatusCode, Is.EqualTo((int)statusCode));
-                    eventLogService.Received().LogEvent(EventType.ERROR, nameof(RichTextWidgetController), nameof(RichTextWidgetController.GetPage), statusCodeMessage);
+                    Assert.That(result, Is.TypeOf<StatusCodeResult>());
+                    Assert.That((result as StatusCodeResult).StatusCode, Is.EqualTo(statusCode));
+                    eventLogService.Received().LogEvent(EventType.ERROR, nameof(KenticoRichTextController), nameof(KenticoRichTextController.GetPage), statusCodeMessage);
                 });
             }
         }

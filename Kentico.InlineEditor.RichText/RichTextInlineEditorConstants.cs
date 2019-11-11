@@ -18,7 +18,7 @@
         /// <summary>
         /// The controller name that serves rich text API calls.
         /// </summary>
-        public const string CONTROLLER_NAME = "RichText";
+        public const string CONTROLLER_NAME = "KenticoRichText";
 
         /// <summary>
         /// The route name that serves page meta data.

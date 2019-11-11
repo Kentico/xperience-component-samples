@@ -530,7 +530,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PageLink\IRichTextGetPageActionExecutor.cs" />
-    <Compile Include="Controllers\RichTextController.cs" />
+    <Compile Include="Controllers\KenticoRichTextController.cs" />
     <Compile Include="PageLink\RichTextGetPageActionExecutor.cs" />
     <Compile Include="DynamicText\DynamicTextPattern.cs" />
     <Compile Include="DynamicText\DynamicTextPatternRegister.cs" />
