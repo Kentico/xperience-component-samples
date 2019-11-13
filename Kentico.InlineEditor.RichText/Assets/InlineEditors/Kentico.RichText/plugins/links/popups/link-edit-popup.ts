@@ -23,21 +23,49 @@ export async function showExternalLinkPopup(
     }
 }
 
+function generateAndDisplayPopup(editor: FroalaEditor, relatedElementPosition: DOMRect | ClientRect, mode: DialogMode, commandName: string
+): HTMLElement | null {
+    const popupName = mode === DialogMode.INSERT ? INSERT_LINK_POPUP_NAME : UPDATE_LINK_POPUP_NAME;
+    const popupButtons = mode === DialogMode.INSERT ? editor.opts.popupInsertLinkButtons : editor.opts.popupUpdateLinkButtons;
+    const customLayer = `<div class="ktc-configure-popup"></div>`;
+
+    showPopup(editor, popupName, relatedElementPosition, popupButtons, customLayer);
+    const dialog = getDialogElement(editor, popupName);
+
+    if (dialog) {
+        const button = dialog.querySelector<HTMLButtonElement>(`.fr-command[data-cmd="${commandName}"]`);
+        button!.classList.add("fr-active", "fr-selected");
+        bindEvents(dialog);
+    }
+    return dialog;
+}
+
+function bindEvents(dialog: HTMLElement) {
+    // TODO can this be refactored?
+    const inputs = dialog.querySelectorAll<HTMLInputElement>(".fr-input-line input");
+    inputs.forEach((inputEl) => {
+        inputEl.addEventListener("focus", function () {
+            if (!this.value) {
+                this.classList.add("fr-not-empty");
+            }
+        });
+
+        inputEl.addEventListener("blur", function () {
+            if (!this.value) {
+                this.classList.remove("fr-not-empty");
+            }
+        });
+    });
+}
+
 export async function showLinkPopup(
         this: FroalaEditor,
         relatedElementPosition: DOMRect | ClientRect,
         { linkText, openInNewTab, path }: LinkDescriptor, 
         dialogMode: DialogMode = DialogMode.INSERT
-    ) {
-
-    const popupName = dialogMode === DialogMode.INSERT ? INSERT_LINK_POPUP_NAME : UPDATE_LINK_POPUP_NAME;
-    const popupButtons = dialogMode === DialogMode.INSERT ? this.opts.popupInsertLinkButtons : this.opts.popupUpdateLinkButtons;
-    const customLayer = "<div class=\"ktc-configure-popup\"></div>";
-
-    showPopup(this, popupName, relatedElementPosition, popupButtons, customLayer);
-
-    const dialog = getDialogElement(this, popupName);
+): Promise<void> {
     const getPageEndpointUrl = this.opts.getPageEndpointUrl;
+    const dialog = generateAndDisplayPopup(this, relatedElementPosition, dialogMode, SWITCH_PATH_TAB_COMMAND_NAME)    
 
     if (dialog) {
         const container = dialog.querySelector<HTMLElement>(".ktc-configure-popup");
@@ -45,23 +73,7 @@ export async function showLinkPopup(
 
         container!.innerHTML = getLinkConfigurationPopupTemplate(pathSelectorMetadata.name, path, linkText, openInNewTab, dialogMode);
 
-        const button = dialog.querySelector<HTMLButtonElement>(`.fr-command[data-cmd="${SWITCH_PATH_TAB_COMMAND_NAME}"]`);
-        button!.classList.add("fr-active", "fr-selected");
-
-        const inputs = dialog.querySelectorAll<HTMLInputElement>(".fr-input-line input");
-        inputs.forEach((inputEl) => {
-            inputEl.addEventListener("focus", function () {
-                if (!this.value) {
-                    this.classList.add("fr-not-empty");
-                }
-            });
-
-            inputEl.addEventListener("blur", function () {
-                if (!this.value) {
-                    this.classList.remove("fr-not-empty");
-                }
-            });
-        });
+        bindEvents(dialog);
 
         const pageSelector = container!.querySelector<HTMLElement>(".ktc-page-selector");
         const pageSelectButton = container!.querySelector<HTMLInputElement>(".ktc-page-selection");
