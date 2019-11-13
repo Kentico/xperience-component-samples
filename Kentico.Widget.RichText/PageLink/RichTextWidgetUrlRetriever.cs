@@ -28,7 +28,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         {
             urlHelper = urlHelper ?? throw new ArgumentNullException(nameof(urlHelper));
 
-            return urlHelper.Action(nameof(RichTextWidgetController.GetPage), "RichTextWidget");
+            return urlHelper.Action(nameof(KenticoRichTextWidgetController.GetPage), "KenticoRichTextWidget");
         }
     }
 }

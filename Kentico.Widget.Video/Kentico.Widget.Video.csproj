@@ -531,7 +531,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\VideoWidgetController.cs" />
+    <Compile Include="Controllers\KenticoVideoWidgetController.cs" />
     <Compile Include="Helpers\VideoHelper.cs" />
     <Compile Include="Models\Widgets\VideoModel.cs" />
     <Compile Include="Helpers\VideoKindEnum.cs" />
