@@ -53,17 +53,21 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers
         /// <summary>
         /// Gets YouTube/Vimeo video model for given <paramref name="videoUrl"/>.
         /// </summary>
+        /// <remarks>
+        /// Returns empty <see cref="VideoModel"/> if <paramref name="videoUrl"/> is null.
+        /// </remarks>
         /// <param name="videoUrl">YouTube or Vimeo video URL.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="videoUrl"/> is <c>null</c>.</exception>
         /// <exception cref="NotSupportedException"><paramref name="video"/> doesn't refer to a Youtube or Vimeo video.</exception>
         /// <exception cref="UriFormatException"><paramref name="videoUrl"/> is malformed URL.</exception>
         public static VideoModel GetVideoModel(string videoUrl)
         {
-            videoUrl = videoUrl ?? throw new ArgumentNullException(nameof(videoUrl));
+            if (videoUrl == null)
+            {
+                return new VideoModel();
+            }
 
             // Throws exception if videoUrl is invalid URL.
             var videoUri = new UriBuilder(videoUrl).Uri;
-
             var match = VideoRegex.Match(videoUrl);
 
             if (match.Success)

@@ -28,6 +28,14 @@ namespace Kentico.Components.Web.Mvc.Widgets.Models
         /// <summary>
         /// Create a new instance of <see cref="VideoModel"/>
         /// </summary>
+        public VideoModel()
+        {
+        }
+
+
+        /// <summary>
+        /// Create a new instance of <see cref="VideoModel"/>
+        /// </summary>
         /// <param name="videoUrl">Video URL.</param>
         /// <param name="videoId">Video identifier.</param>
         /// <param name="videoKind">Video kind.</param>

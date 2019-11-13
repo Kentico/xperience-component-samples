@@ -14,18 +14,25 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers.Tests
         public class GetVideoModelTests
         {
             [Test]
-            public void GetVideoModel_VideoUrlIsNull_ThrowsArgumentNullException()
-            {
-                // Act & Assert
-                Assert.Throws<ArgumentNullException>(() => VideoHelper.GetVideoModel(null));
-            }
-
-
-            [Test]
             public void GetVideoModel_VideoUrlIsMalformatted_ThrowsUriFormatException()
             {
                 // Act & Assert
                 Assert.Throws<UriFormatException>(() => VideoHelper.GetVideoModel("blah blah..."));
+            }
+
+
+            [Test]
+            public void GetVideoModel_VideoUrlIsNull_RetursEmptyModel()
+            {
+                // Act
+                var model = VideoHelper.GetVideoModel(null);
+
+                // Assert
+                Assert.Multiple(() => {
+                    Assert.IsNull(model.VideoId);
+                    Assert.IsNull(model.VideoUrl);
+                    Assert.AreEqual(VideoKindEnum.Unknown, model.VideoKind);
+                });
             }
 
 
