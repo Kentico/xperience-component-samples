@@ -9,8 +9,7 @@ export const UPDATE_LINK_COMMAND_NAME = "updateLink";
 export const SWITCH_PATH_TAB_COMMAND_NAME = "openPathTab";
 export const SWITCH_EXTERNAL_LINK_TAB_COMMAND_NAME = "openExternalLinkTab";
 
-
-
 // Pop-ups
-export const INSERT_LINK_POPUP_NAME = `${LINK_PLUGIN_NAME}.popupInsert`;
-export const UPDATE_LINK_POPUP_NAME = `${LINK_PLUGIN_NAME}.popupUpdate`;
+export const INSERT_LINK_POPUP_NAME = `${LINK_PLUGIN_NAME}.popupInsertLink`;
+export const CONFIGURE_PAGE_LINK_POPUP_NAME = `${LINK_PLUGIN_NAME}.popupConfigurePageLink`;
+export const CONFIGURE_EXTERNAL_LINK_POPUP_NAME = `${LINK_PLUGIN_NAME}.popupConfigureExternalLink`;

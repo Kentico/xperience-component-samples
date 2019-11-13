@@ -1,9 +1,9 @@
 <form id="ktc-form" onsubmit="event.preventDefault()">
   <div class="fr-layer fr-active" id="ktc-link-configuration-layer" data-mouseenter-event-set="true">
         <div class="fr-input-line" style="display: block;">
-            <input id="ktc-configuration-url-text-1" name="linkUrl" type="text" class="fr-link-attr fr-not-empty"
+            <input id="ktc-configuration-url-text-1" name="linkUrl" type="text" class="fr-link-attr <%= linkUrl ? 'fr-not-empty' : '' %>"
                    placeholder="" tabindex="2" dir="auto" value="<%= linkUrl %>">
-            <label for="ktc-configuration-url-text-1"><%= linkUrl %></label>
+            <label for="ktc-configuration-url-text-1"><%= linkUrlLabel %></label>
         </div>
         <div class="fr-input-line" style="display: block;">
             <input id="ktc-configuration-url-text-1" name="linkText" type="text" class="fr-link-attr fr-not-empty"

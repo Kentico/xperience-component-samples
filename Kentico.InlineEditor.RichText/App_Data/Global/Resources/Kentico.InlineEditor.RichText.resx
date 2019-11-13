@@ -198,4 +198,7 @@
   <data name="Kentico.InlineEditor.RichText.LinkPlugin.Command.ExternalLinkTab" xml:space="preserve">
     <value>External link</value>
   </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Label.Url" xml:space="preserve">
+    <value>URL</value>
+  </data>
 </root>

@@ -16,12 +16,13 @@ export const getLinkConfigurationPopupTemplate = (pageName: string, linkUrl: str
     });
 
 export const getExternalLinkConfigurationPopupTemplate = (linkUrl: string, linkText: string, openInNewTab: boolean, dialogMode: DialogMode): string =>
-require("./templates/configure-external-link-popup.html")({
-    linkUrl,
-    linkText,
-    linkTextLabel: getString("Label.Text"),
-    openInNewTabLabel: getString("Label.OpenInNewTab"),
-    openInNewTab,
-    command: dialogMode === DialogMode.INSERT ? INSERT_PAGE_LINK_COMMAND_NAME : UPDATE_LINK_COMMAND_NAME,
-    actionButtonText: getString(dialogMode === DialogMode.INSERT ? "ActionButton.Insert" : "ActionButton.Save"),
-});
+    require("./templates/configure-external-link-popup.html")({
+        linkUrl,
+        linkText,
+        linkUrlLabel: getString("Label.Url"),
+        linkTextLabel: getString("Label.Text"),
+        openInNewTabLabel: getString("Label.OpenInNewTab"),
+        openInNewTab,
+        command: dialogMode === DialogMode.INSERT ? INSERT_PAGE_LINK_COMMAND_NAME : UPDATE_LINK_COMMAND_NAME,
+        actionButtonText: getString(dialogMode === DialogMode.INSERT ? "ActionButton.Insert" : "ActionButton.Save"),
+    });
