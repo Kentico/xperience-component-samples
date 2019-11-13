@@ -14,7 +14,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers.Tests
         public class GetVideoModelTests
         {
             [Test]
-            public void GetVideoModel_VideoUrlIsMalformatted_ThrowsUriFormatException()
+            public void GetVideoModel_VideoUrlIsMalformed_ThrowsUriFormatException()
             {
                 // Act & Assert
                 Assert.Throws<UriFormatException>(() => VideoHelper.GetVideoModel("blah blah..."));
