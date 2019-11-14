@@ -13,6 +13,8 @@ import { showForm } from "./popups/link-edit-popup";
 let selectedLink: HTMLAnchorElement;
 let defaultLinkDescriptor: LinkDescriptor;
 
+// Open insert link popup
+
 const openInsertLinkPopupCommandIcon = new FroalaIcon(constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME, { NAME: "link", SVG_KEY: "insertLink" });
 const openInsertLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME, {
     title: getString("Command.InsertLink"),
@@ -23,7 +25,7 @@ const openInsertLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_LINK_
     callback(this: FroalaEditor) {
         this.selection.save();
         const linkText = this.selection.text();
-        defaultLinkDescriptor = { 
+        defaultLinkDescriptor = {
             linkText: (linkText.trim().length === 0) ? "" : linkText,
             linkUrl: "",
             openInNewTab: false
@@ -32,9 +34,10 @@ const openInsertLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_LINK_
     }
 }, openInsertLinkPopupCommandIcon);
 
+// Close link configuration popup
 
-const closeLinkConfigurationPopupCommandIcon = new FroalaIcon(constants.CLOSE_CONFIGURE_LINK_POPUP_COMMAND_NAME, { NAME: "arrow-left", SVG_KEY: "back" });
-const closeLinkConfigurationPopupCommand = new FroalaCommand(constants.CLOSE_CONFIGURE_LINK_POPUP_COMMAND_NAME, {
+const closeLinkConfigurationPopupCommandIcon = new FroalaIcon(constants.CLOSE_LINK_CONFIGURATION_POPUP_COMMAND_NAME, { NAME: "arrow-left", SVG_KEY: "back" });
+const closeLinkConfigurationPopupCommand = new FroalaCommand(constants.CLOSE_LINK_CONFIGURATION_POPUP_COMMAND_NAME, {
     title: getString("Command.Back"),
     undo: false,
     focus: false,
@@ -43,54 +46,71 @@ const closeLinkConfigurationPopupCommand = new FroalaCommand(constants.CLOSE_CON
     }
 }, closeLinkConfigurationPopupCommandIcon);
 
-const insertOrUpdateLinkCommandParameters: RegisterCommandParameters = {
+// Insert link
+
+const insertLinkCommandParameters: RegisterCommandParameters = {
     title: "",
     undo: true,
     focus: false,
     callback(this: FroalaEditor, command: string) {
-        const popupName = command === constants.INSERT_PAGE_LINK_COMMAND_NAME ? constants.INSERT_LINK_POPUP_NAME : constants.CONFIGURE_PAGE_LINK_POPUP_NAME;
-        const popupElement = getDialogElement(this, popupName);
+        const isExternalLink = command === constants.INSERT_EXTERNAL_LINK_COMMAND_NAME;
+        const link = getLinkData(this, constants.INSERT_LINK_POPUP_NAME, isExternalLink);
 
-        if (popupElement) {
-            this.undo.saveStep();
-            const form = popupElement.querySelector<HTMLFormElement>("#ktc-form");
-            const formData = new FormData(form!);
-            const path = formData.get("linkUrl") as string;
-            let text = formData.get("linkText") as string;
-            const openInNewTab = Boolean(formData.get("openInNewTab"));
-
-            if (!path) {
-                this.kenticoLinkPlugin.hideLinkConfigurationPopup();
-                return;
-            }
-            if (!text) {
-                text = popupElement.querySelector<HTMLElement>(".ktc-page-name")!.innerText;
-            }
-
-            if (command === constants.INSERT_PAGE_LINK_COMMAND_NAME) {
-                this.link.insert(path, text, openInNewTab ? {target: "_blank"} : undefined);
-            } else if (command === constants.UPDATE_LINK_COMMAND_NAME && selectedLink) {
-                selectedLink.setAttribute("href", path);
-                selectedLink.innerText = text;
-                
-                if (openInNewTab){
-                    selectedLink.setAttribute("target", "_blank");
-                }
-                else {
-                    selectedLink.removeAttribute("target");
-                }
-            }
-
+        if (!link) {
             this.kenticoLinkPlugin.hideLinkConfigurationPopup();
+            return;
         }
+
+        this.undo.saveStep();
+
+        this.link.insert(link.linkUrl, link.linkText, link.openInNewTab ? { target: "_blank" } : undefined);
+        this.kenticoLinkPlugin.hideLinkConfigurationPopup();
+    }
+}
+
+const insertPageLinkCommand = new FroalaCommand(constants.INSERT_PAGE_LINK_COMMAND_NAME, insertLinkCommandParameters);
+const insertExternalLinkCommand = new FroalaCommand(constants.INSERT_EXTERNAL_LINK_COMMAND_NAME, insertLinkCommandParameters);
+
+// Update link
+
+const updateLinkCommandParameters: RegisterCommandParameters = {
+    title: "",
+    undo: true,
+    focus: false,
+    callback(this: FroalaEditor, command: string) {
+        const isExternalLink = command !== constants.UPDATE_PAGE_LINK_COMMAND_NAME;
+        const popupName = isExternalLink ? constants.CONFIGURE_EXTERNAL_LINK_POPUP_NAME : constants.CONFIGURE_PAGE_LINK_POPUP_NAME;
+        const link = getLinkData(this, popupName, isExternalLink);
+
+        if (!link) {
+            this.kenticoLinkPlugin.hideLinkConfigurationPopup();
+            return;
+        }
+
+        if (selectedLink) {
+            this.undo.saveStep();
+            selectedLink.setAttribute("href", link.linkUrl);
+            selectedLink.innerText = link.linkText;
+
+            if (link.openInNewTab) {
+                selectedLink.setAttribute("target", "_blank");
+            }
+            else {
+                selectedLink.removeAttribute("target");
+            }
+        }
+
+        this.kenticoLinkPlugin.hideLinkConfigurationPopup();
     }
 };
 
-const insertPageLinkCommand = new FroalaCommand(constants.INSERT_PAGE_LINK_COMMAND_NAME, insertOrUpdateLinkCommandParameters);
-const updatePageLinkCommand = new FroalaCommand(constants.UPDATE_LINK_COMMAND_NAME, insertOrUpdateLinkCommandParameters);
+const updatePageLinkCommand = new FroalaCommand(constants.UPDATE_PAGE_LINK_COMMAND_NAME, updateLinkCommandParameters);
+const updateExternalLinkCommand = new FroalaCommand(constants.UPDATE_EXTERNAL_LINK_COMMAND_NAME, updateLinkCommandParameters);
 
-const editPageLinkIcon = new FroalaIcon(constants.OPEN_EDIT_LINK_POPUP_COMMAND_NAME, { NAME: "edit", SVG_KEY: "editLink" });
-const editPageLinkCommand = new FroalaCommand(constants.OPEN_EDIT_LINK_POPUP_COMMAND_NAME, {
+// Open link configuration popup
+
+const openLinkConfigurationPopupCommandIcon = new FroalaIcon(constants.OPEN_LINK_CONFIGURATION_POPUP_COMMAND_NAME, { NAME: "edit", SVG_KEY: "editLink" });
+const openLinkConfigurationPopupCommand = new FroalaCommand(constants.OPEN_LINK_CONFIGURATION_POPUP_COMMAND_NAME, {
     title: getString("Command.EditLink"),
     undo: false,
     focus: false,
@@ -109,36 +129,74 @@ const editPageLinkCommand = new FroalaCommand(constants.OPEN_EDIT_LINK_POPUP_COM
             this.kenticoLinkPlugin.showConfigurePageLinkPopup(relatedElementPosition, linkDescriptor, DialogMode.UPDATE);
         }
     }
-}, editPageLinkIcon);
+}, openLinkConfigurationPopupCommandIcon);
 
-// Open path tab command
-const openPathTabCommandIcon = new FroalaIcon(constants.SWITCH_PATH_TAB_COMMAND_NAME, { NAME: "link", SVG_KEY: "insertLink" });
-const openPathTabCommand = new FroalaCommand(constants.SWITCH_PATH_TAB_COMMAND_NAME, {
+// Switch page link tab command
+
+const switchPageLinkTabCommandIcon = new FroalaIcon(constants.SWITCH_PAGE_LINK_TAB_COMMAND_NAME, { NAME: "link", SVG_KEY: "insertLink" });
+const switchPageLinkTabCommand = new FroalaCommand(constants.SWITCH_PAGE_LINK_TAB_COMMAND_NAME, {
     title: getString("Command.PathTab"),
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
         showForm(this, constants.INSERT_LINK_POPUP_NAME, defaultLinkDescriptor, LinkType.PAGE, DialogMode.INSERT);
     }
-}, openPathTabCommandIcon);
+}, switchPageLinkTabCommandIcon);
 
-// Open external link tab command
-const openExternalLinkTabCommandIcon = new FroalaIcon(constants.SWITCH_EXTERNAL_LINK_TAB_COMMAND_NAME, { NAME: "link", SVG_KEY: "openLink" });
-const openExternalLinkTabCommand = new FroalaCommand(constants.SWITCH_EXTERNAL_LINK_TAB_COMMAND_NAME, {
+// Switch external link tab command
+
+const switchExternalLinkTabCommandIcon = new FroalaIcon(constants.SWITCH_EXTERNAL_LINK_TAB_COMMAND_NAME, { NAME: "link", SVG_KEY: "openLink" });
+const switchExternalLinkTabCommand = new FroalaCommand(constants.SWITCH_EXTERNAL_LINK_TAB_COMMAND_NAME, {
     title: getString("Command.ExternalLinkTab"),
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
         showForm(this, constants.INSERT_LINK_POPUP_NAME, defaultLinkDescriptor, LinkType.EXTERNAL, DialogMode.INSERT);
     }
-}, openExternalLinkTabCommandIcon);
+}, switchExternalLinkTabCommandIcon);
+
+const getLinkData = (editor: FroalaEditor, popupName: string, isExternalLink: boolean): LinkDescriptor | null => {
+    const popupElement = getDialogElement(editor, popupName);
+    if (!popupElement) {
+        return null;
+    }
+
+    let link = extractFormData(popupElement);
+
+    if (!link.linkUrl) {
+        return null;
+    }
+    if (!link.linkText) {
+        const linkText = isExternalLink ? link.linkUrl : popupElement.querySelector<HTMLElement>(".ktc-page-name")!.innerText;
+
+        link = {
+            ...link,
+            linkText,
+        };
+    }
+
+    return link;
+}
+
+const extractFormData = (popupElement: HTMLElement): LinkDescriptor => {
+    const form = popupElement.querySelector<HTMLFormElement>("#ktc-form");
+    const formData = new FormData(form!);
+
+    return {
+        linkUrl: formData.get("linkUrl") as string,
+        linkText: formData.get("linkText") as string,
+        openInNewTab: Boolean(formData.get("openInNewTab")),
+    }
+}
 
 export const linkCommands = [
     openInsertLinkPopupCommand,
+    openLinkConfigurationPopupCommand,
     closeLinkConfigurationPopupCommand,
     insertPageLinkCommand,
-    editPageLinkCommand,
+    insertExternalLinkCommand,
     updatePageLinkCommand,
-    openPathTabCommand,
-    openExternalLinkTabCommand
+    updateExternalLinkCommand,
+    switchPageLinkTabCommand,
+    switchExternalLinkTabCommand
 ]

@@ -1,7 +1,7 @@
 import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 
 import { showPopup, getDialogElement, bindFocusEventToInputs } from "../../popup-helper";
-import { INSERT_LINK_POPUP_NAME, CONFIGURE_PAGE_LINK_POPUP_NAME, SWITCH_PATH_TAB_COMMAND_NAME, SWITCH_EXTERNAL_LINK_TAB_COMMAND_NAME } from "../link-constants";
+import { INSERT_LINK_POPUP_NAME, CONFIGURE_PAGE_LINK_POPUP_NAME, SWITCH_PAGE_LINK_TAB_COMMAND_NAME, SWITCH_EXTERNAL_LINK_TAB_COMMAND_NAME, CONFIGURE_EXTERNAL_LINK_POPUP_NAME } from "../link-constants";
 import { getLinkConfigurationPopupTemplate, getExternalLinkConfigurationPopupTemplate } from "../link-templates";
 import { DialogMode } from "../../plugin-types";
 import { getString, getPathSelectorMetadata } from "../../links/link-helpers";
@@ -13,6 +13,7 @@ const POPUP_TEMPLATE_BODY_CLASS_NAME = "ktc-configure-popup";
 export function hideLinkConfigurationPopup(this: FroalaEditor) {
     this.popups.hide(INSERT_LINK_POPUP_NAME);
     this.popups.hide(CONFIGURE_PAGE_LINK_POPUP_NAME);
+    this.popups.hide(CONFIGURE_EXTERNAL_LINK_POPUP_NAME);
 }
 
 export const getShowLinkPopup = (popupName: string, buttons: any[], linkType: LinkType) => {
@@ -31,7 +32,7 @@ export const showForm = async (editor: FroalaEditor, popupName: string, linkDesc
     }
 
     const container = dialog.querySelector<HTMLElement>(`.${POPUP_TEMPLATE_BODY_CLASS_NAME}`);
-    const tabCommand = linkType === LinkType.PAGE ? SWITCH_PATH_TAB_COMMAND_NAME : SWITCH_EXTERNAL_LINK_TAB_COMMAND_NAME;
+    const tabCommand = linkType === LinkType.PAGE ? SWITCH_PAGE_LINK_TAB_COMMAND_NAME : SWITCH_EXTERNAL_LINK_TAB_COMMAND_NAME;
 
     if (!container) {
         return;
