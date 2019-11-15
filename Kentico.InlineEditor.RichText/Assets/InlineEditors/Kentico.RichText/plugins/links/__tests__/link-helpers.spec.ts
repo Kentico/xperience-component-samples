@@ -1,5 +1,4 @@
-import { getPathSelectorMetadata } from "../link-helpers";
-import { DialogMode } from "../../plugin-types";
+import { getLinkInfo } from "../link-helpers";
 
 describe("getPathSelectorMetadata", () => {
     const PAGE_NAME = "page1";
@@ -11,21 +10,21 @@ describe("getPathSelectorMetadata", () => {
     });
 
     it ("returns blank item if mode is Insert", async () => {
-        const result = await getPathSelectorMetadata("doesntmatter", "doesntmatter", DialogMode.INSERT);
+        const result = await getLinkInfo("doesntmatter", "doesntmatter");
 
         expect(result).toEqual({ name: "", nodeGuid: ""});
         expect(fetchMock).not.toHaveBeenCalled();
     });
 
     it("path is encoded", async () => {
-        await getPathSelectorMetadata("/api/fooget", "path%&", DialogMode.UPDATE);
+        await getLinkInfo("/api/fooget", "path%&");
 
         expect(fetchMock).toHaveBeenCalledWith("/api/fooget?pageUrl=path%25%26");
     });
 
     describe("endpoint URL already contains query", () => {
         it("appends path parameter using ampersand", async () => {
-            await getPathSelectorMetadata("/api/fooget?param1=test", "path", DialogMode.UPDATE);
+            await getLinkInfo("/api/fooget?param1=test", "path");
 
             expect(fetchMock).toHaveBeenCalledWith("/api/fooget?param1=test&pageUrl=path");
         });
@@ -33,7 +32,7 @@ describe("getPathSelectorMetadata", () => {
 
     describe("endpoint URL doesn't contain query", () => {
         it("appends path parameter using question mark", async () => {
-            await getPathSelectorMetadata("/api/fooget", "path", DialogMode.UPDATE);
+            await getLinkInfo("/api/fooget", "path");
 
             expect(fetchMock).toHaveBeenCalledWith("/api/fooget?pageUrl=path");
         });
@@ -43,14 +42,14 @@ describe("getPathSelectorMetadata", () => {
         fetchMock.resetMocks();
         fetchMock.mockReject(new Error("MyError"));
         const mockErrorConsole = jest.spyOn(global.console, "error").mockImplementation();
-        const result = await getPathSelectorMetadata("/api/fooget", "path", DialogMode.UPDATE); 
+        const result = await getLinkInfo("/api/fooget", "path"); 
 
         expect(mockErrorConsole).toHaveBeenCalledWith(new Error("MyError"));
         expect(result).toEqual({ name: "", nodeGuid: ""});
     });
 
     it("does something", async () => {
-        const result = await getPathSelectorMetadata("", "path", DialogMode.UPDATE);
+        const result = await getLinkInfo("", "path");
 
         expect(result).toEqual({ name: PAGE_NAME, nodeGuid: NODE_GUID});
         expect(fetchMock).toHaveBeenCalledTimes(1);

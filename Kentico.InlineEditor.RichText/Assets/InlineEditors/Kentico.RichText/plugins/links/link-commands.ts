@@ -6,9 +6,8 @@ import { FroalaCommand } from "../../froala-command";
 import { FroalaIcon } from "../../froala-icon";
 import { getString } from "./link-helpers";
 import { getDialogElement } from "../popup-helper";
-import { DialogMode } from "../plugin-types";
-import { LinkDescriptor, LinkType } from "./link-types";
-import { showForm } from "./popups/link-edit-popup";
+import { LinkDescriptor, LinkType, LinkInfo } from "./link-types";
+import { showForm } from "./popups/link-configuration-popup";
 
 let selectedLink: HTMLAnchorElement;
 let defaultLinkDescriptor: LinkDescriptor;
@@ -30,7 +29,7 @@ const openInsertLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_LINK_
             linkUrl: "",
             openInNewTab: false
         };
-        this.kenticoLinkPlugin.showLinkPopup(this.position.getBoundingRect(), defaultLinkDescriptor);
+        this.kenticoLinkPlugin.showInsertLinkPopup(this.position.getBoundingRect(), defaultLinkDescriptor);
     }
 }, openInsertLinkPopupCommandIcon);
 
@@ -114,7 +113,7 @@ const openLinkConfigurationPopupCommand = new FroalaCommand(constants.OPEN_LINK_
     title: getString("Command.EditLink"),
     undo: false,
     focus: false,
-    callback(this: FroalaEditor) {
+    async callback(this: FroalaEditor) {
         selectedLink = this.link.get() as HTMLAnchorElement;
         const relatedElementPosition = this.position.getBoundingRect();
         const linkDescriptor: LinkDescriptor = {
@@ -123,11 +122,7 @@ const openLinkConfigurationPopupCommand = new FroalaCommand(constants.OPEN_LINK_
             openInNewTab: selectedLink.target === "_blank",
         };
 
-        if (linkDescriptor.linkUrl.startsWith("http")) {
-            this.kenticoLinkPlugin.showConfigureExternalLinkPopup(relatedElementPosition, linkDescriptor, DialogMode.UPDATE)
-        } else {
-            this.kenticoLinkPlugin.showConfigurePageLinkPopup(relatedElementPosition, linkDescriptor, DialogMode.UPDATE);
-        }
+        await this.kenticoLinkPlugin.showLinkConfigurationPopup(relatedElementPosition, linkDescriptor);
     }
 }, openLinkConfigurationPopupCommandIcon);
 
@@ -139,7 +134,14 @@ const switchPageLinkTabCommand = new FroalaCommand(constants.SWITCH_PAGE_LINK_TA
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
-        showForm(this, constants.INSERT_LINK_POPUP_NAME, defaultLinkDescriptor, LinkType.PAGE, DialogMode.INSERT);
+        const linkInfo: LinkInfo = {
+            linkType: LinkType.PAGE,
+            linkMetadata: {
+                name: "",
+                identifier: "",
+            },
+        };
+        showForm(this, constants.INSERT_LINK_POPUP_NAME, defaultLinkDescriptor, linkInfo);
     }
 }, switchPageLinkTabCommandIcon);
 
@@ -151,7 +153,14 @@ const switchExternalLinkTabCommand = new FroalaCommand(constants.SWITCH_EXTERNAL
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
-        showForm(this, constants.INSERT_LINK_POPUP_NAME, defaultLinkDescriptor, LinkType.EXTERNAL, DialogMode.INSERT);
+        const linkInfo: LinkInfo = {
+            linkType: LinkType.EXTERNAL,
+            linkMetadata: {
+                name: "",
+                identifier: "",
+            },
+        };
+        showForm(this, constants.INSERT_LINK_POPUP_NAME, defaultLinkDescriptor, linkInfo);
     }
 }, switchExternalLinkTabCommandIcon);
 

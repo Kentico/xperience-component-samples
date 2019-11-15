@@ -19,10 +19,10 @@ export const initializeLinkPlugin = (froala: Froala, element: HTMLElement) => {
         popupUpdateExternalLinkButtons: [constants.CLOSE_LINK_CONFIGURATION_POPUP_COMMAND_NAME, "|", constants.SWITCH_EXTERNAL_LINK_TAB_COMMAND_NAME],
     });
 
-    const getPageEndpointUrl = element.dataset.getLinkMetadataEndpointUrl;
-    if (getPageEndpointUrl) {
+    const getLinkMetadataEndpointUrl = element.dataset.getLinkMetadataEndpointUrl;
+    if (getLinkMetadataEndpointUrl) {
         Object.assign(froala.DEFAULTS, {
-            getPageEndpointUrl
+            getLinkMetadataEndpointUrl
         });
     }
 
