@@ -18,7 +18,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
         [TestFixture]
         public class ProcessActionTests : UnitTests
         {
-            private RichTextGetPageActionExecutor richTextGetPageActionExecutor;
+            private RichTextGetLinkMetadataActionExecutor richTextGetPageActionExecutor;
             private IPagesRetriever pagesRetrieverMock;
             private const string PAGE_PREVIEW_URL_PATH = "/cmsctx/pv/-/home";
 
@@ -27,7 +27,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             public void SetUp()
             {
                 pagesRetrieverMock = Substitute.For<IPagesRetriever>();
-                richTextGetPageActionExecutor = new RichTextGetPageActionExecutor(pagesRetrieverMock);
+                richTextGetPageActionExecutor = new RichTextGetLinkMetadataActionExecutor(pagesRetrieverMock);
 
                 VirtualContext.SetItem(VirtualContext.PARAM_PREVIEW_LINK, "pv");
                 MembershipContext.AuthenticatedUser = Substitute.For<CurrentUserInfo>();
@@ -74,7 +74,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             }
 
 
-            [Test]
+            [Test, Ignore("Ignored until LinkModel + LinkTypeEnum is finalized")]
             public void ProcessAction_PageDoesNotExist_ReturnsStatusCodeNotFound()
             {
                 pagesRetrieverMock.GetPage(Arg.Any<string>()).Returns((TreeNode)null);
@@ -123,8 +123,9 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 Assert.Multiple(() =>
                 {
                     Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-                    Assert.That(result.Page.Name, Is.EqualTo(pageMock.DocumentName));
-                    Assert.That(result.Page.NodeGuid, Is.EqualTo(pageMock.NodeGUID));
+                    Assert.That(result.LinkModel.LinkType, Is.EqualTo(LinkTypeEnum.Page));
+                    Assert.That(result.LinkModel.LinkMetadata.Name, Is.EqualTo(pageMock.DocumentName));
+                    Assert.That(result.LinkModel.LinkMetadata.Identifier, Is.EqualTo(pageMock.NodeGUID));
                     Assert.That(result.StatusCodeMessage, Is.Null);
                 });
             }

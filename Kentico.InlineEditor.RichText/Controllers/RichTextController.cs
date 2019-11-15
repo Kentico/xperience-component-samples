@@ -13,37 +13,37 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Controllers
     [UseCamelCasePropertyNamesContractResolver]
     public class RichTextController : ApiController
     {
-        private readonly IRichTextGetPageActionExecutor richTextGetPageAction;
+        private readonly IRichTextGetLinkMetadataActionExecutor richTextGetLinkMetadataAction;
         private readonly IEventLogService eventLogService;
 
 
         public RichTextController()
-            : this(new RichTextGetPageActionExecutor(new PagesRetriever(SiteContext.CurrentSiteName)),
+            : this(new RichTextGetLinkMetadataActionExecutor(new PagesRetriever(SiteContext.CurrentSiteName)),
                   Service.Resolve<IEventLogService>())
         {
         }
 
 
-        internal RichTextController(IRichTextGetPageActionExecutor richTextGetPageAction, IEventLogService eventLogService)
+        internal RichTextController(IRichTextGetLinkMetadataActionExecutor richTextGetLinkMetadataAction, IEventLogService eventLogService)
         {
-            this.richTextGetPageAction = richTextGetPageAction;
+            this.richTextGetLinkMetadataAction = richTextGetLinkMetadataAction;
             this.eventLogService = eventLogService;
         }
 
 
         /// <summary>
-        /// Serves the page meta data for the given page URL.
+        /// Serves the link meta data for the given URL.
         /// </summary>
-        /// <param name="pageUrl">The page URL.</param>
-        public IHttpActionResult GetPage(string pageUrl)
+        /// <param name="linkUrl">The link URL.</param>
+        public IHttpActionResult GetLinkMetadata(string linkUrl)
         {
-            var actionResult = richTextGetPageAction.ProcessAction(pageUrl);
+            var actionResult = richTextGetLinkMetadataAction.ProcessAction(linkUrl);
             if (actionResult.StatusCode == HttpStatusCode.OK)
             {
-                return Ok(actionResult.Page);
+                return Ok(actionResult.LinkModel);
             }
 
-            eventLogService.LogEvent(EventType.ERROR, nameof(RichTextController), nameof(GetPage), actionResult.StatusCodeMessage);
+            eventLogService.LogEvent(EventType.ERROR, nameof(RichTextController), nameof(GetLinkMetadata), actionResult.StatusCodeMessage);
 
             return StatusCode(actionResult.StatusCode);
         }

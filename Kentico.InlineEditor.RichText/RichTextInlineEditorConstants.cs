@@ -1,4 +1,6 @@
-﻿namespace Kentico.Components.Web.Mvc.InlineEditors
+﻿using Kentico.Components.Web.Mvc.InlineEditors.Controllers;
+
+namespace Kentico.Components.Web.Mvc.InlineEditors
 {
     /// <summary>
     /// Rich text inline editor constants.
@@ -21,13 +23,13 @@
         public const string CONTROLLER_NAME = "RichText";
 
         /// <summary>
-        /// The route name that serves page meta data.
+        /// The route name that serves link meta data.
         /// </summary>
-        public const string GET_PAGE_ROUTE_NAME = "Kentico.InlineEditor.RichText.GetPage";
+        public const string GET_LINK_METADATA_ROUTE_NAME = "Kentico.InlineEditor.RichText.GetLinkMetadata";
 
         /// <summary>
         /// The route template name that serves page meta data.
         /// </summary>
-        public const string GET_PAGE_ROUTE_TEMPLATE = "KenticoComponent/Kentico.InlineEditor.RichText/GetPage";
+        public const string GET_PAGE_ROUTE_TEMPLATE = "KenticoComponent/Kentico.InlineEditor.RichText/" + nameof(RichTextController.GetLinkMetadata);
     }
 }

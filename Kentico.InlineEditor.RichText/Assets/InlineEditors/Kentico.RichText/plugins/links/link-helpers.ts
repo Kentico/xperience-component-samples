@@ -18,7 +18,7 @@ export const getPathSelectorMetadata = async (endpointUrl: string, path: string,
     return EMPTY_PAGE_DATA;
   }
 
-  const queryParameter = `pageUrl=${encodeURIComponent(path)}`;
+  const queryParameter = `linkUrl=${encodeURIComponent(path)}`;
   const queryDelimiter = endpointUrl.includes("?") ? "&" : "?";
   const url = endpointUrl.concat(queryDelimiter, queryParameter);
   const json = await getData(url);
