@@ -13,12 +13,12 @@ using CMS.Tests;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 {
-    public class RichTextGetPageActionExecutorTests
+    public class RichTextGetLinkMetadataActionExecutorTests
     {
         [TestFixture]
         public class ProcessActionTests : UnitTests
         {
-            private RichTextGetLinkMetadataActionExecutor richTextGetPageActionExecutor;
+            private RichTextGetLinkMetadataActionExecutor richTextGetLinkMetadataActionExecutor;
             private IPagesRetriever pagesRetrieverMock;
             private const string PAGE_PREVIEW_URL_PATH = "/cmsctx/pv/-/home";
 
@@ -27,7 +27,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             public void SetUp()
             {
                 pagesRetrieverMock = Substitute.For<IPagesRetriever>();
-                richTextGetPageActionExecutor = new RichTextGetLinkMetadataActionExecutor(pagesRetrieverMock);
+                richTextGetLinkMetadataActionExecutor = new RichTextGetLinkMetadataActionExecutor(pagesRetrieverMock, "/");
 
                 VirtualContext.SetItem(VirtualContext.PARAM_PREVIEW_LINK, "pv");
                 MembershipContext.AuthenticatedUser = Substitute.For<CurrentUserInfo>();
@@ -47,7 +47,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             {
                 VirtualContext.SetItem(VirtualContext.PARAM_PREVIEW_LINK, null);
 
-                var result = richTextGetPageActionExecutor.ProcessAction(PAGE_PREVIEW_URL_PATH);
+                var result = richTextGetLinkMetadataActionExecutor.ProcessAction(PAGE_PREVIEW_URL_PATH);
 
                 Assert.Multiple(() =>
                 {
@@ -63,7 +63,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             [TestCase("/Page/Home")]
             public void ProcessAction_PageUrlPathIsNotValid_ReturnsStatusCodeBadRequest(string pageUrlPath)
             {
-                var result = richTextGetPageActionExecutor.ProcessAction(pageUrlPath);
+                var result = richTextGetLinkMetadataActionExecutor.ProcessAction(pageUrlPath);
 
                 Assert.Multiple(() =>
                 {
@@ -74,18 +74,18 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             }
 
 
-            [Test, Ignore("Ignored until LinkModel + LinkTypeEnum is finalized")]
-            public void ProcessAction_PageDoesNotExist_ReturnsStatusCodeNotFound()
+            [Test]
+            public void ProcessAction_PageDoesNotExist_ReturnsUnknownLinkType()
             {
                 pagesRetrieverMock.GetPage(Arg.Any<string>()).Returns((TreeNode)null);
 
-                var result = richTextGetPageActionExecutor.ProcessAction(PAGE_PREVIEW_URL_PATH);
+                var result = richTextGetLinkMetadataActionExecutor.ProcessAction(PAGE_PREVIEW_URL_PATH);
 
                 Assert.Multiple(() =>
                 {
-                    Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
-                    Assert.That(result.StatusCodeMessage, Is.Not.Empty);
-                    Assert.That(result.StatusCodeMessage, Is.Not.Null);
+                    Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                    Assert.That(result.LinkModel.LinkType, Is.EqualTo(LinkTypeEnum.Unknown));
+                    Assert.That(result.LinkModel.LinkMetadata, Is.Null);
                 });
             }
 
@@ -97,7 +97,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 pageMock.CheckPermissions(PermissionsEnum.Read, Arg.Any<string>(), Arg.Any<IUserInfo>()).Returns(false);
                 pagesRetrieverMock.GetPage(Arg.Any<string>()).Returns(pageMock);
 
-                var result = richTextGetPageActionExecutor.ProcessAction(PAGE_PREVIEW_URL_PATH);
+                var result = richTextGetLinkMetadataActionExecutor.ProcessAction(PAGE_PREVIEW_URL_PATH);
 
                 Assert.Multiple(() =>
                 {
@@ -118,7 +118,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 
                 pagesRetrieverMock.GetPage(Arg.Any<string>()).Returns(pageMock);
 
-                var result = richTextGetPageActionExecutor.ProcessAction(PAGE_PREVIEW_URL_PATH);
+                var result = richTextGetLinkMetadataActionExecutor.ProcessAction(PAGE_PREVIEW_URL_PATH);
 
                 Assert.Multiple(() =>
                 {

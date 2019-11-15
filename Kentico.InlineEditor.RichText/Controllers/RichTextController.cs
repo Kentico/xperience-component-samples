@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Web.Http;
 
+using CMS.Base;
 using CMS.Core;
 using CMS.EventLog;
 using CMS.SiteProvider;
@@ -18,7 +19,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Controllers
 
 
         public RichTextController()
-            : this(new RichTextGetLinkMetadataActionExecutor(new PagesRetriever(SiteContext.CurrentSiteName)),
+            : this(new RichTextGetLinkMetadataActionExecutor(new PagesRetriever(SiteContext.CurrentSiteName), SystemContext.ApplicationPath),
                   Service.Resolve<IEventLogService>())
         {
         }

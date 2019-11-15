@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Web.Mvc;
 
+using CMS.Base;
 using CMS.Core;
 using CMS.EventLog;
 using CMS.SiteProvider;
@@ -29,7 +30,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
 
 
         public RichTextWidgetController()
-            : this(new RichTextGetLinkMetadataActionExecutor(new PagesRetriever(SiteContext.CurrentSiteName)),
+            : this(new RichTextGetLinkMetadataActionExecutor(new PagesRetriever(SiteContext.CurrentSiteName), SystemContext.ApplicationPath),
                   Service.Resolve<IEventLogService>())
         {
         }

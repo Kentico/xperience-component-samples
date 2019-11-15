@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Text.RegularExpressions;
 
 using CMS.DataEngine;
 using CMS.DocumentEngine;
@@ -15,14 +16,21 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
     internal sealed class RichTextGetLinkMetadataActionExecutor : IRichTextGetLinkMetadataActionExecutor
     {
         private readonly IPagesRetriever pagesProvider;
+        private readonly string applicationPath;
 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RichTextGetLinkMetadataActionExecutor"/> class.
         /// </summary>
-        public RichTextGetLinkMetadataActionExecutor(IPagesRetriever pagesProvider)
+        public RichTextGetLinkMetadataActionExecutor(IPagesRetriever pagesProvider, string applicationPath)
         {
-            this.pagesProvider = pagesProvider;
+            if (String.IsNullOrEmpty(applicationPath))
+            {
+                throw new ArgumentException(nameof(applicationPath));
+            }
+
+            this.pagesProvider = pagesProvider ?? throw new ArgumentNullException(nameof(pagesProvider));
+            this.applicationPath = applicationPath;
         }
 
 
@@ -39,57 +47,83 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
 
             if (String.IsNullOrEmpty(linkUrl))
             {
-                return new GetLinkMetadataActionResult(HttpStatusCode.BadRequest, statusCodeMessage: "URL is missing the \"pageUrl\" parameter.");
+                return new GetLinkMetadataActionResult(HttpStatusCode.BadRequest, statusCodeMessage: "URL is missing the \"linkUrl\" parameter.");
             }
 
-            string pageUrlPath = ExtractPageUrlPath(linkUrl);
-            if (pageUrlPath == null)
+            string normalizedLinkUrl = NormalizeUrl(linkUrl);
+            if (String.IsNullOrEmpty(normalizedLinkUrl))
             {
-                return new GetLinkMetadataActionResult(HttpStatusCode.BadRequest, statusCodeMessage: "Invalid \"pageUrl\" parameter.");
-            }
-
-            TreeNode page = pagesProvider.GetPage(pageUrlPath);
-            if (!page.CheckPermissions(PermissionsEnum.Read, SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser))
-            {
-                return new GetLinkMetadataActionResult(HttpStatusCode.Forbidden, statusCodeMessage: $"You are not authorized to access data of the page '{pageUrlPath}'.");
+                return new GetLinkMetadataActionResult(HttpStatusCode.BadRequest, statusCodeMessage: "Invalid \"linkUrl\" parameter.");
             }
 
             var linkModel = new LinkModel();
 
+            TreeNode page = pagesProvider.GetPage(normalizedLinkUrl);
             if (page != null)
             {
-                linkModel.LinkType = LinkTypeEnum.Page;
-                linkModel.LinkMetadata = new LinkMetadata
+                if (!page.CheckPermissions(PermissionsEnum.Read, SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser))
                 {
-                    Name = GetPageName(page),
-                    Identifier = page.NodeGUID
-                };
-            };
+                    return new GetLinkMetadataActionResult(HttpStatusCode.Forbidden, statusCodeMessage: $"You are not authorized to access data of the page '{normalizedLinkUrl}'.");
+                }
+
+                linkModel = GetPageLinkModel(page);
+            }
 
             return new GetLinkMetadataActionResult(HttpStatusCode.OK, linkModel);
         }
 
 
-        /// <summary>
-        /// Extracts the page URL from a full URL that contains a virtual context prefix.
-        /// </summary>
-        /// <param name="pagePreviewUrl">The page preview URL.</param>
-        private string ExtractPageUrlPath(string pagePreviewUrl)
+        private LinkModel GetPageLinkModel(TreeNode page)
         {
-            if (String.IsNullOrWhiteSpace(pagePreviewUrl))
+            var linkModel = new LinkModel
             {
-                return null;
+                LinkType = LinkTypeEnum.Page,
+                LinkMetadata = new LinkMetadata
+                {
+                    Name = GetPageName(page),
+                    Identifier = page.NodeGUID
+                }
+            };
+
+            return linkModel;
+        }
+
+
+        /// <summary>
+        /// Returns either the original URL if it was not recognized as a local URL of the current site
+        /// or a local URL path without the virtual context prefix and application path
+        /// </summary>
+        internal string NormalizeUrl(string url)
+        {
+            // Identify a local URL (exclude protocol-less URLs if that application is in the site root)
+            if (url.StartsWith(applicationPath) && !url.StartsWith("//"))
+            {
+                string relativeUrl = RemoveApplicationPath(url);
+
+                // Remove the virtual context prefix
+                if (VirtualContext.ContainsVirtualContextPrefix(relativeUrl))
+                {
+                    Regex virtualContextPathPrefixRegex = RegexHelper.GetRegex($"{VirtualContext.VirtualContextPrefix}.*/{VirtualContext.VirtualContextSeparator}");
+
+                    // Remove the virtual context prefix "/cmsctx/.../-"
+                    relativeUrl = virtualContextPathPrefixRegex.Replace(relativeUrl, String.Empty);
+                }
+
+                return relativeUrl;
             }
 
-            var virtualContextSeparator = new string[] { $"/{VirtualContext.VirtualContextSeparator}/" };
-            var pageUrlSplit = pagePreviewUrl.Split(virtualContextSeparator, StringSplitOptions.None);
+            return url;
+        }
 
-            if (pageUrlSplit.Length < 2)
+
+        private string RemoveApplicationPath(string absolutePath)
+        {
+            if (absolutePath.StartsWith(applicationPath, StringComparison.InvariantCultureIgnoreCase))
             {
-                return null;
+                return "/" + absolutePath.Substring(applicationPath.Length).TrimStart('/');
             }
 
-            return pageUrlSplit[1];
+            return absolutePath;
         }
 
 

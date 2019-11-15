@@ -17,25 +17,25 @@ namespace Kentico.Components.Web.Mvc.Widgets.Tests
     public class RichTextWidgetControllerTests
     {
         [TestFixture]
-        public class GetPageTests : UnitTests
+        public class GetLinkMetadataTests : UnitTests
         {
             private RichTextWidgetController richTextController;
-            private IRichTextGetLinkMetadataActionExecutor getPageMockAction;
+            private IRichTextGetLinkMetadataActionExecutor getLinkMetadataActionMock;
             private IEventLogService eventLogService;
 
 
             [SetUp]
             public void SetUp()
             {
-                getPageMockAction = Substitute.For<IRichTextGetLinkMetadataActionExecutor>();
+                getLinkMetadataActionMock = Substitute.For<IRichTextGetLinkMetadataActionExecutor>();
                 eventLogService = Substitute.For<IEventLogService>();
 
-                richTextController = new RichTextWidgetController(getPageMockAction, eventLogService);
+                richTextController = new RichTextWidgetController(getLinkMetadataActionMock, eventLogService);
             }
 
 
             [TestCase(HttpStatusCode.OK)]
-            public void GetPage_PageIsFound_ReturnsStatusCodeAndPageModel(HttpStatusCode statusCode)
+            public void GetLinkMetadata_PageIsFound_ReturnsStatusCodeAndPageModel(HttpStatusCode statusCode)
             {
                 // Arrange
                 var pageModel = new LinkModel
@@ -43,7 +43,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Tests
                     LinkType = LinkTypeEnum.Page
                 };
 
-                getPageMockAction.ProcessAction(Arg.Any<string>()).Returns(new GetLinkMetadataActionResult(statusCode, linkModel: pageModel));
+                getLinkMetadataActionMock.ProcessAction(Arg.Any<string>()).Returns(new GetLinkMetadataActionResult(statusCode, linkModel: pageModel));
 
                 // Act
                 var result = richTextController.GetLinkMetadata("pageUrlPath");
@@ -58,10 +58,10 @@ namespace Kentico.Components.Web.Mvc.Widgets.Tests
 
 
             [TestCase(HttpStatusCode.NotFound, "message")]
-            public void GetPage_PageIsNotFound_ReturnsStatusCodeAndPageModel(HttpStatusCode statusCode, string statusCodeMessage)
+            public void GetLinkMetadata_PageIsNotFound_ReturnsStatusCodeAndPageModel(HttpStatusCode statusCode, string statusCodeMessage)
             {
                 // Arrange
-                getPageMockAction.ProcessAction(Arg.Any<string>()).Returns(new GetLinkMetadataActionResult(statusCode, statusCodeMessage: statusCodeMessage));
+                getLinkMetadataActionMock.ProcessAction(Arg.Any<string>()).Returns(new GetLinkMetadataActionResult(statusCode, statusCodeMessage: statusCodeMessage));
 
                 // Act
                 var result = richTextController.GetLinkMetadata("pageUrlPath");
