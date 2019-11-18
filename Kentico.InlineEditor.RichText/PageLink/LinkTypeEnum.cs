@@ -11,8 +11,13 @@
         Page,
 
         /// <summary>
-        /// A link URL does not point to any of the supported object types.
+        /// A link URL pointing to the same application but is not of any of the supported object types.
         /// </summary>
-        Unknown
+        Local,
+
+        /// <summary>
+        /// A link URL pointing to an external web application.
+        /// </summary>
+        External
     }
 }

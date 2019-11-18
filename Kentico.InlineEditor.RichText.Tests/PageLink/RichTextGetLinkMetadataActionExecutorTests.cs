@@ -68,6 +68,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                     Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
                     Assert.That(result.StatusCodeMessage, Is.Not.Empty);
                     Assert.That(result.StatusCodeMessage, Is.Not.Null);
+                    Assert.That(result.LinkModel, Is.Null);
                 });
             }
 
@@ -75,14 +76,15 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             [TestCase("http://google.com")]
             [TestCase("https://google.com")]
             [TestCase("//google.com")]
-            public void ProcessAction_ExternalUrl_ReturnsUnknownLinkType(string url)
+            public void ProcessAction_ExternalUrl_ReturnsExternalLinkType(string url)
             {
                 var result = richTextGetLinkMetadataActionExecutor.ProcessAction(url);
 
                 Assert.Multiple(() =>
                 {
                     Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-                    Assert.That(result.LinkModel.LinkType, Is.EqualTo(LinkTypeEnum.Unknown));
+                    Assert.That(result.LinkModel.LinkType, Is.EqualTo(LinkTypeEnum.External));
+                    Assert.That(result.LinkModel.LinkURL, Is.EqualTo(url));
                     Assert.That(result.LinkModel.LinkMetadata, Is.Null);
                 });
             }
@@ -102,15 +104,16 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                     Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Forbidden));
                     Assert.That(result.StatusCodeMessage, Is.Not.Empty);
                     Assert.That(result.StatusCodeMessage, Is.Not.Null);
+                    Assert.That(result.LinkModel, Is.Null);
                 });
             }
 
 
-            [TestCase("/", "/page")]
-            [TestCase("/", "/cmsctx/pv/-/page")]
-            [TestCase("/appPath", "/appPath/page")]
-            [TestCase("/appPath", "/appPath/cmsctx/pv/-/page")]
-            public void ProcessAction_LocalUrl_ExistingPage_ReturnsStatusCodeOk(string applicationPath, string url)
+            [TestCase("/", "/page", "/page")]
+            [TestCase("/", "/cmsctx/pv/-/page", "/page")]
+            [TestCase("/appPath", "/appPath/page", "/appPath/page")]
+            [TestCase("/appPath", "/appPath/cmsctx/pv/-/page", "/appPath/page")]
+            public void ProcessAction_LocalUrl_ExistingPage_ReturnsStatusCodeOk(string applicationPath, string url, string expectedLinkUrl)
             {
                 var pageMock = Substitute.For<TreeNode>();
                 pageMock.DocumentName = "Test";
@@ -125,6 +128,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 {
                     Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
                     Assert.That(result.LinkModel.LinkType, Is.EqualTo(LinkTypeEnum.Page));
+                    Assert.That(result.LinkModel.LinkURL, Is.EqualTo(expectedLinkUrl));
                     Assert.That(result.LinkModel.LinkMetadata.Name, Is.EqualTo(pageMock.DocumentName));
                     Assert.That(result.LinkModel.LinkMetadata.Identifier, Is.EqualTo(pageMock.NodeGUID));
                     Assert.That(result.StatusCodeMessage, Is.Null);
@@ -132,18 +136,20 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             }
 
 
-            [Test]
-            public void ProcessAction_LocalUrl_NotExistingPage_ReturnsUnknownLinkType()
+            [TestCase("/", "/page")]
+            [TestCase("/appPath", "/appPath/page")]
+            public void ProcessAction_LocalUrl_NotExistingPage_ReturnsLocalLinkType(string applicationPath, string linkUrl)
             {
                 pagesRetrieverMock.GetPage(Arg.Any<string>()).Returns((TreeNode)null);
 
-                var result = richTextGetLinkMetadataActionExecutor.ProcessAction("/page");
+                var result = new RichTextGetLinkMetadataActionExecutor(pagesRetrieverMock, applicationPath).ProcessAction(linkUrl);
 
                 Assert.Multiple(() =>
                 {
                     Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-                    Assert.That(result.LinkModel.LinkType, Is.EqualTo(LinkTypeEnum.Unknown));
+                    Assert.That(result.LinkModel.LinkType, Is.EqualTo(LinkTypeEnum.Local));
                     Assert.That(result.LinkModel.LinkMetadata, Is.Null);
+                    Assert.That(result.LinkModel.LinkURL, Is.EqualTo(linkUrl));
                 });
             }
         }

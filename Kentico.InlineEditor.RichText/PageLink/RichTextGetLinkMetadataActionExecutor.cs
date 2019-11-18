@@ -50,7 +50,10 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
                 return new GetLinkMetadataActionResult(HttpStatusCode.BadRequest, statusCodeMessage: "URL is missing the \"linkUrl\" parameter.");
             }
 
-            var linkModel = new LinkModel();
+            var linkModel = new LinkModel()
+            {
+                LinkURL = linkUrl
+            };
 
             if (IsLocalUrl(linkUrl))
             {
@@ -66,6 +69,13 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
 
                     linkModel = GetPageLinkModel(page);
                 }
+                else
+                {
+                    linkModel = GetLocalLinkModel();
+                }
+
+                // Store the local URL path that does not contain the virtual context data
+                linkModel.LinkURL = GetAbsolutePath(urlPath);
             }
 
             return new GetLinkMetadataActionResult(HttpStatusCode.OK, linkModel);
@@ -88,6 +98,17 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         }
 
 
+        private LinkModel GetLocalLinkModel()
+        {
+            var linkModel = new LinkModel
+            {
+                LinkType = LinkTypeEnum.Local
+            };
+
+            return linkModel;
+        }
+
+
         /// <summary>
         /// Gets the local URL path without the application path and virtual context prefix.
         /// </summary>
@@ -97,7 +118,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         private string GetUrlPath(string url)
         {
             string relativeUrl = RemoveApplicationPath(url);
-            relativeUrl = RemoveVirtualContextPrefix(relativeUrl);
+            relativeUrl = RemoveVirtualContextData(relativeUrl);
 
             return relativeUrl;
         }
@@ -110,17 +131,26 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         }
 
 
+        private string GetAbsolutePath(string path)
+        {
+            return $"{applicationPath.TrimEnd('/')}/{path.TrimStart('/')}";
+        }
+
+
         private string RemoveApplicationPath(string absolutePath)
         {
             return "/" + absolutePath.Substring(applicationPath.Length).TrimStart('/');
         }
 
 
-        private string RemoveVirtualContextPrefix(string path)
+        private string RemoveVirtualContextData(string path)
         {
             // Remove the virtual context prefix
             if (VirtualContext.ContainsVirtualContextPrefix(path))
             {
+                // Remove the path hash
+                path = URLHelper.RemoveParameterFromUrl(path, "uh");
+
                 Regex virtualContextPathPrefixRegex = RegexHelper.GetRegex($"{VirtualContext.VirtualContextPrefix}.*/{VirtualContext.VirtualContextSeparator}");
 
                 // Remove the virtual context prefix "/cmsctx/.../-"
