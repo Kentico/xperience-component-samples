@@ -1,4 +1,5 @@
 import { getLinkInfo } from "../link-helpers";
+import { LinkType } from "../link-types";
 
 describe("getPathSelectorMetadata", () => {
     const PAGE_NAME = "page1";
@@ -6,27 +7,20 @@ describe("getPathSelectorMetadata", () => {
 
     beforeEach(() => {
         fetchMock.resetMocks();
-        fetchMock.mockResponseOnce(JSON.stringify({ name: PAGE_NAME, nodeGuid: NODE_GUID}));
-    });
-
-    it ("returns blank item if mode is Insert", async () => {
-        const result = await getLinkInfo("doesntmatter", "doesntmatter");
-
-        expect(result).toEqual({ name: "", nodeGuid: ""});
-        expect(fetchMock).not.toHaveBeenCalled();
+        fetchMock.mockResponseOnce(JSON.stringify({ name: PAGE_NAME, nodeGuid: NODE_GUID }));
     });
 
     it("path is encoded", async () => {
         await getLinkInfo("/api/fooget", "path%&");
 
-        expect(fetchMock).toHaveBeenCalledWith("/api/fooget?pageUrl=path%25%26");
+        expect(fetchMock).toHaveBeenCalledWith("/api/fooget?linkUrl=path%25%26");
     });
 
     describe("endpoint URL already contains query", () => {
         it("appends path parameter using ampersand", async () => {
             await getLinkInfo("/api/fooget?param1=test", "path");
 
-            expect(fetchMock).toHaveBeenCalledWith("/api/fooget?param1=test&pageUrl=path");
+            expect(fetchMock).toHaveBeenCalledWith("/api/fooget?param1=test&linkUrl=path");
         });
     });
 
@@ -34,7 +28,7 @@ describe("getPathSelectorMetadata", () => {
         it("appends path parameter using question mark", async () => {
             await getLinkInfo("/api/fooget", "path");
 
-            expect(fetchMock).toHaveBeenCalledWith("/api/fooget?pageUrl=path");
+            expect(fetchMock).toHaveBeenCalledWith("/api/fooget?linkUrl=path");
         });
     });
 
@@ -42,16 +36,16 @@ describe("getPathSelectorMetadata", () => {
         fetchMock.resetMocks();
         fetchMock.mockReject(new Error("MyError"));
         const mockErrorConsole = jest.spyOn(global.console, "error").mockImplementation();
-        const result = await getLinkInfo("/api/fooget", "path"); 
+        const result = await getLinkInfo("/api/fooget", "path");
 
         expect(mockErrorConsole).toHaveBeenCalledWith(new Error("MyError"));
-        expect(result).toEqual({ name: "", nodeGuid: ""});
+        expect(result).toEqual({ linkType: LinkType.EXTERNAL, linkMetadata: { name: "", identifier: "" }});
     });
 
     it("does something", async () => {
         const result = await getLinkInfo("", "path");
 
-        expect(result).toEqual({ name: PAGE_NAME, nodeGuid: NODE_GUID});
+        expect(result).toEqual({ name: PAGE_NAME, nodeGuid: NODE_GUID });
         expect(fetchMock).toHaveBeenCalledTimes(1);
     })
 });

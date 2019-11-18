@@ -130,7 +130,7 @@ const openLinkConfigurationPopupCommand = new FroalaCommand(constants.OPEN_LINK_
 
 const switchPageLinkTabCommandIcon = new FroalaIcon(constants.SWITCH_PAGE_LINK_TAB_COMMAND_NAME, { NAME: "link", SVG_KEY: "insertLink" });
 const switchPageLinkTabCommand = new FroalaCommand(constants.SWITCH_PAGE_LINK_TAB_COMMAND_NAME, {
-    title: getString("Command.PathTab"),
+    title: getString("Command.PageLinkTab"),
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {

@@ -183,8 +183,8 @@
   <data name="Kentico.InlineEditor.RichText.LinkPlugin.Command.EditLink" xml:space="preserve">
     <value>Edit link</value>
   </data>
-  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Command.PathTab" xml:space="preserve">
-    <value>Insert Link</value>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Command.PageLinkTab" xml:space="preserve">
+    <value>Page Link</value>
   </data>
   <data name="Kentico.InlineEditor.RichText.LinkPlugin.ActionButton.ChangePage" xml:space="preserve">
     <value>Change</value>
@@ -196,7 +196,7 @@
     <value>Open in new tab</value>
   </data>
   <data name="Kentico.InlineEditor.RichText.LinkPlugin.Command.ExternalLinkTab" xml:space="preserve">
-    <value>External link</value>
+    <value>External Link</value>
   </data>
   <data name="Kentico.InlineEditor.RichText.LinkPlugin.Label.Url" xml:space="preserve">
     <value>URL</value>
