@@ -54,6 +54,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers.Tests
             [TestCase("https://www.vimeo.com/62092214", "62092214", VideoKindEnum.Vimeo)]
             [TestCase("https://vimeo.com/channels/documentaryfilm/128373915", "128373915", VideoKindEnum.Vimeo)]
             [TestCase("https://vimeo.com/groups/musicvideo/videos/126199390", "126199390", VideoKindEnum.Vimeo)]
+            [TestCase("https://vimeo.com/showcase/123456/video/126199390", "126199390", VideoKindEnum.Vimeo)]
             [TestCase("https://vimeo.com/62092214?query=foo", "62092214", VideoKindEnum.Vimeo)]
             public void GetVideoModel_ProvidedYoutubeOrVimeoUrl_GetCorrectVideoModel(string videoUrl, string expectedVideoId, VideoKindEnum expectedVideoKind)
             {
@@ -130,7 +131,12 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers.Tests
             [TestCase("https://vimeo.com/channels/foo-barr/documentaryfilm/128373915", false)]
             [TestCase("http://vimeo.com/groups/musicvideo/vid/126199390", false)]
             [TestCase("https://vimeo.com.omomom/62092214?query=foo", false)]
-            public void RegexYouTubeUrl_AllPossibleVideoUrls_ReturnsCorrectResult(string url, bool isValidVideoUrl)
+            [TestCase("https://vimeo.com/showcase/123456/video/62092214", true)]
+            [TestCase("https://vimeo.com/showcase/123456/video/62092214?foo=bar", true)]
+            [TestCase("https://vimeo.com/showcase/foo/123456/video/62092214", false)]
+            [TestCase("https://vimeo.com/foo/showcase/123456/video/62092214", false)]
+            [TestCase("https://vimeo.com/showcase/123456/video/foo/62092214", false)]
+            public void RegexVideoUrl_AllPossibleVideoUrls_ReturnsCorrectResult(string url, bool isValidVideoUrl)
             {
                 // Act & Assert
                 Assert.That(regex.IsMatch(url), Is.EqualTo(isValidVideoUrl));

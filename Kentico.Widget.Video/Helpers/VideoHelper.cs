@@ -13,8 +13,8 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers
     public static class VideoHelper
     {
         private const string YOUTUBE_VIDEO_IDENTIFIER = "v";
-        private const string REGEX_YOUTUBE_URL = @"(http(s)?:\/\/)?((w){3}.)?(m.)?youtu(be|.be)?(\.com)?\/.+";
-        private const string REGEX_VIMEO_URL = @"(http(s)?:\/\/)?((w){3}.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|)(\d+)(?:|\/\?)";
+        private const string REGEX_YOUTUBE_URL = @"(?:https?:\/\/)?(?:w{3}\.)?(?:m\.)?youtu(be|\.be)?(\.com)?\/.+";
+        private const string REGEX_VIMEO_URL = @"(?:https?:\/\/)?(?:w{3}\.)?vimeo\.com\/(?:channels\/[^\/]+\/|groups\/[^\/]+\/videos\/|showcase\/[^\/]+\/video\/|)(\d+)(?:\?.*)?";
 
         public const string YOUTUBE_VIDEO_URL_EMBED_FORMAT = "https://www.youtube.com/embed/";
         public const string VIMEO_VIDEO_URL_EMBED_FORMAT = "https://player.vimeo.com/video/";
