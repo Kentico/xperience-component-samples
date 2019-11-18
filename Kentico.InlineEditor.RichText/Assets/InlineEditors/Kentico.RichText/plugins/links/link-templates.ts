@@ -1,28 +1,29 @@
 import { DialogMode } from "../plugin-types";
-import { INSERT_PAGE_LINK_COMMAND_NAME, UPDATE_PAGE_LINK_COMMAND_NAME, UPDATE_EXTERNAL_LINK_COMMAND_NAME, INSERT_EXTERNAL_LINK_COMMAND_NAME } from "./link-constants";
+import { INSERT_PAGE_LINK_COMMAND_NAME, UPDATE_PAGE_LINK_COMMAND_NAME, UPDATE_GENERAL_LINK_COMMAND_NAME, INSERT_GENERAL_LINK_COMMAND_NAME } from "./link-constants";
 import { getString } from "./link-helpers";
+import { LinkDescriptor } from "./link-descriptor";
 
-export const getPageLinkConfigurationPopupTemplate = (pageName: string, linkUrl: string, linkText: string, openInNewTab: boolean, dialogMode: DialogMode): string =>
+export const getPageLinkConfigurationPopupTemplate = (pageName: string | null, linkDescriptor: LinkDescriptor, dialogMode: DialogMode): string =>
     require("./templates/configure-page-link-popup.html")({
         pageName,
-        pageUrl: linkUrl,
-        linkText,
+        pageUrl: linkDescriptor.linkURL,
+        linkText: linkDescriptor.linkText,
         linkTextLabel: getString("Label.Text"),
         openInNewTabLabel: getString("Label.OpenInNewTab"),
-        openInNewTab,
+        openInNewTab: linkDescriptor.openInNewTab,
         command: dialogMode === DialogMode.INSERT ? INSERT_PAGE_LINK_COMMAND_NAME : UPDATE_PAGE_LINK_COMMAND_NAME,
         actionButtonText: getString(dialogMode === DialogMode.INSERT ? "ActionButton.Insert" : "ActionButton.Save"),
-        pageSelectionButtonText: getString(linkUrl ? "ActionButton.ChangePage" : "ActionButton.SelectPage"),
+        pageSelectionButtonText: getString(linkDescriptor.linkURL ? "ActionButton.ChangePage" : "ActionButton.SelectPage"),
     });
 
-export const getExternalLinkConfigurationPopupTemplate = (linkUrl: string, linkText: string, openInNewTab: boolean, dialogMode: DialogMode): string =>
-    require("./templates/configure-external-link-popup.html")({
-        linkUrl,
-        linkText,
+export const getGeneralLinkConfigurationPopupTemplate = (linkDescriptor: LinkDescriptor, dialogMode: DialogMode): string =>
+    require("./templates/configure-general-link-popup.html")({
+        linkUrl: linkDescriptor.linkURL,
+        linkText: linkDescriptor.linkText,
         linkUrlLabel: getString("Label.Url"),
         linkTextLabel: getString("Label.Text"),
         openInNewTabLabel: getString("Label.OpenInNewTab"),
-        openInNewTab,
-        command: dialogMode === DialogMode.INSERT ? INSERT_EXTERNAL_LINK_COMMAND_NAME : UPDATE_EXTERNAL_LINK_COMMAND_NAME,
+        openInNewTab: linkDescriptor.openInNewTab,
+        command: dialogMode === DialogMode.INSERT ? INSERT_GENERAL_LINK_COMMAND_NAME : UPDATE_GENERAL_LINK_COMMAND_NAME,
         actionButtonText: getString(dialogMode === DialogMode.INSERT ? "ActionButton.Insert" : "ActionButton.Save"),
     });

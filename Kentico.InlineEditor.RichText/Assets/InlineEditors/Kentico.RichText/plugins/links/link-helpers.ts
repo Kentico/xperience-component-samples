@@ -1,6 +1,7 @@
 import { getStringForPlugin } from "../plugin-helpers";
 import { PluginType } from "../plugin-types";
-import { LinkInfo, LinkType } from "./link-types";
+import { LinkType } from "./link-types";
+import { LinkModel } from "./link-model";
 
 export const getString = (resourceKey: string) => getStringForPlugin(resourceKey, PluginType.LinkPlugin);
 
@@ -9,7 +10,7 @@ export const getString = (resourceKey: string) => getStringForPlugin(resourceKey
  * @param endpointUrl Server endpoint for retrieving link info.
  * @param linkUrl Link URL.
  */
-export const getLinkInfo = async (endpointUrl: string, linkUrl: string): Promise<LinkInfo> => {
+export const getLinkModel = async (endpointUrl: string, linkUrl: string): Promise<LinkModel> => {
   const queryParameter = `linkUrl=${encodeURIComponent(linkUrl)}`;
   const queryDelimiter = endpointUrl.includes("?") ? "&" : "?";
   const url = endpointUrl.concat(queryDelimiter, queryParameter);
@@ -17,7 +18,7 @@ export const getLinkInfo = async (endpointUrl: string, linkUrl: string): Promise
   return getData(url);
 }
 
-const getData = async (url: string): Promise<LinkInfo> => {
+const getData = async (url: string): Promise<LinkModel> => {
   try {
     const response = await fetch(url);
 
@@ -31,11 +32,5 @@ const getData = async (url: string): Promise<LinkInfo> => {
     console.error(error);
   }
 
-  return { 
-    linkType: LinkType.EXTERNAL,
-    linkMetadata: {
-      name: "",
-      identifier: "",
-    },
-  };
+  return new LinkModel(LinkType.EXTERNAL);
 }

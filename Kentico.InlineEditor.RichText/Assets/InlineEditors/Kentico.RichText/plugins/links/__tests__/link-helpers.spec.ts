@@ -1,7 +1,8 @@
-import { getLinkInfo } from "../link-helpers";
+import { getLinkModel } from "../link-helpers";
 import { LinkType } from "../link-types";
+import { LinkModel } from "../link-model";
 
-describe("getPathSelectorMetadata", () => {
+describe("getLinkModel", () => {
     const PAGE_NAME = "page1";
     const NODE_GUID = "1234567";
 
@@ -11,14 +12,14 @@ describe("getPathSelectorMetadata", () => {
     });
 
     it("path is encoded", async () => {
-        await getLinkInfo("/api/fooget", "path%&");
+        await getLinkModel("/api/fooget", "path%&");
 
         expect(fetchMock).toHaveBeenCalledWith("/api/fooget?linkUrl=path%25%26");
     });
 
     describe("endpoint URL already contains query", () => {
         it("appends path parameter using ampersand", async () => {
-            await getLinkInfo("/api/fooget?param1=test", "path");
+            await getLinkModel("/api/fooget?param1=test", "path");
 
             expect(fetchMock).toHaveBeenCalledWith("/api/fooget?param1=test&linkUrl=path");
         });
@@ -26,7 +27,7 @@ describe("getPathSelectorMetadata", () => {
 
     describe("endpoint URL doesn't contain query", () => {
         it("appends path parameter using question mark", async () => {
-            await getLinkInfo("/api/fooget", "path");
+            await getLinkModel("/api/fooget", "path");
 
             expect(fetchMock).toHaveBeenCalledWith("/api/fooget?linkUrl=path");
         });
@@ -36,14 +37,14 @@ describe("getPathSelectorMetadata", () => {
         fetchMock.resetMocks();
         fetchMock.mockReject(new Error("MyError"));
         const mockErrorConsole = jest.spyOn(global.console, "error").mockImplementation();
-        const result = await getLinkInfo("/api/fooget", "path");
+        const result = await getLinkModel("/api/fooget", "path");
 
         expect(mockErrorConsole).toHaveBeenCalledWith(new Error("MyError"));
-        expect(result).toEqual({ linkType: LinkType.EXTERNAL, linkMetadata: { name: "", identifier: "" }});
+        expect(result).toEqual(new LinkModel(LinkType.EXTERNAL));
     });
 
     it("does something", async () => {
-        const result = await getLinkInfo("", "path");
+        const result = await getLinkModel("", "path");
 
         expect(result).toEqual({ name: PAGE_NAME, nodeGuid: NODE_GUID });
         expect(fetchMock).toHaveBeenCalledTimes(1);

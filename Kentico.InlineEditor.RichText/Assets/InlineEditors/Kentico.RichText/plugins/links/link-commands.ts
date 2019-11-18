@@ -6,8 +6,10 @@ import { FroalaCommand } from "../../froala-command";
 import { FroalaIcon } from "../../froala-icon";
 import { getString } from "./link-helpers";
 import { getDialogElement } from "../popup-helper";
-import { LinkDescriptor, LinkType, LinkInfo } from "./link-types";
+import { LinkType } from "./link-types";
 import { showForm } from "./popups/link-configuration-popup";
+import { LinkModel } from "./link-model";
+import { LinkDescriptor } from "./link-descriptor";
 
 let selectedLink: HTMLAnchorElement;
 let defaultLinkDescriptor: LinkDescriptor;
@@ -24,11 +26,7 @@ const openInsertLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_LINK_
     callback(this: FroalaEditor) {
         this.selection.save();
         const linkText = this.selection.text();
-        defaultLinkDescriptor = {
-            linkText: (linkText.trim().length === 0) ? "" : linkText,
-            linkUrl: "",
-            openInNewTab: false
-        };
+        defaultLinkDescriptor = new LinkDescriptor(linkText);
         this.kenticoLinkPlugin.showInsertLinkPopup(this.position.getBoundingRect(), defaultLinkDescriptor);
     }
 }, openInsertLinkPopupCommandIcon);
@@ -52,8 +50,8 @@ const insertLinkCommandParameters: RegisterCommandParameters = {
     undo: true,
     focus: false,
     callback(this: FroalaEditor, command: string) {
-        const isExternalLink = command === constants.INSERT_EXTERNAL_LINK_COMMAND_NAME;
-        const link = getLinkData(this, constants.INSERT_LINK_POPUP_NAME, isExternalLink);
+        const isGeneralLink = command === constants.INSERT_GENERAL_LINK_COMMAND_NAME;
+        const link = getLinkData(this, constants.INSERT_LINK_POPUP_NAME, isGeneralLink);
 
         if (!link) {
             this.kenticoLinkPlugin.hideLinkConfigurationPopup();
@@ -62,13 +60,13 @@ const insertLinkCommandParameters: RegisterCommandParameters = {
 
         this.undo.saveStep();
 
-        this.link.insert(link.linkUrl, link.linkText, link.openInNewTab ? { target: "_blank" } : undefined);
+        this.link.insert(link.linkURL, link.linkText, link.openInNewTab ? { target: "_blank" } : undefined);
         this.kenticoLinkPlugin.hideLinkConfigurationPopup();
     }
 }
 
 const insertPageLinkCommand = new FroalaCommand(constants.INSERT_PAGE_LINK_COMMAND_NAME, insertLinkCommandParameters);
-const insertExternalLinkCommand = new FroalaCommand(constants.INSERT_EXTERNAL_LINK_COMMAND_NAME, insertLinkCommandParameters);
+const insertGeneralLinkCommand = new FroalaCommand(constants.INSERT_GENERAL_LINK_COMMAND_NAME, insertLinkCommandParameters);
 
 // Update link
 
@@ -77,9 +75,9 @@ const updateLinkCommandParameters: RegisterCommandParameters = {
     undo: true,
     focus: false,
     callback(this: FroalaEditor, command: string) {
-        const isExternalLink = command !== constants.UPDATE_PAGE_LINK_COMMAND_NAME;
-        const popupName = isExternalLink ? constants.CONFIGURE_EXTERNAL_LINK_POPUP_NAME : constants.CONFIGURE_PAGE_LINK_POPUP_NAME;
-        const link = getLinkData(this, popupName, isExternalLink);
+        const isGeneralLink = command === constants.UPDATE_GENERAL_LINK_COMMAND_NAME;
+        const popupName = isGeneralLink ? constants.CONFIGURE_GENERAL_LINK_POPUP_NAME : constants.CONFIGURE_PAGE_LINK_POPUP_NAME;
+        const link = getLinkData(this, popupName, isGeneralLink);
 
         if (!link) {
             this.kenticoLinkPlugin.hideLinkConfigurationPopup();
@@ -88,7 +86,7 @@ const updateLinkCommandParameters: RegisterCommandParameters = {
 
         if (selectedLink) {
             this.undo.saveStep();
-            selectedLink.setAttribute("href", link.linkUrl);
+            selectedLink.setAttribute("href", link.linkURL);
             selectedLink.innerText = link.linkText;
 
             if (link.openInNewTab) {
@@ -104,7 +102,7 @@ const updateLinkCommandParameters: RegisterCommandParameters = {
 };
 
 const updatePageLinkCommand = new FroalaCommand(constants.UPDATE_PAGE_LINK_COMMAND_NAME, updateLinkCommandParameters);
-const updateExternalLinkCommand = new FroalaCommand(constants.UPDATE_EXTERNAL_LINK_COMMAND_NAME, updateLinkCommandParameters);
+const updateGeneralLinkCommand = new FroalaCommand(constants.UPDATE_GENERAL_LINK_COMMAND_NAME, updateLinkCommandParameters);
 
 // Open link configuration popup
 
@@ -116,13 +114,7 @@ const openLinkConfigurationPopupCommand = new FroalaCommand(constants.OPEN_LINK_
     async callback(this: FroalaEditor) {
         selectedLink = this.link.get() as HTMLAnchorElement;
         const relatedElementPosition = this.position.getBoundingRect();
-        const linkDescriptor: LinkDescriptor = {
-            linkText: selectedLink.text,
-            linkUrl: selectedLink.getAttribute("href") || "", // Don't use href property because it contains a complete URL including a domain.
-            openInNewTab: selectedLink.target === "_blank",
-        };
-
-        await this.kenticoLinkPlugin.showLinkConfigurationPopup(relatedElementPosition, linkDescriptor);
+        await this.kenticoLinkPlugin.showLinkConfigurationPopup(relatedElementPosition, new LinkDescriptor(selectedLink));
     }
 }, openLinkConfigurationPopupCommandIcon);
 
@@ -134,37 +126,23 @@ const switchPageLinkTabCommand = new FroalaCommand(constants.SWITCH_PAGE_LINK_TA
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
-        const linkInfo: LinkInfo = {
-            linkType: LinkType.PAGE,
-            linkMetadata: {
-                name: "",
-                identifier: "",
-            },
-        };
-        showForm(this, constants.INSERT_LINK_POPUP_NAME, defaultLinkDescriptor, linkInfo);
+        showForm(this, constants.INSERT_LINK_POPUP_NAME, defaultLinkDescriptor, new LinkModel(LinkType.PAGE));
     }
 }, switchPageLinkTabCommandIcon);
 
-// Switch external link tab command
+// Switch general link tab command
 
-const switchExternalLinkTabCommandIcon = new FroalaIcon(constants.SWITCH_EXTERNAL_LINK_TAB_COMMAND_NAME, { NAME: "link", SVG_KEY: "openLink" });
-const switchExternalLinkTabCommand = new FroalaCommand(constants.SWITCH_EXTERNAL_LINK_TAB_COMMAND_NAME, {
-    title: getString("Command.ExternalLinkTab"),
+const switchGeneralLinkTabCommandIcon = new FroalaIcon(constants.SWITCH_GENERAL_LINK_TAB_COMMAND_NAME, { NAME: "link", SVG_KEY: "openLink" });
+const switchGeneralLinkTabCommand = new FroalaCommand(constants.SWITCH_GENERAL_LINK_TAB_COMMAND_NAME, {
+    title: getString("Command.GeneralLinkTab"),
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
-        const linkInfo: LinkInfo = {
-            linkType: LinkType.EXTERNAL,
-            linkMetadata: {
-                name: "",
-                identifier: "",
-            },
-        };
-        showForm(this, constants.INSERT_LINK_POPUP_NAME, defaultLinkDescriptor, linkInfo);
+        showForm(this, constants.INSERT_LINK_POPUP_NAME, defaultLinkDescriptor, new LinkModel(LinkType.EXTERNAL));
     }
-}, switchExternalLinkTabCommandIcon);
+}, switchGeneralLinkTabCommandIcon);
 
-const getLinkData = (editor: FroalaEditor, popupName: string, isExternalLink: boolean): LinkDescriptor | null => {
+const getLinkData = (editor: FroalaEditor, popupName: string, isGeneralLink: boolean): LinkDescriptor | null => {
     const popupElement = getDialogElement(editor, popupName);
     if (!popupElement) {
         return null;
@@ -172,16 +150,13 @@ const getLinkData = (editor: FroalaEditor, popupName: string, isExternalLink: bo
 
     let link = extractFormData(popupElement);
 
-    if (!link.linkUrl) {
+    if (!link.linkURL) {
         return null;
     }
     if (!link.linkText) {
-        const linkText = isExternalLink ? link.linkUrl : popupElement.querySelector<HTMLElement>(".ktc-page-name")!.innerText;
+        const linkText = isGeneralLink ? link.linkURL : popupElement.querySelector<HTMLElement>(".ktc-page-name")!.innerText;
 
-        link = {
-            ...link,
-            linkText,
-        };
+        link = new LinkDescriptor(linkText, link.linkURL, link.openInNewTab);
     }
 
     return link;
@@ -192,7 +167,7 @@ const extractFormData = (popupElement: HTMLElement): LinkDescriptor => {
     const formData = new FormData(form!);
 
     return {
-        linkUrl: formData.get("linkUrl") as string,
+        linkURL: formData.get("linkUrl") as string,
         linkText: formData.get("linkText") as string,
         openInNewTab: Boolean(formData.get("openInNewTab")),
     }
@@ -203,9 +178,9 @@ export const linkCommands = [
     openLinkConfigurationPopupCommand,
     closeLinkConfigurationPopupCommand,
     insertPageLinkCommand,
-    insertExternalLinkCommand,
+    insertGeneralLinkCommand,
     updatePageLinkCommand,
-    updateExternalLinkCommand,
+    updateGeneralLinkCommand,
     switchPageLinkTabCommand,
-    switchExternalLinkTabCommand
+    switchGeneralLinkTabCommand
 ]
