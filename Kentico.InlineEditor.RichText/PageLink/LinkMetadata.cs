@@ -14,7 +14,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
 
 
         /// <summary>
-        /// Gets the GUID of the object the link is pointing at (node GUID, attachment GUID, media file GUID).
+        /// Gets the GUID of the object the link is pointing to (node GUID, attachment GUID, media file GUID).
         /// </summary>
         public Guid Identifier { get; set; }
     }

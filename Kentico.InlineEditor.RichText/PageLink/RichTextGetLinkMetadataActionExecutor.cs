@@ -50,23 +50,22 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
                 return new GetLinkMetadataActionResult(HttpStatusCode.BadRequest, statusCodeMessage: "URL is missing the \"linkUrl\" parameter.");
             }
 
-            string normalizedLinkUrl = NormalizeUrl(linkUrl);
-            if (String.IsNullOrEmpty(normalizedLinkUrl))
-            {
-                return new GetLinkMetadataActionResult(HttpStatusCode.BadRequest, statusCodeMessage: "Invalid \"linkUrl\" parameter.");
-            }
-
             var linkModel = new LinkModel();
 
-            TreeNode page = pagesProvider.GetPage(normalizedLinkUrl);
-            if (page != null)
+            if (IsLocalUrl(linkUrl))
             {
-                if (!page.CheckPermissions(PermissionsEnum.Read, SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser))
-                {
-                    return new GetLinkMetadataActionResult(HttpStatusCode.Forbidden, statusCodeMessage: $"You are not authorized to access data of the page '{normalizedLinkUrl}'.");
-                }
+                string urlPath = GetUrlPath(linkUrl);
 
-                linkModel = GetPageLinkModel(page);
+                var page = pagesProvider.GetPage(urlPath);
+                if (page != null)
+                {
+                    if (!page.CheckPermissions(PermissionsEnum.Read, SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser))
+                    {
+                        return new GetLinkMetadataActionResult(HttpStatusCode.Forbidden, statusCodeMessage: $"You are not authorized to access data of the page '{urlPath}'.");
+                    }
+
+                    linkModel = GetPageLinkModel(page);
+                }
             }
 
             return new GetLinkMetadataActionResult(HttpStatusCode.OK, linkModel);
@@ -90,40 +89,45 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
 
 
         /// <summary>
-        /// Returns either the original URL if it was not recognized as a local URL of the current site
-        /// or a local URL path without the virtual context prefix and application path
+        /// Gets the local URL path without the application path and virtual context prefix.
         /// </summary>
-        internal string NormalizeUrl(string url)
+        /// <returns>
+        /// Local URL path in the format: /path?param=1#anchor
+        /// </returns>
+        private string GetUrlPath(string url)
+        {
+            string relativeUrl = RemoveApplicationPath(url);
+            relativeUrl = RemoveVirtualContextPrefix(relativeUrl);
+
+            return relativeUrl;
+        }
+
+
+        private bool IsLocalUrl(string url)
         {
             // Identify a local URL (exclude protocol-less URLs if that application is in the site root)
-            if (url.StartsWith(applicationPath) && !url.StartsWith("//"))
-            {
-                string relativeUrl = RemoveApplicationPath(url);
-
-                // Remove the virtual context prefix
-                if (VirtualContext.ContainsVirtualContextPrefix(relativeUrl))
-                {
-                    Regex virtualContextPathPrefixRegex = RegexHelper.GetRegex($"{VirtualContext.VirtualContextPrefix}.*/{VirtualContext.VirtualContextSeparator}");
-
-                    // Remove the virtual context prefix "/cmsctx/.../-"
-                    relativeUrl = virtualContextPathPrefixRegex.Replace(relativeUrl, String.Empty);
-                }
-
-                return relativeUrl;
-            }
-
-            return url;
+            return (url.StartsWith(applicationPath, StringComparison.InvariantCultureIgnoreCase) && !url.StartsWith("//"));
         }
 
 
         private string RemoveApplicationPath(string absolutePath)
         {
-            if (absolutePath.StartsWith(applicationPath, StringComparison.InvariantCultureIgnoreCase))
+            return "/" + absolutePath.Substring(applicationPath.Length).TrimStart('/');
+        }
+
+
+        private string RemoveVirtualContextPrefix(string path)
+        {
+            // Remove the virtual context prefix
+            if (VirtualContext.ContainsVirtualContextPrefix(path))
             {
-                return "/" + absolutePath.Substring(applicationPath.Length).TrimStart('/');
+                Regex virtualContextPathPrefixRegex = RegexHelper.GetRegex($"{VirtualContext.VirtualContextPrefix}.*/{VirtualContext.VirtualContextSeparator}");
+
+                // Remove the virtual context prefix "/cmsctx/.../-"
+                return virtualContextPathPrefixRegex.Replace(path, String.Empty);
             }
 
-            return absolutePath;
+            return path;
         }
 
 
