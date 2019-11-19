@@ -14,12 +14,12 @@ using Kentico.Components.Web.Mvc.InlineEditors;
 
 namespace Kentico.Components.Web.Mvc.Widgets.Tests
 {
-    public class RichTextWidgetControllerTests
+    public static class KenticoRichTextWidgetControllerTests
     {
         [TestFixture]
         public class GetLinkMetadataTests : UnitTests
         {
-            private RichTextWidgetController richTextController;
+            private KenticoRichTextWidgetController richTextController;
             private IRichTextGetLinkMetadataActionExecutor getLinkMetadataActionMock;
             private IEventLogService eventLogService;
 
@@ -30,7 +30,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Tests
                 getLinkMetadataActionMock = Substitute.For<IRichTextGetLinkMetadataActionExecutor>();
                 eventLogService = Substitute.For<IEventLogService>();
 
-                richTextController = new RichTextWidgetController(getLinkMetadataActionMock, eventLogService);
+                richTextController = new KenticoRichTextWidgetController(getLinkMetadataActionMock, eventLogService);
             }
 
 
@@ -71,7 +71,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Tests
                 {
                     Assert.That(result, Is.TypeOf<HttpStatusCodeResult>());
                     Assert.That((result as HttpStatusCodeResult).StatusCode, Is.EqualTo((int)statusCode));
-                    eventLogService.Received().LogEvent(EventType.ERROR, nameof(RichTextWidgetController), nameof(RichTextWidgetController.GetLinkMetadata), statusCodeMessage);
+                    eventLogService.Received().LogEvent(EventType.ERROR, nameof(KenticoRichTextWidgetController), nameof(KenticoRichTextWidgetController.GetLinkMetadata), statusCodeMessage);
                 });
             }
         }

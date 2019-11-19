@@ -12,12 +12,12 @@ using Kentico.Components.Web.Mvc.InlineEditors.Controllers;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 {
-    public class RichTextControllerTests
+    public static class KenticoRichTextControllerTests
     {
         [TestFixture]
         public class GetLinkMetadata : UnitTests
         {
-            private RichTextController richTextController;
+            private KenticoRichTextController richTextController;
             private IRichTextGetLinkMetadataActionExecutor getLinkMetadataMockAction;
             private IEventLogService eventLogService;
 
@@ -28,7 +28,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 getLinkMetadataMockAction = Substitute.For<IRichTextGetLinkMetadataActionExecutor>();
                 eventLogService = Substitute.For<IEventLogService>();
 
-                richTextController = new RichTextController(getLinkMetadataMockAction, eventLogService);
+                richTextController = new KenticoRichTextController(getLinkMetadataMockAction, eventLogService);
             }
 
 
@@ -69,7 +69,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 {
                     Assert.That(result, Is.TypeOf<StatusCodeResult>());
                     Assert.That((result as StatusCodeResult).StatusCode, Is.EqualTo(statusCode));
-                    eventLogService.Received().LogEvent(EventType.ERROR, nameof(RichTextController), nameof(RichTextController.GetLinkMetadata), statusCodeMessage);
+                    eventLogService.Received().LogEvent(EventType.ERROR, nameof(KenticoRichTextController), nameof(KenticoRichTextController.GetLinkMetadata), statusCodeMessage);
                 });
             }
         }

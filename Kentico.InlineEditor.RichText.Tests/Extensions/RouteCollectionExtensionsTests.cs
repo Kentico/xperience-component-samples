@@ -9,7 +9,7 @@ using Kentico.Components.Web.Mvc.InlineEditors.Controllers;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 {
-    public class RouteCollectionExtensionsTests
+    public static class RouteCollectionExtensionsTests
     {
         [TestFixture]
         public class MapRichTextEditorRoutesTests : UnitTests
@@ -27,7 +27,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 {
                     Assert.That(route.Url, Is.EqualTo(RichTextInlineEditorConstants.GET_PAGE_ROUTE_TEMPLATE));
                     Assert.That(route.Defaults["controller"], Is.EqualTo(RichTextInlineEditorConstants.CONTROLLER_NAME));
-                    Assert.That(route.Defaults["action"], Is.EqualTo(nameof(RichTextController.GetLinkMetadata)));
+                    Assert.That(route.Defaults["action"], Is.EqualTo(nameof(KenticoRichTextController.GetLinkMetadata)));
                 });
             }
         }

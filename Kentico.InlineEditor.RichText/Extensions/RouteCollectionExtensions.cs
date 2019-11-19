@@ -20,7 +20,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
             instance.Target.MapHttpRoute(
                 name: RichTextInlineEditorConstants.GET_LINK_METADATA_ROUTE_NAME,
                 routeTemplate: RichTextInlineEditorConstants.GET_PAGE_ROUTE_TEMPLATE,
-                defaults: new { controller = RichTextInlineEditorConstants.CONTROLLER_NAME, action = nameof(RichTextController.GetLinkMetadata) }
+                defaults: new { controller = RichTextInlineEditorConstants.CONTROLLER_NAME, action = nameof(KenticoRichTextController.GetLinkMetadata) }
             );
         }
     }

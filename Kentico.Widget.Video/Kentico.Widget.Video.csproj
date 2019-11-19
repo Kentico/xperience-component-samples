@@ -531,7 +531,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\VideoWidgetController.cs" />
+    <Compile Include="Controllers\KenticoVideoWidgetController.cs" />
     <Compile Include="Helpers\YoutubeVideoHelper.cs" />
     <Compile Include="Models\Widgets\VideoWidgetProperties.cs" />
     <Compile Include="Models\Widgets\VideoWidgetViewModel.cs" />

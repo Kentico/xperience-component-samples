@@ -12,20 +12,20 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Controllers
     /// The rich text inline editor API controller.
     /// </summary>
     [UseCamelCasePropertyNamesContractResolver]
-    public class RichTextController : ApiController
+    public class KenticoRichTextController : ApiController
     {
         private readonly IRichTextGetLinkMetadataActionExecutor richTextGetLinkMetadataAction;
         private readonly IEventLogService eventLogService;
 
 
-        public RichTextController()
+        public KenticoRichTextController()
             : this(new RichTextGetLinkMetadataActionExecutor(new PagesRetriever(SiteContext.CurrentSiteName), SystemContext.ApplicationPath),
                   Service.Resolve<IEventLogService>())
         {
         }
 
 
-        internal RichTextController(IRichTextGetLinkMetadataActionExecutor richTextGetLinkMetadataAction, IEventLogService eventLogService)
+        internal KenticoRichTextController(IRichTextGetLinkMetadataActionExecutor richTextGetLinkMetadataAction, IEventLogService eventLogService)
         {
             this.richTextGetLinkMetadataAction = richTextGetLinkMetadataAction;
             this.eventLogService = eventLogService;
@@ -44,7 +44,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Controllers
                 return Ok(actionResult.LinkModel);
             }
 
-            eventLogService.LogEvent(EventType.ERROR, nameof(RichTextController), nameof(GetLinkMetadata), actionResult.StatusCodeMessage);
+            eventLogService.LogEvent(EventType.ERROR, nameof(KenticoRichTextController), nameof(GetLinkMetadata), actionResult.StatusCodeMessage);
 
             return StatusCode(actionResult.StatusCode);
         }

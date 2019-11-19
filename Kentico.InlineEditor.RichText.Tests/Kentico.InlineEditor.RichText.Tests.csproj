@@ -557,7 +557,7 @@
   <ItemGroup>
     <Compile Include="PageLink\UseCamelCasePropertyNamesContractResolverAttributeTests.cs" />
     <Compile Include="PageLink\RichTextGetLinkMetadataActionExecutorTests.cs" />
-    <Compile Include="Controllers\RichTextControllerTests.cs" />
+    <Compile Include="Controllers\KenticoRichTextControllerTests.cs" />
     <Compile Include="DynamicText\DynamicTextResolverTests.cs" />
     <Compile Include="DynamicText\DynamicTextPatternRegisterTests.cs" />
     <Compile Include="DynamicText\DynamicTextTestMacroMethods.cs" />

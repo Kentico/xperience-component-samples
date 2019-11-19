@@ -530,7 +530,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PageLink\IRichTextGetLinkMetadataActionExecutor.cs" />
-    <Compile Include="Controllers\RichTextController.cs" />
+    <Compile Include="Controllers\KenticoRichTextController.cs" />
     <Compile Include="PageLink\LinkModel.cs" />
     <Compile Include="PageLink\LinkTypeEnum.cs" />
     <Compile Include="PageLink\RichTextGetLinkMetadataActionExecutor.cs" />
