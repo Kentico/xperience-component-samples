@@ -121,7 +121,7 @@
     <value>Video widget</value>
   </data>
   <data name="Kentico.Widget.Video.Label" xml:space="preserve">
-    <value>Video URL</value>
+    <value>A Vimeo or YouTube video URL</value>
   </data>
   <data name="Kentico.Widget.Video.Name" xml:space="preserve">
     <value>Video</value>
@@ -136,7 +136,7 @@
     <value>The video widget is not properly configured.</value>
   </data>
   <data name="Kentico.VideoUrlEditor.Placeholder" xml:space="preserve">
-    <value>Paste a video URL</value>
+    <value>Paste a Vimeo or YouTube video URL</value>
   </data>
   <data name="Kentico.VideoUrlEditor.InvalidFormatMessage" xml:space="preserve">
     <value>Video URL is not valid.</value>

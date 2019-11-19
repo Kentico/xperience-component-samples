@@ -532,9 +532,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\KenticoVideoWidgetController.cs" />
-    <Compile Include="Helpers\YoutubeVideoHelper.cs" />
+    <Compile Include="Helpers\VideoHelper.cs" />
+    <Compile Include="Models\Widgets\VideoModel.cs" />
+    <Compile Include="Helpers\VideoKindEnum.cs" />
     <Compile Include="Models\Widgets\VideoWidgetProperties.cs" />
-    <Compile Include="Models\Widgets\VideoWidgetViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
