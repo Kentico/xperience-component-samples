@@ -1,9 +1,9 @@
 # Video widget
 
-The video widget allows content editors to insert an embedded video from Youtube into their website. The URL of the video can be specified in the widget's `Video URL` property.
+The video widget allows content editors to insert an embedded video from Youtube or Vimeo into their website. The URL of the video can be specified in the widget's `Video URL` property.
 
 ### Properties
-- **Video URL** - a URL of a [Youtube video](https://www.youtube.com/watch?v=dQw4w9WgXcQ) to be displayed on the live site.
+- **Video URL** - the URL of a [Youtube video](https://www.youtube.com/watch?v=dQw4w9WgXcQ) or a [Vimeo video](https://vimeo.com/148751763) to be displayed on the live site.
 
 ### Download & installation
 Prerequisite: You need to have [NodeJS runtime](https://nodejs.org/en/) installed to be able to use this widget.
