@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 
 using Kentico.Components.Web.Mvc.Widgets.Controllers;
+using Kentico.Components.Web.Mvc.Widgets.Helpers;
 using Kentico.Components.Web.Mvc.Widgets.Models;
 using Kentico.PageBuilder.Web.Mvc;
 
@@ -17,10 +18,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
         public ActionResult Index()
         {
             var properties = GetProperties();
-            var viewModel = new VideoWidgetViewModel
-            {
-                VideoUrl = properties.VideoUrl,
-            };
+            var viewModel = VideoHelper.GetVideoModel(properties.VideoUrl);
 
             return PartialView("~/Views/Shared/Kentico/Widgets/_VideoWidget.cshtml", viewModel);
         }
