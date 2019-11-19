@@ -72,7 +72,7 @@ export const showForm = (editor: FroalaEditor, popupName: string, linkDescriptor
 
     bindFocusEventToInputs(dialog);
 
-    if (linkType === LinkType.EXTERNAL) {
+    if (linkType !== LinkType.PAGE) {
         const popup = editor.popups.get(popupName);
         editor.accessibility.focusPopup(popup);
     }
