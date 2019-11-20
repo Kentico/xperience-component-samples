@@ -22,7 +22,7 @@ jobs:
           url: ${{ secrets.ISSUES_ENDPOINT }}
   
   pull-request-webhook:
-    if: (github.event_name == 'pull_request') && !startsWith(github.event.pull_request.title, 'MAE-')
+    if: (github.event_name == 'pull_request') && !startsWith(github.event.pull_request.title, 'MAE-') && !startsWith(github.event.pull_request.title, 'CM-')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,6 +33,13 @@ jobs:
         uses: ./.github/actions/web-hook
         with:
           url: ${{ secrets.PULL_REQUEST_ENDPOINT }}
+
+  always_job:
+    name: Always run job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Always run
+        run: echo "This job is used to prevent the workflow status from showing as failed when all other jobs are skipped."
 
         
     

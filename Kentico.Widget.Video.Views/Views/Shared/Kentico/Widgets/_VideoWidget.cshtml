@@ -3,18 +3,12 @@
 @using Kentico.Components.Web.Mvc.Widgets.Helpers;
 @using Kentico.PageBuilder.Web.Mvc
 
-@model Kentico.Components.Web.Mvc.Widgets.Models.VideoWidgetViewModel
+@model Kentico.Components.Web.Mvc.Widgets.Models.VideoModel
 
-@{
-    var widgetGuid = Guid.NewGuid();
-    var videoUrl = !string.IsNullOrWhiteSpace(Model.VideoUrl)
-        ? $"https://www.youtube.com/embed/{YoutubeVideoHelper.GetVideoId(Model.VideoUrl)}"
-        : null;
-}
-@if (videoUrl != null)
+@if (!String.IsNullOrWhiteSpace(Model.VideoUrl))
 {
     <div class="ktc-resp-container">
-        <iframe data-widget-guid="@widgetGuid" src="@videoUrl" class="ktc-resp-iframe"></iframe>
+        <iframe data-widget-guid="@Guid.NewGuid()" src="@VideoHelper.GetVideoEmbedUrl(Model)" class="ktc-resp-iframe"></iframe>
     </div>
 }
 else if (Context.Kentico().PageBuilder().EditMode)
