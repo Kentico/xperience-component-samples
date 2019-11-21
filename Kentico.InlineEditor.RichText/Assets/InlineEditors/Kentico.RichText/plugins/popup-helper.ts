@@ -54,8 +54,8 @@ export const showPopup = (editor: FroalaEditor, popupName: string, relatedElemen
       initializePopup(editor, popupName, buttons, customLayer);
   }
 
-  // Set the this toolbar as the popup's container.
-  editor.popups.setContainer(popupName, editor.$oel);
+  // Set the the body element as the popup's container.
+  editor.popups.setContainer(popupName, editor.$sc);
 
   // Compute the popup's position.
   const { top, left, width, height } = relatedElementPosition;
