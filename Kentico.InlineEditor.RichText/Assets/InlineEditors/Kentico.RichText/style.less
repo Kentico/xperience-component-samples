@@ -1,6 +1,45 @@
 // Override Froala editor's z-indexing since the zIndex option also sets the z-index to the main editor element,
 // thus covers the add widget button and they refuse to change this behavior, see https://github.com/froala/wysiwyg-editor/issues/3588
 .ktc-rich-text-wrapper {
+
+    // Temporary, until https://github.com/froala/wysiwyg-editor/issues/3639 is fixed
+    .html-switch .fr-btn {
+        width: 24px;
+        height: 24px;
+        background: transparent;
+        color: #333333;
+        -moz-outline: 0;
+        outline: none;
+        border: 0;
+        line-height: 1;
+        cursor: pointer;
+        text-align: left;
+        padding: 0;
+        -webkit-transition: all 0.5s;
+        -moz-transition: all 0.5s;
+        -ms-transition: all 0.5s;
+        -o-transition: all 0.5s;
+        border-radius: 4px;
+        -moz-border-radius: 4px;
+        -webkit-border-radius: 4px;
+        -moz-background-clip: padding;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        z-index: 2;
+        position: relative;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        text-decoration: none;
+        user-select: none;
+        -o-user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        float: left;
+    }
+
     .fr-toolbar {
         z-index: inherit !important;
 

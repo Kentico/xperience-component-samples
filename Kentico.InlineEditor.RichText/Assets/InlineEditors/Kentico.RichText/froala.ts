@@ -15,6 +15,7 @@ import { initializeLinkPlugin } from "./plugins/links";
 import { OPEN_INSERT_LINK_POPUP_COMMAND_NAME, OPEN_EDIT_LINK_POPUP_COMMAND_NAME } from "./plugins/links/link-constants";
 
 import "./style.less";
+import { unwrapElement } from "./plugins/popup-helper";
 
 export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLElement, propertyName: string, propertyValue: string) => {
     Froala.RegisterCommand("insertImageKentico", insertImageCommand);
@@ -75,6 +76,14 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
 
                 inlineEditor.dispatchEvent(event);
             },
+            // Temporary, until https://github.com/froala/wysiwyg-editor/issues/3639 is fixed
+            ["commands.after"](cmd: string) {
+                if (cmd == "html" && this.codeView.isActive()) {
+                    const editor = unwrapElement(this.$oel);
+                    const codeViewExitButton = editor!.querySelector(".fr-btn.html-switch");
+                    codeViewExitButton!.innerHTML = this.button.build("html");
+                }
+            }
         },
     });
 }

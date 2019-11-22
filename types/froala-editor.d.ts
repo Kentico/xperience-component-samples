@@ -573,6 +573,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       touchstart: (touchstartEvent: JQueryEventObject) => void,
       touchend: (touchendEvent: JQueryEventObject) => void,
       "html.set": () => void;
+      "commands.after": (this: FroalaEditor, cmd: string) => void,
     }
   
     interface Apply<T> {
@@ -612,6 +613,8 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       addButton(buttons: Commands[]): object;
       // Refreshes the state of the buttons in the toolbar.
       bulkRefresh(): void;
+      // Build a button for a command represented as a HTML string.
+      build(command: string): string;
       // Builds a list of commands to a button list represented as a HTML string.
       buildList(buttons: Commands[]): object;
       // Builds a list of commands to a button list represented as a HTML string.
