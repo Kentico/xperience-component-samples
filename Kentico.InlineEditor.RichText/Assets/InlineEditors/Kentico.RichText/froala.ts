@@ -78,7 +78,7 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
             },
             // Temporary, until https://github.com/froala/wysiwyg-editor/issues/3639 is fixed
             ["commands.after"](cmd: string) {
-                if (cmd == "html" && this.codeView.isActive()) {
+                if (cmd === "html" && this.codeView.isActive()) {
                     const editor = unwrapElement(this.$oel);
                     const codeViewExitButton = editor!.querySelector(".fr-btn.html-switch");
                     codeViewExitButton!.innerHTML = this.button.build("html");
