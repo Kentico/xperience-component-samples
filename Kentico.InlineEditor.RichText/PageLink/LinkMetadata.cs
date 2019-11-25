@@ -3,9 +3,9 @@
 namespace Kentico.Components.Web.Mvc.InlineEditors
 {
     /// <summary>
-    /// Represents a model of page link meta data.
+    /// Represents a model of a link meta data.
     /// </summary>
-    internal class PageLinkModel
+    internal class LinkMetadata
     {
         /// <summary>
         /// Localized page name.
@@ -14,8 +14,8 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
 
 
         /// <summary>
-        /// Gets the node GUID.
+        /// Gets the GUID of the object the link is pointing to (node GUID, attachment GUID, media file GUID).
         /// </summary>
-        public Guid NodeGuid { get; set; }
+        public Guid Identifier { get; set; }
     }
 }

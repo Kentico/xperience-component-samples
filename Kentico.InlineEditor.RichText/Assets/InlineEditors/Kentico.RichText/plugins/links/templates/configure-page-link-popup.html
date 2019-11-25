@@ -1,4 +1,4 @@
-<form id="ktc-form" onsubmit="event.preventDefault()">
+<form id="ktc-link-popup-form" onsubmit="event.preventDefault()">
   <div class="fr-layer fr-active" id="ktc-link-configuration-layer" data-mouseenter-event-set="true">
       <div class="fr-action-buttons ktc-page-selector <%= pageUrl ? '' : 'ktc-page-selector--empty' %>">
             <label class="ktc-page-name" title="<%= pageName %>"><%= pageName %></label>
@@ -7,7 +7,7 @@
                     <%= pageSelectionButtonText %>
                 </button>
             </span>
-            <input name="pageUrl" value="<%= pageUrl %>" hidden>
+            <input name="linkUrl" value="<%= pageUrl %>" hidden>
         </div>
         <div class="fr-input-line" style="display: block;">
             <input id="ktc-configuration-url-text-1" name="linkText" type="text" class="fr-link-attr fr-not-empty"

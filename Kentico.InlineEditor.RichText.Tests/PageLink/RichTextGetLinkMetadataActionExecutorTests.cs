@@ -13,21 +13,20 @@ using CMS.Tests;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 {
-    public class RichTextGetPageActionExecutorTests
+    public class RichTextGetLinkMetadataActionExecutorTests
     {
         [TestFixture]
         public class ProcessActionTests : UnitTests
         {
-            private RichTextGetPageActionExecutor richTextGetPageActionExecutor;
+            private RichTextGetLinkMetadataActionExecutor richTextGetLinkMetadataActionExecutor;
             private IPagesRetriever pagesRetrieverMock;
-            private const string PAGE_PREVIEW_URL_PATH = "/cmsctx/pv/-/home";
 
 
             [SetUp]
             public void SetUp()
             {
                 pagesRetrieverMock = Substitute.For<IPagesRetriever>();
-                richTextGetPageActionExecutor = new RichTextGetPageActionExecutor(pagesRetrieverMock);
+                richTextGetLinkMetadataActionExecutor = new RichTextGetLinkMetadataActionExecutor(pagesRetrieverMock, "/");
 
                 VirtualContext.SetItem(VirtualContext.PARAM_PREVIEW_LINK, "pv");
                 MembershipContext.AuthenticatedUser = Substitute.For<CurrentUserInfo>();
@@ -47,7 +46,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             {
                 VirtualContext.SetItem(VirtualContext.PARAM_PREVIEW_LINK, null);
 
-                var result = richTextGetPageActionExecutor.ProcessAction(PAGE_PREVIEW_URL_PATH);
+                var result = richTextGetLinkMetadataActionExecutor.ProcessAction("/page");
 
                 Assert.Multiple(() =>
                 {
@@ -60,56 +59,61 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 
             [TestCase(null)]
             [TestCase("")]
-            [TestCase("/Page/Home")]
             public void ProcessAction_PageUrlPathIsNotValid_ReturnsStatusCodeBadRequest(string pageUrlPath)
             {
-                var result = richTextGetPageActionExecutor.ProcessAction(pageUrlPath);
+                var result = richTextGetLinkMetadataActionExecutor.ProcessAction(pageUrlPath);
 
                 Assert.Multiple(() =>
                 {
                     Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
                     Assert.That(result.StatusCodeMessage, Is.Not.Empty);
                     Assert.That(result.StatusCodeMessage, Is.Not.Null);
+                    Assert.That(result.LinkModel, Is.Null);
                 });
             }
 
 
-            [Test]
-            public void ProcessAction_PageDoesNotExist_ReturnsStatusCodeNotFound()
+            [TestCase("http://google.com")]
+            [TestCase("https://google.com")]
+            [TestCase("//google.com")]
+            public void ProcessAction_ExternalUrl_ReturnsExternalLinkType(string url)
             {
-                pagesRetrieverMock.GetPage(Arg.Any<string>()).Returns((TreeNode)null);
-
-                var result = richTextGetPageActionExecutor.ProcessAction(PAGE_PREVIEW_URL_PATH);
+                var result = richTextGetLinkMetadataActionExecutor.ProcessAction(url);
 
                 Assert.Multiple(() =>
                 {
-                    Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
-                    Assert.That(result.StatusCodeMessage, Is.Not.Empty);
-                    Assert.That(result.StatusCodeMessage, Is.Not.Null);
+                    Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                    Assert.That(result.LinkModel.LinkType, Is.EqualTo(LinkTypeEnum.External));
+                    Assert.That(result.LinkModel.LinkURL, Is.EqualTo(url));
+                    Assert.That(result.LinkModel.LinkMetadata, Is.Null);
                 });
             }
 
 
             [Test]
-            public void ProcessAction_UserWithInsufficientPermissions_ReturnsStatusCodeUnauthorized()
+            public void ProcessAction_LocalUrl_ExistingPage_UserWithInsufficientPermissions_ReturnsStatusCodeUnauthorized()
             {
                 var pageMock = Substitute.For<TreeNode>();
                 pageMock.CheckPermissions(PermissionsEnum.Read, Arg.Any<string>(), Arg.Any<IUserInfo>()).Returns(false);
                 pagesRetrieverMock.GetPage(Arg.Any<string>()).Returns(pageMock);
 
-                var result = richTextGetPageActionExecutor.ProcessAction(PAGE_PREVIEW_URL_PATH);
+                var result = richTextGetLinkMetadataActionExecutor.ProcessAction("/page");
 
                 Assert.Multiple(() =>
                 {
                     Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Forbidden));
                     Assert.That(result.StatusCodeMessage, Is.Not.Empty);
                     Assert.That(result.StatusCodeMessage, Is.Not.Null);
+                    Assert.That(result.LinkModel, Is.Null);
                 });
             }
 
 
-            [Test]
-            public void ProcessAction_PageExistsAndUserHasPermissions_ReturnsStatusCodeOk()
+            [TestCase("/", "/page", "/page")]
+            [TestCase("/", "/cmsctx/pv/-/page", "/page")]
+            [TestCase("/appPath", "/appPath/page", "/appPath/page")]
+            [TestCase("/appPath", "/appPath/cmsctx/pv/-/page", "/appPath/page")]
+            public void ProcessAction_LocalUrl_ExistingPage_ReturnsStatusCodeOk(string applicationPath, string url, string expectedLinkUrl)
             {
                 var pageMock = Substitute.For<TreeNode>();
                 pageMock.DocumentName = "Test";
@@ -118,14 +122,34 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 
                 pagesRetrieverMock.GetPage(Arg.Any<string>()).Returns(pageMock);
 
-                var result = richTextGetPageActionExecutor.ProcessAction(PAGE_PREVIEW_URL_PATH);
+                var result = new RichTextGetLinkMetadataActionExecutor(pagesRetrieverMock, applicationPath).ProcessAction(url);
 
                 Assert.Multiple(() =>
                 {
                     Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-                    Assert.That(result.Page.Name, Is.EqualTo(pageMock.DocumentName));
-                    Assert.That(result.Page.NodeGuid, Is.EqualTo(pageMock.NodeGUID));
+                    Assert.That(result.LinkModel.LinkType, Is.EqualTo(LinkTypeEnum.Page));
+                    Assert.That(result.LinkModel.LinkURL, Is.EqualTo(expectedLinkUrl));
+                    Assert.That(result.LinkModel.LinkMetadata.Name, Is.EqualTo(pageMock.DocumentName));
+                    Assert.That(result.LinkModel.LinkMetadata.Identifier, Is.EqualTo(pageMock.NodeGUID));
                     Assert.That(result.StatusCodeMessage, Is.Null);
+                });
+            }
+
+
+            [TestCase("/", "/page")]
+            [TestCase("/appPath", "/appPath/page")]
+            public void ProcessAction_LocalUrl_NotExistingPage_ReturnsLocalLinkType(string applicationPath, string linkUrl)
+            {
+                pagesRetrieverMock.GetPage(Arg.Any<string>()).Returns((TreeNode)null);
+
+                var result = new RichTextGetLinkMetadataActionExecutor(pagesRetrieverMock, applicationPath).ProcessAction(linkUrl);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                    Assert.That(result.LinkModel.LinkType, Is.EqualTo(LinkTypeEnum.Local));
+                    Assert.That(result.LinkModel.LinkMetadata, Is.Null);
+                    Assert.That(result.LinkModel.LinkURL, Is.EqualTo(linkUrl));
                 });
             }
         }

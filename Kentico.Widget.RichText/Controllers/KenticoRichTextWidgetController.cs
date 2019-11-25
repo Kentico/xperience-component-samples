@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Web.Mvc;
 
+using CMS.Base;
 using CMS.Core;
 using CMS.EventLog;
 using CMS.SiteProvider;
@@ -19,7 +20,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
     /// </summary>
     public class KenticoRichTextWidgetController : WidgetController<RichTextWidgetProperties>
     {
-        private readonly IRichTextGetPageActionExecutor getPageAction;
+        private readonly IRichTextGetLinkMetadataActionExecutor getLinkMetadataAction;
         private readonly IEventLogService eventLogService;
 
         /// <summary>
@@ -29,15 +30,15 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
 
 
         public KenticoRichTextWidgetController()
-            : this(new RichTextGetPageActionExecutor(new PagesRetriever(SiteContext.CurrentSiteName)),
+            : this(new RichTextGetLinkMetadataActionExecutor(new PagesRetriever(SiteContext.CurrentSiteName), SystemContext.ApplicationPath),
                   Service.Resolve<IEventLogService>())
         {
         }
 
 
-        internal KenticoRichTextWidgetController(IRichTextGetPageActionExecutor getPageAction, IEventLogService eventLogService)
+        internal KenticoRichTextWidgetController(IRichTextGetLinkMetadataActionExecutor getLinkMetadataAction, IEventLogService eventLogService)
         {
-            this.getPageAction = getPageAction;
+            this.getLinkMetadataAction = getLinkMetadataAction;
             this.eventLogService = eventLogService;
         }
 
@@ -57,20 +58,20 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
 
 
         /// <summary>
-        /// Serves the page meta data for the given page URL.
+        /// Serves the link meta data for the given URL.
         /// </summary>
-        /// <param name="pageUrl">The page URL.</param>
+        /// <param name="linkUrl">The page URL.</param>
         [HttpGet]
-        public ActionResult GetPage(string pageUrl)
+        public ActionResult GetLinkMetadata(string linkUrl)
         {
-            var actionResult = getPageAction.ProcessAction(pageUrl);
+            var actionResult = getLinkMetadataAction.ProcessAction(linkUrl);
 
             if (actionResult.StatusCode == HttpStatusCode.OK)
             {
-                return new JsonCamelCaseResult(actionResult.Page, JsonRequestBehavior.AllowGet);
+                return new JsonCamelCaseResult(actionResult.LinkModel, JsonRequestBehavior.AllowGet);
             }
 
-            eventLogService.LogEvent(EventType.ERROR, nameof(KenticoRichTextWidgetController), nameof(GetPage), actionResult.StatusCodeMessage);
+            eventLogService.LogEvent(EventType.ERROR, nameof(KenticoRichTextWidgetController), nameof(GetLinkMetadata), actionResult.StatusCodeMessage);
 
             return new HttpStatusCodeResult(actionResult.StatusCode);
         }
