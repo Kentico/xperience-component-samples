@@ -10,11 +10,16 @@ import { imageReplaceCommand, insertImageCommand } from "./commands";
 import { initializeMacroPlugin } from "./plugins/macros";
 import { replaceMacroElements, replaceMacrosWithElements } from "./plugins/macros/macro-services";
 import { MACRO_CLASS, OPEN_INSERT_MACRO_POPUP_COMMAND_NAME } from "./plugins/macros/macro-constants";
+import { unwrapElement } from "./plugins/popup-helper";
 
 import { initializeLinkPlugin } from "./plugins/links";
 import { OPEN_INSERT_LINK_POPUP_COMMAND_NAME, OPEN_LINK_CONFIGURATION_POPUP_COMMAND_NAME } from "./plugins/links/link-constants";
 
 import "./style.less";
+
+interface CodeMirrorElement extends HTMLElement {
+    readonly CodeMirror: CodeMirror.Editor;
+}
 
 export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLElement, propertyName: string, propertyValue: string) => {
     Froala.RegisterCommand("insertImageKentico", insertImageCommand);
@@ -28,7 +33,7 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
         key: element.dataset.richTextEditorLicense,
         toolbarInline: true,
         codeMirror: CodeMirror,
-        pasteDeniedAttrs: [ "id", "style"],
+        pasteDeniedAttrs: ["id", "style"],
         quickInsertButtons: ["imageKentico", "video", "table", "ul", "ol", "hr"],
         imageEditButtons: ["imageReplaceKentico", "imageAlign", "imageCaption", "imageRemove", "|", "imageLink", "linkOpen", "linkEdit",
             "linkRemove", "-", "imageDisplay", "imageStyle", "imageAlt", "imageSize"],
@@ -48,14 +53,14 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
                 buttons: [OPEN_INSERT_LINK_POPUP_COMMAND_NAME, "insertImageKentico", OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, "insertVideo", "insertTable", "emoticons", "specialCharacters", "insertHR"]
             },
             moreMisc: {
-                buttons: ["undo", "redo", "selectAll", "html", "help"],    
+                buttons: ["undo", "redo", "selectAll", "html", "help"],
                 align: "right",
                 buttonsVisible: 2,
             }
         },
         events: {
             initialized(this: FroalaEditor) {
-                if(propertyValue) {
+                if (propertyValue) {
                     const editModePropertyValue = replaceMacrosWithElements(propertyValue, this.opts.contextMacros);
                     this.html.set(editModePropertyValue);
                 }
@@ -65,16 +70,20 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
             },
             contentChanged(this: FroalaEditor) {
                 bindMacroClickListener(this);
-                const event = new CustomEvent(UPDATE_WIDGET_PROPERTY_EVENT_NAME, {
-                    detail: {
-                        name: propertyName,
-                        value: replaceMacroElements(this.html.get()),
-                        refreshMarkup: false
-                    }
-                });
-
-                inlineEditor.dispatchEvent(event);
+                updatePropertyValue(inlineEditor, propertyName, this.html.get());
             },
+            ["commands.after"](cmd: string) {
+                if (cmd === "html" && this.codeView.isActive()) {
+                    // Update the underlying Froala HTML when code is changed in CodeMirror
+                    const froalaWrapper = unwrapElement(this.$wp);
+                    const codeMirrorInstance = froalaWrapper!.querySelector<CodeMirrorElement>(".CodeMirror");
+                    if (codeMirrorInstance) {
+                        codeMirrorInstance.CodeMirror.on("change", function (instance: CodeMirror.Editor) {
+                            updatePropertyValue(inlineEditor, propertyName, instance.getValue());
+                        });
+                    }
+                }
+            }
         },
     });
 }
@@ -95,4 +104,16 @@ const bindMacroClickListener = (editor: FroalaEditor) => {
         // Prevents from showing the default froala button popup on right click 
         macroEl.onmousedown = (event) => event.stopPropagation();
     });
+}
+
+const updatePropertyValue = (inlineEditor: HTMLElement, propertyName: string, newValue: string) => {
+    const event = new CustomEvent(UPDATE_WIDGET_PROPERTY_EVENT_NAME, {
+        detail: {
+            name: propertyName,
+            value: replaceMacroElements(newValue),
+            refreshMarkup: false
+        }
+    });
+
+    inlineEditor.dispatchEvent(event);
 }
