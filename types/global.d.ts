@@ -1,8 +1,11 @@
+import { FroalaOptions } from "froala-editor/js/froala_editor.pkgd.min";
+
 import { Kentico } from "./kentico";
 
 declare global {
   interface Window {
     readonly kentico: Kentico;
+    readonly customConfig: { [option: string]: Partial<FroalaOptions> };
   }
 
   type Nullable<T> = T | null;

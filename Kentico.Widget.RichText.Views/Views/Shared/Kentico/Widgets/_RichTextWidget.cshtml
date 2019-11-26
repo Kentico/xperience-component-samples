@@ -6,7 +6,7 @@
 
 @if (Context.Kentico().PageBuilder().EditMode)
 {
-    Html.Kentico().RichTextEditor(Model.ContentPropertyName);
+    Html.Kentico().RichTextEditor(Model.ContentPropertyName, Model.ConfigurationIdentifier);
 }
 else
 {

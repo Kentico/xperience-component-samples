@@ -1,3 +1,5 @@
+import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
+
 import { MACRO_CLASS } from "./macro-constants";
 import { MacroType, ContextMacros } from "./macro-types";
 import { getMacroDisplayName } from "./macro-helpers";
@@ -21,5 +23,19 @@ export const replaceMacroElements = (html: string): string => {
 export const replaceMacrosWithElements = (html: string, macros: ContextMacros): string => {
     return html.replace(dynamicTextRegex, (_, macroType: MacroType, macroValue: string, macroDefaultValue: string) => {
         return getMacroEditModeElement(macroType, macroValue, macroDefaultValue, getMacroDisplayName(macros, macroValue));
+    });
+}
+
+/**
+ * Binds 'onclick' listener to Macro Elements.
+ * @param editor Froala editor instance.
+ */
+export const bindMacroClickListener = (editor: FroalaEditor) => {
+    const macros = editor.el.querySelectorAll<HTMLInputElement>(`.${MACRO_CLASS}`);
+
+    macros.forEach((macroEl) => {
+        macroEl.onclick = () => editor.kenticoMacroPlugin.showActionsPopup(macroEl);
+        // Prevents from showing the default froala button popup on right click 
+        macroEl.onmousedown = (event) => event.stopPropagation();
     });
 }

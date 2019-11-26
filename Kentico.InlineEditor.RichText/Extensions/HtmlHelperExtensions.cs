@@ -22,6 +22,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
     {
         private const string RICH_TEXT_EDITOR_CLASS_NAME = "ktc-rich-text-wrapper";
         private const string RICH_TEXT_EDITOR_LICENSE_ATTRIBUTE = "data-rich-text-editor-license";
+        private const string RICH_TEXT_EDITOR_CONFIGURATION_ATTRIBUTE = "data-rich-text-editor-configuration";
         private const string RICH_TEXT_GET_LINK_METADATA_ENDPOINT_URL_ATTRIBUTE = "data-get-link-metadata-endpoint-url";
         private static readonly Lazy<string> richTextEditorLicense = new Lazy<string>(() => SettingsKeyInfoProvider.GetValue(RichTextInlineEditorConstants.LICENSE_SETTINGS_KEY_NAME, SiteContext.CurrentSiteName));
 
@@ -31,8 +32,9 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         /// </summary>
         /// <param name="instance">The object that provides methods to render HTML fragments.</param>
         /// <param name="propertyName">Name of the widget property which the inline editor edits.</param>
+        /// <param name="configurationIdentifier">Inline editor's configuration identifier.</param>
         /// <exception cref="ArgumentNullException">Thrown when the <paramref name="instance"/> is null.</exception>
-        public static void RichTextEditor(this ExtensionPoint<HtmlHelper> instance, string propertyName)
+        public static void RichTextEditor(this ExtensionPoint<HtmlHelper> instance, string propertyName, string configurationIdentifier = null)
         {
             instance = instance ?? throw new ArgumentNullException(nameof(instance));
             if (String.IsNullOrWhiteSpace(propertyName))
@@ -56,6 +58,11 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
                 tagBuilder.AddCssClass(RICH_TEXT_EDITOR_CLASS_NAME);
                 tagBuilder.Attributes.Add(RICH_TEXT_EDITOR_LICENSE_ATTRIBUTE, richTextEditorLicense.Value);
                 tagBuilder.Attributes.Add(RICH_TEXT_GET_LINK_METADATA_ENDPOINT_URL_ATTRIBUTE, getLinkMetadataEndpointUrl);
+                
+                if (!String.IsNullOrEmpty(configurationIdentifier))
+                {
+                    tagBuilder.Attributes.Add(RICH_TEXT_EDITOR_CONFIGURATION_ATTRIBUTE, configurationIdentifier);
+                }
 
                 if (AllowContextMacros())
                 {

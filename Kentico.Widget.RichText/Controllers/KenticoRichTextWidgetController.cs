@@ -47,10 +47,12 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
         public ActionResult Index()
         {
             var properties = GetProperties();
+            var componentDefinition = ControllerContext.RouteData.Values["Kentico.PageBuilder.ComponentDefinition"] as ComponentDefinition;
             var viewModel = new RichTextWidgetViewModel
             {
                 ContentPropertyName = nameof(properties.Content),
-                Content = properties.Content
+                Content = properties.Content,
+                ConfigurationIdentifier = componentDefinition.Identifier,
             };
 
             return PartialView("~/Views/Shared/Kentico/Widgets/_RichTextWidget.cshtml", viewModel);
