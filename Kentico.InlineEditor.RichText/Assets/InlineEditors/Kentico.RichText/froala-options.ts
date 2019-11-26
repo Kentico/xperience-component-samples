@@ -33,13 +33,9 @@ const defaultOptions: Partial<FroalaOptions> = {
     },
 };
 
-export const getFroalaOptions = (key: string, events: Partial<FroalaEvents>, customOptions: Partial<FroalaOptions>): Partial<FroalaOptions> => {
-    customOptions = customOptions ? customOptions : {};
-    
-    return {
-        ...defaultOptions,
-        ...customOptions,
-        key,
-        events,
-    };
-}
+export const getFroalaOptions = (key: string, events: Partial<FroalaEvents>, customOptions: Partial<FroalaOptions>): Partial<FroalaOptions> => ({
+    ...defaultOptions,
+    ...customOptions,
+    key,
+    events,
+})

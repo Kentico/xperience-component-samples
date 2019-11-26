@@ -41,7 +41,7 @@ export const getEvents = (inlineEditor: HTMLElement, propertyName: string, prope
 const mergeWithCustomEvents = (defaultEvents: Partial<FroalaEvents>, customOptions: Partial<FroalaOptions>) => {
     
     // Check if custom event implementations are defined
-    if (!customOptions || typeof customOptions.events !== "object") {
+    if (typeof customOptions.events !== "object") {
         return defaultEvents;
     }
 
