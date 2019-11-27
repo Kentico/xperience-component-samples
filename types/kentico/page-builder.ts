@@ -7,7 +7,7 @@ interface RichTextEditorConfiguration {
 }
 
 interface RichTextEditorConfigurations {
-    readonly [configurationIdentifier: string]: RichTextEditorConfiguration;
+    readonly [configurationName: string]: RichTextEditorConfiguration;
 }
 
 interface ComponentsOptions {

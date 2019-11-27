@@ -158,11 +158,11 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 
             [TestCase(null)]
             [TestCase("")]
-            public void RichTextEditor_ConfigurationIdentifierNullOrEmpty_ConfigurationIdentifierNotWrittenToViewContext(string configurationIdentifier)
+            public void RichTextEditor_ConfigurationNameNullOrEmpty_ConfigurationIdentifierNotWrittenToViewContext(string configurationName)
             {
                 DynamicTextPatternRegister.Instance = new DynamicTextPatternRegister(new List<DynamicTextPattern>());
 
-                htmlHelperMock.Kentico().RichTextEditor(PROPERTY_NAME, configurationIdentifier);
+                htmlHelperMock.Kentico().RichTextEditor(PROPERTY_NAME, configurationName);
 
                 Received.InOrder(() =>
                 {
@@ -174,17 +174,17 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 
 
             [Test]
-            public void RichTextEditor_ConfigurationIdentifierProvided_ConfigurationIdentifierWrittenToViewContext()
+            public void RichTextEditor_ConfigurationNameProvided_ConfigurationIdentifierWrittenToViewContext()
             {
-                const string CONFIGURATION_IDENTIFIER = "testConfiguration";
+                const string CONFIGURATION_NAME = "testConfiguration";
                 DynamicTextPatternRegister.Instance = new DynamicTextPatternRegister(new List<DynamicTextPattern>());
 
-                htmlHelperMock.Kentico().RichTextEditor(PROPERTY_NAME, CONFIGURATION_IDENTIFIER);
+                htmlHelperMock.Kentico().RichTextEditor(PROPERTY_NAME, CONFIGURATION_NAME);
 
                 Received.InOrder(() =>
                 {
                     writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
-                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-get-link-metadata-endpoint-url=\"/testApi\" data-rich-text-editor-configuration=\"{CONFIGURATION_IDENTIFIER}\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
+                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-get-link-metadata-endpoint-url=\"/testApi\" data-rich-text-editor-configuration=\"{CONFIGURATION_NAME}\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
                     writerMock.Write("</div>");
                 });
             }
