@@ -16,7 +16,6 @@ import { initializeLinkPlugin } from "./plugins/links";
 import { OPEN_INSERT_LINK_POPUP_COMMAND_NAME, OPEN_LINK_CONFIGURATION_POPUP_COMMAND_NAME } from "./plugins/links/link-constants";
 
 import "./style.less";
-import { unwrapElement } from "./plugins/popup-helper";
 
 interface CodeMirrorElement extends HTMLElement {
     readonly CodeMirror: CodeMirror.Editor;
