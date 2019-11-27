@@ -1,41 +1,35 @@
-import { getPathSelectorMetadata } from "../link-helpers";
-import { DialogMode } from "../../plugin-types";
+import { getLinkModel } from "../link-helpers";
+import { LinkType } from "../link-types";
+import { LinkModel } from "../link-model";
 
-describe("getPathSelectorMetadata", () => {
+describe("getLinkModel", () => {
     const PAGE_NAME = "page1";
     const NODE_GUID = "1234567";
 
     beforeEach(() => {
         fetchMock.resetMocks();
-        fetchMock.mockResponseOnce(JSON.stringify({ name: PAGE_NAME, nodeGuid: NODE_GUID}));
-    });
-
-    it ("returns blank item if mode is Insert", async () => {
-        const result = await getPathSelectorMetadata("doesntmatter", "doesntmatter", DialogMode.INSERT);
-
-        expect(result).toEqual({ name: "", nodeGuid: ""});
-        expect(fetchMock).not.toHaveBeenCalled();
+        fetchMock.mockResponseOnce(JSON.stringify({ name: PAGE_NAME, nodeGuid: NODE_GUID }));
     });
 
     it("path is encoded", async () => {
-        await getPathSelectorMetadata("/api/fooget", "path%&", DialogMode.UPDATE);
+        await getLinkModel("/api/fooget", "path%&");
 
-        expect(fetchMock).toHaveBeenCalledWith("/api/fooget?pageUrl=path%25%26");
+        expect(fetchMock).toHaveBeenCalledWith("/api/fooget?linkUrl=path%25%26");
     });
 
     describe("endpoint URL already contains query", () => {
         it("appends path parameter using ampersand", async () => {
-            await getPathSelectorMetadata("/api/fooget?param1=test", "path", DialogMode.UPDATE);
+            await getLinkModel("/api/fooget?param1=test", "path");
 
-            expect(fetchMock).toHaveBeenCalledWith("/api/fooget?param1=test&pageUrl=path");
+            expect(fetchMock).toHaveBeenCalledWith("/api/fooget?param1=test&linkUrl=path");
         });
     });
 
     describe("endpoint URL doesn't contain query", () => {
         it("appends path parameter using question mark", async () => {
-            await getPathSelectorMetadata("/api/fooget", "path", DialogMode.UPDATE);
+            await getLinkModel("/api/fooget", "path");
 
-            expect(fetchMock).toHaveBeenCalledWith("/api/fooget?pageUrl=path");
+            expect(fetchMock).toHaveBeenCalledWith("/api/fooget?linkUrl=path");
         });
     });
 
@@ -43,16 +37,16 @@ describe("getPathSelectorMetadata", () => {
         fetchMock.resetMocks();
         fetchMock.mockReject(new Error("MyError"));
         const mockErrorConsole = jest.spyOn(global.console, "error").mockImplementation();
-        const result = await getPathSelectorMetadata("/api/fooget", "path", DialogMode.UPDATE); 
+        const result = await getLinkModel("/api/fooget", "path");
 
         expect(mockErrorConsole).toHaveBeenCalledWith(new Error("MyError"));
-        expect(result).toEqual({ name: "", nodeGuid: ""});
+        expect(result).toEqual(new LinkModel(LinkType.EXTERNAL));
     });
 
     it("does something", async () => {
-        const result = await getPathSelectorMetadata("", "path", DialogMode.UPDATE);
+        const result = await getLinkModel("", "path");
 
-        expect(result).toEqual({ name: PAGE_NAME, nodeGuid: NODE_GUID});
+        expect(result).toEqual({ name: PAGE_NAME, nodeGuid: NODE_GUID });
         expect(fetchMock).toHaveBeenCalledTimes(1);
     })
 });

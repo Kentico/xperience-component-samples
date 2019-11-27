@@ -42,7 +42,7 @@ const insertMacroCommandParameters: RegisterCommandParameters = {
 
         if (popupElement) {
             this.undo.saveStep();
-            const form = popupElement.querySelector<HTMLFormElement>("#ktc-form");
+            const form = popupElement.querySelector<HTMLFormElement>("#ktc-macro-popup-form");
             const formData = new FormData(form!);
             const macroType = commandName === constants.INSERT_URL_MACRO_COMMAND_NAME ? MacroType.URL : MacroType.CONTEXT;
             const contextMacros = this.opts.contextMacros;
@@ -92,7 +92,7 @@ const updateMacroCommandParameters: RegisterCommandParameters = {
 
         if (popupElement && macroElement) {
             this.undo.saveStep();
-            const form = popupElement.querySelector<HTMLFormElement>("#ktc-form");
+            const form = popupElement.querySelector<HTMLFormElement>("#ktc-macro-popup-form");
             const formData = new FormData(form!);
             const macroValue = formData.get(commandName === constants.UPDATE_URL_MACRO_COMMAND_NAME ? "urlParameterName" : "contextMacroType") as string;
 
