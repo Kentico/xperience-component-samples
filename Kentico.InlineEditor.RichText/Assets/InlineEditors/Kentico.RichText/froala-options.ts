@@ -10,6 +10,7 @@ const defaultOptions: Partial<FroalaOptions> = {
     toolbarInline: true,
     codeMirror: CodeMirror,
     pasteDeniedAttrs: ["id", "style"],
+    imageAllowedTypes: ["gif", "png", "jpg", "jpeg"],
     quickInsertButtons: ["image", "video", "table", "ul", "ol", "hr"],
     linkEditButtons: ["linkOpen", OPEN_LINK_CONFIGURATION_POPUP_COMMAND_NAME, "linkRemove"],
     toolbarButtons: {

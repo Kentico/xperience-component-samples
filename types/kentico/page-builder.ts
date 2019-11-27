@@ -23,5 +23,5 @@ export interface PageBuilder {
     /**
      * Custom component options.
      */
-    readonly componentOptions: ComponentsOptions;
+    readonly componentOptions?: ComponentsOptions;
 }

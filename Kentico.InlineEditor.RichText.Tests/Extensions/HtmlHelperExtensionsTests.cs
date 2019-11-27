@@ -83,7 +83,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             [TestCase(null)]
             [TestCase("")]
             [TestCase(" ")]
-            public void RichTextEditor_PropertyNameIsInvalid_ThrowsArgumentNullException(string invalidPropertyName)
+            public void RichTextEditor_PropertyNameIsInvalid_ThrowsArgumentException(string invalidPropertyName)
             {
                 Assert.That(() => htmlHelperMock.Kentico().RichTextEditor(invalidPropertyName), Throws.ArgumentException);
             }
@@ -151,6 +151,40 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 {
                     writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
                     writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-get-link-metadata-endpoint-url=\"/testApi\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
+                    writerMock.Write("</div>");
+                });
+            }
+
+
+            [TestCase(null)]
+            [TestCase("")]
+            public void RichTextEditor_ConfigurationIdentifierNullOrEmpty_ConfigurationIdentifierNotWrittenToViewContext(string configurationIdentifier)
+            {
+                DynamicTextPatternRegister.Instance = new DynamicTextPatternRegister(new List<DynamicTextPattern>());
+
+                htmlHelperMock.Kentico().RichTextEditor(PROPERTY_NAME, configurationIdentifier);
+
+                Received.InOrder(() =>
+                {
+                    writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
+                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-get-link-metadata-endpoint-url=\"/testApi\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
+                    writerMock.Write("</div>");
+                });
+            }
+
+
+            [Test]
+            public void RichTextEditor_ConfigurationIdentifierProvided_ConfigurationIdentifierWrittenToViewContext()
+            {
+                const string CONFIGURATION_IDENTIFIER = "testConfiguration";
+                DynamicTextPatternRegister.Instance = new DynamicTextPatternRegister(new List<DynamicTextPattern>());
+
+                htmlHelperMock.Kentico().RichTextEditor(PROPERTY_NAME, CONFIGURATION_IDENTIFIER);
+
+                Received.InOrder(() =>
+                {
+                    writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
+                    writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-get-link-metadata-endpoint-url=\"/testApi\" data-rich-text-editor-configuration=\"{CONFIGURATION_IDENTIFIER}\" data-rich-text-editor-license=\"{LICENSE_KEY}\" />");
                     writerMock.Write("</div>");
                 });
             }

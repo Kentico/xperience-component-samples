@@ -46,14 +46,9 @@ export const destroyFroalaEditor = ({ editor }: InlineEditorOptions) => {
 }
 
 const getCustomOptions = (richTextWrapper: HTMLElement, inlineEditor: HTMLElement): Partial<Froala.FroalaOptions> => {
-    let customOptions: Partial<Froala.FroalaOptions> = {};
     const configurationIdentifier = richTextWrapper.dataset.richTextEditorConfiguration!;
     const componentIdentifier = inlineEditor.dataset.inlineEditor!;
-    const customConfiguration = window.kentico.pageBuilder?.componentOptions?.[componentIdentifier]?.[configurationIdentifier];
+    const customConfiguration = window.kentico.pageBuilder.componentOptions?.[componentIdentifier]?.[configurationIdentifier];
 
-    if (configurationIdentifier && typeof customConfiguration?.froalaOptions === "object") {
-        customOptions = customConfiguration.froalaOptions;
-    }
-
-    return customOptions;
+    return (typeof customConfiguration?.froalaOptions === "object") ? customConfiguration.froalaOptions : {};
 }

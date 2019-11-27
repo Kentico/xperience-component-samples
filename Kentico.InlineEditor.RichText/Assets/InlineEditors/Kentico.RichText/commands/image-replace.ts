@@ -1,6 +1,5 @@
 import FroalaEditor, { RegisterCommandParameters } from "froala-editor/js/froala_editor.pkgd.min";
 import { getMediaFilesSelector } from "./helpers";
-import { ALLOWED_IMAGE_EXTENSIONS } from "../constants";
 
 export const imageReplaceCommand: RegisterCommandParameters = {
     title: "Replace",
@@ -9,7 +8,7 @@ export const imageReplaceCommand: RegisterCommandParameters = {
     undo: true,
     refreshAfterCallback: false,
     callback(this: FroalaEditor) {
-        const { image } = this;
+        const { image, opts } = this;
         const currentImage = image.get();
         const currentImageElement = (currentImage as HTMLImageElement[])[0];
         // When image is inserted for the first time froala inserts the image data into "str" prefixed data attributes,
@@ -17,7 +16,7 @@ export const imageReplaceCommand: RegisterCommandParameters = {
         const currentImageId = currentImageElement.dataset.id || currentImageElement.dataset.strid;
 
         getMediaFilesSelector().open({
-            allowedExtensions: ALLOWED_IMAGE_EXTENSIONS,
+            allowedExtensions: `.${opts.imageAllowedTypes.join(";.")}`,
             selectedValues: [{ fileGuid: currentImageId! }],
             applyCallback(images: any) {
                 if (images) {
