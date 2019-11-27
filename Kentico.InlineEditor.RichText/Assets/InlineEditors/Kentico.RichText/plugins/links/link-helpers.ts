@@ -1,35 +1,24 @@
 import { getStringForPlugin } from "../plugin-helpers";
-import { PluginType, DialogMode } from "../plugin-types";
-import { PathSelectorMetadata } from "./link-types";
+import { PluginType } from "../plugin-types";
+import { LinkType } from "./link-types";
+import { LinkModel } from "./link-model";
 
 export const getString = (resourceKey: string) => getStringForPlugin(resourceKey, PluginType.LinkPlugin);
 
-const EMPTY_PAGE_DATA = { name: "", nodeGuid: "" };
-
 /**
- * Gets page name and node GUID for specific URL path from server when DialogMode=UPDATE
- * @param endpointUrl Server endpoint for retrieving data.
- * @param path URL path.
- * @param dialogMode Dialog mode.
+ * Gets info for specific URL from server.
+ * @param endpointUrl Server endpoint for retrieving link info.
+ * @param linkUrl Link URL.
  */
-export const getPathSelectorMetadata = async (endpointUrl: string, path: string, dialogMode: DialogMode): Promise<PathSelectorMetadata> => {
-
-  if (dialogMode === DialogMode.INSERT) {
-    return EMPTY_PAGE_DATA;
-  }
-
-  const queryParameter = `pageUrl=${encodeURIComponent(path)}`;
+export const getLinkModel = async (endpointUrl: string, linkUrl: string): Promise<LinkModel> => {
+  const queryParameter = `linkUrl=${encodeURIComponent(linkUrl)}`;
   const queryDelimiter = endpointUrl.includes("?") ? "&" : "?";
   const url = endpointUrl.concat(queryDelimiter, queryParameter);
-  const json = await getData(url);
-
-  return {
-    name: json.name,
-    nodeGuid: json.nodeGuid,
-  };
+  
+  return getData(url);
 }
 
-const getData = async (url: string): Promise<any> => {
+const getData = async (url: string): Promise<LinkModel> => {
   try {
     const response = await fetch(url);
 
@@ -37,11 +26,11 @@ const getData = async (url: string): Promise<any> => {
       throw new Error(response.statusText);
     }
 
-    return await response.json();
+    return response.json();
   }
   catch (error) {
     console.error(error);
   }
 
-  return EMPTY_PAGE_DATA;
+  return new LinkModel(LinkType.EXTERNAL);
 }

@@ -8,9 +8,9 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
     internal interface IRichTextUrlRetriever
     {
         /// <summary>
-        /// Gets the "GetPage" endpoint URL.
+        /// Gets the "GetLinkMetadata" endpoint URL.
         /// </summary>
         /// <param name="urlHelper">The 'UrlHelper'instance of the current request.</param>
-        string GetPageEndpointUrl(UrlHelper urlHelper);
+        string GetLinkMetadataEndpointUrl(UrlHelper urlHelper);
     }
 }

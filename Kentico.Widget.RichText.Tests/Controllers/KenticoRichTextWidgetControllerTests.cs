@@ -17,37 +17,36 @@ namespace Kentico.Components.Web.Mvc.Widgets.Tests
     public static class KenticoRichTextWidgetControllerTests
     {
         [TestFixture]
-        public class GetPageTests : UnitTests
+        public class GetLinkMetadataTests : UnitTests
         {
             private KenticoRichTextWidgetController richTextController;
-            private IRichTextGetPageActionExecutor getPageMockAction;
+            private IRichTextGetLinkMetadataActionExecutor getLinkMetadataActionMock;
             private IEventLogService eventLogService;
 
 
             [SetUp]
             public void SetUp()
             {
-                getPageMockAction = Substitute.For<IRichTextGetPageActionExecutor>();
+                getLinkMetadataActionMock = Substitute.For<IRichTextGetLinkMetadataActionExecutor>();
                 eventLogService = Substitute.For<IEventLogService>();
 
-                richTextController = new KenticoRichTextWidgetController(getPageMockAction, eventLogService);
+                richTextController = new KenticoRichTextWidgetController(getLinkMetadataActionMock, eventLogService);
             }
 
 
             [TestCase(HttpStatusCode.OK)]
-            public void GetPage_PageIsFound_ReturnsStatusCodeAndPageModel(HttpStatusCode statusCode)
+            public void GetLinkMetadata_PageIsFound_ReturnsStatusCodeAndPageModel(HttpStatusCode statusCode)
             {
                 // Arrange
-                var pageModel = new PageLinkModel
+                var pageModel = new LinkModel
                 {
-                    Name = "pageName",
-                    NodeGuid = Guid.Empty
+                    LinkType = LinkTypeEnum.Page
                 };
 
-                getPageMockAction.ProcessAction(Arg.Any<string>()).Returns(new GetPageActionResult(statusCode, page: pageModel));
+                getLinkMetadataActionMock.ProcessAction(Arg.Any<string>()).Returns(new GetLinkMetadataActionResult(statusCode, linkModel: pageModel));
 
                 // Act
-                var result = richTextController.GetPage("pageUrlPath");
+                var result = richTextController.GetLinkMetadata("pageUrlPath");
 
                 // Assert
                 Assert.Multiple(() =>
@@ -59,20 +58,20 @@ namespace Kentico.Components.Web.Mvc.Widgets.Tests
 
 
             [TestCase(HttpStatusCode.NotFound, "message")]
-            public void GetPage_PageIsNotFound_ReturnsStatusCodeAndPageModel(HttpStatusCode statusCode, string statusCodeMessage)
+            public void GetLinkMetadata_PageIsNotFound_ReturnsStatusCodeAndPageModel(HttpStatusCode statusCode, string statusCodeMessage)
             {
                 // Arrange
-                getPageMockAction.ProcessAction(Arg.Any<string>()).Returns(new GetPageActionResult(statusCode, statusCodeMessage: statusCodeMessage));
+                getLinkMetadataActionMock.ProcessAction(Arg.Any<string>()).Returns(new GetLinkMetadataActionResult(statusCode, statusCodeMessage: statusCodeMessage));
 
                 // Act
-                var result = richTextController.GetPage("pageUrlPath");
+                var result = richTextController.GetLinkMetadata("pageUrlPath");
 
                 // Assert
                 Assert.Multiple(() =>
                 {
                     Assert.That(result, Is.TypeOf<HttpStatusCodeResult>());
                     Assert.That((result as HttpStatusCodeResult).StatusCode, Is.EqualTo((int)statusCode));
-                    eventLogService.Received().LogEvent(EventType.ERROR, nameof(KenticoRichTextWidgetController), nameof(KenticoRichTextWidgetController.GetPage), statusCodeMessage);
+                    eventLogService.Received().LogEvent(EventType.ERROR, nameof(KenticoRichTextWidgetController), nameof(KenticoRichTextWidgetController.GetLinkMetadata), statusCodeMessage);
                 });
             }
         }

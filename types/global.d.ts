@@ -5,6 +5,8 @@ declare global {
     readonly kentico: Kentico;
   }
 
+  type Nullable<T> = T | null;
+
   // TEMP: Temporary jQuery type definition until Froala provides official type definition
   // see https://github.com/froala/wysiwyg-editor/issues/2369
   interface JQuery {}
