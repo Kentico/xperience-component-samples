@@ -77,7 +77,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
                     }
                 }
 
-                htmlHelper.ViewContext.Writer.Write(tagBuilder.ToString(TagRenderMode.SelfClosing));
+                htmlHelper.ViewContext.Writer.Write(tagBuilder.ToString());
             }
         }
 
