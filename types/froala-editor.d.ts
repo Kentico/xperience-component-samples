@@ -160,6 +160,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       constructor(element: any, options: Partial<FroalaOptions>);
       $oel: JQuery;
       $tb: JQuery;
+      $sc: JQuery;
       $wp: JQuery;
       destroy(): object;
 
