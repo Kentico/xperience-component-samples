@@ -18,8 +18,8 @@
 
 
         /// <summary>
-        /// Configuration identifier for the underlying inline editor.
+        /// Configuration name for the underlying inline editor.
         /// </summary>
-        public string ConfigurationIdentifier { get; set; }
+        public string ConfigurationName { get; set; }
     }
 }

@@ -20,6 +20,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
     /// </summary>
     public class KenticoRichTextWidgetController : WidgetController<RichTextWidgetProperties>
     {
+        private readonly RichTextWidgetOptions options;
         private readonly IRichTextGetLinkMetadataActionExecutor getLinkMetadataAction;
         private readonly IEventLogService eventLogService;
 
@@ -29,10 +30,17 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
         public const string IDENTIFIER = "Kentico.Widget.RichText";
 
 
+        protected KenticoRichTextWidgetController(RichTextWidgetOptions options) : this()
+        {
+            this.options = options;
+        }
+
+
         public KenticoRichTextWidgetController()
             : this(new RichTextGetLinkMetadataActionExecutor(new PagesRetriever(SiteContext.CurrentSiteName), SystemContext.ApplicationPath),
                   Service.Resolve<IEventLogService>())
         {
+            options = new RichTextWidgetOptions();
         }
 
 
@@ -47,12 +55,11 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
         public ActionResult Index()
         {
             var properties = GetProperties();
-            var componentDefinition = ControllerContext.RouteData.Values["Kentico.PageBuilder.ComponentDefinition"] as ComponentDefinition;
             var viewModel = new RichTextWidgetViewModel
             {
                 ContentPropertyName = nameof(properties.Content),
                 Content = properties.Content,
-                ConfigurationIdentifier = componentDefinition.Identifier,
+                ConfigurationName = options.ConfigurationName,
             };
 
             return PartialView("~/Views/Shared/Kentico/Widgets/_RichTextWidget.cshtml", viewModel);
