@@ -161,6 +161,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       $oel: JQuery;
       $tb: JQuery;
       $sc: JQuery;
+      $wp: JQuery;
       destroy(): object;
 
       // Custom props
@@ -574,6 +575,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       touchstart: (touchstartEvent: JQueryEventObject) => void,
       touchend: (touchendEvent: JQueryEventObject) => void,
       "html.set": () => void;
+      "commands.after": (this: FroalaEditor, cmd: string) => void,
     }
   
     interface Apply<T> {

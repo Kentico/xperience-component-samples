@@ -21,14 +21,14 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
     internal sealed class RichTextWidgetUrlRetriever : IRichTextUrlRetriever
     {
         /// <summary>
-        /// Gets the "GetPage" endpoint URL.
+        /// Gets the "GetLinkMetadata" endpoint URL.
         /// </summary>
         /// <param name="urlHelper">The 'UrlHelper'instance of the current request.</param>
-        public string GetPageEndpointUrl(UrlHelper urlHelper)
+        public string GetLinkMetadataEndpointUrl(UrlHelper urlHelper)
         {
             urlHelper = urlHelper ?? throw new ArgumentNullException(nameof(urlHelper));
 
-            return urlHelper.Action(nameof(KenticoRichTextWidgetController.GetPage), "KenticoRichTextWidget");
+            return urlHelper.Action(nameof(KenticoRichTextWidgetController.GetLinkMetadata), "KenticoRichTextWidget");
         }
     }
 }

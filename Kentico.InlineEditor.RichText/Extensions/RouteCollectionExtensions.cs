@@ -18,9 +18,9 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
             instance = instance ?? throw new ArgumentNullException(nameof(instance));
 
             instance.Target.MapHttpRoute(
-                name: RichTextInlineEditorConstants.GET_PAGE_ROUTE_NAME,
+                name: RichTextInlineEditorConstants.GET_LINK_METADATA_ROUTE_NAME,
                 routeTemplate: RichTextInlineEditorConstants.GET_PAGE_ROUTE_TEMPLATE,
-                defaults: new { controller = RichTextInlineEditorConstants.CONTROLLER_NAME, action = nameof(KenticoRichTextController.GetPage) }
+                defaults: new { controller = RichTextInlineEditorConstants.CONTROLLER_NAME, action = nameof(KenticoRichTextController.GetLinkMetadata) }
             );
         }
     }
