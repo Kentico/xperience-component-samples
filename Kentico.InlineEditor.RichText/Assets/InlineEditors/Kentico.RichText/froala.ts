@@ -82,6 +82,11 @@ export const initializeFroalaEditor = (element: HTMLElement, inlineEditor: HTMLE
                             updatePropertyValue(inlineEditor, propertyName, instance.getValue());
                         });
                     }
+
+                    // Temporary, until https://github.com/froala/wysiwyg-editor/issues/3639 is fixed
+                    const editor = unwrapElement(this.$oel);
+                    const codeViewExitButton = editor!.querySelector(".fr-btn.html-switch");
+                    codeViewExitButton!.innerHTML = this.button.build("html");
                 }
             }
         },
