@@ -11,7 +11,7 @@ interface RichTextEditorConfigurations {
 }
 
 interface RichTextEditor {
-    readonly configurations: RichTextEditorConfigurations;
+    readonly configurations?: RichTextEditorConfigurations;
 }
 
 export interface PageBuilder {
