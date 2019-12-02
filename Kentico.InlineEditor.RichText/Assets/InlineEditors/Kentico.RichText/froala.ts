@@ -10,7 +10,6 @@ import { getEvents } from "./froala-events";
 import { getFroalaOptions } from "./froala-options";
 
 const RICH_TEXT_WRAPPER_SELECTOR = ".ktc-rich-text-wrapper";
-const DEFAULT_CONFIGURATION_NAME = "DEFAULT";
 
 export const initializeFroalaEditor = ({ editor, propertyName, propertyValue }: InlineEditorOptions) => {
     const element = editor.querySelector<HTMLElement>(RICH_TEXT_WRAPPER_SELECTOR);
@@ -50,8 +49,7 @@ const getCustomOptions = (richTextWrapper: HTMLElement, inlineEditor: HTMLElemen
     const configurationName = richTextWrapper.dataset.richTextEditorConfiguration!;
     const componentIdentifier = inlineEditor.dataset.inlineEditor!;
     const componentOptions = window.kentico.pageBuilder.componentOptions?.[componentIdentifier];
-    const globalOptions = componentOptions?.[DEFAULT_CONFIGURATION_NAME];
-    const customConfiguration = globalOptions ?? componentOptions?.[configurationName];
+    const customConfiguration = componentOptions?.[configurationName];
 
     return (typeof customConfiguration?.froalaOptions === "object") ? customConfiguration.froalaOptions : {};
 }

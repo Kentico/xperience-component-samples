@@ -34,12 +34,17 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         /// <param name="propertyName">Name of the widget property which the inline editor edits.</param>
         /// <param name="configurationName">Inline editor's configuration name.</param>
         /// <exception cref="ArgumentNullException">Thrown when the <paramref name="instance"/> is null.</exception>
-        public static void RichTextEditor(this ExtensionPoint<HtmlHelper> instance, string propertyName, string configurationName = null)
+        /// <exception cref="ArgumentException">Thrown when the <paramref name="propertyName"/> or <paramref name="configurationName"/> are null or empty.</exception>
+        public static void RichTextEditor(this ExtensionPoint<HtmlHelper> instance, string propertyName, string configurationName = "default")
         {
             instance = instance ?? throw new ArgumentNullException(nameof(instance));
             if (String.IsNullOrWhiteSpace(propertyName))
             {
                 throw new ArgumentException(nameof(propertyName));
+            }
+            if (String.IsNullOrEmpty(configurationName))
+            {
+                throw new ArgumentException(nameof(configurationName));
             }
 
             var htmlHelper = instance.Target;
@@ -58,11 +63,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
                 tagBuilder.AddCssClass(RICH_TEXT_EDITOR_CLASS_NAME);
                 tagBuilder.Attributes.Add(RICH_TEXT_EDITOR_LICENSE_ATTRIBUTE, richTextEditorLicense.Value);
                 tagBuilder.Attributes.Add(RICH_TEXT_GET_LINK_METADATA_ENDPOINT_URL_ATTRIBUTE, getLinkMetadataEndpointUrl);
-                
-                if (!String.IsNullOrEmpty(configurationName))
-                {
-                    tagBuilder.Attributes.Add(RICH_TEXT_EDITOR_CONFIGURATION_ATTRIBUTE, configurationName);
-                }
+                tagBuilder.Attributes.Add(RICH_TEXT_EDITOR_CONFIGURATION_ATTRIBUTE, configurationName);
 
                 if (AllowContextMacros())
                 {

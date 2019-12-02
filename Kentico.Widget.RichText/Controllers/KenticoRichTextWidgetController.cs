@@ -30,6 +30,10 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
         public const string IDENTIFIER = "Kentico.Widget.RichText";
 
 
+        /// <summary>
+        /// Constructor which accepts options for rich text editor customization.
+        /// </summary>
+        /// <param name="options">Rich text widget options.</param>
         protected KenticoRichTextWidgetController(RichTextWidgetOptions options) : this()
         {
             this.options = options;
