@@ -31,5 +31,10 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         /// The route template name that serves page meta data.
         /// </summary>
         public const string GET_PAGE_ROUTE_TEMPLATE = "KenticoComponent/Kentico.InlineEditor.RichText/" + nameof(KenticoRichTextController.GetLinkMetadata);
+
+        /// <summary>
+        /// The name of the default configuration.
+        /// </summary>
+        public const string DEFAULT_CONFIGURATION_NAME = "default";
     }
 }

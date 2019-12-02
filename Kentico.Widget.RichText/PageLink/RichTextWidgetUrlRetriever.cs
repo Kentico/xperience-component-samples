@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using CMS;
 
 using Kentico.Components.Web.Mvc.InlineEditors;
-using Kentico.Components.Web.Mvc.Widgets.Controllers;
+using Kentico.Components.Web.Mvc.Widgets;
 
 // Register the implementation of the IRichTextUrlRetriever that can serve the page link data via the rich text widget controller.
 [assembly: RegisterImplementation(typeof(IRichTextUrlRetriever), typeof(RichTextWidgetUrlRetriever))]

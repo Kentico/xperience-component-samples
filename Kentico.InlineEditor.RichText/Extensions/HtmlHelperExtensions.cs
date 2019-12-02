@@ -35,7 +35,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         /// <param name="configurationName">Inline editor's configuration name.</param>
         /// <exception cref="ArgumentNullException">Thrown when the <paramref name="instance"/> is null.</exception>
         /// <exception cref="ArgumentException">Thrown when the <paramref name="propertyName"/> or <paramref name="configurationName"/> are null or empty.</exception>
-        public static void RichTextEditor(this ExtensionPoint<HtmlHelper> instance, string propertyName, string configurationName = "default")
+        public static void RichTextEditor(this ExtensionPoint<HtmlHelper> instance, string propertyName, string configurationName = RichTextInlineEditorConstants.DEFAULT_CONFIGURATION_NAME)
         {
             instance = instance ?? throw new ArgumentNullException(nameof(instance));
             if (String.IsNullOrWhiteSpace(propertyName))
@@ -44,7 +44,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
             }
             if (String.IsNullOrEmpty(configurationName))
             {
-                throw new ArgumentException(nameof(configurationName));
+                throw new ArgumentException("The parameter cannot be empty.", nameof(configurationName));
             }
 
             var htmlHelper = instance.Target;

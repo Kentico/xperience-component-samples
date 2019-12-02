@@ -7,20 +7,20 @@ using CMS.EventLog;
 using CMS.SiteProvider;
 
 using Kentico.Components.Web.Mvc.InlineEditors;
-using Kentico.Components.Web.Mvc.Widgets.Controllers;
+using Kentico.Components.Web.Mvc.Widgets;
 using Kentico.Components.Web.Mvc.Widgets.Models;
 using Kentico.PageBuilder.Web.Mvc;
 
 [assembly: RegisterWidget(KenticoRichTextWidgetController.IDENTIFIER, typeof(KenticoRichTextWidgetController), "{$Kentico.Widget.RichText.Name$}", Description = "{$Kentico.Widget.RichText.Description$}", IconClass = "icon-l-text")]
 
-namespace Kentico.Components.Web.Mvc.Widgets.Controllers
+namespace Kentico.Components.Web.Mvc.Widgets
 {
     /// <summary>
     /// Rich text widget controller.
     /// </summary>
     public class KenticoRichTextWidgetController : WidgetController<RichTextWidgetProperties>
     {
-        private readonly RichTextWidgetOptions options;
+        private readonly RichTextWidgetConfiguration configuration;
         private readonly IRichTextGetLinkMetadataActionExecutor getLinkMetadataAction;
         private readonly IEventLogService eventLogService;
 
@@ -31,12 +31,12 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
 
 
         /// <summary>
-        /// Constructor which accepts options for rich text editor customization.
+        /// Constructor which accepts configuration for rich text editor customization.
         /// </summary>
-        /// <param name="options">Rich text widget options.</param>
-        protected KenticoRichTextWidgetController(RichTextWidgetOptions options) : this()
+        /// <param name="configuration">Rich text widget configuration.</param>
+        protected KenticoRichTextWidgetController(RichTextWidgetConfiguration configuration) : this()
         {
-            this.options = options;
+            this.configuration = configuration;
         }
 
 
@@ -44,7 +44,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
             : this(new RichTextGetLinkMetadataActionExecutor(new PagesRetriever(SiteContext.CurrentSiteName), SystemContext.ApplicationPath),
                   Service.Resolve<IEventLogService>())
         {
-            options = new RichTextWidgetOptions();
+            configuration = new RichTextWidgetConfiguration();
         }
 
 
@@ -63,7 +63,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Controllers
             {
                 ContentPropertyName = nameof(properties.Content),
                 Content = properties.Content,
-                ConfigurationName = options.ConfigurationName,
+                ConfigurationName = configuration.ConfigurationName,
             };
 
             return PartialView("~/Views/Shared/Kentico/Widgets/_RichTextWidget.cshtml", viewModel);

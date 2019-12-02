@@ -10,8 +10,8 @@ interface RichTextEditorConfigurations {
     readonly [configurationName: string]: RichTextEditorConfiguration;
 }
 
-interface ComponentsOptions {
-    readonly [componentIdentifier: string]: RichTextEditorConfigurations;
+interface RichTextEditor {
+    readonly configurations: RichTextEditorConfigurations;
 }
 
 export interface PageBuilder {
@@ -21,7 +21,7 @@ export interface PageBuilder {
     readonly registerInlineEditor: (name: string, definition: InlineEditor) => void;
 
     /**
-     * Custom component options.
+     * Rich text editor.
      */
-    readonly componentOptions?: ComponentsOptions;
+    readonly richTextEditor?: RichTextEditor;
 }
