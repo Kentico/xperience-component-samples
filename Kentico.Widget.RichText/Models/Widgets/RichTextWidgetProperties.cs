@@ -1,6 +1,6 @@
 ﻿using Kentico.PageBuilder.Web.Mvc;
 
-namespace Kentico.Components.Web.Mvc.Widgets.Models
+namespace Kentico.Components.Web.Mvc.Widgets
 {
     /// <summary>
     /// Rich text widget properties.

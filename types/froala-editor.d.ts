@@ -555,15 +555,15 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       wordPasteKeepFormatting: boolean,
       wordPasteModal: boolean,
     }
-  
+
     export interface FroalaEvents {
       blur: () => void,
       click: (clickEvent: any) => void,
-      contentChanged: () => void,
+      contentChanged: (this: FroalaEditor) => void,
       destroy: () => void,
       drop: (dropEvent: JQueryEventObject) => void,
       focus: () => void,
-      initialized: () => void,
+      initialized: (this: FroalaEditor) => void,
       initializationDelayed: () => void,
       input: (inputEvent: JQueryInputEventObject) => void,
       keydown: (keydownEvent: JQueryKeyEventObject) => void,
@@ -574,7 +574,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       shortcut: (event: Event, commandName: string, shortcutValue: any) => void,
       touchstart: (touchstartEvent: JQueryEventObject) => void,
       touchend: (touchendEvent: JQueryEventObject) => void,
-      "html.set": () => void;
+      "html.set": (this: FroalaEditor) => void,
       "commands.after": (this: FroalaEditor, cmd: string) => void,
     }
   

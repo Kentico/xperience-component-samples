@@ -9,7 +9,6 @@ using CMS.Core;
 using CMS.EventLog;
 using CMS.Tests;
 
-using Kentico.Components.Web.Mvc.Widgets.Controllers;
 using Kentico.Components.Web.Mvc.InlineEditors;
 
 namespace Kentico.Components.Web.Mvc.Widgets.Tests

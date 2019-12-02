@@ -15,5 +15,11 @@
         /// Rich text editor content.
         /// </summary>
         public string Content { get; set; }
+
+
+        /// <summary>
+        /// Configuration name for the underlying inline editor.
+        /// </summary>
+        public string ConfigurationName { get; set; }
     }
 }

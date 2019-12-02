@@ -28,6 +28,7 @@ Thumbs.db
 
 # Visual Studio cache/options directory
 .vs/
+.vscode/
 
 # Ignore Administration Kentico site
 CMS/
