@@ -24,9 +24,9 @@ export const initializeFroalaEditor = ({ editor, propertyName, propertyValue }: 
 
     initializeMacroPlugin(Froala, element);
     initializeLinkPlugin(Froala, element);
-    
-    const customOptions = getCustomOptions(element);
+
     const key = element.dataset.richTextEditorLicense as string;
+    const customOptions = getCustomOptions(element);
     const events = getEvents(editor, propertyName, propertyValue, customOptions);
     const options = getFroalaOptions(key, events, customOptions);
 
@@ -49,5 +49,5 @@ const getCustomOptions = (richTextWrapper: HTMLElement): Partial<Froala.FroalaOp
     const configurationName = richTextWrapper.dataset.richTextEditorConfiguration!;
     const customConfiguration = window.kentico.pageBuilder.richTextEditor?.configurations?.[configurationName];
 
-    return (typeof customConfiguration?.froalaOptions === "object") ? customConfiguration.froalaOptions : {};
+    return (typeof customConfiguration === "object") ? customConfiguration : {};
 }

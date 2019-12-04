@@ -1,7 +1,7 @@
+import { Froala } from "@/types/kentico";
 import { macroCommands } from "./macro-commands";
 import * as constants from "./macro-constants";
 import { macroPlugin } from "./macro-plugin";
-import { Froala } from "../plugin-types";
 
 export const initializeMacroPlugin = (froala: Froala, element: HTMLElement) => {
     // Define popup templates.
