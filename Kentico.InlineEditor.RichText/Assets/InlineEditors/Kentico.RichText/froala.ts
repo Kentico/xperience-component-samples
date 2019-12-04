@@ -3,11 +3,9 @@ import "froala-editor/css/froala_editor.pkgd.css";
 import "./style.less";
 
 import { InlineEditorOptions } from "@/types/kentico/inline-editors/inline-editor-options";
-import { imageReplaceCommand, insertImageCommand } from "./commands";
-import { initializeMacroPlugin } from "./plugins/macros";
-import { initializeLinkPlugin } from "./plugins/links";
 import { getEvents } from "./froala-events";
 import { getFroalaOptions } from "./froala-options";
+import { initializePlugins } from "./plugins";
 
 const RICH_TEXT_WRAPPER_SELECTOR = ".ktc-rich-text-wrapper";
 
@@ -18,12 +16,7 @@ export const initializeFroalaEditor = ({ editor, propertyName, propertyValue }: 
         return;
     }
 
-    Froala.RegisterCommand("insertImage", insertImageCommand);
-    Froala.RegisterCommand("imageReplace", imageReplaceCommand);
-    Froala.RegisterQuickInsertButton("image", insertImageCommand);
-
-    initializeMacroPlugin(Froala, element);
-    initializeLinkPlugin(Froala, element);
+    initializePlugins(element);
 
     const key = element.dataset.richTextEditorLicense as string;
     const customOptions = getCustomOptions(element);
