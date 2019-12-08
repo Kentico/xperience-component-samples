@@ -24,9 +24,7 @@ install:
   - npm run build
 
 after_build:
-  - ps: |
-      Push-Location $env:APPVEYOR_PROJECT_NAME
-      nuget pack .nuget\richtext.nuspec -BasePath .\ -Properties Configuration=Debug
+  - ps: nuget pack .nuget\richtext.nuspec -BasePath .\ -Properties Configuration=Debug
 
 # Post-install test scripts.
 after_test:
@@ -37,5 +35,5 @@ after_test:
   - npm run test
 
 artifacts:
-  - path: '.nuget\*.nupkg'
+  - path: '*.nupkg'
     name: NuGet packages
