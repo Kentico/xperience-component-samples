@@ -24,7 +24,7 @@ install:
   - npm run build
 
 after_build:
-  - ps: nuget pack .nuget\richtext.nuspec -BasePath -Suffix $env:APPVEYOR_BUILD_NUMBER .\ -Properties Configuration=$($env:CONFIGURATION, "Debug" | Select -First 1)
+  - ps: nuget pack .nuget\richtext.nuspec -BasePath .\ -Suffix $env:APPVEYOR_BUILD_NUMBER -Properties Configuration=$($env:CONFIGURATION, "Debug" | Select -First 1)
 
 # Post-install test scripts.
 after_test:
