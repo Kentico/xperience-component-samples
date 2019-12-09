@@ -38,8 +38,8 @@
     <file src="Kentico.InlineEditor.RichText\bin\$Configuration$\Kentico.InlineEditor.RichText.dll" target="lib\net461" />
     <file src="Kentico.Widget.RichText\bin\$Configuration$\Kentico.Widget.RichText.dll" target="lib\net461" />
     <file src="Kentico.Widget.RichText.Views\bin\Kentico.Widget.RichText.Views.dll" target="lib\net461" />
-    <file src="Kentico.InlineEditor.RichText\Content\**" target="content" />
-    <file src="Kentico.Widget.RichText\Content\**" target="content" />
+    <file src="Kentico.InlineEditor.RichText\Content\**" target="content\Content" />
+    <file src="Kentico.Widget.RichText\Content\**" target="content\Content" />
     <file src="Kentico.InlineEditor.RichText\App_Data\Global\**" target="content\App_Data\Global" />
     <file src="Kentico.Widget.RichText\App_Data\Global\**" target="content\App_Data\Global" />
   </files>
