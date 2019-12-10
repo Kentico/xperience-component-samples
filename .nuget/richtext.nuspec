@@ -1,35 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
-  <metadata>
+  <metadata minClientVersion="4.3">
     <id>Kentico.EMS12.MvcComponents.Widget.RichText</id>
     <version>1.0.0</version>
     <title>Kentico.EMS12.MvcComponents.Widget.RichText</title>
     <authors>Kentico</authors>
     <owners>Kentico</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/Kentico/ems-mvc-components</projectUrl>
     <icon>images\kentico.png</icon>
-    <description>Kentico EMS MVC Rich text widget and in-line editor</description>
+    <description>The rich text widget and inline editor allow content editors to edit rich text in a "WYSIWYG" manner.</description>
     <copyright>Copyright 2019</copyright>
     <tags>Kentico ems mvc widget rich text component</tags>
     <dependencies>
         <group targetFramework="net461">
-            <dependency id="Antlr" version="3.5.0.2" />
-            <dependency id="Castle.Core" version="4.4.0" />
             <dependency id="Kentico.AspNet.Mvc.Libraries" version="12.0.43" />
-            <dependency id="Microsoft.CSharp" version="4.4.1" />
-            <dependency id="Microsoft.Data.Edm" version="5.8.4" />
-            <dependency id="Microsoft.Data.OData" version="5.8.4" />
-            <dependency id="Microsoft.Data.Services.Client" version="5.8.4" />
-            <dependency id="Microsoft.Owin.Security" version="3.1.0" />
-            <dependency id="Microsoft.Owin.Security.Cookies" version="3.1.0" />
-            <dependency id="Microsoft.Owin.Security.OAuth" version="3.1.0" />
-            <dependency id="Microsoft.Web.Xdt" version="2.1.1" />
-            <dependency id="Newtonsoft.Json" version="11.0.2" />
-            <dependency id="System.Spatial" version="5.8.4" />
-            <dependency id="System.Text.Encoding.CodePages" version="4.5.0" />
-            <dependency id="WebGrease" version="1.6.0" />
         </group>
     </dependencies>
   </metadata>
