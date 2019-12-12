@@ -11,7 +11,7 @@ Function PackRichText {
     Write-Host "Get version: $version"
     $suffixParam = "-Suffix b$env:APPVEYOR_BUILD_NUMBER"
 
-    If ([bool]$env:APPVEYOR_REPO_TAG -eq $true) {
+    If ($env:APPVEYOR_REPO_TAG -eq "true") {
         $suffixParam = ""
         $version = $env:APPVEYOR_REPO_TAG_NAME
         Write-Host "APPVEYOR_REPO_TAG assumed to be $true"
