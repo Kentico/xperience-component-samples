@@ -5,6 +5,7 @@ before_build:
 - cmd: nuget restore
 build:
   verbosity: minimal
+configuration: Release
 
 # .NET Tests
 test:
