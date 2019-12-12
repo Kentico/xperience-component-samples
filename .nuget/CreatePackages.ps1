@@ -8,13 +8,17 @@ Function PackRichText {
         $configuration
     )
 
+    Write-Host "Get version: $version"
     $suffixParam = "-Suffix b$env:APPVEYOR_BUILD_NUMBER"
 
     If ([bool]$env:APPVEYOR_REPO_TAG -eq $true) {
         $suffixParam = ""
-        $version = $env:APPVEYOR_REPO_TAG_NAME  
+        $version = $env:APPVEYOR_REPO_TAG_NAME
+        Write-Host "APPVEYOR_REPO_TAG assumed to be $true"
     } 
 
+    Write-Host "Version: $version"
+    Write-Host "Suffix: $suffixParam"
     Invoke-Expression "nuget.exe pack .nuget\richtext.nuspec -BasePath .\ -Version $version $suffixParam -Properties Configuration=$configuration"
 }
 
