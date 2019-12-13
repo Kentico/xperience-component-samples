@@ -1,5 +1,4 @@
-import { Froala } from "../plugin-types";
-
+import { Froala } from "@/types/kentico";
 import * as constants from "./link-constants";
 import { linkPlugin } from "./link-plugin";
 import { linkCommands } from "./link-commands";

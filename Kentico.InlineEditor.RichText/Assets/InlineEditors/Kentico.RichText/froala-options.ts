@@ -1,8 +1,8 @@
+import { FroalaOptions, FroalaEvents } from "froala-editor/js/froala_editor.pkgd.min";
 import CodeMirror from "codemirror";
 import "codemirror/mode/xml/xml";
 import "codemirror/lib/codemirror.css";
 
-import { FroalaOptions, FroalaEvents } from "froala-editor/js/froala_editor.pkgd.min";
 import { OPEN_LINK_CONFIGURATION_POPUP_COMMAND_NAME, OPEN_INSERT_LINK_POPUP_COMMAND_NAME } from "./plugins/links/link-constants";
 import { OPEN_INSERT_MACRO_POPUP_COMMAND_NAME } from "./plugins/macros/macro-constants";
 
@@ -39,4 +39,5 @@ export const getFroalaOptions = (key: string, events: Partial<FroalaEvents>, cus
     ...customOptions,
     key,
     events,
+    attribution: false,
 })
