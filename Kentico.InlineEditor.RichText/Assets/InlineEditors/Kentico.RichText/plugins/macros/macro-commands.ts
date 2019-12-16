@@ -66,7 +66,6 @@ const insertMacroCommandParameters: RegisterCommandParameters = {
                 this.html.insert(macroElement);
             }
 
-            this.toolbar.hide();
             this.kenticoMacroPlugin.hideConfigurationPopup();
         }
     }
