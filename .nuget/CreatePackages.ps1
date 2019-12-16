@@ -19,7 +19,7 @@ Function PackRichText {
 
     Write-Host "Version: $version"
     Write-Host "Suffix: $suffixParam"
-    Invoke-Expression "nuget.exe pack .nuget\richtext.nuspec -BasePath .\ -Version $version $suffixParam -Properties Configuration=$configuration"
+    Invoke-Expression "nuget.exe pack .nuget\Kentico.EMS12.MvcComponents.Widget.RichText.nuspec -BasePath .\ -Version $version $suffixParam -Properties Configuration=$configuration"
 }
 
 Function DetermineAssemblyVersion {
