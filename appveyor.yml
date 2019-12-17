@@ -7,6 +7,12 @@ build:
   verbosity: minimal
 configuration: Release
 
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.cs'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+
 # .NET Tests
 test:
   assemblies:
