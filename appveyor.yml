@@ -1,10 +1,16 @@
 # .NET Build Configuration
-version: 1.0.{build}
+version: 1.0.0.{build}
 image: Visual Studio 2019
 before_build:
 - cmd: nuget restore
 build:
   verbosity: minimal
+configuration: Release
+
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.cs'
+  assembly_file_version: '{version}'
 
 # .NET Tests
 test:
@@ -21,13 +27,19 @@ install:
   - ps: Install-Product node $env:nodejs_version
   # install modules
   - npm install
+  - npm run build
+
+after_build:
+  - ps: .nuget\CreatePackages.ps1
 
 # Post-install test scripts.
 after_test:
   # Output useful info for debugging.
   - node --version
   - npm --version
-  # run build
-  - npm run build
   # run tests
   - npm run test
+
+artifacts:
+  - path: '*.nupkg'
+    name: NuGet packages
