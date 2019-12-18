@@ -7,11 +7,6 @@ build:
   verbosity: minimal
 configuration: Release
 
-assembly_info:
-  patch: true
-  file: '**\AssemblyInfo.cs'
-  assembly_file_version: '{version}'
-
 # .NET Tests
 test:
   assemblies:
@@ -28,6 +23,9 @@ install:
   # install modules
   - npm install
   - npm run build
+
+before_build:
+  - ps: .nuget\buildInit.ps1
 
 after_build:
   - ps: .nuget\CreatePackages.ps1
