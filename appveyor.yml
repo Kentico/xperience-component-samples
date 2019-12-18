@@ -2,7 +2,9 @@
 version: 1.0.0.{build}
 image: Visual Studio 2019
 before_build:
+- ps: .nuget\buildInit.ps1
 - cmd: nuget restore
+
 build:
   verbosity: minimal
 configuration: Release
@@ -23,9 +25,6 @@ install:
   # install modules
   - npm install
   - npm run build
-
-before_build:
-  - ps: .nuget\buildInit.ps1
 
 after_build:
   - ps: .nuget\CreatePackages.ps1
