@@ -7,11 +7,11 @@ The rich text inline editor for editing rich text in a "WYSIWYG" manner.
 
 ## Installation
 
-If you want to include the Rich text editor in your project, you can install it directly via the [Kentico.EMS12.MvcComponents.Widget.RichText](https://www.nuget.org/packages/Kentico.EMS12.MvcComponents.Widget.RichText) NuGet package. This NuGet package includes also the Rich text inline editor.
+If you want to include the *Rich text* inline editor in your MVC project, install the [Kentico.EMS12.MvcComponents.Widget.RichText](https://www.nuget.org/packages/Kentico.EMS12.MvcComponents.Widget.RichText) NuGet package.
 
-To install the Rich text editor, run the following command in the Package Manager Console.
+Run the following command in the [Package Manager Console](https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-powershell):
 ```
-PM> Install-Package Kentico.EMS12.MvcComponents.Widget.RichText
+PM> Install-Package Kentico.EMS12.MvcComponents.InlineEditor.RichText
 ```
 
 ![Rich Text inline editor](/Kentico.InlineEditor.RichText/RichTextInlineEditor.gif)
