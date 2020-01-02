@@ -1,5 +1,5 @@
 # .NET Build Configuration
-version: 1.0.0.{build}
+version: 1.0.1.{build}
 image: Visual Studio 2019
 before_build:
 - cmd: nuget restore
