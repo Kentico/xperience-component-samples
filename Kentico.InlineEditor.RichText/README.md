@@ -14,4 +14,6 @@ Run the following command in the [Package Manager Console](https://docs.microsof
 PM> Install-Package Kentico.EMS12.MvcComponents.Widget.RichText
 ```
 
+You can also visit the [Wiki](https://github.com/Kentico/ems-mvc-components/wiki) of this repository to learn how to [customize the toolbar](https://github.com/Kentico/ems-mvc-components/wiki/Customizing-the-Rich-text-editor-toolbar) of the editor.
+
 ![Rich Text inline editor](/Kentico.InlineEditor.RichText/RichTextInlineEditor.gif)
