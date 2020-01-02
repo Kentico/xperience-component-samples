@@ -14,6 +14,8 @@ Run the following command in the [Package Manager Console](https://docs.microsof
 PM> Install-Package Kentico.EMS12.MvcComponents.Widget.RichText
 ```
 
-You may need to adjust the [limitations](https://kentico.com/CMSPages/DocLinkMapper.ashx?version=latest&link=page_builder_editable_areas_mvc#CreatingpageswitheditableareasinMVC-Limitingwidgetsallowedinaneditablearea) of editable areas to be able to insert the widget into an editable area.
+You can also visit the [Wiki](https://github.com/Kentico/ems-mvc-components/wiki) of this repository to learn how to [customize the toolbar](https://github.com/Kentico/ems-mvc-components/wiki/Customizing-the-Rich-text-editor-toolbar) of the editor.
+
+**Note**: You may need to adjust the [limitations](https://kentico.com/CMSPages/DocLinkMapper.ashx?version=latest&link=page_builder_editable_areas_mvc#CreatingpageswitheditableareasinMVC-Limitingwidgetsallowedinaneditablearea) of editable areas to be able to insert the widget into an editable area.
 
 ![Rich Text widget](/Kentico.Widget.RichText/RichTextWidget.gif)
