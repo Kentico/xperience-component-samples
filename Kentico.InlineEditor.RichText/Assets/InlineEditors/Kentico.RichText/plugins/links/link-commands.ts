@@ -103,6 +103,17 @@ const switchGeneralLinkTabCommand = new FroalaCommand(constants.SWITCH_GENERAL_L
     }
 }, switchGeneralLinkTabCommandIcon);
 
+// Switch media link tab command
+const switchMediaLinkTabCommandIcon = new FroalaIcon(constants.SWITCH_MEDIA_LINK_TAB_COMMAND_NAME, { NAME: "link", SVG_KEY: "insertImage" });
+const switchMediaLinkTabCommand = new FroalaCommand(constants.SWITCH_MEDIA_LINK_TAB_COMMAND_NAME, {
+    title: getString("Command.MediaLinkTab"),
+    undo: false,
+    focus: false,
+    callback(this: FroalaEditor) {
+        showForm(this, constants.INSERT_LINK_POPUP_NAME, defaultLinkDescriptor, new LinkModel(LinkType.MEDIA));
+    }
+}, switchMediaLinkTabCommandIcon);
+
 const getLinkData = (editor: FroalaEditor, isGeneralLink: boolean): LinkDescriptor | null => {
     const popupName = getVisiblePopupName(editor);
     const popupElement = getDialogElement(editor, popupName!);
@@ -142,6 +153,8 @@ const getVisiblePopupName = (editor: FroalaEditor) => {
         return constants.CONFIGURE_PAGE_LINK_POPUP_NAME;
     } else if (editor.popups.isVisible(constants.CONFIGURE_GENERAL_LINK_POPUP_NAME)) {
         return constants.CONFIGURE_GENERAL_LINK_POPUP_NAME;
+    } else if (editor.popups.isVisible(constants.CONFIGURE_MEDIA_LINK_POPUP_NAME)) {
+        return constants.CONFIGURE_MEDIA_LINK_POPUP_NAME;
     }
 }
 
@@ -152,5 +165,6 @@ export const linkCommands = [
     insertPageLinkCommand,
     insertGeneralLinkCommand,
     switchPageLinkTabCommand,
-    switchGeneralLinkTabCommand
+    switchGeneralLinkTabCommand,
+    switchMediaLinkTabCommand
 ]

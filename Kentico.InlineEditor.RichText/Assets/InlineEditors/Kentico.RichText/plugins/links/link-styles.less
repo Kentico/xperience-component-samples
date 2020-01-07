@@ -1,15 +1,20 @@
 #ktc-link-configuration-layer {
+
+    .selector-entity-name() {
+        display: table-cell;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 0px;
+        text-align: left;
+    }
+
     .ktc-page-selector {
         display: table;
         width: 100%;
 
         .ktc-page-name {
-            display: table-cell;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            max-width: 0px;
-            text-align: left;
+            .selector-entity-name();
         }
 
         span {
@@ -25,6 +30,32 @@
             text-align: center;
             
             .ktc-page-name {
+                display: none;
+            }
+        }
+    }
+
+    .ktc-media-selector {
+        display: table;
+        width: 100%;
+
+        .ktc-media-name {
+            .selector-entity-name();
+        }
+
+        span {
+            display: table-cell;
+            width: 1px;
+
+            button {
+                white-space: nowrap;
+            }
+        }      
+        
+        &.ktc-media-selector--empty {
+            text-align: center;
+
+            .ktc-media-name {
                 display: none;
             }
         }

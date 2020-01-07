@@ -27,3 +27,16 @@ export const getGeneralLinkConfigurationPopupTemplate = (linkDescriptor: LinkDes
         command: INSERT_GENERAL_LINK_COMMAND_NAME,
         actionButtonText: getString(dialogMode === DialogMode.INSERT ? "ActionButton.Insert" : "ActionButton.Save"),
     });
+
+export const getMediaLinkConfigurationPopupTemplate = (mediaName: string | null, linkDescriptor: LinkDescriptor, dialogMode: DialogMode): string =>
+    require("./templates/configure-media-link-popup.html")({
+        mediaName,
+        mediaSelectionButtonText: getString(linkDescriptor.linkURL ? "ActionButton.ChangeMedia" : "ActionButton.SelectMedia"),
+        mediaLinkText: linkDescriptor.linkText,
+        mediaLinkTextLabel: getString("Label.Text"),
+        mediaLinkUrl: linkDescriptor.linkURL,
+        openInNewTab: linkDescriptor.openInNewTab,
+        openInNewTabLabel: getString("Label.OpenInNewTab"),
+        command: "", // TODO: MAE-54 Add command name
+        actionButtonText: getString(dialogMode === DialogMode.INSERT ? "ActionButton.Insert" : "ActionButton.Save")
+    });

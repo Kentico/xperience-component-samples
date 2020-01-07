@@ -1,0 +1,37 @@
+<form id="ktc-link-popup-form" onsubmit="event.preventDefault()">
+    <div class="fr-layer fr-active" id="ktc-link-configuration-layer" data-mouseenter-event-set="true">
+        <div class="fr-action-buttons ktc-media-selector <%= mediaLinkUrl ? '' : 'ktc-media-selector--empty' %>">
+            <label class="ktc-media-name" title="<%= mediaName %>"><%= mediaName %></label>
+            <span>
+                <button class="fr-command fr-submit ktc-media-selection" role="button" href="#" tabindex="1"
+                    type="button">
+                    <%= mediaSelectionButtonText %>
+                </button>
+            </span>
+            <input name="mediaUrl" value="<%= mediaLinkUrl %>" hidden>
+        </div>
+        <div class="fr-input-line" style="display: block;">
+            <input id="ktc-media-url-text-1" name="mediaLinkText" type="text" class="fr-link-attr fr-not-empty"
+                placeholder="" tabindex="2" dir="auto" value="<%= mediaLinkText %>">
+            <label for="ktc-media-url-text-1"><%= mediaLinkTextLabel %></label>
+        </div>
+        <div class="fr-checkbox-line">
+            <span class="fr-checkbox">
+                <input name="openInNewTab" class="fr-link-attr fr-not-empty" type="checkbox"
+                    id="ktc-configuration-openInNewTab" tabindex="3" dir="auto" <%= openInNewTab ? 'checked' : '' %>>
+                <span>
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        width="10" height="10" viewBox="0 0 32 32">
+                        <path d="M27 4l-15 15-7-7-5 5 12 12 20-20z" fill="#FFF"></path>
+                    </svg>
+                </span>
+            </span><label id="ktc-lbl-configuration-openInNewTab"><%= openInNewTabLabel %></label>
+        </div>
+        <div class="fr-action-buttons">
+            <button class="fr-command fr-submit" role="button" data-cmd="<%= command %>" href="#" tabindex="3"
+                type="button">
+                <%= actionButtonText %>
+            </button>
+        </div>
+    </div>
+</form>

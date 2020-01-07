@@ -1,14 +1,16 @@
-import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
+import FroalaEditor, { Image } from "froala-editor/js/froala_editor.pkgd.min";
 
 import { showPopup, getDialogElement, bindFocusEventToInputs } from "../../popup-helper";
-import { INSERT_LINK_POPUP_NAME, CONFIGURE_PAGE_LINK_POPUP_NAME, SWITCH_PAGE_LINK_TAB_COMMAND_NAME, SWITCH_GENERAL_LINK_TAB_COMMAND_NAME, CONFIGURE_GENERAL_LINK_POPUP_NAME } from "../link-constants";
-import { getPageLinkConfigurationPopupTemplate, getGeneralLinkConfigurationPopupTemplate } from "../link-templates";
+import { INSERT_LINK_POPUP_NAME, CONFIGURE_PAGE_LINK_POPUP_NAME, SWITCH_PAGE_LINK_TAB_COMMAND_NAME, SWITCH_GENERAL_LINK_TAB_COMMAND_NAME, CONFIGURE_GENERAL_LINK_POPUP_NAME, SWITCH_MEDIA_LINK_TAB_COMMAND_NAME } from "../link-constants";
+import { getPageLinkConfigurationPopupTemplate, getGeneralLinkConfigurationPopupTemplate, getMediaLinkConfigurationPopupTemplate } from "../link-templates";
 import { DialogMode } from "../../plugin-types";
 import { getString, getLinkModel } from "../link-helpers";
 import { LinkType } from "../link-types";
 import { LinkModel } from "../link-model";
-import { IdentifierMode, PageSelectorOpenOptions } from "@/types/kentico/selectors/page-selector-open-options";
 import { LinkDescriptor } from "../link-descriptor";
+
+import { IdentifierMode, PageSelectorOpenOptions } from "@/types/kentico/selectors/page-selector-open-options";
+import { MediaFilesSelectorOpenOptions } from "@/types/kentico/selectors/media-files-selector-open-options";
 
 const POPUP_TEMPLATE_BODY_CLASS_NAME = "ktc-configure-popup";
 
@@ -42,7 +44,12 @@ export const showForm = (editor: FroalaEditor, popupName: string, linkDescriptor
 
     const { linkType } = linkModel;
     const container = dialog.querySelector<HTMLElement>(`.${POPUP_TEMPLATE_BODY_CLASS_NAME}`);
-    const tabCommand = linkType === LinkType.PAGE ? SWITCH_PAGE_LINK_TAB_COMMAND_NAME : SWITCH_GENERAL_LINK_TAB_COMMAND_NAME;
+    const tabCommand =
+        linkType === LinkType.PAGE
+            ? SWITCH_PAGE_LINK_TAB_COMMAND_NAME
+            : linkType === LinkType.MEDIA
+                ? SWITCH_MEDIA_LINK_TAB_COMMAND_NAME
+                : SWITCH_GENERAL_LINK_TAB_COMMAND_NAME;
 
     if (!container) {
         return;
@@ -56,11 +63,16 @@ export const showForm = (editor: FroalaEditor, popupName: string, linkDescriptor
         case LinkType.LOCAL:
             const { linkText, openInNewTab } = linkDescriptor;
             const descriptor = new LinkDescriptor(linkText, linkModel.linkURL!, openInNewTab);
-            container!.innerHTML = getGeneralLinkConfigurationPopupTemplate(descriptor, dialogMode);
+            container.innerHTML = getGeneralLinkConfigurationPopupTemplate(descriptor, dialogMode);
             break;
 
         case LinkType.EXTERNAL:
-            container!.innerHTML = getGeneralLinkConfigurationPopupTemplate(linkDescriptor, dialogMode);
+            container.innerHTML = getGeneralLinkConfigurationPopupTemplate(linkDescriptor, dialogMode);
+            break;
+
+        case LinkType.MEDIA:
+            const { opts, image } = editor;
+            showMediaLinkForm(container, linkModel, linkDescriptor, dialogMode, opts.imageAllowedTypes, image);
             break;
 
         default:
@@ -89,7 +101,7 @@ const showPageLinkForm = async (container: HTMLElement, linkModel: LinkModel, li
     container.innerHTML = getPageLinkConfigurationPopupTemplate(pageName, linkDescriptor, dialogMode);
 
     const pageSelector = container!.querySelector<HTMLElement>(".ktc-page-selector");
-    const pageSelectButton = container!.querySelector<HTMLInputElement>(".ktc-page-selection");
+    const pageSelectButton = container!.querySelector<HTMLButtonElement>(".ktc-page-selection");
 
     pageSelectButton!.addEventListener("click", () => {
         const selectedPageIdentifier = linkModel.linkMetadata && linkModel.linkMetadata.identifier;
@@ -130,5 +142,60 @@ const showPageLinkForm = async (container: HTMLElement, linkModel: LinkModel, li
         }
 
         window.kentico.modalDialog.pageSelector.open(options);
+    });
+}
+
+const showMediaLinkForm = (container: HTMLElement, linkModel: LinkModel, linkDescriptor: LinkDescriptor, dialogMode: DialogMode, allowedExtensions: string[], image: Image) => {
+
+    if (!container) {
+        return;
+    }
+
+    const mediaName = linkModel.linkMetadata && linkModel.linkMetadata.name;
+    container.innerHTML = getMediaLinkConfigurationPopupTemplate(mediaName, linkDescriptor, dialogMode);
+
+    const mediaSelector = container!.querySelector<HTMLElement>(".ktc-media-selector");
+    const mediaSelectButton = container!.querySelector<HTMLButtonElement>(".ktc-media-selection");
+
+    mediaSelectButton!.addEventListener("click", () => {
+        const selectedMediaIdentifier = linkModel.linkMetadata && linkModel.linkMetadata.identifier;
+        
+        let options: MediaFilesSelectorOpenOptions = {
+            allowedExtensions: `.${allowedExtensions.join(";.")}`,
+            applyCallback(images) {
+                if (images && images[0]) {
+                    const { url, title, name, fileGuid } = images[0];
+                    const mediaUrlField = container.querySelector<HTMLInputElement>("input[name='mediaUrl']");
+                    const mediaNameLabel = container.querySelector<HTMLLabelElement>(".ktc-media-name")!;
+                    const mediaLinkText = container!.querySelector<HTMLInputElement>("input[name='mediaLinkText']");
+                    mediaUrlField!.value = url;
+                    mediaNameLabel!.textContent = mediaNameLabel!.title = name;
+                    mediaSelectButton!.textContent = getString("ActionButton.ChangeMedia");
+                    // TODO: MAE-194 <a><img .../></a>
+                    // image.insert(selectedImage.url, true, { name: selectedImage.name, id: selectedImage.fileGuid });
+
+                    if (mediaLinkText && !mediaLinkText.value) {
+                        mediaLinkText.value = name;
+                        mediaLinkText.classList.add("fr-not-empty");
+                    }
+
+                    linkModel = new LinkModel(LinkType.MEDIA, linkDescriptor.linkURL, {
+                        name,
+                        identifier: fileGuid,
+                    });
+
+                    mediaSelector!.classList.remove("ktc-media-selector--empty");
+                }
+            }
+        };
+
+        if (selectedMediaIdentifier) {
+            options = {
+                ...options,
+                selectedValues: [{ fileGuid: selectedMediaIdentifier }],
+            }
+        }
+
+        window.kentico.modalDialog.mediaFilesSelector.open(options);
     });
 }

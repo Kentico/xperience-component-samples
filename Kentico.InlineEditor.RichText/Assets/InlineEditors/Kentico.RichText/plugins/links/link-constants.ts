@@ -8,8 +8,10 @@ export const INSERT_PAGE_LINK_COMMAND_NAME = "insertPageLink";
 export const INSERT_GENERAL_LINK_COMMAND_NAME = "insertGeneralLink";
 export const SWITCH_PAGE_LINK_TAB_COMMAND_NAME = "switchPageLinkTab";
 export const SWITCH_GENERAL_LINK_TAB_COMMAND_NAME = "switchGeneralLinkTab";
+export const SWITCH_MEDIA_LINK_TAB_COMMAND_NAME = "switchMediaLinkTab";
 
 // Pop-ups
 export const INSERT_LINK_POPUP_NAME = `${LINK_PLUGIN_NAME}.popupInsertLink`;
 export const CONFIGURE_PAGE_LINK_POPUP_NAME = `${LINK_PLUGIN_NAME}.popupConfigurePageLink`;
 export const CONFIGURE_GENERAL_LINK_POPUP_NAME = `${LINK_PLUGIN_NAME}.popupConfigureGeneralLink`;
+export const CONFIGURE_MEDIA_LINK_POPUP_NAME = `${LINK_PLUGIN_NAME}.popupConfigureMediaLink`;

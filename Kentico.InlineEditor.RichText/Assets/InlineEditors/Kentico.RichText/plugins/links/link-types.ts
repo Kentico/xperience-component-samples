@@ -11,4 +11,5 @@ export enum LinkType {
     PAGE,
     LOCAL,
     EXTERNAL,
+    MEDIA,
 }
