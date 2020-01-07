@@ -529,10 +529,13 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PageLink\IMediaFilesRetriever.cs" />
     <Compile Include="PageLink\IRichTextGetLinkMetadataActionExecutor.cs" />
     <Compile Include="Controllers\KenticoRichTextController.cs" />
     <Compile Include="PageLink\LinkModel.cs" />
     <Compile Include="PageLink\LinkTypeEnum.cs" />
+    <Compile Include="PageLink\MediaFileDirectPathData.cs" />
+    <Compile Include="PageLink\MediaFilesRetriever.cs" />
     <Compile Include="PageLink\RichTextGetLinkMetadataActionExecutor.cs" />
     <Compile Include="DynamicText\DynamicTextPattern.cs" />
     <Compile Include="DynamicText\DynamicTextPatternRegister.cs" />

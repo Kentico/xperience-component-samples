@@ -20,13 +20,15 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
         {
             private RichTextGetLinkMetadataActionExecutor richTextGetLinkMetadataActionExecutor;
             private IPagesRetriever pagesRetrieverMock;
+            private IMediaFilesRetriever mediaFilesRetrieverMock;
 
 
             [SetUp]
             public void SetUp()
             {
                 pagesRetrieverMock = Substitute.For<IPagesRetriever>();
-                richTextGetLinkMetadataActionExecutor = new RichTextGetLinkMetadataActionExecutor(pagesRetrieverMock, "/");
+                mediaFilesRetrieverMock = Substitute.For<IMediaFilesRetriever>();
+                richTextGetLinkMetadataActionExecutor = new RichTextGetLinkMetadataActionExecutor(pagesRetrieverMock, mediaFilesRetrieverMock, "/", "site1");
 
                 VirtualContext.SetItem(VirtualContext.PARAM_PREVIEW_LINK, "pv");
                 MembershipContext.AuthenticatedUser = Substitute.For<CurrentUserInfo>();
@@ -122,7 +124,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 
                 pagesRetrieverMock.GetPage(Arg.Any<string>()).Returns(pageMock);
 
-                var result = new RichTextGetLinkMetadataActionExecutor(pagesRetrieverMock, applicationPath).ProcessAction(url);
+                var result = new RichTextGetLinkMetadataActionExecutor(pagesRetrieverMock, mediaFilesRetrieverMock, applicationPath, "site1").ProcessAction(url);
 
                 Assert.Multiple(() =>
                 {
@@ -142,7 +144,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             {
                 pagesRetrieverMock.GetPage(Arg.Any<string>()).Returns((TreeNode)null);
 
-                var result = new RichTextGetLinkMetadataActionExecutor(pagesRetrieverMock, applicationPath).ProcessAction(linkUrl);
+                var result = new RichTextGetLinkMetadataActionExecutor(pagesRetrieverMock, mediaFilesRetrieverMock, applicationPath, "site1").ProcessAction(linkUrl);
 
                 Assert.Multiple(() =>
                 {
