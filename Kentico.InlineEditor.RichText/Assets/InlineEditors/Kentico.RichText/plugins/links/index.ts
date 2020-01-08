@@ -15,8 +15,9 @@ export const initializeLinkPlugin = (froala: Froala, element: HTMLElement) => {
     // Define popup buttons.
     Object.assign(froala.DEFAULTS, {
         popupInsertLinkButtons: [constants.CLOSE_LINK_CONFIGURATION_POPUP_COMMAND_NAME, "|", constants.SWITCH_PAGE_LINK_TAB_COMMAND_NAME, constants.SWITCH_GENERAL_LINK_TAB_COMMAND_NAME, constants.SWITCH_MEDIA_LINK_TAB_COMMAND_NAME],
-        popupUpdatePageLinkButtons: [constants.CLOSE_LINK_CONFIGURATION_POPUP_COMMAND_NAME, "|", constants.SWITCH_PAGE_LINK_TAB_COMMAND_NAME, constants.SWITCH_MEDIA_LINK_TAB_COMMAND_NAME],
-        popupUpdateGeneralLinkButtons: [constants.CLOSE_LINK_CONFIGURATION_POPUP_COMMAND_NAME, "|", constants.SWITCH_GENERAL_LINK_TAB_COMMAND_NAME, constants.SWITCH_MEDIA_LINK_TAB_COMMAND_NAME],
+        popupUpdatePageLinkButtons: [constants.CLOSE_LINK_CONFIGURATION_POPUP_COMMAND_NAME, "|", constants.SWITCH_PAGE_LINK_TAB_COMMAND_NAME],
+        popupUpdateGeneralLinkButtons: [constants.CLOSE_LINK_CONFIGURATION_POPUP_COMMAND_NAME, "|", constants.SWITCH_GENERAL_LINK_TAB_COMMAND_NAME],
+        popupUpdateMediaLinkButtons: [constants.CLOSE_LINK_CONFIGURATION_POPUP_COMMAND_NAME, "|", constants.SWITCH_MEDIA_LINK_TAB_COMMAND_NAME],
     });
 
     const getLinkMetadataEndpointUrl = element.dataset.getLinkMetadataEndpointUrl;

@@ -64,6 +64,7 @@ const insertLinkCommandParameters: RegisterCommandParameters = {
 
 const insertPageLinkCommand = new FroalaCommand(constants.INSERT_PAGE_LINK_COMMAND_NAME, insertLinkCommandParameters);
 const insertGeneralLinkCommand = new FroalaCommand(constants.INSERT_GENERAL_LINK_COMMAND_NAME, insertLinkCommandParameters);
+const insertMediaLinkCommand = new FroalaCommand(constants.INSERT_MEDIA_LINK_COMMAND_NAME, insertLinkCommandParameters);
 
 // Open link configuration popup
 
@@ -127,7 +128,7 @@ const getLinkData = (editor: FroalaEditor, isGeneralLink: boolean): LinkDescript
         return null;
     }
     if (!link.linkText) {
-        const linkText = isGeneralLink ? link.linkURL : popupElement.querySelector<HTMLElement>(".ktc-page-name")!.innerText;
+        const linkText = isGeneralLink ? link.linkURL : popupElement.querySelector<HTMLElement>(".ktc-page-name, .ktc-media-name")!.innerText;
 
         link = new LinkDescriptor(linkText, link.linkURL, link.openInNewTab);
     }
@@ -164,6 +165,7 @@ export const linkCommands = [
     closeLinkConfigurationPopupCommand,
     insertPageLinkCommand,
     insertGeneralLinkCommand,
+    insertMediaLinkCommand,
     switchPageLinkTabCommand,
     switchGeneralLinkTabCommand,
     switchMediaLinkTabCommand

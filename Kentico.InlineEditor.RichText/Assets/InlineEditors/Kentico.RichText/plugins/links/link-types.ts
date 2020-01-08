@@ -9,7 +9,7 @@ export interface LinkPlugin extends CustomPlugin {
 
 export enum LinkType {
     PAGE,
+    MEDIA,
     LOCAL,
     EXTERNAL,
-    MEDIA,
 }

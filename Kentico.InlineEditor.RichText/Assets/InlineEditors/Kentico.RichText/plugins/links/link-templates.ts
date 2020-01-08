@@ -1,5 +1,5 @@
 import { DialogMode } from "../plugin-types";
-import { INSERT_PAGE_LINK_COMMAND_NAME, INSERT_GENERAL_LINK_COMMAND_NAME } from "./link-constants";
+import { INSERT_PAGE_LINK_COMMAND_NAME, INSERT_GENERAL_LINK_COMMAND_NAME, INSERT_MEDIA_LINK_COMMAND_NAME } from "./link-constants";
 import { getString } from "./link-helpers";
 import { LinkDescriptor } from "./link-descriptor";
 
@@ -37,6 +37,6 @@ export const getMediaLinkConfigurationPopupTemplate = (mediaName: string | null,
         mediaLinkUrl: linkDescriptor.linkURL,
         openInNewTab: linkDescriptor.openInNewTab,
         openInNewTabLabel: getString("Label.OpenInNewTab"),
-        command: "", // TODO: MAE-54 Add command name
+        command: INSERT_MEDIA_LINK_COMMAND_NAME,
         actionButtonText: getString(dialogMode === DialogMode.INSERT ? "ActionButton.Insert" : "ActionButton.Save")
     });

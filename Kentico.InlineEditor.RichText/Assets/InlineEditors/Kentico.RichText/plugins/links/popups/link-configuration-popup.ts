@@ -1,7 +1,7 @@
 import FroalaEditor, { Image } from "froala-editor/js/froala_editor.pkgd.min";
 
 import { showPopup, getDialogElement, bindFocusEventToInputs } from "../../popup-helper";
-import { INSERT_LINK_POPUP_NAME, CONFIGURE_PAGE_LINK_POPUP_NAME, SWITCH_PAGE_LINK_TAB_COMMAND_NAME, SWITCH_GENERAL_LINK_TAB_COMMAND_NAME, CONFIGURE_GENERAL_LINK_POPUP_NAME, SWITCH_MEDIA_LINK_TAB_COMMAND_NAME } from "../link-constants";
+import { INSERT_LINK_POPUP_NAME, CONFIGURE_PAGE_LINK_POPUP_NAME, SWITCH_PAGE_LINK_TAB_COMMAND_NAME, SWITCH_GENERAL_LINK_TAB_COMMAND_NAME, CONFIGURE_GENERAL_LINK_POPUP_NAME, SWITCH_MEDIA_LINK_TAB_COMMAND_NAME, CONFIGURE_MEDIA_LINK_POPUP_NAME } from "../link-constants";
 import { getPageLinkConfigurationPopupTemplate, getGeneralLinkConfigurationPopupTemplate, getMediaLinkConfigurationPopupTemplate } from "../link-templates";
 import { DialogMode } from "../../plugin-types";
 import { getString, getLinkModel } from "../link-helpers";
@@ -31,7 +31,10 @@ export async function showLinkConfigurationPopup(this: FroalaEditor, relatedElem
 
     const showLinkPopup = linkModel.linkType === LinkType.PAGE
         ? getShowLinkPopup(CONFIGURE_PAGE_LINK_POPUP_NAME, this.opts.popupUpdatePageLinkButtons, linkModel)
-        : getShowLinkPopup(CONFIGURE_GENERAL_LINK_POPUP_NAME, this.opts.popupUpdateGeneralLinkButtons, linkModel);
+        : linkModel.linkType === LinkType.MEDIA
+            ? getShowLinkPopup(CONFIGURE_MEDIA_LINK_POPUP_NAME, this.opts.popupUpdateMediaLinkButtons, linkModel)
+            : getShowLinkPopup(CONFIGURE_GENERAL_LINK_POPUP_NAME, this.opts.popupUpdateGeneralLinkButtons, linkModel);
+
     showLinkPopup(this, relatedElementPosition, linkDescriptor, DialogMode.UPDATE);
 }
 
@@ -71,8 +74,7 @@ export const showForm = (editor: FroalaEditor, popupName: string, linkDescriptor
             break;
 
         case LinkType.MEDIA:
-            const { opts, image } = editor;
-            showMediaLinkForm(container, linkModel, linkDescriptor, dialogMode, opts.imageAllowedTypes, image);
+            showMediaLinkForm(container, linkModel, linkDescriptor, dialogMode, editor.opts.imageAllowedTypes);
             break;
 
         default:
@@ -94,6 +96,7 @@ export function hideLinkConfigurationPopup(this: FroalaEditor) {
     this.popups.hide(INSERT_LINK_POPUP_NAME);
     this.popups.hide(CONFIGURE_PAGE_LINK_POPUP_NAME);
     this.popups.hide(CONFIGURE_GENERAL_LINK_POPUP_NAME);
+    this.popups.hide(CONFIGURE_MEDIA_LINK_POPUP_NAME);
 }
 
 const showPageLinkForm = async (container: HTMLElement, linkModel: LinkModel, linkDescriptor: LinkDescriptor, dialogMode: DialogMode) => {
@@ -145,7 +148,7 @@ const showPageLinkForm = async (container: HTMLElement, linkModel: LinkModel, li
     });
 }
 
-const showMediaLinkForm = (container: HTMLElement, linkModel: LinkModel, linkDescriptor: LinkDescriptor, dialogMode: DialogMode, allowedExtensions: string[], image: Image) => {
+const showMediaLinkForm = (container: HTMLElement, linkModel: LinkModel, linkDescriptor: LinkDescriptor, dialogMode: DialogMode, allowedExtensions: string[]) => {
 
     if (!container) {
         return;
@@ -159,20 +162,18 @@ const showMediaLinkForm = (container: HTMLElement, linkModel: LinkModel, linkDes
 
     mediaSelectButton!.addEventListener("click", () => {
         const selectedMediaIdentifier = linkModel.linkMetadata && linkModel.linkMetadata.identifier;
-        
+
         let options: MediaFilesSelectorOpenOptions = {
             allowedExtensions: `.${allowedExtensions.join(";.")}`,
             applyCallback(images) {
                 if (images && images[0]) {
-                    const { url, title, name, fileGuid } = images[0];
-                    const mediaUrlField = container.querySelector<HTMLInputElement>("input[name='mediaUrl']");
+                    const { url, name, fileGuid } = images[0];
+                    const mediaUrlField = container.querySelector<HTMLInputElement>("input[name='linkUrl']");
                     const mediaNameLabel = container.querySelector<HTMLLabelElement>(".ktc-media-name")!;
-                    const mediaLinkText = container!.querySelector<HTMLInputElement>("input[name='mediaLinkText']");
+                    const mediaLinkText = container!.querySelector<HTMLInputElement>("input[name='linkText']");
                     mediaUrlField!.value = url;
                     mediaNameLabel!.textContent = mediaNameLabel!.title = name;
                     mediaSelectButton!.textContent = getString("ActionButton.ChangeMedia");
-                    // TODO: MAE-194 <a><img .../></a>
-                    // image.insert(selectedImage.url, true, { name: selectedImage.name, id: selectedImage.fileGuid });
 
                     if (mediaLinkText && !mediaLinkText.value) {
                         mediaLinkText.value = name;
