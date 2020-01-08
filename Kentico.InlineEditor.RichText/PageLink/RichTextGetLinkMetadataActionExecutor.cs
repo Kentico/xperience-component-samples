@@ -25,7 +25,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         /// <summary>
         /// Initializes a new instance of the <see cref="RichTextGetLinkMetadataActionExecutor"/> class.
         /// </summary>
-        public RichTextGetLinkMetadataActionExecutor(IPagesRetriever pagesProvider, IMediaFilesRetriever mediaFilesRetriever, string applicationPath, string sitename)
+        public RichTextGetLinkMetadataActionExecutor(IPagesRetriever pagesProvider, IMediaFilesRetriever mediaFilesRetriever, string applicationPath, string siteName)
         {
             if (String.IsNullOrEmpty(applicationPath))
             {
@@ -35,7 +35,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
             this.pagesProvider = pagesProvider ?? throw new ArgumentNullException(nameof(pagesProvider));
             this.mediaFilesRetriever = mediaFilesRetriever ?? throw new ArgumentNullException(nameof(mediaFilesRetriever));
             this.applicationPath = applicationPath;
-            this.siteName = sitename;
+            this.siteName = siteName;
         }
 
 
@@ -69,7 +69,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
 
                 // Media file
                 var mediaFile = mediaFilesRetriever.GetMediaFile(urlPath);
-                if (mediaFile!= null)
+                if (mediaFile != null)
                 {
                     localLinkModel = GetMediaFileLinkModel(mediaFile);
                 }

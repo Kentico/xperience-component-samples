@@ -8,6 +8,7 @@ using CMS.Base;
 using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.Helpers;
+using CMS.MediaLibrary;
 using CMS.Membership;
 using CMS.Tests;
 
@@ -145,6 +146,50 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 pagesRetrieverMock.GetPage(Arg.Any<string>()).Returns((TreeNode)null);
 
                 var result = new RichTextGetLinkMetadataActionExecutor(pagesRetrieverMock, mediaFilesRetrieverMock, applicationPath, "site1").ProcessAction(linkUrl);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                    Assert.That(result.LinkModel.LinkType, Is.EqualTo(LinkTypeEnum.Local));
+                    Assert.That(result.LinkModel.LinkMetadata, Is.Null);
+                    Assert.That(result.LinkModel.LinkURL, Is.EqualTo(linkUrl));
+                });
+            }
+
+
+            [Test]
+            public void ProcessAction_MediaFileUrl_ExistingMediaFile_ReturnsCorrectLinkModel()
+            {
+                const string MEDIA_FILE_GUID = "2f51ad51-a88d-45de-af69-8da11bd861eb";
+                var linkUrl = $"/getmedia/{MEDIA_FILE_GUID}/test.jpg";
+
+                var mediaFileMock = Substitute.For<MediaFileInfo>();
+                mediaFileMock.FileName = "Test";
+                mediaFileMock.FileGUID = Guid.Parse(MEDIA_FILE_GUID);
+                mediaFilesRetrieverMock.GetMediaFile(Arg.Any<string>()).Returns(mediaFileMock);
+
+                var result = richTextGetLinkMetadataActionExecutor.ProcessAction(linkUrl);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                    Assert.That(result.LinkModel.LinkType, Is.EqualTo(LinkTypeEnum.MediaFile));
+                    Assert.That(result.LinkModel.LinkMetadata.Name, Is.EqualTo(mediaFileMock.FileName));
+                    Assert.That(result.LinkModel.LinkMetadata.Identifier, Is.EqualTo(mediaFileMock.FileGUID));
+                    Assert.That(result.LinkModel.LinkURL, Is.EqualTo(linkUrl));
+                });
+            }
+
+
+            [Test]
+            public void ProcessAction_MediaFileUrl_NotExistingMediaFile_ReturnsLocalLinkType()
+            {
+                const string MEDIA_FILE_GUID = "2f51ad51-a88d-45de-af69-8da11bd861eb";
+                var linkUrl = $"/getmedia/{MEDIA_FILE_GUID}/test.jpg";
+
+                mediaFilesRetrieverMock.GetMediaFile(Arg.Any<string>()).Returns((MediaFileInfo)null);
+
+                var result = richTextGetLinkMetadataActionExecutor.ProcessAction(linkUrl);
 
                 Assert.Multiple(() =>
                 {
