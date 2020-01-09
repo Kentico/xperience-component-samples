@@ -1,5 +1,5 @@
 # .NET Build Configuration
-version: {build}
+version: '{build}'
 image: Visual Studio 2019
 before_build:
 - ps: .nuget\BuildInit.ps1
