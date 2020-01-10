@@ -63,9 +63,33 @@
             box-shadow: 0 0 3px rgba(0, 0, 0, 0.75);
         }
     }
+}
 
-    .ktc-configure-popup {
+.ktc-configure-popup {
+    .ktc-page-selection {
+        display: inline-block;
+        line-height: 1;
+        color: #0098f7;
         padding: 10px;
+        cursor: pointer;
+        text-decoration: none;
+        border: none;
+        background: none;
+        font-size: 16px;
+        outline: none;
+        border-radius: 2px;
+        background-clip: padding-box;
+    }
+    .ktc-page-selection::-moz-focus-inner {
+        border: 0;
+    }
+    .ktc-page-selection:hover, .ktc-page-selection:focus {
+        background: #ebebeb;
+        color: #0098f7;
+    }
+    .ktc-page-selection:active {
+        background: #d6d6d6;
+        color: #0098f7;
     }
 }
 
