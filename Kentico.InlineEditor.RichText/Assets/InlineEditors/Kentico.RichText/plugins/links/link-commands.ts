@@ -13,7 +13,7 @@ import { PageSelectorOpenOptions, IdentifierMode } from "@/types/kentico/selecto
 import { MediaFilesSelectorOpenOptions } from "@/types/kentico/selectors/media-files-selector-open-options";
 
 let defaultLinkDescriptor: LinkDescriptor;
-let linkModel: Nullable<LinkModel> = null;
+let linkModel: LinkModel;
 
 // Open insert link popup
 
@@ -27,7 +27,7 @@ const openInsertLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_LINK_
     callback(this: FroalaEditor) {
         this.selection.save();
         const linkText = this.selection.text();
-        linkModel = null;
+        linkModel = new LinkModel(LinkType.PAGE);
         defaultLinkDescriptor = new LinkDescriptor(linkText);
         this.kenticoLinkPlugin.showInsertLinkPopup(this.position.getBoundingRect(), defaultLinkDescriptor);
     }
@@ -95,7 +95,8 @@ const switchPageLinkTabCommand = new FroalaCommand(constants.SWITCH_PAGE_LINK_TA
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
-        showForm(this, constants.INSERT_LINK_POPUP_NAME, defaultLinkDescriptor, new LinkModel(LinkType.PAGE));
+        linkModel = new LinkModel(LinkType.PAGE);
+        showForm(this, constants.INSERT_LINK_POPUP_NAME, defaultLinkDescriptor, linkModel);
     }
 }, switchPageLinkTabCommandIcon);
 
@@ -107,7 +108,8 @@ const switchGeneralLinkTabCommand = new FroalaCommand(constants.SWITCH_GENERAL_L
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
-        showForm(this, constants.INSERT_LINK_POPUP_NAME, defaultLinkDescriptor, new LinkModel(LinkType.EXTERNAL));
+        linkModel = new LinkModel(LinkType.EXTERNAL);
+        showForm(this, constants.INSERT_LINK_POPUP_NAME, defaultLinkDescriptor, linkModel);
     }
 }, switchGeneralLinkTabCommandIcon);
 
@@ -119,7 +121,8 @@ const switchMediaLinkTabCommand = new FroalaCommand(constants.SWITCH_MEDIA_LINK_
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
-        showForm(this, constants.INSERT_LINK_POPUP_NAME, defaultLinkDescriptor, new LinkModel(LinkType.MEDIA));
+        linkModel = new LinkModel(LinkType.MEDIA);
+        showForm(this, constants.INSERT_LINK_POPUP_NAME, defaultLinkDescriptor, linkModel);
     }
 }, switchMediaLinkTabCommandIcon);
 
