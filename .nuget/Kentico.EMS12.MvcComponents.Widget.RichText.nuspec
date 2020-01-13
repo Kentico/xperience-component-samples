@@ -26,7 +26,9 @@
     <file src="Kentico.Widget.RichText.Views\obj\$Configuration$\Precompiled\bin\Kentico.Widget.RichText.Views.dll" target="lib\net461" />
     <file src="Kentico.InlineEditor.RichText\Content\**" target="content\Content" />
     <file src="Kentico.Widget.RichText\Content\**" target="content\Content" />
-    <file src="Kentico.InlineEditor.RichText\App_Data\Global\**" target="content\App_Data\Global" />
-    <file src="Kentico.Widget.RichText\App_Data\Global\**" target="content\App_Data\Global" />
+
+    <file src=".nuget\Kentico.EMS12.MvcComponents.Widget.RichText.targets" target="build\" />
+    <file src="Kentico.InlineEditor.RichText\App_Data\Global\**" target="build\App_Data\Global" />
+    <file src="Kentico.Widget.RichText\App_Data\Global\**" target="build\App_Data\Global" />
   </files>
 </package>
