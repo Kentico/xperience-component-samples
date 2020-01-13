@@ -4,13 +4,10 @@ import { showPopup, getDialogElement, bindFocusEventToInputs } from "../../popup
 import { INSERT_LINK_POPUP_NAME, CONFIGURE_PAGE_LINK_POPUP_NAME, SWITCH_PAGE_LINK_TAB_COMMAND_NAME, SWITCH_GENERAL_LINK_TAB_COMMAND_NAME, CONFIGURE_GENERAL_LINK_POPUP_NAME, SWITCH_MEDIA_LINK_TAB_COMMAND_NAME, CONFIGURE_MEDIA_LINK_POPUP_NAME } from "../link-constants";
 import { getPageLinkConfigurationPopupTemplate, getGeneralLinkConfigurationPopupTemplate, getMediaLinkConfigurationPopupTemplate } from "../link-templates";
 import { DialogMode } from "../../plugin-types";
-import { getString, getLinkModel } from "../link-helpers";
 import { LinkType } from "../link-types";
 import { LinkModel } from "../link-model";
 import { LinkDescriptor } from "../link-descriptor";
 
-import { IdentifierMode, PageSelectorOpenOptions } from "@/types/kentico/selectors/page-selector-open-options";
-import { MediaFilesSelectorOpenOptions } from "@/types/kentico/selectors/media-files-selector-open-options";
 
 const POPUP_TEMPLATE_BODY_CLASS_NAME = "ktc-configure-popup";
 
