@@ -5,7 +5,7 @@
                    placeholder="" tabindex="1" dir="auto" value="<%= linkUrl %>">
             <label for="ktc-link-insert-layer-url-1"><%= linkUrlLabel %></label>
         </div>
-        <div class="fr-input-line" style="display: block;">
+        <div class="fr-input-line" style="display: <%= (imageLink) ? 'none' : 'block' %>;">
             <input id="ktc-link-insert-layer-text-1" name="linkText" type="text" class="fr-link-attr fr-not-empty"
                    placeholder="" tabindex="2" dir="auto" value="<%= linkText %>">
             <label for="ktc-link-insert-layer-text-1"><%= linkTextLabel %></label>

@@ -852,6 +852,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       applyStyle(className: string): object;
       display(displayType: DisplayType): any ;
       get(): object;
+      getEl(): HTMLImageElement[];
       insert(link: string, sanitize?: boolean, data?: { [key: string]: any }, existingImage?: any, response?: object): object;
       remove(image: any): object;
       setAlt(alternateText: string): object;
