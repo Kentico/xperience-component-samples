@@ -128,7 +128,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
                 LinkType = LinkTypeEnum.MediaFile,
                 LinkMetadata = new LinkMetadata
                 {
-                    Name = mediaFile.FileName,
+                    Name = mediaFile.FileName + mediaFile.FileExtension,
                     Identifier = mediaFile.FileGUID
                 }
             };

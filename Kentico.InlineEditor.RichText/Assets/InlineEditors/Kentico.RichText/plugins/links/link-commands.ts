@@ -200,27 +200,29 @@ const openMediaFileSelectionDialogCommand = new FroalaCommand(constants.OPEN_MED
 
         const mediaSelector = popup.querySelector<HTMLElement>(".ktc-media-selector");
         const mediaSelectButton = popup.querySelector<HTMLButtonElement>(".ktc-media-selection");
-
         const selectedMediaIdentifier = linkModel?.linkMetadata?.identifier;
+
         let options: MediaFilesSelectorOpenOptions = {
             allowedExtensions: `.${this.opts.imageAllowedTypes.join(";.")}`,
             applyCallback(images) {
                 if (images && images[0]) {
-                    const { url, name, fileGuid } = images[0];
+                    const { url, name, fileGuid, extension } = images[0];
                     const mediaUrlField = popup.querySelector<HTMLInputElement>("input[name='linkUrl']");
                     const mediaNameLabel = popup.querySelector<HTMLLabelElement>(".ktc-media-name")!;
                     const mediaLinkText = popup.querySelector<HTMLInputElement>("input[name='linkText']");
+                    const nameWithExtension = extension ? name + extension : name;
+
                     mediaUrlField!.value = url;
-                    mediaNameLabel!.textContent = mediaNameLabel!.title = name;
+                    mediaNameLabel!.textContent = mediaNameLabel!.title = nameWithExtension;
                     mediaSelectButton!.textContent = getString("ActionButton.ChangeMedia");
 
                     if (mediaLinkText && !mediaLinkText.value) {
-                        mediaLinkText.value = name;
+                        mediaLinkText.value = nameWithExtension;
                         mediaLinkText.classList.add("fr-not-empty");
                     }
 
                     linkModel = new LinkModel(LinkType.MEDIA, linkDescriptor.linkURL, {
-                        name,
+                        name: nameWithExtension,
                         identifier: fileGuid,
                     });
 

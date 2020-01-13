@@ -1,4 +1,4 @@
-import FroalaEditor, { Image } from "froala-editor/js/froala_editor.pkgd.min";
+import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 
 import { showPopup, getDialogElement, bindFocusEventToInputs } from "../../popup-helper";
 import { INSERT_LINK_POPUP_NAME, CONFIGURE_PAGE_LINK_POPUP_NAME, SWITCH_PAGE_LINK_TAB_COMMAND_NAME, SWITCH_GENERAL_LINK_TAB_COMMAND_NAME, CONFIGURE_GENERAL_LINK_POPUP_NAME, SWITCH_MEDIA_LINK_TAB_COMMAND_NAME, CONFIGURE_MEDIA_LINK_POPUP_NAME } from "../link-constants";
