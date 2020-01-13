@@ -190,14 +190,14 @@ const handleItemSelection = (commandName: string, selectedItem: Page | MediaFile
 
 const updateSelectedItem = (popup: HTMLElement, linkDescriptor: LinkDescriptor, itemName: string, itemUrl: string, itemIdentifier: string) => {
     const selector = popup.querySelector<HTMLElement>(".ktc-selector")!;
-    const selectorItem = selector.querySelector<HTMLLabelElement>(".ktc-selector-item")!;
+    const selectorItem = selector.querySelector<HTMLInputElement>(".ktc-selector-item")!;
     const selectorButton = selector.querySelector<HTMLButtonElement>(".ktc-selector-btn")!;
 
     const urlField = popup.querySelector<HTMLInputElement>("input[name='linkUrl']")!;
     const linkText = popup.querySelector<HTMLInputElement>("input[name='linkText']");
 
     urlField.value = itemUrl;
-    selectorItem.textContent = selectorItem.title = itemName;
+    selectorItem.value = selectorItem.title = itemName;
     selectorButton.textContent = getString("ActionButton.ChangeMedia");
 
     if (linkText && !linkText.value) {

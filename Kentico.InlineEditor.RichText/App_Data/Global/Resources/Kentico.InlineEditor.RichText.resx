@@ -210,4 +210,10 @@
   <data name="Kentico.InlineEditor.RichText.LinkPlugin.ActionButton.ChangeMedia" xml:space="preserve">
     <value>Change</value>
   </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Label.MediaFile" xml:space="preserve">
+    <value>Media file</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Label.PageName" xml:space="preserve">
+    <value>Page name</value>
+  </data>
 </root>

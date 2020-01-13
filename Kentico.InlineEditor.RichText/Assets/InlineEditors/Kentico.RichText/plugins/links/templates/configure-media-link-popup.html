@@ -1,12 +1,17 @@
 <form id="ktc-link-popup-form" onsubmit="event.preventDefault()">
     <div class="fr-layer fr-active" id="ktc-link-configuration-layer" data-mouseenter-event-set="true">
-        <div class="fr-action-buttons ktc-selector <%= mediaLinkUrl ? '' : 'ktc-selector--empty' %>">
-            <label class="ktc-selector-item" title="<%= mediaName %>"><%= mediaName %></label>
-            <span>
-                <div class="fr-command fr-submit ktc-selector-btn" role="button" tabindex="1" data-cmd="<%= mediaFileSelectionCommand %>">
+        <div class="ktc-selector <%= mediaLinkUrl ? '' : 'ktc-selector--empty' %>">
+            <div class="ktc-selector-item-name-field fr-input-line">
+                <input type="text" name="ktc-media-name" class="ktc-selector-item fr-link-attr fr-not-empty"
+                    value="<%= mediaName %>" title="<%= mediaName %>" disabled />
+                <label for="ktc-media-name"><%= mediaNameLabel %></label>
+            </div>
+            <div class="ktc-selector-button-line">
+                <div class="fr-command fr-submit ktc-selector-btn" role="button" tabindex="1"
+                    data-cmd="<%= mediaFileSelectionCommand %>">
                     <%= mediaSelectionButtonText %>
                 </div>
-            </span>
+            </div>
             <input name="linkUrl" value="<%= mediaLinkUrl %>" hidden>
         </div>
         <div class="fr-input-line" style="display: block;">
