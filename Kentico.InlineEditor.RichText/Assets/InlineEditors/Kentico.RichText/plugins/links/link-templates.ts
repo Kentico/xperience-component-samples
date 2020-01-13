@@ -1,5 +1,5 @@
+import * as constants from "./link-constants";
 import { DialogMode } from "../plugin-types";
-import { INSERT_PAGE_LINK_COMMAND_NAME, INSERT_GENERAL_LINK_COMMAND_NAME, INSERT_MEDIA_LINK_COMMAND_NAME } from "./link-constants";
 import { getString } from "./link-helpers";
 import { LinkDescriptor } from "./link-descriptor";
 
@@ -11,7 +11,8 @@ export const getPageLinkConfigurationPopupTemplate = (pageName: string | null, l
         linkTextLabel: getString("Label.Text"),
         openInNewTabLabel: getString("Label.OpenInNewTab"),
         openInNewTab: linkDescriptor.openInNewTab,
-        command: INSERT_PAGE_LINK_COMMAND_NAME,
+        command: constants.INSERT_PAGE_LINK_COMMAND_NAME,
+        pageSelectionCommand: constants.OPEN_PAGE_SELECTION_DIALOG_COMMAND_NAME,
         actionButtonText: getString(dialogMode === DialogMode.INSERT ? "ActionButton.Insert" : "ActionButton.Save"),
         pageSelectionButtonText: getString(linkDescriptor.linkURL ? "ActionButton.ChangePage" : "ActionButton.SelectPage"),
     });
@@ -24,7 +25,8 @@ export const getGeneralLinkConfigurationPopupTemplate = (linkDescriptor: LinkDes
         linkTextLabel: getString("Label.Text"),
         openInNewTabLabel: getString("Label.OpenInNewTab"),
         openInNewTab: linkDescriptor.openInNewTab,
-        command: INSERT_GENERAL_LINK_COMMAND_NAME,
+        command: constants.INSERT_GENERAL_LINK_COMMAND_NAME,
+        pageSelectionCommand: constants.OPEN_PAGE_SELECTION_DIALOG_COMMAND_NAME,
         actionButtonText: getString(dialogMode === DialogMode.INSERT ? "ActionButton.Insert" : "ActionButton.Save"),
     });
 
@@ -37,6 +39,7 @@ export const getMediaLinkConfigurationPopupTemplate = (mediaName: string | null,
         mediaLinkUrl: linkDescriptor.linkURL,
         openInNewTab: linkDescriptor.openInNewTab,
         openInNewTabLabel: getString("Label.OpenInNewTab"),
-        command: INSERT_MEDIA_LINK_COMMAND_NAME,
+        command: constants.INSERT_MEDIA_LINK_COMMAND_NAME,
+        mediaFileSelectionCommand: constants.OPEN_MEDIA_FILE_SELECTION_DIALOG_COMMAND_NAME,
         actionButtonText: getString(dialogMode === DialogMode.INSERT ? "ActionButton.Insert" : "ActionButton.Save")
     });

@@ -25,10 +25,7 @@ export async function showInsertLinkPopup(this: FroalaEditor, relatedElementPosi
     getShowLinkPopup(INSERT_LINK_POPUP_NAME, this.opts.popupInsertLinkButtons, new LinkModel(LinkType.PAGE))(this, relatedElementPosition, linkDescriptor);
 }
 
-export async function showLinkConfigurationPopup(this: FroalaEditor, relatedElementPosition: DOMRect | ClientRect, linkDescriptor: LinkDescriptor) {
-    const getLinkMetadataEndpointUrl = this.opts.getLinkMetadataEndpointUrl;
-    const linkModel = await getLinkModel(getLinkMetadataEndpointUrl, linkDescriptor.linkURL);
-
+export async function showLinkConfigurationPopup(this: FroalaEditor, relatedElementPosition: DOMRect | ClientRect, linkDescriptor: LinkDescriptor, linkModel: LinkModel) {
     const showLinkPopup = linkModel.linkType === LinkType.PAGE
         ? getShowLinkPopup(CONFIGURE_PAGE_LINK_POPUP_NAME, this.opts.popupUpdatePageLinkButtons, linkModel)
         : linkModel.linkType === LinkType.MEDIA
@@ -60,7 +57,8 @@ export const showForm = (editor: FroalaEditor, popupName: string, linkDescriptor
 
     switch (linkType) {
         case LinkType.PAGE:
-            showPageLinkForm(container, linkModel, linkDescriptor, dialogMode);
+            const pageName = linkModel.linkMetadata && linkModel.linkMetadata.name;
+            container.innerHTML = getPageLinkConfigurationPopupTemplate(pageName, linkDescriptor, dialogMode);
             break;
 
         case LinkType.LOCAL:
@@ -74,7 +72,8 @@ export const showForm = (editor: FroalaEditor, popupName: string, linkDescriptor
             break;
 
         case LinkType.MEDIA:
-            showMediaLinkForm(container, linkModel, linkDescriptor, dialogMode, editor.opts.imageAllowedTypes);
+            const mediaName = linkModel.linkMetadata && linkModel.linkMetadata.name;
+            container.innerHTML = getMediaLinkConfigurationPopupTemplate(mediaName, linkDescriptor, dialogMode);
             break;
 
         default:
@@ -97,106 +96,4 @@ export function hideLinkConfigurationPopup(this: FroalaEditor) {
     this.popups.hide(CONFIGURE_PAGE_LINK_POPUP_NAME);
     this.popups.hide(CONFIGURE_GENERAL_LINK_POPUP_NAME);
     this.popups.hide(CONFIGURE_MEDIA_LINK_POPUP_NAME);
-}
-
-const showPageLinkForm = async (container: HTMLElement, linkModel: LinkModel, linkDescriptor: LinkDescriptor, dialogMode: DialogMode) => {
-    let pageName = linkModel.linkMetadata && linkModel.linkMetadata.name;
-    container.innerHTML = getPageLinkConfigurationPopupTemplate(pageName, linkDescriptor, dialogMode);
-
-    const pageSelector = container!.querySelector<HTMLElement>(".ktc-page-selector");
-    const pageSelectButton = container!.querySelector<HTMLButtonElement>(".ktc-page-selection");
-
-    pageSelectButton!.addEventListener("click", () => {
-        const selectedPageIdentifier = linkModel.linkMetadata && linkModel.linkMetadata.identifier;
-        let options: PageSelectorOpenOptions = {
-            identifierMode: IdentifierMode.Guid,
-            applyCallback(selectedPages) {
-                if (selectedPages && selectedPages.length) {
-                    const pageNameField = container!.querySelector<HTMLLabelElement>(".ktc-page-name")!;
-                    const pageUrlField = container!.querySelector<HTMLInputElement>("input[name='linkUrl']");
-                    const { name, nodeGuid, url } = selectedPages[0];
-                    const linkText = container!.querySelector<HTMLInputElement>("input[name='linkText']");
-
-                    pageNameField.textContent = pageNameField.title = name;
-                    pageUrlField!.value = url;
-                    pageSelectButton!.textContent = getString("ActionButton.ChangePage");
-
-                    // Update page metadata to make them available next time the page selector is opened.
-                    linkModel = new LinkModel(LinkType.PAGE, linkDescriptor.linkURL, {
-                        name,
-                        identifier: nodeGuid,
-                    });
-
-                    if (linkText && !linkText.value) {
-                        linkText.value = name;
-                        linkText.classList.add("fr-not-empty");
-                    }
-
-                    pageSelector!.classList.remove("ktc-page-selector--empty");
-                }
-            }
-        };
-
-        if (selectedPageIdentifier) {
-            options = {
-                ...options,
-                selectedValues: [{ identifier: selectedPageIdentifier }],
-            }
-        }
-
-        window.kentico.modalDialog.pageSelector.open(options);
-    });
-}
-
-const showMediaLinkForm = (container: HTMLElement, linkModel: LinkModel, linkDescriptor: LinkDescriptor, dialogMode: DialogMode, allowedExtensions: string[]) => {
-
-    if (!container) {
-        return;
-    }
-
-    const mediaName = linkModel.linkMetadata && linkModel.linkMetadata.name;
-    container.innerHTML = getMediaLinkConfigurationPopupTemplate(mediaName, linkDescriptor, dialogMode);
-
-    const mediaSelector = container!.querySelector<HTMLElement>(".ktc-media-selector");
-    const mediaSelectButton = container!.querySelector<HTMLButtonElement>(".ktc-media-selection");
-
-    mediaSelectButton!.addEventListener("click", () => {
-        const selectedMediaIdentifier = linkModel.linkMetadata && linkModel.linkMetadata.identifier;
-
-        let options: MediaFilesSelectorOpenOptions = {
-            allowedExtensions: `.${allowedExtensions.join(";.")}`,
-            applyCallback(images) {
-                if (images && images[0]) {
-                    const { url, name, fileGuid } = images[0];
-                    const mediaUrlField = container.querySelector<HTMLInputElement>("input[name='linkUrl']");
-                    const mediaNameLabel = container.querySelector<HTMLLabelElement>(".ktc-media-name")!;
-                    const mediaLinkText = container!.querySelector<HTMLInputElement>("input[name='linkText']");
-                    mediaUrlField!.value = url;
-                    mediaNameLabel!.textContent = mediaNameLabel!.title = name;
-                    mediaSelectButton!.textContent = getString("ActionButton.ChangeMedia");
-
-                    if (mediaLinkText && !mediaLinkText.value) {
-                        mediaLinkText.value = name;
-                        mediaLinkText.classList.add("fr-not-empty");
-                    }
-
-                    linkModel = new LinkModel(LinkType.MEDIA, linkDescriptor.linkURL, {
-                        name,
-                        identifier: fileGuid,
-                    });
-
-                    mediaSelector!.classList.remove("ktc-media-selector--empty");
-                }
-            }
-        };
-
-        if (selectedMediaIdentifier) {
-            options = {
-                ...options,
-                selectedValues: [{ fileGuid: selectedMediaIdentifier }],
-            }
-        }
-
-        window.kentico.modalDialog.mediaFilesSelector.open(options);
-    });
 }

@@ -3,8 +3,7 @@
         <div class="fr-action-buttons ktc-media-selector <%= mediaLinkUrl ? '' : 'ktc-media-selector--empty' %>">
             <label class="ktc-media-name" title="<%= mediaName %>"><%= mediaName %></label>
             <span>
-                <button class="fr-command fr-submit ktc-media-selection" role="button" href="#" tabindex="1"
-                    type="button">
+                <button class="fr-command fr-submit ktc-media-selection" role="button" href="#" tabindex="1" type="button" data-cmd="<%= mediaFileSelectionCommand %>">
                     <%= mediaSelectionButtonText %>
                 </button>
             </span>

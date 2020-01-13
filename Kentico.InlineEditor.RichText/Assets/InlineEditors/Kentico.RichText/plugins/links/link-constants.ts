@@ -10,6 +10,8 @@ export const INSERT_MEDIA_LINK_COMMAND_NAME = "insertMediaLink";
 export const SWITCH_PAGE_LINK_TAB_COMMAND_NAME = "switchPageLinkTab";
 export const SWITCH_GENERAL_LINK_TAB_COMMAND_NAME = "switchGeneralLinkTab";
 export const SWITCH_MEDIA_LINK_TAB_COMMAND_NAME = "switchMediaLinkTab";
+export const OPEN_PAGE_SELECTION_DIALOG_COMMAND_NAME = "openPageSelection";
+export const OPEN_MEDIA_FILE_SELECTION_DIALOG_COMMAND_NAME = "openMediaFileSelection";
 
 // Pop-ups
 export const INSERT_LINK_POPUP_NAME = `${LINK_PLUGIN_NAME}.popupInsertLink`;
