@@ -9,8 +9,11 @@ import { LinkType } from "./link-types";
 import { showForm } from "./popups/link-configuration-popup";
 import { LinkModel } from "./link-model";
 import { LinkDescriptor } from "./link-descriptor";
-import { PageSelectorOpenOptions, IdentifierMode } from "@/types/kentico/selectors/page-selector-open-options";
-import { MediaFilesSelectorOpenOptions } from "@/types/kentico/selectors/media-files-selector-open-options";
+import { IdentifierMode } from "@/types/kentico/selectors/page-selector-open-options";
+import { MediaFile } from "@/types/kentico/selectors/media-file";
+import { Page } from "@/types/kentico/selectors/page";
+
+type OpenItemSelectionCommand = typeof constants.OPEN_PAGE_SELECTION_DIALOG_COMMAND_NAME | typeof constants.OPEN_MEDIA_FILE_SELECTION_DIALOG_COMMAND_NAME;
 
 let defaultLinkDescriptor: LinkDescriptor;
 let linkModel: LinkModel;
@@ -126,69 +129,16 @@ const switchMediaLinkTabCommand = new FroalaCommand(constants.SWITCH_MEDIA_LINK_
     }
 }, switchMediaLinkTabCommandIcon);
 
-// Open page selection dialog
-
-const openPageSelectionDialogCommand = new FroalaCommand(constants.OPEN_PAGE_SELECTION_DIALOG_COMMAND_NAME, {
+const getItemSelectionCommandParameters = (commandName: OpenItemSelectionCommand): RegisterCommandParameters => ({
     title: "",
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
-        const popupName = getVisiblePopupName(this);
-        const link = this.link.get() as HTMLAnchorElement;
-        const linkDescriptor = new LinkDescriptor(link ? link.text : this.selection.text());
-        const popup = getDialogElement(this, popupName!);
+        const modalDialog = window.kentico.modalDialog;
+        const selector = commandName === constants.OPEN_PAGE_SELECTION_DIALOG_COMMAND_NAME ?
+            modalDialog.pageSelector :
+            modalDialog.mediaFilesSelector;
 
-        const pageSelector = popup!.querySelector<HTMLElement>(".ktc-page-selector");
-        const pageSelectButton = popup!.querySelector<HTMLButtonElement>(".ktc-page-selection");
-
-        const selectedPageIdentifier = linkModel?.linkMetadata?.identifier;
-        let options: PageSelectorOpenOptions = {
-            identifierMode: IdentifierMode.Guid,
-            applyCallback(selectedPages) {
-                if (selectedPages && selectedPages.length) {
-                    const pageNameField = popup!.querySelector<HTMLLabelElement>(".ktc-page-name")!;
-                    const pageUrlField = popup!.querySelector<HTMLInputElement>("input[name='linkUrl']");
-                    const { name, nodeGuid, url } = selectedPages[0];
-                    const linkText = popup!.querySelector<HTMLInputElement>("input[name='linkText']");
-
-                    pageNameField.textContent = pageNameField.title = name;
-                    pageUrlField!.value = url;
-                    pageSelectButton!.textContent = getString("ActionButton.ChangePage");
-
-                    // Update page metadata to make them available next time the page selector is opened.
-                    linkModel = new LinkModel(LinkType.PAGE, linkDescriptor.linkURL, {
-                        name,
-                        identifier: nodeGuid,
-                    });
-
-                    if (linkText && !linkText.value) {
-                        linkText.value = name;
-                        linkText.classList.add("fr-not-empty");
-                    }
-
-                    pageSelector!.classList.remove("ktc-page-selector--empty");
-                }
-            }
-        };
-
-        if (selectedPageIdentifier) {
-            options = {
-                ...options,
-                selectedValues: [{ identifier: selectedPageIdentifier }],
-            }
-        }
-
-        window.kentico.modalDialog.pageSelector.open(options);
-    }
-});
-
-// Open media file selection dialog
-
-const openMediaFileSelectionDialogCommand = new FroalaCommand(constants.OPEN_MEDIA_FILE_SELECTION_DIALOG_COMMAND_NAME, {
-    title: "",
-    undo: false,
-    focus: false,
-    callback(this: FroalaEditor) {
         const popupName = getVisiblePopupName(this);
         const popup = getDialogElement(this, popupName!);
         const link = this.link.get() as HTMLAnchorElement;
@@ -198,49 +148,70 @@ const openMediaFileSelectionDialogCommand = new FroalaCommand(constants.OPEN_MED
             return;
         }
 
-        const mediaSelector = popup.querySelector<HTMLElement>(".ktc-media-selector");
-        const mediaSelectButton = popup.querySelector<HTMLButtonElement>(".ktc-media-selection");
-        const selectedMediaIdentifier = linkModel?.linkMetadata?.identifier;
-
-        let options: MediaFilesSelectorOpenOptions = {
-            allowedExtensions: `.${this.opts.imageAllowedTypes.join(";.")}`,
-            applyCallback(images) {
-                if (images && images[0]) {
-                    const { url, name, fileGuid, extension } = images[0];
-                    const mediaUrlField = popup.querySelector<HTMLInputElement>("input[name='linkUrl']");
-                    const mediaNameLabel = popup.querySelector<HTMLLabelElement>(".ktc-media-name")!;
-                    const mediaLinkText = popup.querySelector<HTMLInputElement>("input[name='linkText']");
-                    const nameWithExtension = extension ? name + extension : name;
-
-                    mediaUrlField!.value = url;
-                    mediaNameLabel!.textContent = mediaNameLabel!.title = nameWithExtension;
-                    mediaSelectButton!.textContent = getString("ActionButton.ChangeMedia");
-
-                    if (mediaLinkText && !mediaLinkText.value) {
-                        mediaLinkText.value = nameWithExtension;
-                        mediaLinkText.classList.add("fr-not-empty");
-                    }
-
-                    linkModel = new LinkModel(LinkType.MEDIA, linkDescriptor.linkURL, {
-                        name: nameWithExtension,
-                        identifier: fileGuid,
-                    });
-
-                    mediaSelector!.classList.remove("ktc-media-selector--empty");
+        const options: any = {
+            applyCallback(items: Page[] | MediaFile[]) {
+                if (items && items.length) {
+                    handleItemSelection(commandName, items[0], popup, linkDescriptor);
                 }
             }
         };
 
-        if (selectedMediaIdentifier) {
-            options = {
-                ...options,
-                selectedValues: [{ fileGuid: selectedMediaIdentifier }],
-            }
+        const preselectedItemIdentifier = linkModel?.linkMetadata?.identifier;
+        if (preselectedItemIdentifier) {
+            options.selectedValues = commandName === constants.OPEN_PAGE_SELECTION_DIALOG_COMMAND_NAME ?
+                [{ identifier: preselectedItemIdentifier }] :
+                [{ fileGuid: preselectedItemIdentifier }];
         }
 
-        window.kentico.modalDialog.mediaFilesSelector.open(options);
+        if (commandName === constants.OPEN_PAGE_SELECTION_DIALOG_COMMAND_NAME) {
+            options.identifierMode = IdentifierMode.Guid;
+        } else {
+            options.allowedExtensions = `.${this.opts.imageAllowedTypes.join(";.")}`;
+        }
+
+        selector.open(options);
     }
-});
+})
+
+// Open media file selection dialog
+const openPageSelectionDialogCommand = new FroalaCommand(constants.OPEN_PAGE_SELECTION_DIALOG_COMMAND_NAME, getItemSelectionCommandParameters(constants.OPEN_PAGE_SELECTION_DIALOG_COMMAND_NAME));
+const openMediaFileSelectionDialogCommand = new FroalaCommand(constants.OPEN_MEDIA_FILE_SELECTION_DIALOG_COMMAND_NAME, getItemSelectionCommandParameters(constants.OPEN_MEDIA_FILE_SELECTION_DIALOG_COMMAND_NAME))
+
+const handleItemSelection = (commandName: string, selectedItem: Page | MediaFile, popup: HTMLElement, linkDescriptor: LinkDescriptor) => {
+    if (commandName === constants.OPEN_PAGE_SELECTION_DIALOG_COMMAND_NAME) {
+        const { name, nodeGuid, url } = selectedItem as Page;
+        updateSelectedItem(popup, linkDescriptor, name, url, nodeGuid);
+    } else {
+        const { url, name, fileGuid, extension } = selectedItem as MediaFile;
+        const mediaFileNameWithExtension = extension ? name + extension : name;
+        updateSelectedItem(popup, linkDescriptor, mediaFileNameWithExtension, url, fileGuid);
+    }
+}
+
+const updateSelectedItem = (popup: HTMLElement, linkDescriptor: LinkDescriptor, itemName: string, itemUrl: string, itemIdentifier: string) => {
+    const selector = popup.querySelector<HTMLElement>(".ktc-selector")!;
+    const selectorItem = selector.querySelector<HTMLLabelElement>(".ktc-selector-item")!;
+    const selectorButton = selector.querySelector<HTMLButtonElement>(".ktc-selector-btn")!;
+
+    const urlField = popup.querySelector<HTMLInputElement>("input[name='linkUrl']")!;
+    const linkText = popup.querySelector<HTMLInputElement>("input[name='linkText']");
+
+    urlField.value = itemUrl;
+    selectorItem.textContent = selectorItem.title = itemName;
+    selectorButton.textContent = getString("ActionButton.ChangeMedia");
+
+    if (linkText && !linkText.value) {
+        linkText.value = itemName;
+        linkText.classList.add("fr-not-empty");
+    }
+
+    linkModel = new LinkModel(LinkType.MEDIA, linkDescriptor.linkURL, {
+        name: itemName,
+        identifier: itemIdentifier,
+    });
+
+    selector.classList.remove("ktc-selector--empty");
+}
 
 const getLinkData = (editor: FroalaEditor, isGeneralLink: boolean): LinkDescriptor | null => {
     const popupName = getVisiblePopupName(editor);

@@ -1,9 +1,9 @@
 <form id="ktc-link-popup-form" onsubmit="event.preventDefault()">
   <div class="fr-layer fr-active" id="ktc-link-configuration-layer">
-      <div class="fr-action-buttons ktc-page-selector <%= pageUrl ? '' : 'ktc-page-selector--empty' %>">
-            <label class="ktc-page-name" title="<%= pageName %>"><%= pageName %></label>
+      <div class="fr-action-buttons ktc-selector <%= pageUrl ? '' : 'ktc-selector--empty' %>">
+            <label class="ktc-selector-item" title="<%= pageName %>"><%= pageName %></label>
             <span>
-                <div class="fr-command fr-submit ktc-page-selection" role="button" tabindex="1" data-cmd="<%= pageSelectionCommand %>">
+                <div class="fr-command fr-submit ktc-selector-btn" role="button" tabindex="1" data-cmd="<%= pageSelectionCommand %>">
                     <%= pageSelectionButtonText %>
                 </div>
             </span>
