@@ -226,7 +226,7 @@ const getLinkData = (editor: FroalaEditor, isGeneralLink: boolean): LinkDescript
         return null;
     }
     if (!link.linkText) {
-        const linkText = isGeneralLink ? link.linkURL : popupElement.querySelector<HTMLElement>(".ktc-page-name, .ktc-media-name")!.innerText;
+        const linkText = isGeneralLink ? link.linkURL : popupElement.querySelector<HTMLInputElement>(".ktc-selector-item")!.value;
 
         link = new LinkDescriptor(linkText, link.linkURL, link.openInNewTab);
     }
