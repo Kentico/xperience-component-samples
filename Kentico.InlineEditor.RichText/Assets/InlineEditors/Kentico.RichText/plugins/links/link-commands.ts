@@ -14,17 +14,20 @@ import { unwrapElement } from "../../helpers";
 
 let defaultLinkDescriptor: LinkDescriptor;
 
-const onLinkButtonRefresh = function(this: FroalaEditor, $button: JQuery) {
+const onLinkButtonRefresh = (isInsertImageLinkCommand: boolean) => function(this: FroalaEditor, $button: JQuery) {
     const button = unwrapElement($button);
 
     if (!button) {
         return;
     }
 
-    if (this.link.get()) {
-        button.classList.add('fr-hidden');
-    } else {
+    // XOR condition
+    if(this.link.get() ? !isInsertImageLinkCommand : isInsertImageLinkCommand)
+    {
         button.classList.remove('fr-hidden');
+    }
+    else {
+        button.classList.add('fr-hidden');
     }
 }
 
@@ -52,7 +55,7 @@ const openInsertLinkPopupCommandParameters: RegisterCommandParameters = {
 const openInsertLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME, openInsertLinkPopupCommandParameters);
 const openInsertImageLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_IMAGE_LINK_POPUP_COMMAND_NAME, {
     ...openInsertLinkPopupCommandParameters,
-    refresh: onLinkButtonRefresh,
+    refresh: onLinkButtonRefresh(true),
 });
 
 // Close link configuration popup
@@ -96,7 +99,7 @@ const openLinkConfigurationPopupCommand = new FroalaCommand(constants.OPEN_LINK_
     title: getString("Command.EditLink"),
     undo: false,
     focus: false,
-    refresh: onLinkButtonRefresh,
+    refresh: onLinkButtonRefresh(false),
     async callback(this: FroalaEditor) {
         const link = this.link.get() as HTMLAnchorElement;
         const image = unwrapElement(this.image.get());
