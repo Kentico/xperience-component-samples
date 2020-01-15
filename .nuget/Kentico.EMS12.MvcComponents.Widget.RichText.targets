@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="EnsureBuilderResources" AfterTargets="Build">
+    <PropertyGroup>
+      <BuilderResourcesDestinationFolder>$(ProjectDir)</BuilderResourcesDestinationFolder>
+    </PropertyGroup>
+    <ItemGroup>
+      <BuilderResources Include="$(MSBuildThisFileDirectory)App_Data\Global\Resources\Kentico.*.RichText.resx" />
+    </ItemGroup>
+    <Copy SourceFiles="@(BuilderResources)" DestinationFolder="$(BuilderResourcesDestinationFolder)\App_Data\Global\Resources\%(RecursiveDir)" SkipUnchangedFiles="true" Condition=" '$(BuilderResourcesDestinationFolder)' != '' " />
+  </Target>
+  <PropertyGroup>
+    <CopyAllFilesToSingleFolderForPackageDependsOn>
+      CollectBuilderResources;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForPackageDependsOn>
+    <CopyAllFilesToSingleFolderForMsdeployDependsOn>
+      CollectBuilderResources;
+      $(CopyAllFilesToSingleFolderForMsdeployDependsOn);
+    </CopyAllFilesToSingleFolderForMsdeployDependsOn>
+  </PropertyGroup>
+  <Target Name="CollectBuilderResources">
+    <ItemGroup>
+      <_BuilderResources Include="App_Data\Global\Resources\Kentico.*.RichText.resx" />
+      <FilesForPackagingFromProject Include="%(_BuilderResources.Identity)">
+        <DestinationRelativePath>App_Data\Global\Resources\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+  </Target>
+</Project>

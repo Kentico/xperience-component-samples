@@ -72,10 +72,8 @@ export const showForm = (editor: FroalaEditor, popupName: string, linkDescriptor
 
     bindFocusEventToInputs(dialog);
 
-    if (linkType !== LinkType.PAGE) {
-        const popup = editor.popups.get(popupName);
-        editor.accessibility.focusPopup(popup);
-    }
+    const popup = editor.popups.get(popupName);
+    editor.accessibility.focusPopup(popup);
 }
 
 export function hideLinkConfigurationPopup(this: FroalaEditor) {
