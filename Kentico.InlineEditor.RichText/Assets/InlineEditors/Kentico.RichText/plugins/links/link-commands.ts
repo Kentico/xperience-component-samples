@@ -22,8 +22,7 @@ const onLinkButtonRefresh = (isInsertImageLinkCommand: boolean) => function(this
     }
 
     // XOR condition
-    if(this.link.get() ? !isInsertImageLinkCommand : isInsertImageLinkCommand)
-    {
+    if (this.link.get() ? !isInsertImageLinkCommand : isInsertImageLinkCommand) {
         button.classList.remove('fr-hidden');
     }
     else {
