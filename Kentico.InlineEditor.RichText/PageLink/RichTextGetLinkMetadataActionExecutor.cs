@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.Helpers;
+using CMS.MediaLibrary;
 using CMS.Membership;
 using CMS.SiteProvider;
 
@@ -16,13 +17,15 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
     internal sealed class RichTextGetLinkMetadataActionExecutor : IRichTextGetLinkMetadataActionExecutor
     {
         private readonly IPagesRetriever pagesProvider;
+        private readonly IMediaFilesRetriever mediaFilesRetriever;
         private readonly string applicationPath;
+        private readonly string siteName;
 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RichTextGetLinkMetadataActionExecutor"/> class.
         /// </summary>
-        public RichTextGetLinkMetadataActionExecutor(IPagesRetriever pagesProvider, string applicationPath)
+        public RichTextGetLinkMetadataActionExecutor(IPagesRetriever pagesProvider, IMediaFilesRetriever mediaFilesRetriever, string applicationPath, string siteName)
         {
             if (String.IsNullOrEmpty(applicationPath))
             {
@@ -30,7 +33,9 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
             }
 
             this.pagesProvider = pagesProvider ?? throw new ArgumentNullException(nameof(pagesProvider));
+            this.mediaFilesRetriever = mediaFilesRetriever ?? throw new ArgumentNullException(nameof(mediaFilesRetriever));
             this.applicationPath = applicationPath;
+            this.siteName = siteName;
         }
 
 
@@ -50,32 +55,50 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
                 return new GetLinkMetadataActionResult(HttpStatusCode.BadRequest, statusCodeMessage: "URL is missing the \"linkUrl\" parameter.");
             }
 
-            var linkModel = new LinkModel()
+            LinkModel linkModel = new LinkModel()
             {
-                LinkURL = linkUrl
+                LinkURL = linkUrl,
+                LinkType = LinkTypeEnum.External
             };
 
+            // Try to identify particular local link types
             if (IsLocalUrl(linkUrl))
             {
+                LinkModel localLinkModel = null;
                 string urlPath = GetUrlPath(linkUrl);
 
-                var page = pagesProvider.GetPage(urlPath);
-                if (page != null)
+                // Media file
+                var mediaFile = mediaFilesRetriever.GetMediaFile(urlPath);
+                if (mediaFile != null)
                 {
-                    if (!page.CheckPermissions(PermissionsEnum.Read, SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser))
-                    {
-                        return new GetLinkMetadataActionResult(HttpStatusCode.Forbidden, statusCodeMessage: $"You are not authorized to access data of the page '{urlPath}'.");
-                    }
-
-                    linkModel = GetPageLinkModel(page);
+                    localLinkModel = GetMediaFileLinkModel(mediaFile);
                 }
-                else
+
+                // Page
+                if (localLinkModel == null)
                 {
-                    linkModel = GetLocalLinkModel();
+                    var page = pagesProvider.GetPage(urlPath);
+                    if (page != null)
+                    {
+                        if (!page.CheckPermissions(PermissionsEnum.Read, siteName, MembershipContext.AuthenticatedUser))
+                        {
+                            return new GetLinkMetadataActionResult(HttpStatusCode.Forbidden, statusCodeMessage: $"You are not authorized to access data of the page '{urlPath}'.");
+                        }
+
+                        localLinkModel = GetPageLinkModel(page);
+                    }
+                }
+
+                // Local link with of an unknown type
+                if (localLinkModel == null)
+                {
+                    localLinkModel = GetLocalLinkModel();
                 }
 
                 // Store the local URL path that does not contain the virtual context data
-                linkModel.LinkURL = GetAbsolutePath(urlPath);
+                localLinkModel.LinkURL = GetAbsolutePath(urlPath);
+
+                linkModel = localLinkModel;
             }
 
             return new GetLinkMetadataActionResult(HttpStatusCode.OK, linkModel);
@@ -91,6 +114,22 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
                 {
                     Name = GetPageName(page),
                     Identifier = page.NodeGUID
+                }
+            };
+
+            return linkModel;
+        }
+
+
+        private LinkModel GetMediaFileLinkModel(MediaFileInfo mediaFile)
+        {
+            var linkModel = new LinkModel
+            {
+                LinkType = LinkTypeEnum.MediaFile,
+                LinkMetadata = new LinkMetadata
+                {
+                    Name = mediaFile.FileName + mediaFile.FileExtension,
+                    Identifier = mediaFile.FileGUID
                 }
             };
 

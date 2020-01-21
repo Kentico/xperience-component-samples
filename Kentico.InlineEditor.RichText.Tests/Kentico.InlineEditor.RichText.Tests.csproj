@@ -555,6 +555,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PageLink\MediaFileInfoProviderFake.cs" />
+    <Compile Include="PageLink\MediaFilesRetrieverTests.cs" />
     <Compile Include="PageLink\UseCamelCasePropertyNamesContractResolverAttributeTests.cs" />
     <Compile Include="PageLink\RichTextGetLinkMetadataActionExecutorTests.cs" />
     <Compile Include="Controllers\KenticoRichTextControllerTests.cs" />

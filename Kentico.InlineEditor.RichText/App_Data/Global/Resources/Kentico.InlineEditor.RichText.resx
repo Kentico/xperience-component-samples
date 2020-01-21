@@ -201,4 +201,19 @@
   <data name="Kentico.InlineEditor.RichText.LinkPlugin.Label.Url" xml:space="preserve">
     <value>URL</value>
   </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.ActionButton.SelectMedia" xml:space="preserve">
+    <value>Select media file</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Command.MediaLinkTab" xml:space="preserve">
+    <value>Media Link</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.ActionButton.ChangeMedia" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Label.MediaFile" xml:space="preserve">
+    <value>Media file</value>
+  </data>
+  <data name="Kentico.InlineEditor.RichText.LinkPlugin.Label.PageName" xml:space="preserve">
+    <value>Page</value>
+  </data>
 </root>
