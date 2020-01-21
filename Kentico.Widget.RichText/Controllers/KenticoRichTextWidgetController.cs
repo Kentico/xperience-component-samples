@@ -41,7 +41,7 @@ namespace Kentico.Components.Web.Mvc.Widgets
 
 
         public KenticoRichTextWidgetController()
-            : this(new RichTextGetLinkMetadataActionExecutor(new PagesRetriever(SiteContext.CurrentSiteName), SystemContext.ApplicationPath),
+            : this(new RichTextGetLinkMetadataActionExecutor(new PagesRetriever(SiteContext.CurrentSiteName), new MediaFilesRetriever(SiteContext.CurrentSiteName), SystemContext.ApplicationPath, SiteContext.CurrentSiteName),
                   Service.Resolve<IEventLogService>())
         {
             configuration = new RichTextWidgetConfiguration();

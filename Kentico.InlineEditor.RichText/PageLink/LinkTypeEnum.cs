@@ -11,6 +11,12 @@
         Page,
 
         /// <summary>
+        /// A link URL points to an existing media file.
+        /// </summary>
+        MediaFile,
+
+
+        /// <summary>
         /// A link URL pointing to the same application but is not of any of the supported object types.
         /// </summary>
         Local,

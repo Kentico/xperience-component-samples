@@ -1,23 +1,23 @@
 <form id="ktc-link-popup-form" onsubmit="event.preventDefault()">
-    <div class="fr-layer fr-active" id="ktc-link-configuration-layer">
-        <div class="ktc-selector <%= pageUrl ? '' : 'ktc-selector--empty' %>">
+    <div class="fr-layer fr-active" id="ktc-link-configuration-layer" data-mouseenter-event-set="true">
+        <div class="ktc-selector <%= mediaLinkUrl ? '' : 'ktc-selector--empty' %>">
             <div class="ktc-selector-item-name-field fr-input-line">
-                <input type="text" name="ktc-page-name" class="ktc-selector-item fr-link-attr fr-not-empty"
-                    value="<%= pageName %>" title="<%= pageName %>" disabled />
-                <label for="ktc-page-name"><%= pageNameLabel %></label>
+                <input type="text" name="ktc-media-name" class="ktc-selector-item fr-link-attr fr-not-empty"
+                    value="<%= mediaName %>" title="<%= mediaName %>" disabled />
+                <label for="ktc-media-name"><%= mediaNameLabel %></label>
             </div>
             <div class="ktc-selector-button-line">
                 <div class="fr-command fr-submit ktc-selector-btn" role="button" tabindex="1"
-                    data-cmd="<%= pageSelectionCommand %>">
-                    <%= pageSelectionButtonText %>
+                    data-cmd="<%= mediaFileSelectionCommand %>">
+                    <%= mediaSelectionButtonText %>
                 </div>
             </div>
-            <input name="linkUrl" value="<%= pageUrl %>" hidden>
+            <input name="linkUrl" value="<%= mediaLinkUrl %>" hidden>
         </div>
         <div class="fr-input-line" style="display: block;">
-            <input id="ktc-configuration-url-text-1" name="linkText" type="text" class="fr-link-attr fr-not-empty"
-                placeholder="" tabindex="2" dir="auto" value="<%= linkText %>">
-            <label for="ktc-configuration-url-text-1"><%= linkTextLabel %></label>
+            <input id="ktc-media-url-text-1" name="linkText" type="text" class="fr-link-attr fr-not-empty"
+                placeholder="" tabindex="2" dir="auto" value="<%= mediaLinkText %>">
+            <label for="ktc-media-url-text-1"><%= mediaLinkTextLabel %></label>
         </div>
         <div class="fr-checkbox-line">
             <span class="fr-checkbox">
