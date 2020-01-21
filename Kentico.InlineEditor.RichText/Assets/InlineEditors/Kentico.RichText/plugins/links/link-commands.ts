@@ -63,6 +63,7 @@ const insertLinkCommandParameters: RegisterCommandParameters = {
             return;
         }
 
+        this.link.get()?.removeAttribute("target");
         this.link.insert(link.linkURL, link.linkText, link.openInNewTab ? { target: "_blank" } : undefined);
         this.kenticoLinkPlugin.hideLinkConfigurationPopup();
     }
