@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 
 using CMS.MacroEngine;
 
@@ -30,7 +31,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 return "RESOLVED";
             }
 
-            return defaultValue;
+            return HttpUtility.HtmlEncode(defaultValue);
         }
     }
 }

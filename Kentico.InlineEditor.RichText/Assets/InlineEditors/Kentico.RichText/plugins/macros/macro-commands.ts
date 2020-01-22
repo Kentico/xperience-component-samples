@@ -1,4 +1,5 @@
 import FroalaEditor, { RegisterCommandParameters } from "froala-editor/js/froala_editor.pkgd.min";
+import _escape from "lodash/escape";
 
 import * as constants from "./macro-constants";
 import { getMacroEditModeElement } from "./macro-templates";
@@ -59,7 +60,7 @@ const insertMacroCommandParameters: RegisterCommandParameters = {
                 macroDisplayValue = getMacroDisplayName(contextMacros, macroValue);
             }
 
-            const macroDefaultValue = formData.get("defaultText") as string;
+            const macroDefaultValue = _escape(formData.get("defaultText") as string);
 
             if (macroValue) {
                 const macroElement = getMacroEditModeElement(macroType, macroValue, macroDefaultValue, macroDisplayValue);
@@ -97,7 +98,7 @@ const updateMacroCommandParameters: RegisterCommandParameters = {
 
             const data = {
                 macroValue: encodeURI(macroValue),
-                macroDefaultValue: formData.get("defaultText"),
+                macroDefaultValue: _escape(formData.get("defaultText") as string),
             };
 
             if (data.macroValue) {
