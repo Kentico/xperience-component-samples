@@ -851,7 +851,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       align(alignType: AlignType): object;
       applyStyle(className: string): object;
       display(displayType: DisplayType): any ;
-      get(): object;
+      get(): JQuery;
       insert(link: string, sanitize?: boolean, data?: { [key: string]: any }, existingImage?: any, response?: object): object;
       remove(image: any): object;
       setAlt(alternateText: string): object;
