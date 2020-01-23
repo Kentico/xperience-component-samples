@@ -9,6 +9,8 @@ import { LinkType } from "./link-types";
 import { showForm } from "./popups/link-configuration-popup";
 import { LinkModel } from "./link-model";
 import { LinkDescriptor } from "./link-descriptor";
+
+import { unwrapElement } from "../../helpers";
 import { IdentifierMode } from "@/types/kentico/selectors/page-selector-open-options";
 import { MediaFile } from "@/types/kentico/selectors/media-file";
 import { Page } from "@/types/kentico/selectors/page";
@@ -18,10 +20,25 @@ type OpenItemSelectionCommand = typeof constants.OPEN_PAGE_SELECTION_DIALOG_COMM
 let defaultLinkDescriptor: LinkDescriptor;
 let linkModel: LinkModel;
 
+const onLinkButtonRefresh = (isInsertImageLinkCommand: boolean) => function(this: FroalaEditor, $button: JQuery) {
+    const button = unwrapElement($button);
+
+    if (!button) {
+        return;
+    }
+
+    // XOR condition
+    if (this.link.get() ? !isInsertImageLinkCommand : isInsertImageLinkCommand) {
+        button.classList.remove('fr-hidden');
+    }
+    else {
+        button.classList.add('fr-hidden');
+    }
+}
+
 // Open insert link popup
 
-const openInsertLinkPopupCommandIcon = new FroalaIcon(constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME, { NAME: "link", SVG_KEY: "insertLink" });
-const openInsertLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME, {
+const openInsertLinkPopupCommandParameters: RegisterCommandParameters = {
     title: getString("Command.InsertLink"),
     focus: false,
     undo: false,
@@ -30,11 +47,23 @@ const openInsertLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_LINK_
     callback(this: FroalaEditor) {
         this.selection.save();
         const linkText = this.selection.text();
+        const image = unwrapElement(this.image.get());
+        const isImageLink = !!image;
+
+        defaultLinkDescriptor = new LinkDescriptor(linkText, "", false, isImageLink);
         linkModel = new LinkModel(LinkType.PAGE);
-        defaultLinkDescriptor = new LinkDescriptor(linkText);
-        this.kenticoLinkPlugin.showInsertLinkPopup(this.position.getBoundingRect(), defaultLinkDescriptor);
+        const boundingRect = getBoundingClientRect(this, isImageLink, image);
+
+        this.kenticoLinkPlugin.showInsertLinkPopup(boundingRect, defaultLinkDescriptor);
+
     }
-}, openInsertLinkPopupCommandIcon);
+};
+
+const openInsertLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME, openInsertLinkPopupCommandParameters);
+const openInsertImageLinkPopupCommand = new FroalaCommand(constants.OPEN_INSERT_IMAGE_LINK_POPUP_COMMAND_NAME, {
+    ...openInsertLinkPopupCommandParameters,
+    refresh: onLinkButtonRefresh(true),
+});
 
 // Close link configuration popup
 
@@ -74,20 +103,22 @@ const insertGeneralLinkCommand = new FroalaCommand(constants.INSERT_GENERAL_LINK
 const insertMediaLinkCommand = new FroalaCommand(constants.INSERT_MEDIA_LINK_COMMAND_NAME, insertLinkCommandParameters);
 
 // Open link configuration popup
-
 const openLinkConfigurationPopupCommandIcon = new FroalaIcon(constants.OPEN_LINK_CONFIGURATION_POPUP_COMMAND_NAME, { NAME: "edit", SVG_KEY: "editLink" });
 const openLinkConfigurationPopupCommand = new FroalaCommand(constants.OPEN_LINK_CONFIGURATION_POPUP_COMMAND_NAME, {
     title: getString("Command.EditLink"),
     undo: false,
     focus: false,
+    refresh: onLinkButtonRefresh(false),
     async callback(this: FroalaEditor) {
         const link = this.link.get() as HTMLAnchorElement;
+        const image = unwrapElement(this.image.get());
         const linkDescriptor = new LinkDescriptor(link);
-        const relatedElementPosition = this.position.getBoundingRect();
-
+        const boundingRect = getBoundingClientRect(this, linkDescriptor.isImageLink, image);
         const getLinkMetadataEndpointUrl = this.opts.getLinkMetadataEndpointUrl;
         linkModel = await getLinkModel(getLinkMetadataEndpointUrl, linkDescriptor.linkURL);
-        await this.kenticoLinkPlugin.showLinkConfigurationPopup(relatedElementPosition, linkDescriptor, linkModel);
+
+        await this.kenticoLinkPlugin.showLinkConfigurationPopup(boundingRect, linkDescriptor, linkModel);
+
     }
 }, openLinkConfigurationPopupCommandIcon);
 
@@ -243,6 +274,7 @@ const extractFormData = (popupElement: HTMLElement): LinkDescriptor => {
         linkURL: formData.get("linkUrl") as string,
         linkText: formData.get("linkText") as string,
         openInNewTab: Boolean(formData.get("openInNewTab")),
+        isImageLink: false
     }
 }
 
@@ -258,8 +290,16 @@ const getVisiblePopupName = (editor: FroalaEditor) => {
     }
 }
 
+const getBoundingClientRect = (editor: FroalaEditor, isImageLink: boolean, image: HTMLElement | null): DOMRect => 
+    isImageLink && image ? getImageBoundingClientRect(image.getBoundingClientRect()) : editor.position.getBoundingRect();
+
+
+const getImageBoundingClientRect = ({ left, top, width, height }: DOMRect) : DOMRect => 
+    new DOMRect(left - (constants.POPUP_WIDTH_PX / 2), top + height, width, height);
+
 export const linkCommands = [
     openInsertLinkPopupCommand,
+    openInsertImageLinkPopupCommand,
     openLinkConfigurationPopupCommand,
     closeLinkConfigurationPopupCommand,
     insertPageLinkCommand,
