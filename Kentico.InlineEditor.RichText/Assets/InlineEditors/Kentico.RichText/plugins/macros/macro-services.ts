@@ -35,7 +35,12 @@ export const bindMacroClickListener = (editor: FroalaEditor) => {
 
     macros.forEach((macroEl) => {
         macroEl.onclick = () => editor.kenticoMacroPlugin.showActionsPopup(macroEl);
+        
         // Prevents from showing the default froala button popup on right click 
-        macroEl.onmousedown = (event) => event.stopPropagation();
+        macroEl.onmousedown = (event) => {
+            if (event.button === 2) {
+                event.stopPropagation();
+            }
+        };
     });
 }
