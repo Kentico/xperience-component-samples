@@ -1,7 +1,9 @@
 export const LINK_PLUGIN_NAME = "kenticoLinkPlugin";
+export const POPUP_WIDTH_PX = 300;
 
 // Commands
 export const OPEN_INSERT_LINK_POPUP_COMMAND_NAME = "insertLink";
+export const OPEN_INSERT_IMAGE_LINK_POPUP_COMMAND_NAME = "imageLink"
 export const OPEN_LINK_CONFIGURATION_POPUP_COMMAND_NAME = "linkEdit";
 export const CLOSE_LINK_CONFIGURATION_POPUP_COMMAND_NAME = "closeLinkConfigurationPopup";
 export const INSERT_PAGE_LINK_COMMAND_NAME = "insertPageLink";

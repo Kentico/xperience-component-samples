@@ -14,7 +14,7 @@
             </div>
             <input name="linkUrl" value="<%= mediaLinkUrl %>" hidden>
         </div>
-        <div class="fr-input-line" style="display: block;">
+        <div class="fr-input-line" style="display: <%= (imageLink) ? 'none' : 'block' %>;">
             <input id="ktc-media-url-text-1" name="linkText" type="text" class="fr-link-attr fr-not-empty"
                 placeholder="" tabindex="2" dir="auto" value="<%= mediaLinkText %>">
             <label for="ktc-media-url-text-1"><%= mediaLinkTextLabel %></label>
