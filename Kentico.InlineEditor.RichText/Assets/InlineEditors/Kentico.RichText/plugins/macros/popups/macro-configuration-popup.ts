@@ -15,7 +15,8 @@ export const getShowPopup = (popupName: string, buttons: any[], macroType: Macro
 }
 
 export const showForm = (editor: FroalaEditor, popupName: string, mode: DialogMode = DialogMode.INSERT, macroType: MacroType, macroValue: string = "", macroDefaultValue: string = "") => {
-    macroDefaultValue = macroDefaultValue.trim();
+    macroDefaultValue = macroDefaultValue.trim().replace(/"/g, "&quot;");
+
     const dialog = getDialogElement(editor, popupName);
     
     if (dialog) {
