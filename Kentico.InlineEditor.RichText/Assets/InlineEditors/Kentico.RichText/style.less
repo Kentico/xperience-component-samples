@@ -2,6 +2,11 @@
 // thus covers the add widget button and they refuse to change this behavior, see https://github.com/froala/wysiwyg-editor/issues/3588
 .ktc-rich-text-wrapper {
 
+    &.fr-box.fr-fullscreen {
+        background-color: #ffffff;
+        z-index: 10010 !important;
+    }
+
     // Temporary, until https://github.com/froala/wysiwyg-editor/issues/3639 is fixed
     .html-switch .fr-btn {
         width: 24px;
@@ -63,6 +68,10 @@
             box-shadow: 0 0 3px rgba(0, 0, 0, 0.75);
         }
     }
+}
+
+.fr-fullscreen-wrapper {
+    z-index: 10010 !important;
 }
 
 .fr-popup.fr-active {
