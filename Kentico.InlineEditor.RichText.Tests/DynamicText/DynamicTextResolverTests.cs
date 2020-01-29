@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Web;
 
 using CMS.Base;
 using CMS.Core;
@@ -103,6 +104,27 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 {
                     Assert.That(result, Is.EqualTo(expectedResult));
                     Assert.That(macroResult, Is.EqualTo(result));
+                });
+            }
+
+
+            [Test]
+            public void ResolveRichText_InvalidQueryStringValue_ThrowsHttpRequestValidationException_LogsException()
+            {
+                const string PARAM = "param";
+                const string DEFAULT_VALUE = "DEF";
+                string text = $"{{% ResolveDynamicText(\"query\", \"{PARAM}\", \"{DEFAULT_VALUE}\") %}}";
+                var register = GetPatternRegister();
+                var queryString = Substitute.For<IDataContainer>();
+                var thrownException = new HttpRequestValidationException();
+                queryString[PARAM].Returns(x => { throw thrownException; });
+
+                string result = new DynamicTextResolver(register, queryString, eventLogService).ResolveRichText(text);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(result, Is.EqualTo(DEFAULT_VALUE));
+                    eventLogService.Received(1).LogException("RichTextEditor", "InvalidQueryParamValue", thrownException);
                 });
             }
 
