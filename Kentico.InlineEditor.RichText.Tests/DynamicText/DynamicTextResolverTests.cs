@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 
 using CMS.Base;
+using CMS.Core;
 using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.Tests;
 
+using NSubstitute;
 using NUnit.Framework;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
@@ -14,6 +16,8 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
         [TestFixture]
         public class ResolveRichTextTests : UnitTests
         {
+            private IEventLogService eventLogService;
+
             [SetUp]
             public void SetUp()
             {
@@ -22,6 +26,8 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 
                 // Register the dynamic text test macro method
                 Extend<string>.With<DynamicTextTestMacroMethods>();
+
+                eventLogService = Substitute.For<IEventLogService>();
             }
 
 
@@ -39,7 +45,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             {
                  var register = GetPatternRegister();
 
-                string result = new DynamicTextResolver(register, new DataContainer()).ResolveRichText(text);
+                string result = new DynamicTextResolver(register, new DataContainer(), eventLogService).ResolveRichText(text);
 
                 Assert.That(result, Is.EqualTo(expectedResult));
             }
@@ -66,7 +72,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 var register = GetPatternRegister();
                 var macroResolver = GetMacroResolver();
 
-                string result = new DynamicTextResolver(register, new DataContainer()).ResolveRichText(text);
+                string result = new DynamicTextResolver(register, new DataContainer(), eventLogService).ResolveRichText(text);
                 string macroResult = macroResolver.ResolveMacros(text);
 
                 Assert.Multiple(() =>
@@ -90,7 +96,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
                 var macroResolver = GetMacroResolver();
                 var queryString = GetQueryStringDataContainer("REGISTERED", "RESOLVED");
 
-                string result = new DynamicTextResolver(register, queryString).ResolveRichText(text);
+                string result = new DynamicTextResolver(register, queryString, eventLogService).ResolveRichText(text);
                 string macroResult = macroResolver.ResolveMacros(text);
 
                 Assert.Multiple(() =>
