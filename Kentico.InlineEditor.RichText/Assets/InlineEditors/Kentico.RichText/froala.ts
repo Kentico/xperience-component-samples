@@ -17,7 +17,7 @@ export const initializeFroalaEditor = ({ editor, propertyName, propertyValue }: 
     }
 
     // Override default e-mail regex
-    FroalaEditor.MAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    FroalaEditor.MAIL_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 
     initializePlugins(element);
 
