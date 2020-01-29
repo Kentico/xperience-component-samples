@@ -197,10 +197,8 @@ const getItemSelectionCommandParameters = (commandName: OpenItemSelectionCommand
 
         if (commandName === constants.OPEN_PAGE_SELECTION_DIALOG_COMMAND_NAME) {
             options.identifierMode = IdentifierMode.Guid;
-        } else {
-            options.allowedExtensions = `.${this.opts.imageAllowedTypes.join(";.")}`;
         }
-
+        
         selector.open(options);
     }
 })
