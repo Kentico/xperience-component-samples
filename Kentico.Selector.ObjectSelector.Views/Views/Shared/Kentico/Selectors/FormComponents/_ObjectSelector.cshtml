@@ -1,9 +1,5 @@
-﻿@using Kentico.Forms.Web.Mvc
-@using Kentico.Components.Web.Mvc.FormComponents;
+﻿@using Kentico.Components.Web.Mvc.FormComponents;
 
 @model ObjectSelector
-@{
-    var htmlAttributes = ViewData.GetEditorHtmlAttributes();
-}
 
-@Html.DropDownListFor(x => x.SelectedValue, Model.Items, null, htmlAttributes)
+@Html.DropDownListFor(x => x.SelectedValue, Model.Objects, null, Model.HtmlAttributes)

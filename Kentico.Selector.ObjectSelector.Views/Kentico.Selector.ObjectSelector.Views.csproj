@@ -566,7 +566,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Kentico.FormComponent.ObjectSelector\Kentico.Selector.ObjectSelector.csproj">
+    <ProjectReference Include="..\Kentico.Selector.ObjectSelector\Kentico.Selector.ObjectSelector.csproj">
       <Project>{5bb3aafb-6d8a-4e3d-baeb-2442ffc6fdd2}</Project>
       <Name>Kentico.Selector.ObjectSelector</Name>
     </ProjectReference>
