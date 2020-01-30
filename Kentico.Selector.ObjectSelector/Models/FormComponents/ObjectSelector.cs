@@ -5,6 +5,8 @@ using System.Web.Mvc;
 
 using Newtonsoft.Json;
 
+using CMS.Base;
+using CMS.Core;
 using CMS.DataEngine;
 
 using Kentico.Components.Web.Mvc.FormComponents;
@@ -25,6 +27,7 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         /// </summary>
         public const string IDENTIFIER = "Kentico.ObjectSelector";
 
+        private readonly ISiteService siteService = Service.Resolve<ISiteService>();
         private string mValue;
         private IEnumerable<SelectListItem> mItems;
         private IDictionary<string, object> mHtmlAttributes;
@@ -107,7 +110,9 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         {
             var objectType = Properties.ObjectType;
             var typeInfo = ObjectTypeManager.GetTypeInfo(objectType, exceptionIfNotFound: true);
-            var query = new ObjectQuery<BaseInfo>(objectType).Columns(typeInfo.GUIDColumn, typeInfo.DisplayNameColumn);
+            var query = new ObjectQuery<BaseInfo>(objectType)
+                .OnSite(siteService.CurrentSite.SiteName, includeGlobal: true)
+                .Columns(typeInfo.GUIDColumn, typeInfo.DisplayNameColumn);
 
             var items = query.TypedResult.Select(info => new
             {
