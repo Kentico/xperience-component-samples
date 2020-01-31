@@ -103,7 +103,6 @@ const insertGeneralLinkCommand = new FroalaCommand(constants.INSERT_GENERAL_LINK
 const insertMediaLinkCommand = new FroalaCommand(constants.INSERT_MEDIA_LINK_COMMAND_NAME, insertLinkCommandParameters);
 
 // Open link configuration popup
-const openLinkConfigurationPopupCommandIcon = new FroalaIcon(constants.OPEN_LINK_CONFIGURATION_POPUP_COMMAND_NAME, { NAME: "edit", SVG_KEY: "editLink" });
 const openLinkConfigurationPopupCommand = new FroalaCommand(constants.OPEN_LINK_CONFIGURATION_POPUP_COMMAND_NAME, {
     title: getString("Command.EditLink"),
     undo: false,
@@ -120,7 +119,7 @@ const openLinkConfigurationPopupCommand = new FroalaCommand(constants.OPEN_LINK_
         await this.kenticoLinkPlugin.showLinkConfigurationPopup(boundingRect, linkDescriptor, linkModel);
 
     }
-}, openLinkConfigurationPopupCommandIcon);
+});
 
 // Switch page link tab command
 
