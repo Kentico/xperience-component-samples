@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using CMS.Base;
 using CMS.Core;
 using CMS.DataEngine;
+using CMS.EventLog;
 
 using Kentico.Components.Web.Mvc.FormComponents;
 using Kentico.Forms.Web.Mvc;
@@ -28,6 +29,7 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         public const string IDENTIFIER = "Kentico.ObjectSelector";
 
         private readonly ISiteService siteService = Service.Resolve<ISiteService>();
+        private readonly IEventLogService eventLogService = Service.Resolve<IEventLogService>();
         private string mValue;
         private IEnumerable<SelectListItem> mItems;
         private IDictionary<string, object> mHtmlAttributes;
@@ -108,9 +110,8 @@ namespace Kentico.Components.Web.Mvc.FormComponents
 
         private IEnumerable<SelectListItem> GetObjects()
         {
-            var objectType = Properties.ObjectType;
-            var typeInfo = ObjectTypeManager.GetTypeInfo(objectType, exceptionIfNotFound: true);
-            var query = new ObjectQuery<BaseInfo>(objectType)
+            var typeInfo = GetTypeInfo();
+            var query = new ObjectQuery<BaseInfo>(typeInfo.ObjectType)
                 .OnSite(siteService.CurrentSite.SiteName, includeGlobal: true)
                 .Columns(typeInfo.GUIDColumn, typeInfo.DisplayNameColumn);
 
@@ -119,7 +120,7 @@ namespace Kentico.Components.Web.Mvc.FormComponents
                 DisplayName = info[typeInfo.DisplayNameColumn].ToString(),
                 SelectorItem = new ObjectSelectorItem
                 {
-                    ObjectType = objectType,
+                    ObjectType = typeInfo.ObjectType,
                     ObjectGuid = Guid.Parse(info[typeInfo.GUIDColumn].ToString()),
                 }
             });
@@ -133,6 +134,22 @@ namespace Kentico.Components.Web.Mvc.FormComponents
                 };
 
                 yield return listItem;
+            }
+        }
+
+
+        private ObjectTypeInfo GetTypeInfo()
+        {
+            try
+            {
+                var objectType = Properties.ObjectType ?? throw new InvalidOperationException($"Object selector's form component property '{nameof(Properties.ObjectType)}' must be set.");
+                
+                return ObjectTypeManager.GetTypeInfo(objectType, exceptionIfNotFound: true);
+            }
+            catch (InvalidOperationException exception)
+            {
+                eventLogService.LogEvent(EventType.ERROR, nameof(ObjectSelector), nameof(GetObjects), exception.Message);
+                throw;
             }
         }
 
