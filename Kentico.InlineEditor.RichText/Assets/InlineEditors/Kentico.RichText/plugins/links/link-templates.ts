@@ -1,5 +1,5 @@
+import * as constants from "./link-constants";
 import { DialogMode } from "../plugin-types";
-import { INSERT_PAGE_LINK_COMMAND_NAME, INSERT_GENERAL_LINK_COMMAND_NAME } from "./link-constants";
 import { getString } from "./link-helpers";
 import { LinkDescriptor } from "./link-descriptor";
 
@@ -9,9 +9,12 @@ export const getPageLinkConfigurationPopupTemplate = (pageName: string | null, l
         pageUrl: linkDescriptor.linkURL,
         linkText: linkDescriptor.linkText,
         linkTextLabel: getString("Label.Text"),
+        imageLink: linkDescriptor.isImageLink,
+        pageNameLabel: getString("Label.PageName"),
         openInNewTabLabel: getString("Label.OpenInNewTab"),
         openInNewTab: linkDescriptor.openInNewTab,
-        command: INSERT_PAGE_LINK_COMMAND_NAME,
+        command: constants.INSERT_PAGE_LINK_COMMAND_NAME,
+        pageSelectionCommand: constants.OPEN_PAGE_SELECTION_DIALOG_COMMAND_NAME,
         actionButtonText: getString(dialogMode === DialogMode.INSERT ? "ActionButton.Insert" : "ActionButton.Save"),
         pageSelectionButtonText: getString(linkDescriptor.linkURL ? "ActionButton.ChangePage" : "ActionButton.SelectPage"),
     });
@@ -22,8 +25,26 @@ export const getGeneralLinkConfigurationPopupTemplate = (linkDescriptor: LinkDes
         linkText: linkDescriptor.linkText,
         linkUrlLabel: getString("Label.Url"),
         linkTextLabel: getString("Label.Text"),
+        imageLink: linkDescriptor.isImageLink,
         openInNewTabLabel: getString("Label.OpenInNewTab"),
         openInNewTab: linkDescriptor.openInNewTab,
-        command: INSERT_GENERAL_LINK_COMMAND_NAME,
+        command: constants.INSERT_GENERAL_LINK_COMMAND_NAME,
+        pageSelectionCommand: constants.OPEN_PAGE_SELECTION_DIALOG_COMMAND_NAME,
         actionButtonText: getString(dialogMode === DialogMode.INSERT ? "ActionButton.Insert" : "ActionButton.Save"),
+    });
+
+export const getMediaLinkConfigurationPopupTemplate = (mediaName: string | null, linkDescriptor: LinkDescriptor, dialogMode: DialogMode): string =>
+    require("./templates/configure-media-link-popup.html")({
+        mediaName,
+        mediaSelectionButtonText: getString(linkDescriptor.linkURL ? "ActionButton.ChangeMedia" : "ActionButton.SelectMedia"),
+        mediaLinkText: linkDescriptor.linkText,
+        mediaLinkTextLabel: getString("Label.Text"),
+        mediaLinkUrl: linkDescriptor.linkURL,
+        mediaNameLabel: getString("Label.MediaFile"),
+        imageLink: linkDescriptor.isImageLink,
+        openInNewTab: linkDescriptor.openInNewTab,
+        openInNewTabLabel: getString("Label.OpenInNewTab"),
+        command: constants.INSERT_MEDIA_LINK_COMMAND_NAME,
+        mediaFileSelectionCommand: constants.OPEN_MEDIA_FILE_SELECTION_DIALOG_COMMAND_NAME,
+        actionButtonText: getString(dialogMode === DialogMode.INSERT ? "ActionButton.Insert" : "ActionButton.Save")
     });

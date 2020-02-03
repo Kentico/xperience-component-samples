@@ -27,7 +27,7 @@ const defaultOptions: Partial<FroalaOptions> = {
             buttons: [OPEN_INSERT_LINK_POPUP_COMMAND_NAME, "insertImage", OPEN_INSERT_MACRO_POPUP_COMMAND_NAME, "insertVideo", "insertTable", "emoticons", "specialCharacters", "insertHR"]
         },
         moreMisc: {
-            buttons: ["undo", "redo", "selectAll", "html", "help"],
+            buttons: ["undo", "redo", "fullscreen", "selectAll", "html", "help"],
             align: "right",
             buttonsVisible: 2,
         }

@@ -58,6 +58,8 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             [TestCase("{% ResolveDynamicText(\"pattern\", \"REGISTERED\", \"DEF\")%} \n {% ResolveDynamicText(\"pattern\", \"REGISTERED\", \"DEF\")%}", "RESOLVED \n RESOLVED")]
             // Not registered patterns return the default value
             [TestCase("{% ResolveDynamicText(\"pattern\", \"NOTREGISTERED\", \"DEF\") %}", "DEF")]
+            [TestCase(@"{% ResolveDynamicText(""pattern"", ""NOTREGISTERED"", ""\""DEF\"""") %}", "&quot;DEF&quot;", Description = "Can handle quotes in default value.")]
+            [TestCase(@"{% ResolveDynamicText(""pattern"", ""NOTREGISTERED"", ""<D&E&F>"") %}", "&lt;D&amp;E&amp;F&gt;", Description = "Output is encoded.")]
             [TestCase("{% ResolveDynamicText(\"NOTREGISTERED\", \"REGISTERED\", \"DEF\") %}", "DEF")]
             public void ResolveRichText_Pattern_ReturnsCorrectResult(string text, string expectedResult)
             {
@@ -78,6 +80,8 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             [TestCase("{% ResolveDynamicText(\"query\", \"REGISTERED\", \"DEF\") %}", "RESOLVED")]
             [TestCase("{% ResolveDynamicText(\"query\", \"NOTREGISTERED\", \"DEF\") %}", "DEF")]
             [TestCase("{% ResolveDynamicText(\"query\", \"NOTREGISTERED\", \"\") %}", "")]
+            [TestCase(@"{% ResolveDynamicText(""query"", ""NOTREGISTERED"", ""\""DEF\"""") %}", "&quot;DEF&quot;", Description = "Can handle quotes in default value.")]
+            [TestCase(@"{% ResolveDynamicText(""query"", ""NOTREGISTERED"", ""<D&E&F>"") %}", "&lt;D&amp;E&amp;F&gt;", Description = "Output is encoded.")]
             [TestCase("{% ResolveDynamicText(\"query\", \"REGISTERED\", \"DEF\") %} {% ResolveDynamicText(\"query\", \"REGISTERED\", \"DEF\") %}", "RESOLVED RESOLVED")]
             [TestCase("{% ResolveDynamicText(\"query\", \"REGISTERED\", \"DEF\") %} \n {% ResolveDynamicText(\"query\", \"NOTREGISTERED\", \"DEF\") %}", "RESOLVED \n DEF")]
             public void ResolveRichText_QueryString_ReturnsCorrectResult(string text, string expectedResult)
