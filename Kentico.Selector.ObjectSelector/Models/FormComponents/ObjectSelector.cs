@@ -41,7 +41,7 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         /// </summary>
         public IEnumerable<SelectListItem> Objects
         {
-            get => mItems ?? (mItems = GetObjects());
+            get => mItems ?? (mItems = GetItems());
             set => mItems = value;
         }
 
@@ -111,14 +111,12 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         }
 
 
-        private IEnumerable<SelectListItem> GetObjects()
+        private IEnumerable<SelectListItem> GetItems()
         {
             var typeInfo = GetTypeInfo();
-            var query = new ObjectQuery<BaseInfo>(typeInfo.ObjectType)
-                .OnSite(siteService.CurrentSite.SiteName, includeGlobal: true)
-                .Columns(typeInfo.GUIDColumn, typeInfo.DisplayNameColumn);
+            var infoObjects = GetObjects(typeInfo);
 
-            var items = query.TypedResult.Select(info => new
+            var items = infoObjects.Select(info => new
             {
                 DisplayName = info[typeInfo.DisplayNameColumn].ToString(),
                 SelectorItem = new ObjectSelectorItem
@@ -137,6 +135,16 @@ namespace Kentico.Components.Web.Mvc.FormComponents
 
                 yield return listItem;
             }
+        }
+
+
+        private IEnumerable<BaseInfo> GetObjects(ObjectTypeInfo typeInfo)
+        {
+            var query = new ObjectQuery<BaseInfo>(typeInfo.ObjectType)
+               .OnSite(siteService.CurrentSite.SiteName, includeGlobal: true)
+               .Columns(typeInfo.GUIDColumn, typeInfo.DisplayNameColumn);
+
+            return query.TypedResult;
         }
 
 
