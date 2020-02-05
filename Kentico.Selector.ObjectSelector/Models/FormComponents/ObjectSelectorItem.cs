@@ -1,7 +1,5 @@
 ﻿using System;
 
-using CMS.DataEngine;
-
 namespace Kentico.Components.Web.Mvc.FormComponents
 {
     /// <summary>
@@ -13,12 +11,5 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         /// Object GUID.
         /// </summary>
         public Guid ObjectGuid { get; set; }
-
-
-        /// <summary>
-        /// Object type.
-        /// </summary>
-        /// <seealso cref="PredefinedObjectType"/>
-        public string ObjectType { get; set; }
     }
 }

@@ -21,7 +21,7 @@ namespace Kentico.Components.Web.Mvc.FormComponents
     /// <summary>
     /// Represents an object selector form component.
     /// </summary>
-    public class ObjectSelector : FormComponent<ObjectSelectorProperties, ObjectSelectorItem>
+    public class ObjectSelector : FormComponent<ObjectSelectorProperties, IList<ObjectSelectorItem>>
     {
         /// <summary>
         /// Represents the <see cref="ObjectSelector"/> identifier.
@@ -32,8 +32,8 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         private readonly IEventLogService eventLogService = Service.Resolve<IEventLogService>();
         private string mValue;
         private IEnumerable<SelectListItem> mItems;
+        private IEnumerable<ObjectSelectorItem> mSelectedObject;
         private IDictionary<string, object> mHtmlAttributes;
-        private ObjectSelectorItem mSelectedObject;
 
 
         /// <summary>
@@ -74,13 +74,13 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         }
 
 
-        private ObjectSelectorItem SelectedObject
+        private IEnumerable<ObjectSelectorItem> SelectedObjects
         {
             get
             {
                 if (mSelectedObject == null)
                 {
-                    mSelectedObject = !String.IsNullOrEmpty(SelectedValue) ? JsonConvert.DeserializeObject<ObjectSelectorItem>(SelectedValue) : null;
+                    mSelectedObject = !String.IsNullOrEmpty(SelectedValue) ? JsonConvert.DeserializeObject<IList<ObjectSelectorItem>>(SelectedValue) : Enumerable.Empty<ObjectSelectorItem>();
                 }
 
                 return mSelectedObject;
@@ -89,20 +89,23 @@ namespace Kentico.Components.Web.Mvc.FormComponents
 
 
         /// <summary>
-        /// Gets the selected object.
+        /// Gets the selected objects.
         /// </summary>
-        /// <returns></returns>
-        public override ObjectSelectorItem GetValue()
+        public override IList<ObjectSelectorItem> GetValue()
         {
-            return SelectedObject;
+            if (SelectedObjects.Any())
+            {
+                return SelectedObjects as IList<ObjectSelectorItem>;
+            }
+
+            return null;
         }
 
 
         /// <summary>
-        /// Sets the selected object to the selector.
+        /// Sets the selected objects to the selector.
         /// </summary>
-        /// <param name="value"></param>
-        public override void SetValue(ObjectSelectorItem value)
+        public override void SetValue(IList<ObjectSelectorItem> value)
         {
             SelectedValue = (value != null) ? JsonConvert.SerializeObject(value) : null;
         }
@@ -120,7 +123,6 @@ namespace Kentico.Components.Web.Mvc.FormComponents
                 DisplayName = info[typeInfo.DisplayNameColumn].ToString(),
                 SelectorItem = new ObjectSelectorItem
                 {
-                    ObjectType = typeInfo.ObjectType,
                     ObjectGuid = Guid.Parse(info[typeInfo.GUIDColumn].ToString()),
                 }
             });
@@ -130,7 +132,7 @@ namespace Kentico.Components.Web.Mvc.FormComponents
                 var listItem = new SelectListItem
                 {
                     Text = item.DisplayName,
-                    Value = JsonConvert.SerializeObject(item.SelectorItem)
+                    Value = JsonConvert.SerializeObject(new[] { item.SelectorItem })
                 };
 
                 yield return listItem;
