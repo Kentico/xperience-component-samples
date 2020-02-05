@@ -164,6 +164,8 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       $wp: JQuery;
       destroy(): object;
 
+      static MAIL_REGEX: RegExp;
+
       // Custom props
       [MACROS_PLUGIN_NAME]: MacrosPlugin;
       [LINK_PLUGIN_NAME]: LinkPlugin;
