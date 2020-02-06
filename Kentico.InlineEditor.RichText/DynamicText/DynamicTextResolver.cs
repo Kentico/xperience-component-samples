@@ -3,6 +3,8 @@ using System.Text.RegularExpressions;
 using System.Web;
 
 using CMS.Base;
+using CMS.Core;
+using CMS.EventLog;
 using CMS.Helpers;
 
 namespace Kentico.Components.Web.Mvc.InlineEditors
@@ -22,13 +24,14 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
 
         private readonly DynamicTextPatternRegister patternRegister;
         private readonly IDataContainer queryParameters;
+        private readonly IEventLogService eventLogService;
 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicTextResolver"/> class.
         /// </summary>
         public DynamicTextResolver()
-            : this(DynamicTextPatternRegister.Instance, QueryHelper.Instance)
+            : this(DynamicTextPatternRegister.Instance, QueryHelper.Instance, Service.Resolve<IEventLogService>())
         {
         }
 
@@ -36,10 +39,11 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicTextResolver"/> class with injected dependencies for the pattern register <see cref="DynamicTextPatternRegister"/> and query string data container <see cref="DataContainer"/>.
         /// </summary>
-        internal DynamicTextResolver(DynamicTextPatternRegister patternRegister, IDataContainer queryParameters)
+        internal DynamicTextResolver(DynamicTextPatternRegister patternRegister, IDataContainer queryParameters, IEventLogService eventLogService)
         {
             this.patternRegister = patternRegister;
             this.queryParameters = queryParameters;
+            this.eventLogService = eventLogService;
         }
 
 
@@ -99,7 +103,14 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
                     break;
 
                 case "query":
-                    resolvedValue = queryParameters[paramName]?.ToString();
+                    try
+                    {
+                        resolvedValue = queryParameters[paramName]?.ToString();
+                    }
+                    catch (HttpRequestValidationException ex)
+                    { 
+                        eventLogService.LogException("RichTextEditor", "InvalidQueryParamValue", ex);
+                    }
                     break;
             }
 
