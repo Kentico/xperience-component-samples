@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using CMS.Base;
 using CMS.Core;
 using CMS.DataEngine;
-using CMS.EventLog;
 
 using Kentico.Components.Web.Mvc.FormComponents;
 using Kentico.Forms.Web.Mvc;
@@ -29,7 +28,6 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         public const string IDENTIFIER = "Kentico.ObjectSelector";
 
         private readonly ISiteService siteService = Service.Resolve<ISiteService>();
-        private readonly IEventLogService eventLogService = Service.Resolve<IEventLogService>();
         private string mValue;
         private IEnumerable<SelectListItem> mItems;
         private IEnumerable<ObjectSelectorItem> mSelectedObject;
@@ -39,18 +37,18 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         /// <summary>
         /// Gets the collection of objects available for selection.
         /// </summary>
-        public IEnumerable<SelectListItem> Objects
+        public IEnumerable<SelectListItem> SelectorItems
         {
-            get => mItems ?? (mItems = GetItems());
+            get => mItems ?? (mItems = GetSelectorItems());
             set => mItems = value;
         }
 
 
         /// <summary>
-        /// Attributes for the rendering dropdown element.
+        /// Attributes for the rendering drop down element.
         /// </summary>
-        public IDictionary<string, object> HtmlAttributes 
-        { 
+        public IDictionary<string, object> HtmlAttributes
+        {
             get => mHtmlAttributes ?? (mHtmlAttributes = GetHtmlAttributes());
             set => mHtmlAttributes = value;
         }
@@ -111,10 +109,10 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         }
 
 
-        private IEnumerable<SelectListItem> GetItems()
+        private IEnumerable<SelectListItem> GetSelectorItems()
         {
             var typeInfo = GetTypeInfo();
-            var infoObjects = GetObjects(typeInfo);
+            var infoObjects = GetSelectorObjects(typeInfo);
 
             var items = infoObjects.Select(info => new
             {
@@ -138,7 +136,7 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         }
 
 
-        private IEnumerable<BaseInfo> GetObjects(ObjectTypeInfo typeInfo)
+        private IEnumerable<BaseInfo> GetSelectorObjects(ObjectTypeInfo typeInfo)
         {
             var query = new ObjectQuery<BaseInfo>(typeInfo.ObjectType)
                .OnSite(siteService.CurrentSite.SiteName, includeGlobal: true)
@@ -150,24 +148,16 @@ namespace Kentico.Components.Web.Mvc.FormComponents
 
         private ObjectTypeInfo GetTypeInfo()
         {
-            try
-            {
-                var objectType = Properties.ObjectType ?? throw new InvalidOperationException($"Object selector's form component property '{nameof(Properties.ObjectType)}' must be set.");
-                
-                return ObjectTypeManager.GetTypeInfo(objectType, exceptionIfNotFound: true);
-            }
-            catch (InvalidOperationException exception)
-            {
-                eventLogService.LogEvent(EventType.ERROR, nameof(ObjectSelector), nameof(GetObjects), exception.Message);
-                throw;
-            }
+            var objectType = Properties.ObjectType ?? throw new InvalidOperationException($"Object selector's form component property '{nameof(Properties.ObjectType)}' must be set.");
+
+            return ObjectTypeManager.GetTypeInfo(objectType, exceptionIfNotFound: true);
         }
 
 
         private IDictionary<string, object> GetHtmlAttributes()
         {
             var attributes = new Dictionary<string, object>(SystemRenderingConfigurations.PropertiesEditorField.EditorHtmlAttributes);
-            
+
             if (!HasDependingFields || CustomAutopostHandling)
             {
                 attributes[UpdatableMvcForm.NOT_OBSERVED_ELEMENT_ATTRIBUTE_NAME] = null;

@@ -3,7 +3,7 @@
 namespace Kentico.Components.Web.Mvc.FormComponents
 {
     /// <summary>
-    /// Represents an item for object selector.
+    /// Represents an item for the object selector.
     /// </summary>
     public class ObjectSelectorItem
     {

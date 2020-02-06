@@ -523,11 +523,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Data\Global\Resources\Kentico.Selector.ObjectSelector.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Kentico.Selector.ObjectSelector.resx</DependentUpon>
-    </Compile>
     <Compile Include="Models\FormComponents\ObjectSelector.cs" />
     <Compile Include="Models\FormComponents\ObjectSelectorProperties.cs" />
     <Compile Include="Models\FormComponents\ObjectSelectorItem.cs" />

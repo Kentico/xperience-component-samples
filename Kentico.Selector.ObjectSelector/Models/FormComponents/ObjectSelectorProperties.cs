@@ -25,7 +25,7 @@ namespace Kentico.Components.Web.Mvc.FormComponents
 
 
         /// <summary>
-        /// Creates an instace of the <see cref="ObjectSelectorProperties"/> class.
+        /// Creates an instance of the <see cref="ObjectSelectorProperties"/> class.
         /// </summary>
         /// <remarks>
         /// The constructor initializes the base class to data type <see cref="FieldDataType.Unknown"/>.
