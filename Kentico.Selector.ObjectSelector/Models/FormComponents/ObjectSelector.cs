@@ -148,9 +148,16 @@ namespace Kentico.Components.Web.Mvc.FormComponents
 
         private ObjectTypeInfo GetTypeInfo()
         {
-            var objectType = Properties.ObjectType ?? throw new InvalidOperationException($"Object selector's form component property '{nameof(Properties.ObjectType)}' must be set.");
+            var objectType = Properties.ObjectType ?? throw new InvalidOperationException($" The object selector's form component property '{nameof(Properties.ObjectType)}' must be set.");
 
-            return ObjectTypeManager.GetTypeInfo(objectType, exceptionIfNotFound: true);
+            var typeInfo = ObjectTypeManager.GetTypeInfo(objectType, exceptionIfNotFound: true);
+
+            if (String.IsNullOrEmpty(typeInfo.GUIDColumn) || typeInfo.GUIDColumn.Equals(ObjectTypeInfo.COLUMN_NAME_UNKNOWN, StringComparison.Ordinal))
+            {
+                throw new InvalidOperationException($"The object type '{typeInfo.ObjectType}' does not have a GUID column defined. The object selector form component can be used only for objects that have a GUID column specified.");
+            }
+
+            return typeInfo;
         }
 
 
