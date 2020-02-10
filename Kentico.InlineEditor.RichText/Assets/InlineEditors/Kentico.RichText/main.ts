@@ -1,13 +1,21 @@
 ﻿/// <reference path="../../../../types/global.d.ts" />
 
-import * as Froala from "froala-editor/js/froala_editor.pkgd.min";
+import FroalaEditor, * as Froala from "froala-editor/js/froala_editor.pkgd.min";
 
 import { initializeFroalaEditor, destroyFroalaEditor } from "./froala";
+import { insertImageCommand, imageReplaceCommand } from "./commands";
 
-// Initialize custom plugins
+// Initialize plugins
 window.addEventListener("DOMContentLoaded", () => {
     window.kentico.pageBuilder.richTextEditor?.plugins?.forEach((customPlugin) => {
-        customPlugin(Froala);
+        // Override default e-mail regex
+        FroalaEditor.MAIL_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+
+        Froala.RegisterCommand("insertImage", insertImageCommand);
+        Froala.RegisterCommand("imageReplace", imageReplaceCommand);
+        Froala.RegisterQuickInsertButton("image", insertImageCommand);
+
+        customPlugin(FroalaEditor);
     });
 });
 

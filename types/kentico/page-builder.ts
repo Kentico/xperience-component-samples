@@ -1,6 +1,5 @@
-import { FroalaOptions } from "froala-editor/js/froala_editor.pkgd.min";
+import FroalaEditor, { FroalaOptions } from "froala-editor/js/froala_editor.pkgd.min";
 
-import { Froala } from "./";
 import { InlineEditor } from "./inline-editors/inline-editor";
 
 interface RichTextEditorConfigurations {
@@ -9,7 +8,7 @@ interface RichTextEditorConfigurations {
 
 interface RichTextEditor {
     readonly configurations?: RichTextEditorConfigurations;
-    readonly plugins?: Array<(froala: Froala) => void>;
+    readonly plugins?: Array<(froala: typeof FroalaEditor) => void>;
 }
 
 export interface PageBuilder {
