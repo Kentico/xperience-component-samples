@@ -20,6 +20,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.InlineEditor.RichTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Widget.RichText.Tests", "Kentico.Widget.RichText.Tests\Kentico.Widget.RichText.Tests.csproj", "{AB81EE19-5D1A-43C3-AB87-99D43E80DE42}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Selector.ObjectSelector", "Kentico.Selector.ObjectSelector\Kentico.Selector.ObjectSelector.csproj", "{5BB3AAFB-6D8A-4E3D-BAEB-2442FFC6FDD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Selector.ObjectSelector.Views", "Kentico.Selector.ObjectSelector.Views\Kentico.Selector.ObjectSelector.Views.csproj", "{D66C7DE0-8984-4709-8F97-EFA09C8A713F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +66,14 @@ Global
 		{AB81EE19-5D1A-43C3-AB87-99D43E80DE42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB81EE19-5D1A-43C3-AB87-99D43E80DE42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB81EE19-5D1A-43C3-AB87-99D43E80DE42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BB3AAFB-6D8A-4E3D-BAEB-2442FFC6FDD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BB3AAFB-6D8A-4E3D-BAEB-2442FFC6FDD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BB3AAFB-6D8A-4E3D-BAEB-2442FFC6FDD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BB3AAFB-6D8A-4E3D-BAEB-2442FFC6FDD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D66C7DE0-8984-4709-8F97-EFA09C8A713F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D66C7DE0-8984-4709-8F97-EFA09C8A713F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D66C7DE0-8984-4709-8F97-EFA09C8A713F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D66C7DE0-8984-4709-8F97-EFA09C8A713F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
