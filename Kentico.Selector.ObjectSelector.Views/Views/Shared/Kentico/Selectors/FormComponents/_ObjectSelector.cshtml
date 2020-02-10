@@ -1,0 +1,5 @@
+﻿@using Kentico.Components.Web.Mvc.FormComponents;
+
+@model ObjectSelector
+
+@Html.DropDownListFor(x => x.SelectedValue, Model.SelectorItems, null, Model.HtmlAttributes)
