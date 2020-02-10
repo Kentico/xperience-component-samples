@@ -148,7 +148,7 @@ namespace Kentico.Components.Web.Mvc.FormComponents
 
         private ObjectTypeInfo GetTypeInfo()
         {
-            var objectType = Properties.ObjectType ?? throw new InvalidOperationException($" The object selector's form component property '{nameof(Properties.ObjectType)}' must be set.");
+            var objectType = Properties.ObjectType ?? throw new InvalidOperationException($"The object selector's form component property '{nameof(Properties.ObjectType)}' must be set.");
 
             var typeInfo = ObjectTypeManager.GetTypeInfo(objectType, exceptionIfNotFound: true);
 
