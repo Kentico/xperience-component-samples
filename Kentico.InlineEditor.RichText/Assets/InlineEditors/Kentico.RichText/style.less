@@ -70,23 +70,6 @@
     }
 }
 
-// buttons do not inherit font family, which causes different font-family to display in Firefox
-.fr-popup button {
-    font-family: inherit;
-}
-// custom style for button with .fr-submit class
-.fr-popup .fr-action-buttons button.fr-command.fr-submit {
-    background: #0098f7;
-    border: 1px solid #0098f7;
-    color: #ffffff;
-    border-radius: 2px;
-
-    &:hover, &:focus {
-        border-color: #008ae1;
-        background: #008ae1;
-    }
-}
-
 .fr-fullscreen-wrapper {
     z-index: 10010 !important;
 }
@@ -99,6 +82,7 @@
 
     // override style for primary button
     .fr-action-buttons button.fr-command.fr-submit {
+        font-family: inherit;
         background: #0098f7;
         border: 1px solid #0098f7;
         color: #ffffff;
