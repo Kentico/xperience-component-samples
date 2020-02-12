@@ -7,14 +7,14 @@ import { insertImageCommand, imageReplaceCommand } from "./commands";
 
 // Initialize plugins
 window.addEventListener("DOMContentLoaded", () => {
+    // Override default e-mail regex
+    FroalaEditor.MAIL_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+
+    Froala.RegisterCommand("insertImage", insertImageCommand);
+    Froala.RegisterCommand("imageReplace", imageReplaceCommand);
+    Froala.RegisterQuickInsertButton("image", insertImageCommand);
+
     window.kentico.pageBuilder.richTextEditor?.plugins?.forEach((customPlugin) => {
-        // Override default e-mail regex
-        FroalaEditor.MAIL_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-
-        Froala.RegisterCommand("insertImage", insertImageCommand);
-        Froala.RegisterCommand("imageReplace", imageReplaceCommand);
-        Froala.RegisterQuickInsertButton("image", insertImageCommand);
-
         customPlugin(FroalaEditor);
     });
 });
