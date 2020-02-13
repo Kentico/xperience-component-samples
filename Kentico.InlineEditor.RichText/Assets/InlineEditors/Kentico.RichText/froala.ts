@@ -5,9 +5,9 @@ import "./style.less";
 import { InlineEditorOptions } from "@/types/kentico/inline-editors/inline-editor-options";
 import { getEvents } from "./froala-events";
 import { getFroalaOptions } from "./froala-options";
-import { initializePlugins } from "./plugins";
 
 const RICH_TEXT_WRAPPER_SELECTOR = ".ktc-rich-text-wrapper";
+let configurationCollected = false;
 
 export const initializeFroalaEditor = ({ editor, propertyName, propertyValue }: InlineEditorOptions) => {
     const element = editor.querySelector<HTMLElement>(RICH_TEXT_WRAPPER_SELECTOR);
@@ -16,12 +16,12 @@ export const initializeFroalaEditor = ({ editor, propertyName, propertyValue }: 
         return;
     }
 
-    initializePlugins(element);
+    const config = getConfigurationFromDataAttributes(element);
+    Object.assign(Froala.DEFAULTS, config);
 
-    const key = element.dataset.richTextEditorLicense as string;
     const customOptions = getCustomOptions(element);
     const events = getEvents(editor, propertyName, propertyValue, customOptions);
-    const options = getFroalaOptions(key, events, customOptions);
+    const options = getFroalaOptions(events, customOptions);
 
     new FroalaEditor(element, options);
 }
@@ -43,4 +43,16 @@ const getCustomOptions = (richTextWrapper: HTMLElement): Partial<Froala.FroalaOp
     const customConfiguration = window.kentico.pageBuilder.richTextEditor?.configurations?.[configurationName];
 
     return (typeof customConfiguration === "object") ? customConfiguration : {};
+}
+
+const getConfigurationFromDataAttributes = (element: HTMLElement) => {
+    if (!configurationCollected) {
+        configurationCollected = true;
+
+        return {
+            contextMacros: element.dataset.contextMacros,
+            getLinkMetadataEndpointUrl: element.dataset.getLinkMetadataEndpointUrl,
+            licenseKey: element.dataset.richTextEditorLicense,
+        };
+    }
 }

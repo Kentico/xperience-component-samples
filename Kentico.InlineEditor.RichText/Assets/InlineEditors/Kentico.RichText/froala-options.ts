@@ -1,4 +1,4 @@
-import { FroalaOptions, FroalaEvents } from "froala-editor/js/froala_editor.pkgd.min";
+import * as Froala from "froala-editor/js/froala_editor.pkgd.min";
 import CodeMirror from "codemirror";
 import "codemirror/mode/xml/xml";
 import "codemirror/lib/codemirror.css";
@@ -6,7 +6,7 @@ import "codemirror/lib/codemirror.css";
 import { OPEN_LINK_CONFIGURATION_POPUP_COMMAND_NAME, OPEN_INSERT_LINK_POPUP_COMMAND_NAME } from "./plugins/links/link-constants";
 import { OPEN_INSERT_MACRO_POPUP_COMMAND_NAME } from "./plugins/macros/macro-constants";
 
-const defaultOptions: Partial<FroalaOptions> = {
+const defaultOptions: Partial<Froala.FroalaOptions> = {
     toolbarInline: true,
     codeMirror: CodeMirror,
     pasteDeniedAttrs: ["id", "style"],
@@ -34,10 +34,10 @@ const defaultOptions: Partial<FroalaOptions> = {
     },
 };
 
-export const getFroalaOptions = (key: string, events: Partial<FroalaEvents>, customOptions: Partial<FroalaOptions>): Partial<FroalaOptions> => ({
+export const getFroalaOptions = (events: Partial<Froala.FroalaEvents>, customOptions: Partial<Froala.FroalaOptions>): Partial<Froala.FroalaOptions> => ({
     ...defaultOptions,
     ...customOptions,
-    key,
+    key: Froala.DEFAULTS.licenseKey,
     events,
     attribution: false,
 })
