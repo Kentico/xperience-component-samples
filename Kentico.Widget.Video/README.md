@@ -19,6 +19,6 @@ Prerequisite: You need to have [NodeJS runtime](https://nodejs.org/en/) installe
 1. Copy contents of the `Kentico.Widget.Video/Content` folder from this repository to the `Content` folder of your MVC project.
     - This step ensures that scripts and stylesheets required by the component are available in your project.
 
-You may need to adjust the [limitations](https://kentico.com/CMSPages/DocLinkMapper.ashx?version=latest&link=page_builder_editable_areas_mvc#CreatingpageswitheditableareasinMVC-Limitingwidgetsallowedinaneditablearea) of editable areas to be able to insert the widget into an editable area.
+After rebuilding your solution, you can place the video widget into your pages when using the page builder. You may need to adjust the [limitations](https://kentico.com/CMSPages/DocLinkMapper.ashx?version=latest&link=page_builder_editable_areas_mvc#CreatingpageswitheditableareasinMVC-Limitingwidgetsallowedinaneditablearea) of editable areas to be able to insert the widget into an editable area.
 
 ![Video widget](/Kentico.Widget.Video/VideoWidget.gif)
