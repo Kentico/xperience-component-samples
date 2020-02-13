@@ -14,7 +14,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const videoInsertButtons = Froala.DEFAULTS.videoInsertButtons || [];
     delete videoInsertButtons[videoInsertButtons.indexOf("videoUpload")];
 
-    initializePlugins()
+    initializePlugins();
 
     window.kentico.pageBuilder.richTextEditor?.plugins?.forEach((customPlugin) => {
         customPlugin(FroalaEditor);
