@@ -1,6 +1,6 @@
 import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 
-interface RichTextElementDataset extends DOMStringMap {
+interface HTMLRichTextEditorElementDOMStringMap extends DOMStringMap {
     readonly richTextEditorLicense: string;
     readonly getLinkMetadataEndpointUrl: string;
     readonly richTextEditorConfiguration: string;
@@ -9,5 +9,5 @@ interface RichTextElementDataset extends DOMStringMap {
   
 export interface HTMLRichTextEditorElement extends HTMLElement {
     readonly "data-froala.editor"?: FroalaEditor;
-    readonly dataset: RichTextElementDataset;
+    readonly dataset: HTMLRichTextEditorElementDOMStringMap;
 }
