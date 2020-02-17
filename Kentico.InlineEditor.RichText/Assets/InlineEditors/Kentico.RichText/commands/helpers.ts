@@ -1,1 +1,0 @@
-export const getMediaFilesSelector = () => window.kentico.modalDialog.mediaFilesSelector;
