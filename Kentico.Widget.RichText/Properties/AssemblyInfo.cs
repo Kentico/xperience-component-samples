@@ -22,8 +22,8 @@ using CMS;
 [assembly: ComVisible(false)]
 [assembly: Guid("2325c81a-ca2e-4489-a001-41607db6f24a")]
 
-[assembly: AssemblyVersion("1.1.1.0")]
-[assembly: AssemblyFileVersion("1.1.1.0")]
+[assembly: AssemblyVersion("1.2.0.0")]
+[assembly: AssemblyFileVersion("1.2.0.0")]
 
 [assembly: InternalsVisibleTo("Kentico.Widget.RichText.Tests")]
 
