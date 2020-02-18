@@ -1,11 +1,16 @@
 import { FroalaOptions } from "froala-editor/js/froala_editor.pkgd.min";
 
 import { Kentico } from "./kentico";
+import { HTMLRichTextEditorElement } from "./rich-text";
 
 declare global {
   interface Window {
     readonly kentico: Kentico;
     readonly customConfig: { [option: string]: Partial<FroalaOptions> };
+  }
+
+  interface HTMLElementTagNameMap {
+    ".ktc-rich-text-wrapper": HTMLRichTextEditorElement;
   }
 
   type Nullable<T> = T | null;
