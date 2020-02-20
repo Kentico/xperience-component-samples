@@ -8,6 +8,7 @@ before_build:
 build:
   verbosity: minimal
 configuration: Release
+skip_tags: true
 
 # .NET Tests
 test:

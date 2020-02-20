@@ -10,8 +10,10 @@ Function PackRichText {
     $richTextAssemblyInfoFilePath = ".\Kentico.Widget.RichText\Properties\AssemblyInfo.cs"
     $version = GetVersionFromAssemblyInfo $richTextAssemblyInfoFilePath
     $version = GetPackageVersion $version
+    
+    $suffix = If ($env:APPVEYOR_REPO_BRANCH -ne "master") { "-Suffix b$env:APPVEYOR_BUILD_NUMBER" } Else { "" }
 
-    Invoke-Expression "nuget.exe pack .nuget\Kentico.EMS12.MvcComponents.Widget.RichText.nuspec -BasePath .\ -Version $version -Properties Configuration=$configuration"
+    Invoke-Expression "nuget.exe pack .nuget\Kentico.EMS12.MvcComponents.Widget.RichText.nuspec -BasePath .\ -Version $version $suffix -Properties Configuration=$configuration"
 }
 
 Function GetPackageVersion {
