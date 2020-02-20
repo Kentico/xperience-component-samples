@@ -561,17 +561,13 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\links\templates\configure-general-link-popup.html" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\links\templates\configure-media-link-popup.html" />
     <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\links\templates\configure-page-link-popup.html" />
     <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\templates\configure-context-macro-popup.html" />
     <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\templates\configure-url-parameter-popup.html" />
     <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\templates\macro-element.html" />
     <Content Include="Assets\InlineEditors\Kentico.RichText\style.less" />
     <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\links\link-styles.less" />
-    <Content Include="Assets\InlineEditors\Kentico.RichText\commands\helpers.ts" />
-    <Content Include="Assets\InlineEditors\Kentico.RichText\commands\image-replace.ts" />
-    <Content Include="Assets\InlineEditors\Kentico.RichText\commands\index.ts" />
-    <Content Include="Assets\InlineEditors\Kentico.RichText\commands\insert-image.ts" />
-    <Content Include="Assets\InlineEditors\Kentico.RichText\constants.ts" />
     <Content Include="Assets\InlineEditors\Kentico.RichText\froala.ts" />
     <Content Include="Assets\InlineEditors\Kentico.RichText\toolbar-helpers.ts" />
     <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\macros\index.ts" />
@@ -610,6 +606,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Global\Resources\Kentico.InlineEditor.RichText.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\InlineEditors\Kentico.RichText\froala-quick-command.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\helpers.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\images\image-commands.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\images\image-constants.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\images\index.ts" />
+    <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\index.ts" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Targets\Kentico.ResourceFiles.targets" />

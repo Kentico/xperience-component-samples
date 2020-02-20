@@ -3,44 +3,52 @@ import "froala-editor/css/froala_editor.pkgd.css";
 import "./style.less";
 
 import { InlineEditorOptions } from "@/types/kentico/inline-editors/inline-editor-options";
+import { HTMLRichTextEditorElement } from "@/types/rich-text";
 import { getEvents } from "./froala-events";
 import { getFroalaOptions } from "./froala-options";
-import { initializePlugins } from "./plugins";
 
 const RICH_TEXT_WRAPPER_SELECTOR = ".ktc-rich-text-wrapper";
+let defaultsWereSet = false;
 
 export const initializeFroalaEditor = ({ editor, propertyName, propertyValue }: InlineEditorOptions) => {
-    const element = editor.querySelector<HTMLElement>(RICH_TEXT_WRAPPER_SELECTOR);
+    const element = editor.querySelector(RICH_TEXT_WRAPPER_SELECTOR);
 
     if (!element) {
         return;
     }
 
-    initializePlugins(element);
+    setFroalaDefaults(element);
 
-    const key = element.dataset.richTextEditorLicense as string;
     const customOptions = getCustomOptions(element);
     const events = getEvents(editor, propertyName, propertyValue, customOptions);
-    const options = getFroalaOptions(key, events, customOptions);
+    const options = getFroalaOptions(events, customOptions);
 
     new FroalaEditor(element, options);
 }
 
 export const destroyFroalaEditor = ({ editor }: InlineEditorOptions) => {
-    const richTextWrapper = editor.querySelector<HTMLElement>(RICH_TEXT_WRAPPER_SELECTOR);
-
-    if (richTextWrapper) {
-        const froala = (richTextWrapper as any)["data-froala.editor"];
+    const richTextEditor = editor.querySelector(RICH_TEXT_WRAPPER_SELECTOR);
+    const froala = richTextEditor?.["data-froala.editor"];
     
-        if (froala) {
-            froala.destroy();
-        }
-    }
+    froala?.destroy();
 }
 
-const getCustomOptions = (richTextWrapper: HTMLElement): Partial<Froala.FroalaOptions> => {
-    const configurationName = richTextWrapper.dataset.richTextEditorConfiguration!;
+const getCustomOptions = (richTextEditor: HTMLRichTextEditorElement): Partial<Froala.FroalaOptions> => {
+    const configurationName = richTextEditor.dataset.richTextEditorConfiguration;
     const customConfiguration = window.kentico.pageBuilder.richTextEditor?.configurations?.[configurationName];
 
     return (typeof customConfiguration === "object") ? customConfiguration : {};
+}
+
+const setFroalaDefaults = (richTextEditor: HTMLRichTextEditorElement) => {
+    if (defaultsWereSet) {
+        return;
+    }
+
+    const { getLinkMetadataEndpointUrl, richTextEditorLicense: licenseKey, contextMacros } = richTextEditor.dataset;
+    Object.assign(Froala.DEFAULTS, { getLinkMetadataEndpointUrl, licenseKey }, !contextMacros ? {} : {
+        contextMacros: JSON.parse(contextMacros),
+    });
+
+    defaultsWereSet = true;
 }

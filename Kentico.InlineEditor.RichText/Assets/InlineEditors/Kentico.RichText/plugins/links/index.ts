@@ -1,11 +1,12 @@
-import { Froala } from "@/types/kentico";
+import * as Froala from "froala-editor/js/froala_editor.pkgd.min";
+
 import * as constants from "./link-constants";
 import { linkPlugin } from "./link-plugin";
 import { linkCommands } from "./link-commands";
 
-export const initializeLinkPlugin = (froala: Froala, element: HTMLElement) => {
+export const initializeLinkPlugin = () => {
     // Define popup templates.
-    Object.assign(froala.POPUP_TEMPLATES, {
+    Object.assign(Froala.POPUP_TEMPLATES, {
         [constants.INSERT_LINK_POPUP_NAME]: "[_BUTTONS_][_CUSTOM_LAYER_]",
         [constants.CONFIGURE_PAGE_LINK_POPUP_NAME]: "[_BUTTONS_][_CUSTOM_LAYER_]",
         [constants.CONFIGURE_GENERAL_LINK_POPUP_NAME]: "[_BUTTONS_][_CUSTOM_LAYER_]",
@@ -13,27 +14,14 @@ export const initializeLinkPlugin = (froala: Froala, element: HTMLElement) => {
     });
 
     // Define popup buttons.
-    Object.assign(froala.DEFAULTS, {
+    Object.assign(Froala.DEFAULTS, {
         popupInsertLinkButtons: [constants.CLOSE_LINK_CONFIGURATION_POPUP_COMMAND_NAME, "|", constants.SWITCH_PAGE_LINK_TAB_COMMAND_NAME, constants.SWITCH_GENERAL_LINK_TAB_COMMAND_NAME, constants.SWITCH_MEDIA_LINK_TAB_COMMAND_NAME],
         popupUpdatePageLinkButtons: [constants.CLOSE_LINK_CONFIGURATION_POPUP_COMMAND_NAME, "|", constants.SWITCH_PAGE_LINK_TAB_COMMAND_NAME],
         popupUpdateGeneralLinkButtons: [constants.CLOSE_LINK_CONFIGURATION_POPUP_COMMAND_NAME, "|", constants.SWITCH_GENERAL_LINK_TAB_COMMAND_NAME],
         popupUpdateMediaLinkButtons: [constants.CLOSE_LINK_CONFIGURATION_POPUP_COMMAND_NAME, "|", constants.SWITCH_MEDIA_LINK_TAB_COMMAND_NAME],
     });
 
-    const getLinkMetadataEndpointUrl = element.dataset.getLinkMetadataEndpointUrl;
-    if (getLinkMetadataEndpointUrl) {
-        Object.assign(froala.DEFAULTS, {
-            getLinkMetadataEndpointUrl
-        });
-    }
+    linkCommands.forEach(command => command.register());
 
-    linkCommands.forEach(({ commandName, commandParameters, commandIcon }) => {
-        froala.RegisterCommand(commandName, commandParameters);
-        
-        if (commandIcon) {
-            froala.DefineIcon(commandIcon.iconName, commandIcon.iconParameters);
-        }
-    })
-
-    froala.PLUGINS[constants.LINK_PLUGIN_NAME] = linkPlugin;
+    Froala.PLUGINS[constants.LINK_PLUGIN_NAME] = linkPlugin;
 }
