@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata minClientVersion="4.3">
     <id>Kentico.EMS12.MvcComponents.Widget.RichText</id>
-    <version>1.0.0</version>
+    <version>$version$</version>
     <title>Kentico.EMS12.MvcComponents.Widget.RichText</title>
     <authors>Kentico</authors>
     <owners>Kentico</owners>
