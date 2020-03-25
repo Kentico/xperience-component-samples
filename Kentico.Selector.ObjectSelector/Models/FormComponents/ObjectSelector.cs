@@ -20,7 +20,7 @@ namespace Kentico.Components.Web.Mvc.FormComponents
     /// <summary>
     /// Represents an object selector form component.
     /// </summary>
-    public class ObjectSelector : FormComponent<ObjectSelectorProperties, IList<ObjectSelectorItem>>
+    public class ObjectSelector : FormComponent<ObjectSelectorProperties, IEnumerable<ObjectSelectorItem>>
     {
         /// <summary>
         /// Represents the <see cref="ObjectSelector"/> identifier.
@@ -78,7 +78,7 @@ namespace Kentico.Components.Web.Mvc.FormComponents
             {
                 if (mSelectedObject == null)
                 {
-                    mSelectedObject = !String.IsNullOrEmpty(SelectedValue) ? JsonConvert.DeserializeObject<IList<ObjectSelectorItem>>(SelectedValue) : Enumerable.Empty<ObjectSelectorItem>();
+                    mSelectedObject = !String.IsNullOrEmpty(SelectedValue) ? JsonConvert.DeserializeObject<IEnumerable<ObjectSelectorItem>>(SelectedValue) : Enumerable.Empty<ObjectSelectorItem>();
                 }
 
                 return mSelectedObject;
@@ -89,21 +89,16 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         /// <summary>
         /// Gets the selected objects.
         /// </summary>
-        public override IList<ObjectSelectorItem> GetValue()
+        public override IEnumerable<ObjectSelectorItem> GetValue()
         {
-            if (SelectedObjects.Any())
-            {
-                return SelectedObjects as IList<ObjectSelectorItem>;
-            }
-
-            return null;
+            return SelectedObjects;
         }
 
 
         /// <summary>
         /// Sets the selected objects to the selector.
         /// </summary>
-        public override void SetValue(IList<ObjectSelectorItem> value)
+        public override void SetValue(IEnumerable<ObjectSelectorItem> value)
         {
             SelectedValue = (value != null) ? JsonConvert.SerializeObject(value) : null;
         }

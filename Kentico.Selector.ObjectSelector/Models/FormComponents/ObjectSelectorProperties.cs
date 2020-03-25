@@ -9,12 +9,12 @@ namespace Kentico.Components.Web.Mvc.FormComponents
     /// <summary>
     /// Represents properties of the <see cref="ObjectSelector"/>.
     /// </summary>
-    public class ObjectSelectorProperties : FormComponentProperties<IList<ObjectSelectorItem>> 
+    public class ObjectSelectorProperties : FormComponentProperties<IEnumerable<ObjectSelectorItem>>
     {
         /// <summary>
         /// Default value.
         /// </summary>
-        public override IList<ObjectSelectorItem> DefaultValue { get; set; }
+        public override IEnumerable<ObjectSelectorItem> DefaultValue { get; set; }
 
 
         /// <summary>
