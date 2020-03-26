@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata minClientVersion="4.3">
+    <id>Kentico.EMS12.MvcComponents.Selector.ObjectSelector</id>
+    <version>$version$</version>
+    <title>Kentico.EMS12.MvcComponents.Selector.ObjectSelector</title>
+    <authors>Kentico</authors>
+    <owners>Kentico</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/Kentico/ems-mvc-components</projectUrl>
+    <icon>images\kentico.png</icon>
+    <description>The package provides a general object selector form component.</description>
+    <copyright>Copyright 2020</copyright>
+    <tags>Kentico ems mvc object selector component</tags>
+    <dependencies>
+        <group targetFramework="net461">
+            <dependency id="Kentico.AspNet.Mvc.Libraries" version="12.0.43" />
+        </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src=".nuget\kentico.png" target="images" />
+    <file src="Kentico.Selector.ObjectSelector\bin\$Configuration$\Kentico.Selector.ObjectSelector.dll" target="lib\net461" />
+    <file src="Kentico.Selector.ObjectSelector.Views\obj\$Configuration$\Precompiled\bin\Kentico.Selector.ObjectSelector.Views.dll" target="lib\net461" />
+    <file src=".nuget\Kentico.EMS12.MvcComponents.Selector.ObjectSelector.targets" target="build\" />
+    <file src="Kentico.Selector.ObjectSelector\App_Data\Global\**" target="build\App_Data\Global" />
+  </files>
+</package>
