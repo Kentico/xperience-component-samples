@@ -35,7 +35,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Tests
                 var urlHelperMock = Substitute.For<UrlHelper>();
                 urlHelperMock.Action("GetLinkMetadata",
                                      Arg.Is<RouteValueDictionary>( x =>
-                                        // Math only if the route collection contains the two required keys
+                                        // Match only if the route collection contains the two required keys
                                         x["cultureCode"].Equals(Thread.CurrentThread.CurrentCulture.Name)
                                         && x["typeIdentifier"].Equals(KenticoRichTextWidgetController.IDENTIFIER)
                                     ))
