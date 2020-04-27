@@ -40,8 +40,8 @@ const imageReplaceCommand = new FroalaCommand(REPLACE_IMAGE_COMMAND_NAME, {
     refreshAfterCallback: false,
     callback(this: FroalaEditor) {
         const { image, opts } = this;
-        const currentImage = image.get();
-        const currentImageElement = (currentImage as HTMLImageElement[])[0];
+        const $currentImage = image.get();
+        const currentImageElement = $currentImage[0];
         // When image is inserted for the first time froala inserts the image data into "str" prefixed data attributes,
         // although when the image is replaced the new values are not prefixed.
         const currentImageId = currentImageElement.dataset.id || currentImageElement.dataset.strid;
@@ -55,7 +55,7 @@ const imageReplaceCommand = new FroalaCommand(REPLACE_IMAGE_COMMAND_NAME, {
 
                     // Replace image when the ID is different
                     if (selectedImage.fileGuid !== currentImageId) {
-                        image.insert(selectedImage.url, true, { name: selectedImage.name, id: selectedImage.fileGuid }, currentImage);
+                        image.insert(selectedImage.url, true, { name: selectedImage.name, id: selectedImage.fileGuid }, $currentImage);
                     }
                 }
             },
