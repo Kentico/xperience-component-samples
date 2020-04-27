@@ -114,6 +114,7 @@ namespace Kentico.Components.Web.Mvc.FormComponents
                 DisplayName = info[typeInfo.DisplayNameColumn].ToString(),
                 SelectorItem = new ObjectSelectorItem
                 {
+                    ObjectCodeName = info[typeInfo.CodeNameColumn].ToString(),
                     ObjectGuid = Guid.Parse(info[typeInfo.GUIDColumn].ToString()),
                 }
             });

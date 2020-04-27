@@ -11,5 +11,11 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         /// Object GUID.
         /// </summary>
         public Guid ObjectGuid { get; set; }
+
+
+        /// <summary>
+        /// Object code name.
+        /// </summary>
+        public string ObjectCodeName { get; set; }
     }
 }
