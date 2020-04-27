@@ -165,6 +165,9 @@ namespace Kentico.Components.Web.Mvc.FormComponents
                 attributes[UpdatableMvcForm.NOT_OBSERVED_ELEMENT_ATTRIBUTE_NAME] = null;
             }
 
+            attributes["class"] = $"{attributes["class"]} ktc-object-selector";
+            attributes.Add("data-object-type", Properties.ObjectType);
+
             return attributes;
         }
     }

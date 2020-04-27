@@ -1,5 +1,19 @@
 ﻿@using Kentico.Components.Web.Mvc.FormComponents;
 
 @model ObjectSelector
+@{
+    @* TODO MAE-305: Discuss internal accessibility protection level or move URL resolving to HtmlAttributes,
+                     Discuss UrlHelper inaccessibility in form component *@
+
+    // var routeName = ObjectSelectorConstants.GET_OBJECTS_ROUTE_NAME
+    var routeName = "Kentico.Selector.ObjectSelector.GetObjects";
+    var getObjectsEndpointUrl = Url.HttpRouteUrl(routeName, new RouteValueDictionary());
+    getObjectsEndpointUrl = Url.Kentico().AuthenticateUrl(getObjectsEndpointUrl).ToString();
+    Model.HtmlAttributes.Add("data-objects-endpoint", getObjectsEndpointUrl);
+}
 
 @Html.DropDownListFor(x => x.SelectedValue, Model.SelectorItems, null, Model.HtmlAttributes)
+
+<script>
+    document.dispatchEvent(new Event("initObjectSelector"));
+</script>
