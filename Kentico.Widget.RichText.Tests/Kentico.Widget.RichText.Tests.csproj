@@ -557,6 +557,7 @@
   <ItemGroup>
     <Compile Include="Controllers\KenticoRichTextWidgetControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RichTextWidgetUrlRetrieverTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
