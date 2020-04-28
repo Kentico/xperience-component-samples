@@ -21,5 +21,10 @@ namespace Kentico.Components.Web.Mvc.Selectors
         /// Route that serves object selector data.
         /// </summary>
         public const string GET_OBJECTS_ROUTE = "KenticoComponent/Kentico.Selector.ObjectSelector/" + nameof(KenticoObjectSelectorController.GetObjects);
+
+        /// <summary>
+        /// Name of the event for object selector component initialization.
+        /// </summary>
+        public const string COMPONENT_INITIALIZATION_EVENT_NAME = "Kentico.Selector.ObjectSelector.Initialize";
     }
 }
