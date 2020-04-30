@@ -10,6 +10,7 @@ using CMS.Core;
 
 using Kentico.Components.Web.Mvc.FormComponents;
 using Kentico.Forms.Web.Mvc;
+using Kentico.Components.Web.Mvc.Selectors;
 
 [assembly: RegisterFormComponent(ObjectSelector.IDENTIFIER, typeof(ObjectSelector), "{$Kentico.Selector.ObjectSelector.Name$}", ViewName = "~/Views/Shared/Kentico/Selectors/FormComponents/_ObjectSelector.cshtml", IsAvailableInFormBuilderEditor = false)]
 
@@ -25,11 +26,10 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         /// </summary>
         public const string IDENTIFIER = "Kentico.ObjectSelector";
 
-        private readonly ISiteService siteService = Service.Resolve<ISiteService>();
         private string mValue;
-        private IEnumerable<SelectListItem> mItems;
+        private IEnumerable<SelectListItem> selectedListItems;
         private IEnumerable<ObjectSelectorItem> mSelectedObject;
-        private IDictionary<string, object> mHtmlAttributes;
+        private readonly ObjectsRetriever objectsRetriever = new ObjectsRetriever(Service.Resolve<ISiteService>());
 
 
         /// <summary>
@@ -47,6 +47,15 @@ namespace Kentico.Components.Web.Mvc.FormComponents
                 mSelectedObject = null;
                 mValue = value;
             }
+        }
+
+
+        /// <summary>
+        /// Returns selected objects as list items.
+        /// </summary>
+        internal IEnumerable<SelectListItem> SelectedItems
+        {
+            get => selectedListItems ?? (selectedListItems = objectsRetriever.GetObjects(Properties.ObjectType, SelectedObjects));
         }
 
 

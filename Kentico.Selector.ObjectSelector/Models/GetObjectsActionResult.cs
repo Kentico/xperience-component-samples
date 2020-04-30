@@ -12,12 +12,12 @@ namespace Kentico.Components.Web.Mvc.Selectors
         /// <summary>
         /// Object selector items.
         /// </summary>
-        public IEnumerable<ObjectSelectorItemModel> Results { get; set; }
+        public IEnumerable<ObjectSelectorItemModel> Items { get; set; }
 
 
         /// <summary>
-        /// Total number of items which satisfy the current search term.
+        /// Indicates whether a next page of items is available for retrieval.
         /// </summary>
-        public int SearchItemsCount { get; set; }
+        public bool NextPageAvailable { get; set; }
     }
 }

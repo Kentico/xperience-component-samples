@@ -4,10 +4,10 @@
 @model ObjectSelector
 
 @{
-    var selectorId = Html.IdFor(m => m.SelectedValue).ToString();
+    var selectorId = $"objectSelector-{Guid.NewGuid()}";
 }
 
-@Html.Kentico().ObjectSelector(selectorId, Model.Properties.ObjectType)
+@Html.ObjectSelector(selectorId)
 
 <script>
 (function () {
