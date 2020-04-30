@@ -5,10 +5,8 @@
     border-radius: 3px;
 }
 
-/* TODO: Use this when https://github.com/select2/select2/issues/5843 is resolved 
-.ktc-object-selector-container */
 .select2-container {
-    .select2-selection {
+    .ktc-object-selector-container  {
         .selector-border();
 
         height: 2 * @ktc-base-unit;
@@ -23,7 +21,7 @@
     }
 
     &.select2-container--focus:not(.select2-container--open) {
-        .select2-selection {
+        .ktc-object-selector-container  {
             background-color: @ktc-color-white;
             border-bottom-color: @ktc-color-blue-100;
             outline: 0;

@@ -8,14 +8,19 @@ import "./styles.less";
 const OBJECT_TYPE_ATTRIBUTE = "data-object-type";
 const GET_OBJECTS_ENDPOINT_URL_ATTRIBUTE = "data-get-objects-endpoint-url";
 const INITIALIZATION_EVENT_NAME = "Kentico.Selector.ObjectSelector.Initialize";
+const IDENTIFIER_ATTRIBUTE = "data-value-for";
 
 document.addEventListener(INITIALIZATION_EVENT_NAME, (event) => {
-    const $selector = $(event.target as HTMLSelectElement).empty();
+    const $selector = $(event.target as HTMLSelectElement);
+
+    // Remove the name attribute to enforce that the hidden input sends the property value
+    $selector.removeAttr("name");
 
     $selector.select2({
-        placeholder: "(None)", //TODO MAE-305: Represent as value not placeholder
-        // minimumResultsForSearch: 50, //TODO MAE-305: Minimum results for search?
-        // selectionCssClass: "ktc-object-selector-container",  //TODO MAE-305: Use this when https://github.com/select2/select2/issues/5843 is resolved
+        placeholder: "(None)",
+        minimumResultsForSearch: 7,
+        // @ts-ignore // TODO: Remove 'containerCssClass' option when https://github.com/select2/select2/issues/5843 is resolved
+        selectionCssClass: "ktc-object-selector-container",  
         containerCssClass: "ktc-object-selector-container",
         dropdownCssClass: "ktc-object-selector-dropdown",
         ajax: {
@@ -24,20 +29,27 @@ document.addEventListener(INITIALIZATION_EVENT_NAME, (event) => {
             delay: 250,
             data: (params) => ({
                 objectType: $selector.attr(OBJECT_TYPE_ATTRIBUTE),
-                page: params.page || 1,
+                pageIndex: params.page || 0,
                 searchTerm: params.term
             }),
             processResults: (data, params) => ({
-                results: data.results.map((i: ObjectSelectorItemModel) => ({
+                results: data.items.map((i: ObjectSelectorItemModel) => ({
                     id: JSON.stringify(i.value),
                     text: i.text,
                 })),
                 pagination: {
-                    more: (params.page! * 50) < data.searchItemsCount
+                    more: data.nextPageAvailable
                 }
             }),
             cache: true
         },
+    });
+
+    // Ensure selected value as an array
+    $selector.on("change.select2", function () {
+        console.log(`[${IDENTIFIER_ATTRIBUTE}='${this.id}']`);
+        const valueElement = document.querySelector<HTMLInputElement>(`[${IDENTIFIER_ATTRIBUTE}='${this.id}']`);
+        valueElement!.value = `[${$(this).val()}]`;
     });
 
     // Ensure search input placeholder
