@@ -1,5 +1,19 @@
 ﻿@using Kentico.Components.Web.Mvc.FormComponents;
+@using Kentico.Components.Web.Mvc.Selectors;
 
 @model ObjectSelector
 
-@Html.DropDownListFor(x => x.SelectedValue, Model.SelectorItems, null, Model.HtmlAttributes)
+@{
+    var selectorId = $"objectSelector-{Guid.NewGuid()}";
+}
+
+@Html.ObjectSelector(selectorId)
+
+<script>
+(function () {
+    var selector = document.getElementById("@selectorId");
+    selector.dispatchEvent(new Event(selector.dataset.initializationEvent, {
+        bubbles: true,
+    }));
+}());
+</script>
