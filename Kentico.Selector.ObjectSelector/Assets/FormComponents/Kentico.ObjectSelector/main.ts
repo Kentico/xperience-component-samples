@@ -9,6 +9,7 @@ const OBJECT_TYPE_ATTRIBUTE = "data-object-type";
 const GET_OBJECTS_ENDPOINT_URL_ATTRIBUTE = "data-get-objects-endpoint-url";
 const INITIALIZATION_EVENT_NAME = "Kentico.Selector.ObjectSelector.Initialize";
 const IDENTIFIER_ATTRIBUTE = "data-value-for";
+const IDENTIFY_BY_GUID_ATTRIBUTE = "IdentifyObjectByGuid";
 
 document.addEventListener(INITIALIZATION_EVENT_NAME, (event) => {
     const $selector = $(event.target as HTMLSelectElement);
@@ -30,7 +31,8 @@ document.addEventListener(INITIALIZATION_EVENT_NAME, (event) => {
             data: (params) => ({
                 objectType: $selector.attr(OBJECT_TYPE_ATTRIBUTE),
                 pageIndex: params.page || 0,
-                searchTerm: params.term
+                searchTerm: params.term,
+                identifyByGuid: $selector.attr(IDENTIFY_BY_GUID_ATTRIBUTE),
             }),
             processResults: (data, params) => ({
                 results: data.items.map((i: ObjectSelectorItemModel) => ({

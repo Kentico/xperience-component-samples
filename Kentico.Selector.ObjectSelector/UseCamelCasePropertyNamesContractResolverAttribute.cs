@@ -29,8 +29,9 @@ namespace Kentico.Components.Web.Mvc.Selectors
                 {
                     SerializerSettings = new JsonSerializerSettings
                     {
-                        ContractResolver = new CamelCasePropertyNamesContractResolver()
-                    }
+                        ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                        NullValueHandling = NullValueHandling.Ignore,
+                    },
                 };
 
                 var jsonFormatterIndex = formatters.IndexOf(jsonFormatter);

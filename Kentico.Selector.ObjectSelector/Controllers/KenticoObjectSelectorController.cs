@@ -34,14 +34,24 @@ namespace Kentico.Components.Web.Mvc.Selectors.Controllers
         }
 
 
+        private ObjectSelectorItem GetItem(BaseInfo info, bool useGuid)
+        {
+            var typeInfo = info.TypeInfo;
+            return useGuid
+                ? new ObjectSelectorItem { ObjectGuid = Guid.Parse(info[typeInfo.GUIDColumn].ToString()) }
+                : new ObjectSelectorItem { ObjectCodeName = info.GetStringValue(typeInfo.CodeNameColumn, null) };
+        }
+
+
         /// <summary>
         /// Gets the collection of objects available for selection.
         /// </summary>
         /// <param name="objectType">Object type.</param>
         /// <param name="pageIndex">0-based page index.</param>
         /// <param name="searchTerm">Search term.</param>
+        /// <param name="identifyByGuid">Indicates whether objects should be identified using a GUID instead of a code name.</param>
         [HttpGet]
-        public GetObjectsActionResult GetObjects(string objectType, int pageIndex, string searchTerm = null)
+        public GetObjectsActionResult GetObjects(string objectType, int pageIndex, string searchTerm = null, bool identifyByGuid = false)
         {
             try
             {
@@ -53,10 +63,7 @@ namespace Kentico.Components.Web.Mvc.Selectors.Controllers
                     NextPageAvailable = infoObjects.NextPageAvailable,
                     Items = infoObjects.Select(info => new ObjectSelectorItemModel
                     {
-                        Value = new ObjectSelectorItem
-                        {
-                            ObjectGuid = Guid.Parse(info[typeInfo.GUIDColumn].ToString())
-                        },
+                        Value = GetItem(info, identifyByGuid),
                         Text = info[typeInfo.DisplayNameColumn].ToString()
                     })
                 };

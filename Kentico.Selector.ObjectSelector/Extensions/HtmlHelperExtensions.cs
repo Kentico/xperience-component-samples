@@ -46,7 +46,8 @@ namespace Kentico.Components.Web.Mvc.Selectors
                 { "class", FORM_CONTROL_CLASS_NAME },
                 { OBJECT_TYPE_ATTRIBUTE, objectSelector.Properties.ObjectType },
                 { GET_OBJECTS_ENDPOINT_URL_ATTRIBUTE, getObjectsEndpointUrl },
-                { INITIALIZATION_EVENT_NAME_ATTRIBUTE, ObjectSelectorConstants.COMPONENT_INITIALIZATION_EVENT_NAME }
+                { INITIALIZATION_EVENT_NAME_ATTRIBUTE, ObjectSelectorConstants.COMPONENT_INITIALIZATION_EVENT_NAME },
+                { ObjectSelectorConstants.IDENTIFY_OBJECTS_BY_GUID_NAME, objectSelector.Properties.IdentifyObjectByGuid }
             });
 
             return MvcHtmlString.Create(String.Concat(dropDown.ToString(), valueInput.ToString()));

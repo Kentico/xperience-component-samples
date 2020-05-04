@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-using Newtonsoft.Json;
-
 using CMS.Base;
 using CMS.Core;
+using CMS.DataEngine;
 
 using Kentico.Components.Web.Mvc.FormComponents;
-using Kentico.Forms.Web.Mvc;
 using Kentico.Components.Web.Mvc.Selectors;
+using Kentico.Forms.Web.Mvc;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 [assembly: RegisterFormComponent(ObjectSelector.IDENTIFIER, typeof(ObjectSelector), "{$Kentico.Selector.ObjectSelector.Name$}", ViewName = "~/Views/Shared/Kentico/Selectors/FormComponents/_ObjectSelector.cshtml", IsAvailableInFormBuilderEditor = false)]
 
@@ -55,8 +57,42 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         /// </summary>
         internal IEnumerable<SelectListItem> SelectedItems
         {
-            get => selectedListItems ?? (selectedListItems = objectsRetriever.GetObjects(Properties.ObjectType, SelectedObjects));
+            get => selectedListItems ?? (selectedListItems = objectsRetriever
+                .GetObjects(Properties.ObjectType, SelectedObjects.Select(SelectIdentifier), Properties.IdentifyObjectByGuid)
+                .Select(GetSelectedItem));
         }
+
+
+        private SelectListItem GetSelectedItem(BaseInfo info)
+        {
+            var typeInfo = info.TypeInfo;
+            var displayName = (string)info[typeInfo.DisplayNameColumn];
+
+            var item = Properties.IdentifyObjectByGuid
+                ? new ObjectSelectorItem { ObjectGuid = (Guid)info[typeInfo.GUIDColumn] }
+                : new ObjectSelectorItem { ObjectCodeName = info.GetStringValue(typeInfo.CodeNameColumn, null) };
+
+            return new SelectListItem
+            {
+                Text = displayName,
+                Value = JsonConvert.SerializeObject(item, SerializerSettings),
+                Selected = true,
+            };
+
+        }
+
+
+        private string SelectIdentifier(ObjectSelectorItem item) => Properties.IdentifyObjectByGuid ? item.ObjectGuid.ToString() : item.ObjectCodeName;
+
+
+        private JsonSerializerSettings SerializerSettings => new JsonSerializerSettings
+        {
+            NullValueHandling = NullValueHandling.Ignore,
+            ContractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            }
+        };
 
 
         private IEnumerable<ObjectSelectorItem> SelectedObjects

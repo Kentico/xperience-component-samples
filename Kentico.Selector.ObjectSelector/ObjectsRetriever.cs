@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 
 using CMS.Base;
 using CMS.DataEngine;
 
 using Kentico.Components.Web.Mvc.FormComponents;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace Kentico.Components.Web.Mvc.Selectors
 {
@@ -28,43 +25,34 @@ namespace Kentico.Components.Web.Mvc.Selectors
         {
             var typeInfo = GetTypeInfo(objectType);
 
-            return new ObjectQuery<BaseInfo>(objectType)
+            var query = new ObjectQuery<BaseInfo>(objectType)
                .OnSite(siteService.CurrentSite.SiteName, includeGlobal: true)
                .Columns(typeInfo.GUIDColumn, typeInfo.DisplayNameColumn);
+
+            if (!String.IsNullOrEmpty(typeInfo.CodeNameColumn) && !typeInfo.CodeNameColumn.Equals(ObjectTypeInfo.COLUMN_NAME_UNKNOWN, StringComparison.Ordinal))
+            {
+                query.AddColumn(typeInfo.CodeNameColumn);
+            }
+
+            return query;
         }
 
 
-        public IEnumerable<SelectListItem> GetObjects(string objectType, IEnumerable<ObjectSelectorItem> selectorItems)
+        public IEnumerable<BaseInfo> GetObjects(string objectType, IEnumerable<string> itemsIdentifiers, bool useGuidToIdentifyObjects = false)
         {
             var typeInfo = GetTypeInfo(objectType);
-            if (String.IsNullOrEmpty(typeInfo.GUIDColumn) || typeInfo.GUIDColumn.Equals(ObjectTypeInfo.COLUMN_NAME_UNKNOWN, StringComparison.Ordinal))
+            if (useGuidToIdentifyObjects && (String.IsNullOrEmpty(typeInfo.GUIDColumn) || typeInfo.GUIDColumn.Equals(ObjectTypeInfo.COLUMN_NAME_UNKNOWN, StringComparison.Ordinal)))
             {
                 throw new InvalidOperationException($"The object type '{typeInfo.ObjectType}' does not have a GUID column defined. The object selector form component can be used only for objects that have a GUID column specified.");
             }
 
-            var serializerSettings = new JsonSerializerSettings
+            if (!useGuidToIdentifyObjects && (String.IsNullOrEmpty(typeInfo.CodeNameColumn) || typeInfo.CodeNameColumn.Equals(ObjectTypeInfo.COLUMN_NAME_UNKNOWN, StringComparison.Ordinal)))
             {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new CamelCaseNamingStrategy()
-                }
-            };
+                throw new InvalidOperationException($"The object type '{typeInfo.ObjectType}' does not have a code name column defined. Please check whether {nameof(ObjectSelectorProperties.IdentifyObjectByGuid)} property of the editing component is set correctly.");
+            }
 
             return GetObjectsQuery(objectType)
-                .WhereIn(typeInfo.GUIDColumn, selectorItems.Select(i => i.ObjectGuid).ToList())
-                .Select(info =>
-                {
-                    var displayName = (string)info[typeInfo.DisplayNameColumn];
-                    var guid = (Guid)info[typeInfo.GUIDColumn];
-                    var item = selectorItems.FirstOrDefault(i => i.ObjectGuid == guid);
-
-                    return new SelectListItem
-                    {
-                        Text = displayName,
-                        Value = JsonConvert.SerializeObject(item, serializerSettings),
-                        Selected = true,
-                    };
-                });
+                .WhereIn(useGuidToIdentifyObjects ? typeInfo.GUIDColumn : typeInfo.CodeNameColumn, itemsIdentifiers.ToArray());
         }
 
 
