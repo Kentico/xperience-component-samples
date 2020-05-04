@@ -8,7 +8,7 @@ using Kentico.Components.Web.Mvc.FormComponents;
 using Kentico.Content.Web.Mvc;
 using Kentico.Web.Mvc;
 
-namespace Kentico.Components.Web.Mvc.Selectors
+namespace Kentico.Components.Web.Mvc.Selectors.Internal
 {
     public static class HtmlHelperExtensions
     {
