@@ -20,9 +20,8 @@ document.addEventListener(INITIALIZATION_EVENT_NAME, (event) => {
     $selector.select2({
         placeholder: "(None)",
         minimumResultsForSearch: 7,
-        // @ts-ignore // TODO: Remove 'containerCssClass' option when https://github.com/select2/select2/issues/5843 is resolved
+        // @ts-ignore
         selectionCssClass: "ktc-object-selector-container",  
-        containerCssClass: "ktc-object-selector-container",
         dropdownCssClass: "ktc-object-selector-dropdown",
         ajax: {
             url: $selector.attr(GET_OBJECTS_ENDPOINT_URL_ATTRIBUTE),
