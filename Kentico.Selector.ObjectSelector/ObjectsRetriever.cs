@@ -7,7 +7,6 @@ using CMS.DataEngine;
 
 using Kentico.Components.Web.Mvc.FormComponents;
 
-
 namespace Kentico.Components.Web.Mvc.Selectors
 {
     internal class ObjectsRetriever
@@ -38,7 +37,7 @@ namespace Kentico.Components.Web.Mvc.Selectors
         }
 
 
-        public IEnumerable<BaseInfo> GetObjects(string objectType, IEnumerable<string> itemsIdentifiers, bool useGuidToIdentifyObjects = false)
+        public IEnumerable<BaseInfo> GetObjects(string objectType, IEnumerable<string> itemIdentifiers, bool useGuidToIdentifyObjects = false)
         {
             var typeInfo = GetTypeInfo(objectType);
             if (useGuidToIdentifyObjects && (String.IsNullOrEmpty(typeInfo.GUIDColumn) || typeInfo.GUIDColumn.Equals(ObjectTypeInfo.COLUMN_NAME_UNKNOWN, StringComparison.Ordinal)))
@@ -52,7 +51,7 @@ namespace Kentico.Components.Web.Mvc.Selectors
             }
 
             return GetObjectsQuery(objectType)
-                .WhereIn(useGuidToIdentifyObjects ? typeInfo.GUIDColumn : typeInfo.CodeNameColumn, itemsIdentifiers.ToArray());
+                .WhereIn(useGuidToIdentifyObjects ? typeInfo.GUIDColumn : typeInfo.CodeNameColumn, itemIdentifiers.ToArray());
         }
 
 

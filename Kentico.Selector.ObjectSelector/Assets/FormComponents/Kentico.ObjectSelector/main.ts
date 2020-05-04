@@ -9,7 +9,7 @@ const OBJECT_TYPE_ATTRIBUTE = "data-object-type";
 const GET_OBJECTS_ENDPOINT_URL_ATTRIBUTE = "data-get-objects-endpoint-url";
 const INITIALIZATION_EVENT_NAME = "Kentico.Selector.ObjectSelector.Initialize";
 const IDENTIFIER_ATTRIBUTE = "data-value-for";
-const IDENTIFY_BY_GUID_ATTRIBUTE = "IdentifyObjectByGuid";
+const IDENTIFY_BY_GUID_ATTRIBUTE = "data-identify-object-by-guid";
 
 document.addEventListener(INITIALIZATION_EVENT_NAME, (event) => {
     const $selector = $(event.target as HTMLSelectElement);
@@ -49,7 +49,6 @@ document.addEventListener(INITIALIZATION_EVENT_NAME, (event) => {
 
     // Ensure selected value as an array
     $selector.on("change.select2", function () {
-        console.log(`[${IDENTIFIER_ATTRIBUTE}='${this.id}']`);
         const valueElement = document.querySelector<HTMLInputElement>(`[${IDENTIFIER_ATTRIBUTE}='${this.id}']`);
         valueElement!.value = `[${$(this).val()}]`;
     });

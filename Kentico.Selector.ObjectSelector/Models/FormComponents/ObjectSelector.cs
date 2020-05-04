@@ -78,7 +78,6 @@ namespace Kentico.Components.Web.Mvc.FormComponents
                 Value = JsonConvert.SerializeObject(item, SerializerSettings),
                 Selected = true,
             };
-
         }
 
 

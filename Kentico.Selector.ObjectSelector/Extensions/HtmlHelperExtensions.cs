@@ -16,6 +16,8 @@ namespace Kentico.Components.Web.Mvc.Selectors.Internal
         private const string OBJECT_TYPE_ATTRIBUTE = "data-object-type";
         private const string GET_OBJECTS_ENDPOINT_URL_ATTRIBUTE = "data-get-objects-endpoint-url";
         private const string INITIALIZATION_EVENT_NAME_ATTRIBUTE = "data-initialization-event";
+        // Name of an attribute that indicates whether the object selector should identify objects by their GUIDs instead of code names.
+        private const string IDENTIFY_OBJECTS_BY_GUID_ATTRIBUTE = "data-identify-object-by-guid";
 
 
         /// <summary>
@@ -47,7 +49,7 @@ namespace Kentico.Components.Web.Mvc.Selectors.Internal
                 { OBJECT_TYPE_ATTRIBUTE, objectSelector.Properties.ObjectType },
                 { GET_OBJECTS_ENDPOINT_URL_ATTRIBUTE, getObjectsEndpointUrl },
                 { INITIALIZATION_EVENT_NAME_ATTRIBUTE, ObjectSelectorConstants.COMPONENT_INITIALIZATION_EVENT_NAME },
-                { ObjectSelectorConstants.IDENTIFY_OBJECTS_BY_GUID_NAME, objectSelector.Properties.IdentifyObjectByGuid }
+                { IDENTIFY_OBJECTS_BY_GUID_ATTRIBUTE, objectSelector.Properties.IdentifyObjectByGuid }
             });
 
             return MvcHtmlString.Create(String.Concat(dropDown.ToString(), valueInput.ToString()));
