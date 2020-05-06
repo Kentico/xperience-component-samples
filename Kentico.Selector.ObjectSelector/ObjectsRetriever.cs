@@ -24,14 +24,21 @@ namespace Kentico.Components.Web.Mvc.Selectors
         {
             var typeInfo = GetTypeInfo(objectType);
 
-            var query = new ObjectQuery<BaseInfo>(objectType)
-               .OnSite(siteService.CurrentSite.SiteName, includeGlobal: true)
-               .Columns(typeInfo.GUIDColumn, typeInfo.DisplayNameColumn);
+            var columns = new List<string>() { typeInfo.DisplayNameColumn };
 
             if (!String.IsNullOrEmpty(typeInfo.CodeNameColumn) && !typeInfo.CodeNameColumn.Equals(ObjectTypeInfo.COLUMN_NAME_UNKNOWN, StringComparison.Ordinal))
             {
-                query.AddColumn(typeInfo.CodeNameColumn);
+                columns.Add(typeInfo.CodeNameColumn);
             }
+
+            if (!String.IsNullOrEmpty(typeInfo.GUIDColumn) && !typeInfo.GUIDColumn.Equals(ObjectTypeInfo.COLUMN_NAME_UNKNOWN, StringComparison.Ordinal))
+            {
+                columns.Add(typeInfo.GUIDColumn);
+            }
+
+            var query = new ObjectQuery<BaseInfo>(objectType)
+               .OnSite(siteService.CurrentSite.SiteName, includeGlobal: true)
+               .Columns(columns);
 
             return query;
         }
