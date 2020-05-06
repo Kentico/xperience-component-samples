@@ -60,6 +60,7 @@ namespace Kentico.Components.Web.Mvc.FormComponents
             get => selectedListItems ?? (selectedListItems = objectsRetriever
                 .GetObjects(Properties.ObjectType, SelectedObjects.Select(SelectIdentifier), Properties.IdentifyObjectByGuid)
                 .Select(GetSelectedItem));
+            set { selectedListItems = value; }
         }
 
 

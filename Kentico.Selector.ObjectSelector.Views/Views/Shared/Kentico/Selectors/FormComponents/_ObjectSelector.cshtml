@@ -7,7 +7,7 @@
     var selectorId = $"objectSelector-{Guid.NewGuid()}";
 }
 
-@Html.ObjectSelector(selectorId)
+@Html.ObjectSelector(Url, selectorId, Url.Kentico().AuthenticateUrl)
 
 <script>
 (function () {
