@@ -62,11 +62,47 @@ namespace Kentico.Selector.ObjectSelector.App_Data.Global.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading more items....
+        /// </summary>
+        internal static string Kentico_Selector_ObjectSelector_LoadingMore {
+            get {
+                return ResourceManager.GetString("Kentico.Selector.ObjectSelector.LoadingMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Object selector.
         /// </summary>
         internal static string Kentico_Selector_ObjectSelector_Name {
             get {
                 return ResourceManager.GetString("Kentico.Selector.ObjectSelector.Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No data found.
+        /// </summary>
+        internal static string Kentico_Selector_ObjectSelector_NoResults {
+            get {
+                return ResourceManager.GetString("Kentico.Selector.ObjectSelector.NoResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (None).
+        /// </summary>
+        internal static string Kentico_Selector_ObjectSelector_Placeholder {
+            get {
+                return ResourceManager.GetString("Kentico.Selector.ObjectSelector.Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Searching….
+        /// </summary>
+        internal static string Kentico_Selector_ObjectSelector_Searching {
+            get {
+                return ResourceManager.GetString("Kentico.Selector.ObjectSelector.Searching", resourceCulture);
             }
         }
         

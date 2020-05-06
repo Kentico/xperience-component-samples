@@ -18,7 +18,7 @@ document.addEventListener(INITIALIZATION_EVENT_NAME, (event) => {
     $selector.removeAttr("name");
 
     $selector.select2({
-        placeholder: "(None)",
+        placeholder: getString("Placeholder"),
         minimumResultsForSearch: 7,
         // @ts-ignore
         selectionCssClass: "ktc-object-selector-container",  
@@ -44,6 +44,11 @@ document.addEventListener(INITIALIZATION_EVENT_NAME, (event) => {
             }),
             cache: true
         },
+        language: {
+            loadingMore: () => getString("LoadingMore"),
+            noResults: () => getString("NoResults"),
+            searching: () => getString("Searching"),
+        }
     });
 
     // Ensure selected value as an array
