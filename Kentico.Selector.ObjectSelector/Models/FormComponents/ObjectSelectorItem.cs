@@ -8,8 +8,14 @@ namespace Kentico.Components.Web.Mvc.FormComponents
     public class ObjectSelectorItem
     {
         /// <summary>
-        /// Object GUID.
+        /// Object GUID. It's populated with a value only if <see cref="ObjectSelectorProperties.IdentifyObjectByGuid"/> is <c>true</c>; otherwise it has a value of <c>null</c>.
         /// </summary>
-        public Guid ObjectGuid { get; set; }
+        public Guid? ObjectGuid { get; set; }
+
+
+        /// <summary>
+        /// Object code name.
+        /// </summary>
+        public string ObjectCodeName { get; set; }
     }
 }

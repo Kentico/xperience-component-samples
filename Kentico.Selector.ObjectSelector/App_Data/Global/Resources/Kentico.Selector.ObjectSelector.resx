@@ -120,4 +120,7 @@
   <data name="Kentico.Selector.ObjectSelector.Name" xml:space="preserve">
     <value>Object selector</value>
   </data>
+  <data name="Kentico.Selector.ObjectSelector.SearchPlaceholder" xml:space="preserve">
+    <value>Type here to search</value>
+  </data>
 </root>
