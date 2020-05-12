@@ -20,7 +20,7 @@ namespace Kentico.Components.Web.Mvc.Selectors
         }
 
 
-        public ObjectQuery<BaseInfo> GetObjectsQuery(string objectType)
+        internal virtual ObjectQuery<BaseInfo> GetObjectsQuery(string objectType)
         {
             var typeInfo = GetTypeInfo(objectType);
 
@@ -44,7 +44,37 @@ namespace Kentico.Components.Web.Mvc.Selectors
         }
 
 
-        public IEnumerable<BaseInfo> GetObjects(string objectType, IEnumerable<string> itemIdentifiers, bool useGuidToIdentifyObjects = false)
+        /// <summary>
+        /// Gets objects by given <paramref name="searchParams"/>.
+        /// </summary>
+        /// <param name="searchParams">Search parameters. See <see cref="ObjectsRetrieverSearchParams"/>.</param>
+        /// <param name="nextPageAvailable">Indicates whether the retrieved objects' count exceeds current batch size.</param>
+        internal virtual IEnumerable<BaseInfo> GetObjects(ObjectsRetrieverSearchParams searchParams, out bool nextPageAvailable)
+        {
+            var (objectType, searchTerm, pageIndex, pageSize) = searchParams;
+            var typeInfo = GetTypeInfo(objectType);
+
+            var query = GetObjectsQuery(typeInfo.ObjectType).Page(pageIndex, pageSize);
+
+            if (!String.IsNullOrEmpty(searchTerm))
+            {
+                query = query.WhereLike(typeInfo.DisplayNameColumn, $"%{searchTerm}%");
+            }
+
+            var result = query.ToArray();
+            nextPageAvailable = query.NextPageAvailable;
+
+            return result;
+        }
+
+
+        /// <summary>
+        /// Returns complete data of objects given by <paramref name="itemIdentifiers"/>.
+        /// </summary>
+        /// <param name="objectType"></param>
+        /// <param name="itemIdentifiers"></param>
+        /// <param name="useGuidToIdentifyObjects">Indicates whether <paramref name="itemIdentifiers"/> represent code names or GUIDs. See <see cref="ObjectSelectorProperties.IdentifyObjectByGuid"/></param>
+        public IEnumerable<BaseInfo> GetSelectedObjects(string objectType, IEnumerable<string> itemIdentifiers, bool useGuidToIdentifyObjects = false)
         {
             var typeInfo = GetTypeInfo(objectType);
             if (useGuidToIdentifyObjects && (String.IsNullOrEmpty(typeInfo.GUIDColumn) || typeInfo.GUIDColumn.Equals(ObjectTypeInfo.COLUMN_NAME_UNKNOWN, StringComparison.Ordinal)))
@@ -67,7 +97,7 @@ namespace Kentico.Components.Web.Mvc.Selectors
         /// </summary>
         /// <param name="objectType">Object type.</param>
         /// <exception cref="InvalidOperationException">Thrown when object type info for the given <paramref name="objectType"/> is not found.</exception>
-        public ObjectTypeInfo GetTypeInfo(string objectType)
+        private ObjectTypeInfo GetTypeInfo(string objectType)
         {
             return ObjectTypeManager.GetTypeInfo(objectType, exceptionIfNotFound: true);
         }

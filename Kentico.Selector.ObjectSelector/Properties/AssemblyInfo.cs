@@ -25,3 +25,4 @@ using CMS;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 [assembly: InternalsVisibleTo("Kentico.Selector.ObjectSelector.Tests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

@@ -538,6 +538,7 @@
     <Compile Include="Models\GetObjectsActionResult.cs" />
     <Compile Include="ObjectSelectorConstants.cs" />
     <Compile Include="ObjectsRetriever.cs" />
+    <Compile Include="ObjectsRetrieverSearchParams.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UseCamelCasePropertyNamesContractResolverAttribute.cs" />
   </ItemGroup>

@@ -23,14 +23,14 @@ namespace Kentico.Components.Web.Mvc.Selectors.Controllers
 
 
         public KenticoObjectSelectorController()
-            : this(Service.Resolve<ISiteService>())
+            : this(new ObjectsRetriever(Service.Resolve<ISiteService>()))
         {
         }
 
 
-        internal KenticoObjectSelectorController(ISiteService siteService)
+        internal KenticoObjectSelectorController(ObjectsRetriever objectsRetriever)
         {
-            objectsRetriever = new ObjectsRetriever(siteService);
+            this.objectsRetriever = objectsRetriever;
         }
 
 
@@ -55,16 +55,21 @@ namespace Kentico.Components.Web.Mvc.Selectors.Controllers
         {
             try
             {
-                var typeInfo = objectsRetriever.GetTypeInfo(objectType);
-                var infoObjects = GetSelectorObjects(typeInfo, pageIndex, searchTerm);
+                var infoObjects = objectsRetriever.GetObjects(new ObjectsRetrieverSearchParams
+                {
+                    ObjectType = objectType,
+                    SearchTerm = searchTerm,
+                    PageIndex = pageIndex,
+                    PageSize = PAGE_ITEMS_COUNT,
+                }, out var nextPageAvailable);
 
                 var result = new GetObjectsActionResult
                 {
-                    NextPageAvailable = infoObjects.NextPageAvailable,
+                    NextPageAvailable = nextPageAvailable,
                     Items = infoObjects.Select(info => new ObjectSelectorItemModel
                     {
                         Value = GetItem(info, identifyByGuid),
-                        Text = info[typeInfo.DisplayNameColumn].ToString()
+                        Text = info[info.TypeInfo.DisplayNameColumn].ToString()
                     })
                 };
 
@@ -79,20 +84,6 @@ namespace Kentico.Components.Web.Mvc.Selectors.Controllers
 
                 throw new HttpResponseException(message);
             }
-        }
-
-
-        private ObjectQuery<BaseInfo> GetSelectorObjects(ObjectTypeInfo typeInfo, int pageIndex, string searchTerm = null)
-        {
-            var query = objectsRetriever.GetObjectsQuery(typeInfo.ObjectType)
-                                        .Page(pageIndex, PAGE_ITEMS_COUNT);
-
-            if (!String.IsNullOrEmpty(searchTerm))
-            {
-                query = query.WhereLike(typeInfo.DisplayNameColumn, $"%{searchTerm}%");
-            }
-
-            return query;
         }
     }
 }

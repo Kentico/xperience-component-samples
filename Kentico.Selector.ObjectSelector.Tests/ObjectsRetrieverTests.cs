@@ -31,7 +31,7 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
             [TestCase(DataClassInfo.OBJECT_TYPE, true, new[] { "TestClass1", "TestClass2" }, Description = "Returns all object regardless the current site because the object type has M:N relationship to site.")]
             [TestCase(IssueInfo.OBJECT_TYPE, false, new[] { GUID1 }, Description = "Returns only current site's objects.")]
             [TestCase(ContactInfo.OBJECT_TYPE, false, new[] { GUID1 }, Description = "Returns global objects.")]
-            public void GetObject_Fooo(string objectType, bool hasCodeName, string[] expectedIdentifiers)
+            public void GetObjectQuery_ReturnsCorrectResult(string objectType, bool hasCodeName, string[] expectedIdentifiers)
             {
                 var typeInfo = ObjectTypeManager.GetTypeInfo(objectType);
                 var retriever = new ObjectsRetriever(siteService);
@@ -48,7 +48,7 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
 
 
         [TestFixture]
-        public class GetObjects : ObjectsRetrieverTestsBase
+        public class GetSelectedObjects : ObjectsRetrieverTestsBase
         {
             [SetUp]
             public void SetUp()
@@ -61,11 +61,11 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
             [TestCase(ActivityInfo.OBJECT_TYPE, false)]
             [TestCase(ActivityInfo.OBJECT_TYPE, true)]
             [TestCase(ActivityTypeInfo.OBJECT_TYPE, true)]
-            public void GetObjects_ThrowsException(string objectType, bool useGuid)
+            public void GetSelectedObjects_ThrowsException(string objectType, bool useGuid)
             {
                 var objectsRetriever = new ObjectsRetriever(siteService);
 
-                Assert.That(() => objectsRetriever.GetObjects(objectType, Enumerable.Empty<string>(), useGuid), Throws.InvalidOperationException);
+                Assert.That(() => objectsRetriever.GetSelectedObjects(objectType, Enumerable.Empty<string>(), useGuid), Throws.InvalidOperationException);
             }
 
 
@@ -90,10 +90,10 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
             // ActivityType only has code name column.
             [TestCase(ActivityTypeInfo.OBJECT_TYPE, new string[0], false, typeof(ActivityTypeInfo))]
             [TestCase(ActivityTypeInfo.OBJECT_TYPE, new[] { "Activity1" }, false, typeof(ActivityTypeInfo))]
-            public void GetObjects_RetunsObjectsByGivenIdentifiersAndObjectType(string objectType, IEnumerable<string> selectIdentifiers, bool useGuid, Type expectedType)
+            public void GetSelectedObjects_RetunsObjectsByGivenIdentifiersAndObjectType(string objectType, IEnumerable<string> selectIdentifiers, bool useGuid, Type expectedType)
             {
                 var objectsRetriever = new ObjectsRetriever(siteService);
-                var result = objectsRetriever.GetObjects(objectType, selectIdentifiers, useGuid);
+                var result = objectsRetriever.GetSelectedObjects(objectType, selectIdentifiers, useGuid);
                 var actualIdentifiers = result
                     .ToArray()
                     .Select(info => useGuid ? info[info.TypeInfo.GUIDColumn] : info[info.TypeInfo.CodeNameColumn])
@@ -106,40 +106,133 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
 
 
         [TestFixture]
-        public class GetTypeInfo : UnitTests
+        public class GetObjects : UnitTests
         {
-            private ISiteService siteService;
-
             [SetUp]
             public void SetUp()
-            {
-                siteService = Substitute.For<ISiteService>();
+            { 
+                Fake<ContactGroupMemberInfo, ContactGroupMemberInfoProvider>();
+                var contactProviderFake = Fake<ContactInfo, ContactInfoProvider>();
+                var contacts = CreateItems<ContactInfo>(new[] { "Test", "Foo", "Bar" }, 7);
+                contactProviderFake.WithData(contacts);
+
+                var userProviderFake = Fake<UserInfo, UserInfoProvider>();
+                var users = CreateItems<UserInfo>(new[] { "John", "Paul", "Ringo", "George" }, 15);
+                userProviderFake.WithData(users);
             }
 
 
-            [Test]
-            public void GetTypeInfo_ObjectTypeDoesntExist_ThrowsException()
+            [TestCaseSource(nameof(GetObjectTestCaseSource))]
+            public void GetObjects_ReturnsCorrectResult(object searchParams, string[] expectedNames, bool expectedNextPageAvailable)
             {
-                const string INVALID_OBJECT_TYPE = "invalidobjecttype";
+                var siteService = Substitute.For<ISiteService>();
                 var objectsRetriever = new ObjectsRetriever(siteService);
+                
+                var actualResult = objectsRetriever.GetObjects(searchParams as ObjectsRetrieverSearchParams, out var actualNextPageAvailable);
 
-                Assert.That(() => objectsRetriever.GetTypeInfo(INVALID_OBJECT_TYPE), Throws.InvalidOperationException.With.Message.EqualTo($"Object type '{INVALID_OBJECT_TYPE}' not found."));
+                var actualNames = actualResult.Select(info => info[info.TypeInfo.DisplayNameColumn].ToString());
+
+                Assert.That(actualNames, Is.EquivalentTo(expectedNames));
+                Assert.That(actualNextPageAvailable, Is.EqualTo(expectedNextPageAvailable));
             }
 
 
-            [TestCase(UserInfo.OBJECT_TYPE)]
-            [TestCase(ActivityInfo.OBJECT_TYPE)]
-            [TestCase(ActivityTypeInfo.OBJECT_TYPE)]
-            [TestCase(IssueInfo.OBJECT_TYPE)]
-            [TestCase(ContactInfo.OBJECT_TYPE)]
-            [TestCase(DataClassInfo.OBJECT_TYPE)]
-            public void GetTypeInfo_GotValidObjectType_ReturnsTypeInfo(string objectType)
+            private T[] CreateItems<T>(string[] alternatingNames, int count, string objectType = null, Action<T> initializer = null) where T : AbstractInfo<T>, new()
             {
-                var objectsRetriever = new ObjectsRetriever(siteService);
+                if ((alternatingNames == null) || (alternatingNames.Length == 0))
+                {
+                    throw new ArgumentException("Parameter must be a non-empty instance of array.", nameof(alternatingNames));
+                }
 
-                var result = objectsRetriever.GetTypeInfo(objectType);
+                if (alternatingNames.Length > count)
+                {
+                    throw new ArgumentException($"Length of '{nameof(alternatingNames)}' must be equal or greater than a value of '{nameof(count)}'");
+                }
 
-                Assert.That(result, Is.InstanceOf<ObjectTypeInfo>());
+                int namesLength = alternatingNames.Length;
+                int iterations = count / namesLength;
+
+                var items = new List<T>();
+
+                for (int i = 0; i < namesLength; i++)
+                {
+                    int upperBound = (i == 0) ? iterations + (count % namesLength) : iterations;
+                    for (int j = 0; j < upperBound; j++)
+                    {
+                        var item = AbstractInfo<T>.New((info) =>
+                        {
+                            initializer?.Invoke(info);
+                            info[info.TypeInfo.DisplayNameColumn] = alternatingNames[i] + j;
+                        }, objectType);
+
+                        items.Add(item);
+                    }
+                }
+
+                return items.ToArray();
+            }
+
+
+            private static IEnumerable<TestCaseData> GetObjectTestCaseSource()
+            {
+                yield return new TestCaseData(new ObjectsRetrieverSearchParams
+                {
+                    ObjectType = ContactInfo.OBJECT_TYPE,
+                    PageIndex = 0,
+                    PageSize = 2
+                }, new[] { "Bar0", "Bar1" }, true);
+
+                yield return new TestCaseData(new ObjectsRetrieverSearchParams
+                {
+                    ObjectType = ContactInfo.OBJECT_TYPE,
+                    PageIndex = 1,
+                    PageSize = 2
+                }, new[] { "Foo0", "Foo1" }, true);
+
+                yield return new TestCaseData(new ObjectsRetrieverSearchParams
+                {
+                    ObjectType = ContactInfo.OBJECT_TYPE,
+                    PageIndex = 1,
+                    PageSize = 2,
+                    SearchTerm = "Test"
+                }, new[] { "Test2" }, false);
+
+                yield return new TestCaseData(new ObjectsRetrieverSearchParams
+                {
+                    ObjectType = ContactInfo.OBJECT_TYPE,
+                    PageIndex = 1,
+                    PageSize = 10,
+                }, new string[0], false);
+
+                yield return new TestCaseData(new ObjectsRetrieverSearchParams
+                {
+                    ObjectType = UserInfo.OBJECT_TYPE,
+                    PageIndex = 0,
+                    PageSize = 5,
+                }, new[] { "George0", "George1", "George2", "John0", "John1" }, true);
+
+                yield return new TestCaseData(new ObjectsRetrieverSearchParams
+                {
+                    ObjectType = UserInfo.OBJECT_TYPE,
+                    PageIndex = 1,
+                    PageSize = 3,
+                    SearchTerm = "John",
+                }, new[] { "John3", "John4", "John5" }, false);
+
+                yield return new TestCaseData(new ObjectsRetrieverSearchParams
+                {
+                    ObjectType = UserInfo.OBJECT_TYPE,
+                    PageIndex = 2,
+                    PageSize = 7,
+                }, new[] { "Ringo2" }, false);
+
+                yield return new TestCaseData(new ObjectsRetrieverSearchParams
+                {
+                    ObjectType = UserInfo.OBJECT_TYPE,
+                    PageIndex = 2,
+                    PageSize = 7,
+                    SearchTerm = "Ozzy",
+                }, new string[0], false);
             }
         }
     }
