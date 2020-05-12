@@ -24,6 +24,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Selector.ObjectSele
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Selector.ObjectSelector.Views", "Kentico.Selector.ObjectSelector.Views\Kentico.Selector.ObjectSelector.Views.csproj", "{D66C7DE0-8984-4709-8F97-EFA09C8A713F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Selector.ObjectSelector.Tests", "Kentico.Selector.ObjectSelector.Tests\Kentico.Selector.ObjectSelector.Tests.csproj", "{E39E081E-6E26-4042-A6CC-05E00DCFBD01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Components.Tests.Base", "Kentico.Components.Tests.Base\Kentico.Components.Tests.Base.csproj", "{8708219B-87F3-4010-94B6-B0259C2F9490}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +78,14 @@ Global
 		{D66C7DE0-8984-4709-8F97-EFA09C8A713F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D66C7DE0-8984-4709-8F97-EFA09C8A713F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D66C7DE0-8984-4709-8F97-EFA09C8A713F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E39E081E-6E26-4042-A6CC-05E00DCFBD01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E39E081E-6E26-4042-A6CC-05E00DCFBD01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E39E081E-6E26-4042-A6CC-05E00DCFBD01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E39E081E-6E26-4042-A6CC-05E00DCFBD01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8708219B-87F3-4010-94B6-B0259C2F9490}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8708219B-87F3-4010-94B6-B0259C2F9490}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8708219B-87F3-4010-94B6-B0259C2F9490}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8708219B-87F3-4010-94B6-B0259C2F9490}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

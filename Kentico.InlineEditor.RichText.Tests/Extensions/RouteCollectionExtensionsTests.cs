@@ -15,7 +15,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
         public class MapRichTextEditorRoutesTests : UnitTests
         {
             [Test]
-            public void MapRichTextInlineEditorRoutes_RegisteresRoutes()
+            public void MapRichTextInlineEditorRoutes_RegistersRoutes()
             {
                 // Act
                 var routes = new RouteCollection();

@@ -58,8 +58,9 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         internal IEnumerable<SelectListItem> SelectedItems
         {
             get => selectedListItems ?? (selectedListItems = objectsRetriever
-                .GetObjects(Properties.ObjectType, SelectedObjects.Select(SelectIdentifier), Properties.IdentifyObjectByGuid)
+                .GetSelectedObjects(Properties.ObjectType, SelectedObjects.Select(SelectIdentifier), Properties.IdentifyObjectByGuid)
                 .Select(GetSelectedItem));
+            set { selectedListItems = value; }
         }
 
 

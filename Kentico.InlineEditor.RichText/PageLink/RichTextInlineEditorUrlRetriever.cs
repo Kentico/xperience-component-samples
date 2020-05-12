@@ -8,7 +8,7 @@ using CMS.Core;
 using Kentico.Components.Web.Mvc.InlineEditors;
 
 // Register a default implementation of the IRichTextUrlRetriever that can be overridden if another route is able to serve the page link data.
-[assembly: RegisterImplementation(typeof(IRichTextUrlRetriever), typeof(RichTextInlineEditorUrlRetriever), Priority = RegistrationPriority.SystemDefault)]
+[assembly: RegisterImplementation(typeof(IRichTextUrlRetriever), typeof(RichTextInlineEditorUrlRetriever), Priority = RegistrationPriority.Fallback)]
 
 namespace Kentico.Components.Web.Mvc.InlineEditors
 {

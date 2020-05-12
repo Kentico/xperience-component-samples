@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 
 using Kentico.Components.Web.Mvc.FormComponents;
-using Kentico.Content.Web.Mvc;
-using Kentico.Web.Mvc;
 
 namespace Kentico.Components.Web.Mvc.Selectors.Internal
 {
@@ -24,17 +23,24 @@ namespace Kentico.Components.Web.Mvc.Selectors.Internal
         /// HTML helper for object selector.
         /// </summary>
         /// <param name="htmlHelper">HTML helper.</param>
+        /// <param name="urlHelper">URL helper.</param>
         /// <param name="id">Element ID.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the <paramref name="htmlHelper"/> is null.</exception>
-        public static MvcHtmlString ObjectSelector(this HtmlHelper<ObjectSelector> htmlHelper, string id)
+        /// <param name="authenticateUrl">URL authentication method.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="htmlHelper"/>, <paramref name="urlHelper"/> or <paramref name="authenticateUrl"/> are null.</exception>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="id"/> is empty.</exception>
+        public static MvcHtmlString ObjectSelector(this HtmlHelper<ObjectSelector> htmlHelper, UrlHelper urlHelper, string id, Func<string, HtmlString> authenticateUrl)
         {
             htmlHelper = htmlHelper ?? throw new ArgumentNullException(nameof(htmlHelper));
+            urlHelper = urlHelper ?? throw new ArgumentNullException(nameof(urlHelper));
+            authenticateUrl = authenticateUrl ?? throw new ArgumentNullException(nameof(authenticateUrl));
+            if (String.IsNullOrWhiteSpace(id))
+            {
+                throw new ArgumentException("Element ID cannot be empty.", nameof(id));
+            }
 
             var objectSelector = htmlHelper.ViewData.Model;
-            var requestContext = htmlHelper.ViewContext.RequestContext;
-            var urlHelper = new UrlHelper(requestContext, htmlHelper.RouteCollection);
             var getObjectsEndpointUrl = urlHelper.HttpRouteUrl(ObjectSelectorConstants.GET_OBJECTS_ROUTE_NAME, new RouteValueDictionary());
-            getObjectsEndpointUrl = urlHelper.Kentico().AuthenticateUrl(getObjectsEndpointUrl).ToString();
+            getObjectsEndpointUrl = authenticateUrl(getObjectsEndpointUrl).ToString();
 
             var valueInput = htmlHelper.TextBoxFor(m => m.SelectedValue, new
             {

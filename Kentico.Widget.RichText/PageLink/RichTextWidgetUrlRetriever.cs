@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 using CMS;
 
@@ -20,6 +22,10 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
     /// </remarks>
     internal sealed class RichTextWidgetUrlRetriever : IRichTextUrlRetriever
     {
+        public const string CULTURE_ROUTE_KEY = "cultureCode";
+        public const string TYPE_IDENTIFIER_ROUTE_KEY = "typeIdentifier";
+
+
         /// <summary>
         /// Gets the "GetLinkMetadata" endpoint URL.
         /// </summary>
@@ -28,7 +34,20 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
         {
             urlHelper = urlHelper ?? throw new ArgumentNullException(nameof(urlHelper));
 
-            return urlHelper.Action(nameof(KenticoRichTextWidgetController.GetLinkMetadata), "KenticoRichTextWidget");
+            return urlHelper.Action(nameof(KenticoRichTextWidgetController.GetLinkMetadata), GetWidgetRouteValues(KenticoRichTextWidgetController.IDENTIFIER));
+        }
+
+
+        /// <summary>
+        /// Gets the route values of the system-defined route that serves all widget actions (PageBuilderRoutes.WIDGETS_ROUTE)
+        /// </summary>
+        private RouteValueDictionary GetWidgetRouteValues(string widgetIdentifier)
+        {
+            return new RouteValueDictionary
+            {
+                { CULTURE_ROUTE_KEY, Thread.CurrentThread.CurrentCulture.Name },
+                { TYPE_IDENTIFIER_ROUTE_KEY, widgetIdentifier },
+            };
         }
     }
 }

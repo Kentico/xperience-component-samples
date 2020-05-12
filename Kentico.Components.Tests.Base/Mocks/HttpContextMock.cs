@@ -4,7 +4,7 @@ using System.Web.Routing;
 
 using NSubstitute;
 
-namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
+namespace Kentico.Components.Tests.Base
 {
     /// <summary>
     /// Provides mock of HTTP context for tests.
