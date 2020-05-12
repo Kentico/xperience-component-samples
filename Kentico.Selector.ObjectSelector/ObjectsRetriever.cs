@@ -20,6 +20,10 @@ namespace Kentico.Components.Web.Mvc.Selectors
         }
 
 
+        /// <summary>
+        /// Gets an object query for the given <paramref name="objectType"/>, limited to the current site.
+        /// </summary>
+        /// <param name="objectType">Object type.</param>
         internal virtual ObjectQuery<BaseInfo> GetObjectsQuery(string objectType)
         {
             var typeInfo = GetTypeInfo(objectType);
@@ -74,6 +78,7 @@ namespace Kentico.Components.Web.Mvc.Selectors
         /// <param name="objectType"></param>
         /// <param name="itemIdentifiers"></param>
         /// <param name="useGuidToIdentifyObjects">Indicates whether <paramref name="itemIdentifiers"/> represent code names or GUIDs. See <see cref="ObjectSelectorProperties.IdentifyObjectByGuid"/></param>
+        /// <exception cref="InvalidOperationException">Thrown when given <paramref name="objectType"/> does not have a GUID or code name column defined, depending on the object identification method defined by <paramref name="useGuidToIdentifyObjects"/>.</exception>
         public IEnumerable<BaseInfo> GetSelectedObjects(string objectType, IEnumerable<string> itemIdentifiers, bool useGuidToIdentifyObjects = false)
         {
             var typeInfo = GetTypeInfo(objectType);

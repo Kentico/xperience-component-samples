@@ -90,7 +90,7 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
             // ActivityType only has code name column.
             [TestCase(ActivityTypeInfo.OBJECT_TYPE, new string[0], false, typeof(ActivityTypeInfo))]
             [TestCase(ActivityTypeInfo.OBJECT_TYPE, new[] { "Activity1" }, false, typeof(ActivityTypeInfo))]
-            public void GetSelectedObjects_RetunsObjectsByGivenIdentifiersAndObjectType(string objectType, IEnumerable<string> selectIdentifiers, bool useGuid, Type expectedType)
+            public void GetSelectedObjects_ReturnsObjectsByGivenIdentifiersAndObjectType(string objectType, IEnumerable<string> selectIdentifiers, bool useGuid, Type expectedType)
             {
                 var objectsRetriever = new ObjectsRetriever(siteService);
                 var result = objectsRetriever.GetSelectedObjects(objectType, selectIdentifiers, useGuid);

@@ -47,7 +47,7 @@ namespace Kentico.Components.Web.Mvc.Selectors.Controllers
         /// Gets the collection of objects available for selection.
         /// </summary>
         /// <param name="objectType">Object type.</param>
-        /// <param name="pageIndex">0-based page index.</param>
+        /// <param name="pageIndex">Zero-based page index.</param>
         /// <param name="searchTerm">Search term.</param>
         /// <param name="identifyByGuid">Indicates whether objects should be identified using a GUID instead of a code name.</param>
         [HttpGet]
