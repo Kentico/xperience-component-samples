@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 
 using CMS.Base;
 using CMS.DataEngine;
+using CMS.Helpers;
 using CMS.Tests;
 
 using Kentico.Components.Web.Mvc.Selectors.Controllers;
@@ -20,6 +22,28 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
         [TestFixture]
         public class GetObjects : UnitTests
         {
+            [SetUp]
+            public void SetUp()
+            {
+                VirtualContext.SetItem(VirtualContext.PARAM_PREVIEW_LINK, "pv");
+            }
+
+
+            [Test]
+            public void GetObjects_VirtualContextNotInitialized_ThrowsExceptionWithForbiddenStatus()
+            {
+                VirtualContext.SetItem(VirtualContext.PARAM_PREVIEW_LINK, null);
+
+                var siteService = Substitute.For<ISiteService>();
+                var objectsRetriever = Substitute.For<ObjectsRetriever>(siteService);
+                
+                var controllerInstance = new KenticoObjectSelectorController(objectsRetriever);
+
+                var exception = Assert.Throws<HttpResponseException>(() => controllerInstance.GetObjects("", 0));
+                Assert.That(exception.Response.StatusCode, Is.EqualTo(HttpStatusCode.Forbidden));
+            }
+
+
             [Test]
             public async Task GetObjects_ExceptionThrownWithin_CatchesInvalidOperationExceptionAndThrowsHttpResponseException()
             {

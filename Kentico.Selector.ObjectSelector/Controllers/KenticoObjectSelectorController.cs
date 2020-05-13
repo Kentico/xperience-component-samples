@@ -7,6 +7,7 @@ using System.Web.Http;
 using CMS.Base;
 using CMS.Core;
 using CMS.DataEngine;
+using CMS.Helpers;
 
 using Kentico.Components.Web.Mvc.FormComponents;
 
@@ -53,6 +54,11 @@ namespace Kentico.Components.Web.Mvc.Selectors.Controllers
         [HttpGet]
         public GetObjectsActionResult GetObjects(string objectType, int pageIndex, string searchTerm = null, bool identifyByGuid = false)
         {
+            if (!VirtualContext.IsPreviewLinkInitialized)
+            {
+                throw new HttpResponseException(HttpStatusCode.Forbidden);
+            }
+
             try
             {
                 var infoObjects = objectsRetriever.GetObjects(new ObjectsRetrieverSearchParams
