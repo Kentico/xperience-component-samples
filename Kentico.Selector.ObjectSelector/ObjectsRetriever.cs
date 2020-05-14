@@ -11,6 +11,8 @@ namespace Kentico.Components.Web.Mvc.Selectors
 {
     internal class ObjectsRetriever
     {
+        internal const string ORDERING_COLUMN_ALIAS = "Ordering";
+        internal const string ORDERING_COLUMN_VALUE_TEMPLATE = "(CASE WHEN {0} LIKE '{1}%' THEN 0 ELSE CASE WHEN {0} LIKE '% {1}%' THEN 1 ELSE 2 END END)";
         private readonly ISiteService siteService;
 
 
@@ -62,7 +64,9 @@ namespace Kentico.Components.Web.Mvc.Selectors
 
             if (!String.IsNullOrEmpty(searchTerm))
             {
-                query = query.WhereLike(typeInfo.DisplayNameColumn, $"%{searchTerm}%");
+                query.AddColumn(new QueryColumn(String.Format(ORDERING_COLUMN_VALUE_TEMPLATE, typeInfo.DisplayNameColumn, searchTerm)).As(ORDERING_COLUMN_ALIAS))
+                     .WhereLike(typeInfo.DisplayNameColumn, $"%{searchTerm}%")
+                     .OrderBy(ORDERING_COLUMN_ALIAS);
             }
 
             var result = query.ToArray();
