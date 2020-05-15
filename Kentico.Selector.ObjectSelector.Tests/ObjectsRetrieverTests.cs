@@ -129,7 +129,7 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
                 // Fill data table with records which will be queried in the test
                 consents = consents.Concat(CreateItems(new[] { "Test XXXX", "XXXX Test", "Test test XXXX" }, 6, initializer: consentInitializer));
 
-                ConsentInfoProvider.ProviderObject.BulkInsertInfos(consents);
+                ConsentInfoProvider.ProviderObject.BulkInsertInfos(consents, new BulkInsertSettings { Options = System.Data.SqlClient.SqlBulkCopyOptions.CheckConstraints });
             }
 
 
