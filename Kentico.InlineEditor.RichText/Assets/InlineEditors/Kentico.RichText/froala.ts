@@ -6,11 +6,13 @@ import { InlineEditorOptions } from "@/types/kentico/inline-editors/inline-edito
 import { HTMLRichTextEditorElement } from "@/types/rich-text";
 import { getEvents } from "./froala-events";
 import { getFroalaOptions } from "./froala-options";
+import { RichTextFormComponentOptions, EditorType } from "./types";
 
 const RICH_TEXT_WRAPPER_SELECTOR = ".ktc-rich-text-wrapper";
 let defaultsWereSet = false;
 
-export const initializeFroalaEditor = ({ editor, propertyName, propertyValue }: InlineEditorOptions) => {
+export const initializeFroalaEditor = (options: InlineEditorOptions | RichTextFormComponentOptions, editorType: EditorType) => {
+    const { editor } = options;
     const element = editor.querySelector(RICH_TEXT_WRAPPER_SELECTOR);
 
     if (!element) {
@@ -20,10 +22,15 @@ export const initializeFroalaEditor = ({ editor, propertyName, propertyValue }: 
     setFroalaDefaults(element);
 
     const customOptions = getCustomOptions(element);
-    const events = getEvents(editor, propertyName, propertyValue, customOptions);
-    const options = getFroalaOptions(events, customOptions);
+    const events = getEvents(options, customOptions, editorType);
+    const froalaOptions = getFroalaOptions(events, customOptions, editorType);
 
-    new FroalaEditor(element, options);
+    if (editorType === "FormComponent") {
+        element.classList.add("ktc-rich-text-form-component__froala");
+        document.body.appendChild(element);
+    }
+
+    new FroalaEditor(element, froalaOptions);
 }
 
 export const destroyFroalaEditor = ({ editor }: InlineEditorOptions) => {

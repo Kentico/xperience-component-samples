@@ -3,19 +3,24 @@ import FroalaEditor, { FroalaOptions, FroalaEvents } from "froala-editor/js/froa
 import { UPDATE_WIDGET_PROPERTY_EVENT_NAME } from "@/shared/constants";
 import { replaceMacrosWithElements, replaceMacroElements, bindMacroClickListener } from "./plugins/macros/macro-services";
 import { unwrapElement } from "./helpers";
+import { InlineEditorOptions } from "@/types/kentico/inline-editors/inline-editor-options";
+import { RichTextFormComponentOptions, EditorType, CodeMirrorElement, FroalaEventsOption } from "./types";
 
-type FroalaEventsOption = { [event: string]: Function };
+export const getEvents = (options: InlineEditorOptions | RichTextFormComponentOptions, customOptions: Partial<FroalaOptions>, editorType: EditorType): Partial<FroalaEvents> => {
+    const editor = options.editor;
+    const propertyName = (options as InlineEditorOptions).propertyName
+    const propertyValue = editorType === "InlineEditor" 
+        ? (options as InlineEditorOptions).propertyValue
+        : editor.querySelector("template")!.innerHTML;
 
-interface CodeMirrorElement extends HTMLElement {
-    readonly CodeMirror: CodeMirror.Editor;
-}
-
-export const getEvents = (inlineEditor: HTMLElement, propertyName: string, propertyValue: string, customOptions: Partial<FroalaOptions>): Partial<FroalaEvents> => {
     const events: Partial<FroalaEvents> = {
         initialized() {
             if (propertyValue) {
                 const editModePropertyValue = replaceMacrosWithElements(propertyValue, this.opts.contextMacros);
                 this.html.set(editModePropertyValue);
+            }
+            if (editorType === "FormComponent") {
+                ensureFormComponentInitialization(this, editor);
             }
         },
         ["html.set"]() {
@@ -23,7 +28,9 @@ export const getEvents = (inlineEditor: HTMLElement, propertyName: string, prope
         },
         contentChanged() {
             bindMacroClickListener(this);
-            updatePropertyValue(inlineEditor, propertyName, this.html.get());
+            if (editorType === "InlineEditor") {
+                updatePropertyValue(editor, propertyName, this.html.get());
+            }
         },
         ["commands.after"](cmd: string) {
             if (cmd === "html" && this.codeView.isActive()) {
@@ -32,13 +39,13 @@ export const getEvents = (inlineEditor: HTMLElement, propertyName: string, prope
                 const codeMirrorInstance = froalaWrapper!.querySelector<CodeMirrorElement>(".CodeMirror");
                 if (codeMirrorInstance) {
                     codeMirrorInstance.CodeMirror.on("change", function (instance: CodeMirror.Editor) {
-                        updatePropertyValue(inlineEditor, propertyName, instance.getValue());
+                        updatePropertyValue(editor!, propertyName, instance.getValue());
                     });
                 }
 
                 // Temporary, until https://github.com/froala/wysiwyg-editor/issues/3639 is fixed
-                const editor = unwrapElement(this.$oel);
-                const codeViewExitButton = editor!.querySelector(".fr-btn.html-switch");
+                const froalaEditor = unwrapElement(this.$oel);
+                const codeViewExitButton = froalaEditor!.querySelector(".fr-btn.html-switch");
                 codeViewExitButton!.innerHTML = this.button.build("html");
             }
         },
@@ -101,4 +108,25 @@ const updatePropertyValue = (inlineEditor: HTMLElement, propertyName: string, ne
     });
 
     inlineEditor.dispatchEvent(event);
+}
+
+const ensureFormComponentInitialization = (froalaEditor: FroalaEditor, formComponent: HTMLElement) => {
+    // Ensure save button
+    const saveButton = document.createElement("button");
+    saveButton.textContent = window.kentico.localization.strings["Kentico.FormComponent.RichText.ApplyButton"];
+    saveButton.classList.add("ktc-btn-rich-text-save");
+    saveButton.addEventListener("click", () => {
+        formComponent.querySelector<HTMLInputElement>("input[hidden]")!.value = froalaEditor.html.get();
+        saveButton.remove();
+        froalaEditor.fullscreen.toggle();
+        froalaEditor.destroy();
+        froalaEditor.$oel.remove();
+        document.body.classList.remove("ktc-rich-text-form-component--fullscreen");
+    });
+
+    // Ensure fullscreen mode
+    document.body.classList.add("ktc-rich-text-form-component--fullscreen");
+    document.body.appendChild(saveButton);
+    froalaEditor.$iframe[0]!.style.height = "100%";
+    froalaEditor.fullscreen.toggle();
 }

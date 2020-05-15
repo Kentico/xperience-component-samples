@@ -1,0 +1,27 @@
+﻿@using Kentico.Components.Web.Mvc.FormComponents;
+@using Kentico.Components.Web.Mvc.InlineEditors;
+
+@model RichText
+
+@{
+    var editButtonText = CMS.Helpers.ResHelper.GetString("Kentico.FormComponent.RichText.EditButton");
+    var instanceId = $"{Html.IdFor(m => m.Value)}-wrapper";
+}
+
+<div id="@instanceId" class="ktc-rich-text-form-component">
+    @{Html.Kentico().RichTextEditor(nameof(Model.Value));}
+    <button type="button" class="ktc-btn ktc-btn-default">@editButtonText</button>
+    <template>
+        @Html.Raw(Model.Value)
+    </template>
+    @Html.TextBoxFor(m => m.Value, new { hidden = true })
+</div>
+
+<script>
+(function () {
+    var selector = document.getElementById("@instanceId");
+    selector.dispatchEvent(new Event("Kentico.FormComponents.RichText.Initialize", {
+        bubbles: true,
+    }));
+}());
+</script>

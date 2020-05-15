@@ -75,11 +75,6 @@
 }
 
 .fr-popup {
-
-    &.fr-active {
-        z-index: 10015 !important;
-    }
-
     // override style for primary button
     .fr-action-buttons button.fr-command.fr-submit {
         font-family: inherit;
@@ -92,6 +87,12 @@
             border-color: #008ae1;
             background: #008ae1;
         }
+    }
+}
+
+body:not(.ktc-rich-text-form-component--fullscreen) {
+    .fr-popup.fr-active {
+        z-index: 10015 !important;
     }
 }
 

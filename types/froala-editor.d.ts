@@ -162,6 +162,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       $tb: JQuery;
       $sc: JQuery;
       $wp: JQuery;
+      $iframe: JQuery;
       destroy(): object;
 
       static MAIL_REGEX: RegExp;

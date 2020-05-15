@@ -5,6 +5,8 @@ import FroalaEditor, * as Froala from "froala-editor/js/froala_editor.pkgd.min";
 import { initializeFroalaEditor, destroyFroalaEditor } from "./froala";
 import { initializePlugins } from "./plugins";
 
+const FORM_COMPONENT_INITIALIZATION_EVENT_NAME = "Kentico.FormComponents.RichText.Initialize";
+
 // Initialize plugins
 window.addEventListener("DOMContentLoaded", () => {
     // Override default e-mail regex
@@ -21,9 +23,18 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+
+document.addEventListener(FORM_COMPONENT_INITIALIZATION_EVENT_NAME, (event) => {
+    const editor = event.target as HTMLElement;
+    const editButton = editor.querySelector<HTMLButtonElement>(".ktc-btn");
+    editButton?.addEventListener("click", () => {
+        initializeFroalaEditor({ editor }, "FormComponent");
+    });
+})
+
 window.kentico.pageBuilder.registerInlineEditor("Kentico.InlineEditor.RichText", {
     init(options) {
-        initializeFroalaEditor(options);
+        initializeFroalaEditor(options, "InlineEditor");
     },
     destroy(options) {
         // Destroy Froala editor when destroying inline editor

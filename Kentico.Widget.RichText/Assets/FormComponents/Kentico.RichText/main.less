@@ -1,0 +1,30 @@
+@import "../../../../shared/variables.less";
+
+@fullscreen-z-index: 10205;
+
+.ktc-rich-text-form-component__froala {
+    display: none;
+
+    &.fr-fullscreen {
+        display: block;
+
+        .fr-toolbar {
+            padding-right: 3 * @ktc-base-unit;
+            
+            .fr-newline {
+                margin-right: -2.5 * @ktc-base-unit;
+            }
+        }
+
+        &.fr-box.fr-fullscreen {
+            z-index: @fullscreen-z-index !important;
+        }
+    }
+}
+
+.ktc-btn-rich-text-save {
+    position: fixed;
+    top: 0.5 * @ktc-base-unit;
+    right: 0.5 * @ktc-base-unit;
+    z-index: @fullscreen-z-index;
+}

@@ -64,6 +64,8 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
                 tagBuilder.Attributes.Add(RICH_TEXT_EDITOR_LICENSE_ATTRIBUTE, richTextEditorLicense.Value);
                 tagBuilder.Attributes.Add(RICH_TEXT_GET_LINK_METADATA_ENDPOINT_URL_ATTRIBUTE, getLinkMetadataEndpointUrl);
                 tagBuilder.Attributes.Add(RICH_TEXT_EDITOR_CONFIGURATION_ATTRIBUTE, configurationName);
+                // TODO MAE-318: Widget doesn't update when content is same
+                tagBuilder.Attributes.Add("data-guid", Guid.NewGuid().ToString());
 
                 if (AllowContextMacros())
                 {
