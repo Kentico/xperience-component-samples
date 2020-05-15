@@ -6,6 +6,7 @@ using CMS.Activities;
 using CMS.Base;
 using CMS.ContactManagement;
 using CMS.DataEngine;
+using CMS.DataProtection;
 using CMS.Membership;
 using CMS.Newsletters;
 using CMS.Tests;
@@ -13,6 +14,9 @@ using CMS.Tests;
 using NSubstitute;
 
 using NUnit.Framework;
+
+using static Kentico.Components.Web.Mvc.Selectors.Tests.ObjectsRetrieverTestsHelper;
+
 
 namespace Kentico.Components.Web.Mvc.Selectors.Tests
 {
@@ -105,6 +109,90 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
         }
 
 
+        [TestFixture, SharedDatabaseForAllTests]
+        public class GetObjectsIntegrationTests : IsolatedIntegrationTests
+        {
+            [OneTimeSetUp]
+            public void FixtureSetUp()
+            {
+                Action<ConsentInfo, string> consentInitializer = (consent, name) =>
+                {
+                    consent.ConsentContent = $"Content of {name}";
+                    consent.ConsentName = name;
+                    consent.SetValue("ConsentHash", "abc");
+                };
+
+                var consents = Enumerable.Empty<ConsentInfo>();
+
+                // Fill data table with dummy data to enable paging
+                consents = consents.Concat(CreateItems(new[] { "Alpha", "Gamma", "Test", "Xiphoid" }, 15, initializer: consentInitializer));
+                // Fill data table with records which will be queried in the test
+                consents = consents.Concat(CreateItems(new[] { "Test XXXX", "XXXX Test", "Test test XXXX" }, 6, initializer: consentInitializer));
+
+                ConsentInfoProvider.ProviderObject.BulkInsertInfos(consents);
+            }
+
+
+            [TestCaseSource(nameof(GetObjectsTestCaseSource))]
+            public void GetObjects_ReturnsObjectsInCorrectOrder(object searchParams, string[] expectedNames, bool expectedNextPageAvailable)
+            {
+                var siteServiceMock = Substitute.For<ISiteService>();
+                var objectsRetriever = new ObjectsRetriever(siteServiceMock);
+                var actualResult = objectsRetriever.GetObjects(searchParams as ObjectsRetrieverSearchParams, out var actualNextPageAvailable);
+
+                var actualNames = actualResult.Select(info => info[info.TypeInfo.DisplayNameColumn].ToString());
+
+                // Assert
+                Assert.That(actualNames, Is.EqualTo(expectedNames));
+                Assert.That(actualNextPageAvailable, Is.EqualTo(expectedNextPageAvailable));
+            }
+
+
+            private static IEnumerable<TestCaseData> GetObjectsTestCaseSource()
+            {
+                yield return new TestCaseData(
+                    new ObjectsRetrieverSearchParams
+                    {
+                        ObjectType = ConsentInfo.OBJECT_TYPE,
+                        SearchTerm = "Test",
+                        PageIndex = 0,
+                        PageSize = 5
+                    },
+                    new[] { "Test0", "Test1", "Test2", "Test XXXX0", "Test XXXX1" }, true);
+
+                yield return new TestCaseData(
+                    new ObjectsRetrieverSearchParams
+                    {
+                        ObjectType = ConsentInfo.OBJECT_TYPE,
+                        SearchTerm = "Test",
+                        PageIndex = 1,
+                        PageSize = 5
+                    },
+                    new[] { "Test test XXXX0", "Test test XXXX1", "XXXX Test0", "XXXX Test1" }, false);
+
+                yield return new TestCaseData(
+                    new ObjectsRetrieverSearchParams
+                    {
+                        ObjectType = ConsentInfo.OBJECT_TYPE,
+                        SearchTerm = "XXXX",
+                        PageIndex = 0,
+                        PageSize = 5
+                    },
+                    new[] { "XXXX Test0", "XXXX Test1", "Test test XXXX0", "Test test XXXX1", "Test XXXX0" }, true);
+
+                yield return new TestCaseData(
+                    new ObjectsRetrieverSearchParams
+                    {
+                        ObjectType = ConsentInfo.OBJECT_TYPE,
+                        SearchTerm = "XXXX",
+                        PageIndex = 1,
+                        PageSize = 5
+                    },
+                    new[] { "Test XXXX1" }, false);
+            }
+        }
+
+
         [TestFixture]
         public class GetObjects : UnitTests
         {
@@ -118,13 +206,11 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
             {
                 Fake<ContactGroupMemberInfo, ContactGroupMemberInfoProvider>();
                 contactClassStructureInfo = new InternalsVisibleFakeClassStructure<ContactInfo>();
-                contactClassStructureInfo.RegisterColumn(ObjectsRetriever.ORDERING_COLUMN_ALIAS, typeof(string));
                 var contactProviderFake = Fake<ContactInfo, ContactInfoProvider>().WithOriginalSourceName();
                 var contacts = CreateItems<ContactInfo>(new[] { "Test", "Foo", "Bar" }, 7);
                 contactProviderFake.WithData(contacts);
 
                 userClassStructureInfo = new InternalsVisibleFakeClassStructure<UserInfo>();
-                userClassStructureInfo.RegisterColumn(ObjectsRetriever.ORDERING_COLUMN_ALIAS, typeof(string));
                 var userProviderFake = Fake<UserInfo, UserInfoProvider>().WithOriginalSourceName();
                 var users = CreateItems<UserInfo>(new[] { "John", "Paul", "Ringo", "George" }, 15);
                 userProviderFake.WithData(users);
@@ -150,42 +236,6 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
                 // Assert
                 Assert.That(actualNames, Is.EquivalentTo(expectedNames));
                 Assert.That(actualNextPageAvailable, Is.EqualTo(expectedNextPageAvailable));
-            }
-
-
-            private T[] CreateItems<T>(string[] alternatingNames, int count, string objectType = null, Action<T> initializer = null) where T : AbstractInfo<T>, new()
-            {
-                if ((alternatingNames == null) || (alternatingNames.Length == 0))
-                {
-                    throw new ArgumentException("Parameter must be a non-empty instance of array.", nameof(alternatingNames));
-                }
-
-                if (alternatingNames.Length > count)
-                {
-                    throw new ArgumentException($"Length of '{nameof(alternatingNames)}' must be equal or greater than a value of '{nameof(count)}'");
-                }
-
-                int namesLength = alternatingNames.Length;
-                int iterations = count / namesLength;
-
-                var items = new List<T>();
-
-                for (int i = 0; i < namesLength; i++)
-                {
-                    int upperBound = (i == 0) ? iterations + (count % namesLength) : iterations;
-                    for (int j = 0; j < upperBound; j++)
-                    {
-                        var item = AbstractInfo<T>.New((info) =>
-                        {
-                            initializer?.Invoke(info);
-                            info[info.TypeInfo.DisplayNameColumn] = alternatingNames[i] + j;
-                        }, objectType);
-
-                        items.Add(item);
-                    }
-                }
-
-                return items.ToArray();
             }
 
 
