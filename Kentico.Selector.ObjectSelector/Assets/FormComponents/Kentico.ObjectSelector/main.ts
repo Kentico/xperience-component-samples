@@ -26,7 +26,7 @@ document.addEventListener(INITIALIZATION_EVENT_NAME, (event) => {
         ajax: {
             url: $selector.attr(GET_OBJECTS_ENDPOINT_URL_ATTRIBUTE),
             dataType: 'json',
-            delay: 250,
+            delay: 400,
             data: (params) => ({
                 objectType: $selector.attr(OBJECT_TYPE_ATTRIBUTE),
                 pageIndex: params.page || 0,
