@@ -64,7 +64,7 @@ namespace Kentico.Components.Web.Mvc.Selectors
             if (!String.IsNullOrEmpty(searchTerm))
             {
                 query.WhereLike(typeInfo.DisplayNameColumn, $"%{searchTerm}%")
-                     .OrderBy(String.Format(ORDERING_COLUMN_VALUE_TEMPLATE, typeInfo.DisplayNameColumn, searchTerm));
+                     .OrderBy(String.Format(ORDERING_COLUMN_VALUE_TEMPLATE, typeInfo.DisplayNameColumn, searchTerm), typeInfo.DisplayNameColumn);
             }
 
             var result = query.ToArray();
