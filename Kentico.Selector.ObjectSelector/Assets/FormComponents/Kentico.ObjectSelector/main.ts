@@ -12,8 +12,9 @@ const IDENTIFIER_ATTRIBUTE = "data-value-for";
 const IDENTIFY_BY_GUID_ATTRIBUTE = "data-identify-object-by-guid";
 const DROPDOWN_CLASS_NAME = "ktc-object-selector-dropdown";
 const HIDE_SEARCH_CLASS_NAME = "ktc-object-selector-dropdown__search--hide";
-const SEARCHING_MESSAGE_CLASS_NAME = "ktc-object-selector-dropdown--searching";
 const SEARCH_FIELD_CLASS_NAME = "select2-search__field";
+const SEARCHING_MESSAGE_CLASS_NAME = "ktc-object-selector-dropdown--searching";
+const SEARCHING_MESSAGE_INITIAL_DELAY = 200;
 
 document.addEventListener(INITIALIZATION_EVENT_NAME, (event) => {
     const $selector = $(event.target as HTMLSelectElement);
@@ -81,21 +82,21 @@ document.addEventListener(INITIALIZATION_EVENT_NAME, (event) => {
 
     // Ensure search input placeholder
     $selector.one("select2:open", (event) => {
-        const { $dropdown } = $(event.target).data('select2');
+        const { $dropdown } = $(event.target).data("select2");
         $dropdown.find(`input.${SEARCH_FIELD_CLASS_NAME}`).prop("placeholder", getString("SearchPlaceholder"));
     });
 
     // Ensure "Searching..." message visibility
     $selector.on("select2:open", (event) => {
-        const { $dropdown } = $(event.target).data('select2');
+        const { $dropdown } = $(event.target).data("select2");
         setTimeout(() => {
             $dropdown.find(`.${DROPDOWN_CLASS_NAME}`).addClass(SEARCHING_MESSAGE_CLASS_NAME);
-        }, 200);
+        }, SEARCHING_MESSAGE_INITIAL_DELAY);
     });
 
     // Reset "Searching..." message visibility handling
     $selector.on("select2:closing", (event) => {
-        const { $dropdown } = $(event.target).data('select2');
+        const { $dropdown } = $(event.target).data("select2");
         $dropdown.find(`.${DROPDOWN_CLASS_NAME}`).removeClass(SEARCHING_MESSAGE_CLASS_NAME);
     });
 });
