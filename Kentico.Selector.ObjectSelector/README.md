@@ -3,7 +3,7 @@
 :warning: This component is under development. It is not recommended to include this component in your projects.
 ---
 
-The object selector form component allows content editors to select objects of a specified type (defined by the developer) when editing page builder components via the properties configuration dialog. The selector returns a collection of *ObjectSelectorItem* objects corresponding to the objects selected by the user, which contain the code name of the returned object in the *ObjectCodeName* property. Additionally, the selector can be set to also return GUIDs of object in the *ObjectGuid* property.
+The object selector form component allows content editors to select objects of a specified type (defined by the developer) when editing page builder components via the properties configuration dialog. The selector returns a collection of *ObjectSelectorItem* objects corresponding to the objects selected by the user, which contain the code name of the returned object in the *ObjectCodeName* property. Additionally, the selector can be set to return GUIDs of object in the *ObjectGuid* property instead of code names.
 
 ## Installation
 
