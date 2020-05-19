@@ -1,16 +1,26 @@
-﻿@using Kentico.Components.Web.Mvc.FormComponents;
+﻿@using CMS.Helpers
+@using Kentico.Components.Web.Mvc.FormComponents;
 @using Kentico.Components.Web.Mvc.InlineEditors;
 
 @model RichText
 
 @{
-    var editButtonText = CMS.Helpers.ResHelper.GetString("Kentico.FormComponent.RichText.EditButton");
+    var editButtonText = ResHelper.GetString("Kentico.FormComponent.RichText.EditButton");
+    var emptyFieldText = ResHelper.GetString("Kentico.FormComponent.RichText.EmptyFieldText");
     var instanceId = $"{Html.IdFor(m => m.Value)}-wrapper";
 }
 
 <div id="@instanceId" class="ktc-rich-text-form-component">
     @{Html.Kentico().RichTextEditor(nameof(Model.Value));}
-    <button type="button" class="ktc-btn ktc-btn-default">@editButtonText</button>
+    <div class="ktc-preview">
+        <div class="ktc-preview-overlay"></div>
+        <div class="ktc-preview-box">
+            <div class="ktc-empty-text">@emptyFieldText</div>
+            <button type="button" class="ktc-btn ktc-btn-default">@editButtonText</button>
+        </div>
+    </div>
+    <iframe class="ktc-form-control ktc-preview-frame"></iframe>
+
     <template>
         @Html.Raw(Model.Value)
     </template>
@@ -23,5 +33,20 @@
     selector.dispatchEvent(new Event("Kentico.FormComponents.RichText.Initialize", {
         bubbles: true,
     }));
+
+    var valueEl = document.getElementById("@Html.IdFor(m => m.Value)");
+    valueEl.addEventListener("change", function () {
+        updateContent();
+    });
+
+    var updateContent = function () {
+        var iframeEl = selector.querySelector("iframe");
+        iframeEl.srcdoc = valueEl.value;
+
+        var emptyTextEl = selector.querySelector(".ktc-empty-text");
+        emptyTextEl.style.display = (valueEl.value === "") ? "block" : "none";
+    }
+
+    updateContent();
 }());
 </script>

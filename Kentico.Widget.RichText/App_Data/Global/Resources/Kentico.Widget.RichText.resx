@@ -126,6 +126,9 @@
   <data name="Kentico.FormComponent.RichText.Name" xml:space="preserve">
     <value>Rich text</value>
   </data>
+  <data name="Kentico.FormComponent.RichText.EmptyFieldText" xml:space="preserve">
+    <value>Field is empty.</value>
+  </data>
   <data name="Kentico.Widget.RichText.Description" xml:space="preserve">
     <value>Rich text widget</value>
   </data>
