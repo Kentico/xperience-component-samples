@@ -10,6 +10,8 @@ The object selector form component allows content editors to select objects of a
 This component is under development right now, therefore the NuGet package is not available. Stay tuned!
 
 ## Using the selector
+![Object selector](/Kentico.Selector.ObjectSelector/ObjectSelector.gif)
+
 The object selector has the following configurable properties:
 
 - **ObjectType** - A string property that contains the code name of the object type that will be listed in the selector. For example, use "personas.persona" to list personas.
