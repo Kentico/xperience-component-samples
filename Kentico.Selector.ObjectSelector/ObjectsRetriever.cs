@@ -63,9 +63,8 @@ namespace Kentico.Components.Web.Mvc.Selectors
 
             if (!String.IsNullOrEmpty(searchTerm))
             {
-                string escapedTerm = SqlHelper.EscapeQuotes(searchTerm);
-                query.WhereContains(typeInfo.DisplayNameColumn, escapedTerm)
-                     .OrderBy(String.Format(ORDERING_COLUMN_VALUE_TEMPLATE, typeInfo.DisplayNameColumn, SqlHelper.EscapeLikeText(escapedTerm)), typeInfo.DisplayNameColumn);
+                query.WhereContains(typeInfo.DisplayNameColumn, searchTerm)
+                     .OrderBy(String.Format(ORDERING_COLUMN_VALUE_TEMPLATE, typeInfo.DisplayNameColumn, SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(searchTerm))), typeInfo.DisplayNameColumn);
             }
 
             var result = query.ToArray();
@@ -78,8 +77,8 @@ namespace Kentico.Components.Web.Mvc.Selectors
         /// <summary>
         /// Returns complete data of objects given by <paramref name="itemIdentifiers"/>.
         /// </summary>
-        /// <param name="objectType"></param>
-        /// <param name="itemIdentifiers"></param>
+        /// <param name="objectType">Object type.</param>
+        /// <param name="itemIdentifiers">Collection of item identifiers.</param>
         /// <param name="useGuidToIdentifyObjects">Indicates whether <paramref name="itemIdentifiers"/> represent code names or GUIDs. See <see cref="ObjectSelectorProperties.IdentifyObjectByGuid"/></param>
         /// <exception cref="InvalidOperationException">Thrown when given <paramref name="objectType"/> does not have a GUID or code name column defined, depending on the object identification method defined by <paramref name="useGuidToIdentifyObjects"/>.</exception>
         public IEnumerable<BaseInfo> GetSelectedObjects(string objectType, IEnumerable<string> itemIdentifiers, bool useGuidToIdentifyObjects = false)
