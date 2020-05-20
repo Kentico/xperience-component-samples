@@ -50,6 +50,8 @@
 
         justify-content: center;
         align-items: center;
+        // Allow scrolling of the iframe
+        pointer-events: none;
 
         background-color: fade(@ktc-color-white, 50%);
 
@@ -70,6 +72,7 @@
 
             .ktc-btn {
                 width: @ktc-base-unit * 4;
+                pointer-events: auto;
             }
         }
     }
