@@ -57,15 +57,13 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
             // Add the preview virtual context URL prefix
             getLinkMetadataEndpointUrl = previewPathDecorator.Decorate(getLinkMetadataEndpointUrl, urlHelper);
 
-            using (htmlHelper.Kentico().BeginInlineEditor(RichTextInlineEditorConstants.IDENTIFIER, propertyName))
+            using (htmlHelper.Kentico().BeginInlineEditor(RichTextInlineEditorConstants.IDENTIFIER, propertyName, new { data_instance_guid = Guid.NewGuid().ToString() }))
             {
                 var tagBuilder = new TagBuilder("div");
                 tagBuilder.AddCssClass(RICH_TEXT_EDITOR_CLASS_NAME);
                 tagBuilder.Attributes.Add(RICH_TEXT_EDITOR_LICENSE_ATTRIBUTE, richTextEditorLicense.Value);
                 tagBuilder.Attributes.Add(RICH_TEXT_GET_LINK_METADATA_ENDPOINT_URL_ATTRIBUTE, getLinkMetadataEndpointUrl);
                 tagBuilder.Attributes.Add(RICH_TEXT_EDITOR_CONFIGURATION_ATTRIBUTE, configurationName);
-                // TODO MAE-318: Widget doesn't update when content is same
-                tagBuilder.Attributes.Add("data-guid", Guid.NewGuid().ToString());
 
                 if (AllowContextMacros())
                 {

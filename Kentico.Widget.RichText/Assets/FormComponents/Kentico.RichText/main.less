@@ -2,6 +2,7 @@
 
 @fullscreen-z-index: 10205;
 @preview-height: @ktc-base-unit * 9;
+@form-component-max-width: @ktc-base-unit * 20;
 
 .ktc-rich-text-form-component__froala {
     display: none;
@@ -30,8 +31,8 @@
     z-index: @fullscreen-z-index;
 }
 
-
 .ktc-rich-text-form-component {
+    max-width: @form-component-max-width;
 
     .ktc-form-control {
         &.ktc-preview-frame {
@@ -41,24 +42,16 @@
     }
 
     .ktc-preview {
+        display: none;
         position: absolute;
         height: @preview-height;
         width: 100%;
-        max-width: @ktc-base-unit * 20;
+        max-width: @form-component-max-width;
 
-        display: flex;
         justify-content: center;
         align-items: center;
 
-        .ktc-preview-overlay {
-            position: absolute;
-            background-color: white;
-            opacity: 0.5;
-            width: 100%;
-            height: 100%;
-            // Allow scrolling of the iframe
-            pointer-events: none;
-        }
+        background-color: fade(@ktc-color-white, 50%);
 
         .ktc-preview-box {
             z-index: 1;
@@ -66,12 +59,37 @@
             flex-direction: column;
             align-items: center;
 
-            .ktc-empty-text {
-                padding: @ktc-base-unit * 0.5;
+            .ktc-info-text {
+                margin-bottom: 0.5 * @ktc-base-unit;
+                font-weight: bold;
+
+                &.ktc-info-text--empty {
+                    display: none;
+                }
             }
 
             .ktc-btn {
                 width: @ktc-base-unit * 4;
+            }
+        }
+    }
+
+    &:hover {
+        .ktc-preview {
+            display: flex;
+        }
+    }
+
+    &.ktc-rich-text-form-component--empty {
+        .ktc-preview {
+            display: flex;
+
+            .ktc-info-text {
+                display: none;
+    
+                &.ktc-info-text--empty {
+                    display: block;
+                }
             }
         }
     }

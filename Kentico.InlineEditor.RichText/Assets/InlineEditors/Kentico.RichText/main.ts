@@ -4,8 +4,7 @@ import FroalaEditor, * as Froala from "froala-editor/js/froala_editor.pkgd.min";
 
 import { initializeFroalaEditor, destroyFroalaEditor } from "./froala";
 import { initializePlugins } from "./plugins";
-
-const FORM_COMPONENT_INITIALIZATION_EVENT_NAME = "Kentico.FormComponents.RichText.Initialize";
+import { FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME, FORM_COMPONENT_INITIALIZATION_EVENT_NAME } from "./constants";
 
 // Initialize plugins
 window.addEventListener("DOMContentLoaded", () => {
@@ -23,13 +22,24 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-
-document.addEventListener(FORM_COMPONENT_INITIALIZATION_EVENT_NAME, (event) => {
-    const editor = event.target as HTMLElement;
+document.addEventListener(FORM_COMPONENT_INITIALIZATION_EVENT_NAME, ({ target: editor, detail: richTextHtml }) => {
     const editButton = editor.querySelector<HTMLButtonElement>(".ktc-btn");
     editButton?.addEventListener("click", () => {
         initializeFroalaEditor({ editor }, "FormComponent");
     });
+
+    const valueEl = document.querySelector<HTMLInputElement>(`.${FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME}`)!;
+    valueEl.value = richTextHtml;
+    valueEl.addEventListener("change", () => {
+        const iframeEl = editor.querySelector("iframe")!;
+        iframeEl.srcdoc = valueEl.value;
+        if (valueEl.value === "") {
+            editor.classList.add("ktc-rich-text-form-component--empty")
+        } else {
+            editor.classList.remove("ktc-rich-text-form-component--empty");
+        }
+    });
+    valueEl.dispatchEvent(new Event("change"));
 })
 
 window.kentico.pageBuilder.registerInlineEditor("Kentico.InlineEditor.RichText", {

@@ -1,7 +1,7 @@
 import { FroalaOptions } from "froala-editor/js/froala_editor.pkgd.min";
 
 import { Kentico } from "./kentico";
-import { HTMLRichTextEditorElement } from "./rich-text";
+import { HTMLRichTextEditorElement, RichTextInitEvent } from "./rich-text";
 
 declare global {
   interface Window {
@@ -11,6 +11,10 @@ declare global {
 
   interface HTMLElementTagNameMap {
     ".ktc-rich-text-wrapper": HTMLRichTextEditorElement;
+  }
+
+  interface DocumentEventMap {
+    "Kentico.FormComponents.RichText.Initialize": RichTextInitEvent;
   }
 
   type Nullable<T> = T | null;

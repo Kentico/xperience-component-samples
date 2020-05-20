@@ -5,8 +5,7 @@ import { replaceMacrosWithElements, replaceMacroElements, bindMacroClickListener
 import { unwrapElement } from "./helpers";
 import { InlineEditorOptions } from "@/types/kentico/inline-editors/inline-editor-options";
 import { RichTextFormComponentOptions, EditorType, CodeMirrorElement, FroalaEventsOption } from "./types";
-
-const FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME = "ktc-rich-text-value";
+import { FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME } from "./constants";
 
 export const getEvents = (options: InlineEditorOptions | RichTextFormComponentOptions, customOptions: Partial<FroalaOptions>, editorType: EditorType): Partial<FroalaEvents> => {
     const editor = options.editor;
@@ -126,7 +125,13 @@ const ensureFormComponentInitialization = (froalaEditor: FroalaEditor, formCompo
     document.body.classList.add("ktc-rich-text-form-component--fullscreen");
     document.body.appendChild(saveButton);
     froalaEditor.$iframe[0]!.style.height = "100%";
-    froalaEditor.fullscreen.toggle();
+    try {
+        // There's a known bug that fullscreen.toggle() throws an error
+        // see https://github.com/froala/wysiwyg-editor/issues/3803  
+        froalaEditor.fullscreen.toggle();
+    } catch (error) {
+        froalaEditor.events.focus();
+    }
 }
 
 const handleFullscreenExit = (froalaEditor: FroalaEditor, formComponent: HTMLElement) => {

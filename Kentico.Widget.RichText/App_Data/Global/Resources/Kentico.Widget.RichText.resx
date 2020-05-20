@@ -135,4 +135,7 @@
   <data name="Kentico.Widget.RichText.Name" xml:space="preserve">
     <value>Rich text</value>
   </data>
+  <data name="Kentico.FormComponent.RichText.PreviewInfoText" xml:space="preserve">
+    <value>This is a preview of your text.</value>
+  </data>
 </root>

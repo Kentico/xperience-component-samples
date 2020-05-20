@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 using CMS.Base;
@@ -110,7 +111,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 
                 Received.InOrder(() =>
                 {
-                    writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
+                    writerMock.Write(Arg.Is<string>(x => Regex.IsMatch(x, $@"^<div data-inline-editor=""Kentico.InlineEditor.RichText"" data-instance-guid="".+"" data-property-name=""{PROPERTY_NAME.ToLower()}"">$")));
                     writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-context-macros=\"{{&quot;Test&quot;:&quot;TestDisplayName&quot;}}\" data-get-link-metadata-endpoint-url=\"/testApi\" data-rich-text-editor-configuration=\"{DEFUALT_CONFIGURATION_NAME}\" data-rich-text-editor-license=\"{LICENSE_KEY}\"></div>");
                     writerMock.Write("</div>");
                 });
@@ -126,7 +127,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 
                 Received.InOrder(() =>
                 {
-                    writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
+                    writerMock.Write(Arg.Is<string>(x => Regex.IsMatch(x, $@"^<div data-inline-editor=""Kentico.InlineEditor.RichText"" data-instance-guid="".+"" data-property-name=""{PROPERTY_NAME.ToLower()}"">$")));
                     writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-get-link-metadata-endpoint-url=\"/testApi\" data-rich-text-editor-configuration=\"{DEFUALT_CONFIGURATION_NAME}\" data-rich-text-editor-license=\"{LICENSE_KEY}\"></div>");
                     writerMock.Write("</div>");
                 });
@@ -142,7 +143,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 
                 Received.InOrder(() =>
                 {
-                    writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
+                    writerMock.Write(Arg.Is<string>(x => Regex.IsMatch(x, $@"^<div data-inline-editor=""Kentico.InlineEditor.RichText"" data-instance-guid="".+"" data-property-name=""{PROPERTY_NAME.ToLower()}"">$")));
                     writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-get-link-metadata-endpoint-url=\"/testApi\" data-rich-text-editor-configuration=\"{DEFUALT_CONFIGURATION_NAME}\" data-rich-text-editor-license=\"{LICENSE_KEY}\"></div>");
                     writerMock.Write("</div>");
                 });
@@ -158,7 +159,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 
                 Received.InOrder(() =>
                 {
-                    writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
+                    writerMock.Write(Arg.Is<string>(x => Regex.IsMatch(x, $@"^<div data-inline-editor=""Kentico.InlineEditor.RichText"" data-instance-guid="".+"" data-property-name=""{PROPERTY_NAME.ToLower()}"">$")));
                     writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-get-link-metadata-endpoint-url=\"/testApi\" data-rich-text-editor-configuration=\"{DEFUALT_CONFIGURATION_NAME}\" data-rich-text-editor-license=\"{LICENSE_KEY}\"></div>");
                     writerMock.Write("</div>");
                 });
@@ -175,7 +176,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 
                 Received.InOrder(() =>
                 {
-                    writerMock.Write($"<div data-inline-editor=\"Kentico.InlineEditor.RichText\" data-property-name=\"{PROPERTY_NAME.ToLower()}\">");
+                    writerMock.Write(Arg.Is<string>(x => Regex.IsMatch(x, $@"^<div data-inline-editor=""Kentico.InlineEditor.RichText"" data-instance-guid="".+"" data-property-name=""{PROPERTY_NAME.ToLower()}"">$")));
                     writerMock.Write($"<div class=\"ktc-rich-text-wrapper\" data-get-link-metadata-endpoint-url=\"/testApi\" data-rich-text-editor-configuration=\"{CONFIGURATION_NAME}\" data-rich-text-editor-license=\"{LICENSE_KEY}\"></div>");
                     writerMock.Write("</div>");
                 });

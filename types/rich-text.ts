@@ -11,3 +11,7 @@ export interface HTMLRichTextEditorElement extends HTMLElement {
     readonly "data-froala.editor"?: FroalaEditor;
     readonly dataset: HTMLRichTextEditorElementDOMStringMap;
 }
+
+export interface RichTextInitEvent extends CustomEvent<string> {
+    readonly target: HTMLElement;
+}
