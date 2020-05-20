@@ -20,11 +20,7 @@
         </div>
     </div>
     <iframe class="ktc-form-control ktc-preview-frame"></iframe>
-
-    <template>
-        @Html.Raw(Model.Value)
-    </template>
-    @Html.TextBoxFor(m => m.Value, new { hidden = true })
+    @Html.TextBoxFor(m => m.Value, new { hidden = true, @class = "ktc-rich-text-value" })
 </div>
 
 <script>
@@ -35,6 +31,7 @@
     }));
 
     var valueEl = document.getElementById("@Html.IdFor(m => m.Value)");
+    valueEl.value = "@Html.Raw(Model.Value)";
     valueEl.addEventListener("change", function () {
         updateContent();
     });

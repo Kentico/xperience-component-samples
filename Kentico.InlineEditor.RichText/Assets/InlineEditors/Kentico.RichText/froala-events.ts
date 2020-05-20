@@ -6,12 +6,14 @@ import { unwrapElement } from "./helpers";
 import { InlineEditorOptions } from "@/types/kentico/inline-editors/inline-editor-options";
 import { RichTextFormComponentOptions, EditorType, CodeMirrorElement, FroalaEventsOption } from "./types";
 
+const FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME = "ktc-rich-text-value";
+
 export const getEvents = (options: InlineEditorOptions | RichTextFormComponentOptions, customOptions: Partial<FroalaOptions>, editorType: EditorType): Partial<FroalaEvents> => {
     const editor = options.editor;
     const propertyName = (options as InlineEditorOptions).propertyName
     const propertyValue = editorType === "InlineEditor" 
         ? (options as InlineEditorOptions).propertyValue
-        : editor.querySelector("template")!.innerHTML;
+        : editor.querySelector<HTMLInputElement>(`.${FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME}`)!.value;
 
     const events: Partial<FroalaEvents> = {
         initialized() {
@@ -116,12 +118,8 @@ const ensureFormComponentInitialization = (froalaEditor: FroalaEditor, formCompo
     saveButton.textContent = window.kentico.localization.strings["Kentico.FormComponent.RichText.ApplyButton"];
     saveButton.classList.add("ktc-btn-rich-text-save");
     saveButton.addEventListener("click", () => {
-        formComponent.querySelector<HTMLInputElement>("input[hidden]")!.value = froalaEditor.html.get();
+        handleFullscreenExit(froalaEditor, formComponent);
         saveButton.remove();
-        froalaEditor.fullscreen.toggle();
-        froalaEditor.destroy();
-        froalaEditor.$oel.remove();
-        document.body.classList.remove("ktc-rich-text-form-component--fullscreen");
     });
 
     // Ensure fullscreen mode
@@ -129,4 +127,16 @@ const ensureFormComponentInitialization = (froalaEditor: FroalaEditor, formCompo
     document.body.appendChild(saveButton);
     froalaEditor.$iframe[0]!.style.height = "100%";
     froalaEditor.fullscreen.toggle();
+}
+
+const handleFullscreenExit = (froalaEditor: FroalaEditor, formComponent: HTMLElement) => {
+    const valueEl = formComponent.querySelector<HTMLInputElement>(`.${FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME}`);
+    valueEl!.value = replaceMacroElements(froalaEditor.html.get());
+    valueEl?.dispatchEvent(new Event("change"));
+    froalaEditor.fullscreen.toggle();
+    froalaEditor.destroy();
+    const richTextWrapper = froalaEditor.$oel[0];
+    richTextWrapper.innerHTML = "";
+    formComponent.querySelector("[data-inline-editor]")?.appendChild(richTextWrapper);
+    document.body.classList.remove("ktc-rich-text-form-component--fullscreen");
 }
