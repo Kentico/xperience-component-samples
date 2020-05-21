@@ -1,6 +1,10 @@
 # .NET Build Configuration
 version: '{build}'
 image: Visual Studio 2019
+
+init:
+- net start MSSQL$SQL2019
+
 before_build:
 - ps: .nuget\BuildInit.ps1
 - cmd: nuget restore

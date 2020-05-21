@@ -6,6 +6,7 @@ using CMS.Activities;
 using CMS.Base;
 using CMS.ContactManagement;
 using CMS.DataEngine;
+using CMS.DataProtection;
 using CMS.Membership;
 using CMS.Newsletters;
 using CMS.Tests;
@@ -104,6 +105,90 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
 
                 Assert.That(actualIdentifiers, Is.EquivalentTo(selectIdentifiers));
                 Assert.That(result, Is.All.TypeOf(expectedType));
+            }
+        }
+
+
+        [TestFixture, SharedDatabaseForAllTests]
+        public class GetObjectsIntegrationTests : IsolatedIntegrationTests
+        {
+            [OneTimeSetUp]
+            public void FixtureSetUp()
+            {
+                Action<ConsentInfo, string> consentInitializer = (consent, name) =>
+                {
+                    consent.ConsentContent = $"Content of {name}";
+                    consent.ConsentName = name;
+                    consent.SetValue("ConsentHash", "abc");
+                };
+
+                var consents = Enumerable.Empty<ConsentInfo>();
+
+                // Fill data table with dummy data to enable paging
+                consents = consents.Concat(CreateItems(new[] { "Alpha", "Gamma", "Test", "Xiphoid" }, 15, initializer: consentInitializer));
+                // Fill data table with records which will be queried in the test
+                consents = consents.Concat(CreateItems(new[] { "Test XXXX", "XXXX Test", "Test test XXXX" }, 6, initializer: consentInitializer));
+
+                ConsentInfoProvider.ProviderObject.BulkInsertInfos(consents);
+            }
+
+
+            [TestCaseSource(nameof(GetObjectsTestCaseSource))]
+            public void GetObjects_ReturnsObjectsInCorrectOrder(object searchParams, string[] expectedNames, bool expectedNextPageAvailable)
+            {
+                var siteServiceMock = Substitute.For<ISiteService>();
+                var objectsRetriever = new ObjectsRetriever(siteServiceMock);
+                var actualResult = objectsRetriever.GetObjects(searchParams as ObjectsRetrieverSearchParams, out var actualNextPageAvailable);
+
+                var actualNames = actualResult.Select(info => info[info.TypeInfo.DisplayNameColumn].ToString());
+
+                // Assert
+                Assert.That(actualNames, Is.EqualTo(expectedNames));
+                Assert.That(actualNextPageAvailable, Is.EqualTo(expectedNextPageAvailable));
+            }
+
+
+            private static IEnumerable<TestCaseData> GetObjectsTestCaseSource()
+            {
+                yield return new TestCaseData(
+                    new ObjectsRetrieverSearchParams
+                    {
+                        ObjectType = ConsentInfo.OBJECT_TYPE,
+                        SearchTerm = "Test",
+                        PageIndex = 0,
+                        PageSize = 5
+                    },
+                    new[] { "Test test XXXX0", "Test test XXXX1", "Test XXXX0", "Test XXXX1", "Test0" }, true);
+
+                yield return new TestCaseData(
+                    new ObjectsRetrieverSearchParams
+                    {
+                        ObjectType = ConsentInfo.OBJECT_TYPE,
+                        SearchTerm = "Test",
+                        PageIndex = 1,
+                        PageSize = 5
+                    },
+                    new[] { "Test1", "Test2", "XXXX Test0", "XXXX Test1" }, false);
+
+                yield return new TestCaseData(
+                    new ObjectsRetrieverSearchParams
+                    {
+                        ObjectType = ConsentInfo.OBJECT_TYPE,
+                        SearchTerm = "XXXX",
+                        PageIndex = 0,
+                        PageSize = 5
+                    },
+                    new[] { "XXXX Test0", "XXXX Test1", "Test test XXXX0", "Test test XXXX1", "Test XXXX0" }, true);
+
+                yield return new TestCaseData(
+                    new ObjectsRetrieverSearchParams
+                    {
+                        ObjectType = ConsentInfo.OBJECT_TYPE,
+                        SearchTerm = "XXXX",
+                        PageIndex = 1,
+                        PageSize = 5
+                    },
+                    new[] { "Test XXXX1" }, false);
             }
         }
 
