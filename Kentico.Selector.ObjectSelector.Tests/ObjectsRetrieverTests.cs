@@ -112,8 +112,8 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
         [TestFixture, SharedDatabaseForAllTests]
         public class GetObjectsIntegrationTests : IsolatedIntegrationTests
         {
-            [OneTimeSetUp]
-            public void FixtureSetUp()
+            [SetUp]
+            public void SetUp()
             {
                 Action<ConsentInfo, string> consentInitializer = (consent, name) =>
                 {
@@ -130,6 +130,15 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
                 consents = consents.Concat(CreateItems(new[] { "Test XXXX", "XXXX Test", "Test test XXXX" }, 6, initializer: consentInitializer));
 
                 ConsentInfoProvider.ProviderObject.BulkInsertInfos(consents);
+            }
+
+
+            [TearDown]
+            public void TearDown()
+            {
+                var q = ConsentInfoProvider.GetConsents();
+                q.QueryName = QueryName.GENERALDELETE;
+                q.Execute();
             }
 
 
