@@ -7,8 +7,9 @@
 .ktc-rich-text-form-component__froala {
     display: none;
 
-    &.fr-fullscreen {
+    &.fr-box.fr-fullscreen {
         display: block;
+        z-index: @fullscreen-z-index !important;
 
         .fr-toolbar {
             padding-right: 3 * @ktc-base-unit;
@@ -18,8 +19,8 @@
             }
         }
 
-        &.fr-box.fr-fullscreen {
-            z-index: @fullscreen-z-index !important;
+        .fr-wrapper {
+            height: 100%;
         }
     }
 }
