@@ -44,7 +44,7 @@ const openInsertLinkPopupCommandParameters: RegisterCommandParameters = {
     undo: false,
     plugin: constants.LINK_PLUGIN_NAME,
     refreshAfterCallback: true,
-    callback(this: FroalaEditor) {
+    callback(this: FroalaEditor, commandName) {
         this.selection.save();
         const linkText = this.selection.text();
         const image = unwrapElement(this.image.get());
@@ -52,7 +52,7 @@ const openInsertLinkPopupCommandParameters: RegisterCommandParameters = {
 
         defaultLinkDescriptor = new LinkDescriptor(linkText, "", false, isImageLink);
         linkModel = new LinkModel(LinkType.PAGE);
-        const boundingRect = getBoundingClientRect(this, isImageLink, image);
+        const boundingRect = getBoundingClientRect(this, commandName, isImageLink, image);
 
         this.kenticoLinkPlugin.showInsertLinkPopup(boundingRect, defaultLinkDescriptor);
 
@@ -108,11 +108,11 @@ const openLinkConfigurationPopupCommand = new FroalaCommand(constants.OPEN_LINK_
     undo: false,
     focus: false,
     refresh: onLinkButtonRefresh(false),
-    async callback(this: FroalaEditor) {
+    async callback(this: FroalaEditor, commandName) {
         const link = this.link.get() as HTMLAnchorElement;
         const image = unwrapElement(this.image.get());
         const linkDescriptor = new LinkDescriptor(link);
-        const boundingRect = getBoundingClientRect(this, linkDescriptor.isImageLink, image);
+        const boundingRect = getBoundingClientRect(this, commandName, linkDescriptor.isImageLink, image);
         const getLinkMetadataEndpointUrl = this.opts.getLinkMetadataEndpointUrl;
         linkModel = await getLinkModel(getLinkMetadataEndpointUrl, linkDescriptor.linkURL);
 
@@ -287,8 +287,15 @@ const getVisiblePopupName = (editor: FroalaEditor) => {
     }
 }
 
-const getBoundingClientRect = (editor: FroalaEditor, isImageLink: boolean, image: HTMLElement | null): DOMRect => 
-    isImageLink && image ? getImageBoundingClientRect(image.getBoundingClientRect()) : editor.position.getBoundingRect();
+const getBoundingClientRect = (editor: FroalaEditor, commandName: string, isImageLink: boolean, image: HTMLElement | null): DOMRect => {
+    if (isImageLink && image) {
+        return getImageBoundingClientRect(image.getBoundingClientRect());
+    } else if (commandName === constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME && !editor.opts.toolbarInline) {
+        return editor.$tb.find(`.fr-command[data-cmd="${commandName}"]`)[0].getBoundingClientRect();
+    } else {
+        return editor.position.getBoundingRect();
+    }
+}
 
 
 const getImageBoundingClientRect = ({ left, top, width, height }: DOMRect) : DOMRect => 

@@ -23,10 +23,13 @@ const openInsertMacroPopupCommand = new FroalaCommand(constants.OPEN_INSERT_MACR
     undo: false,
     plugin: constants.MACROS_PLUGIN_NAME,
     refreshAfterCallback: true,
-    callback(this: FroalaEditor) {
+    callback(this: FroalaEditor, commandName) {
         this.selection.save();
         defaultValueText = this.selection.text();
-        this.kenticoMacroPlugin.showConfigurationPopup(this.position.getBoundingRect(), DialogMode.INSERT, undefined, defaultValueText);
+        const popupPositionRect = this.opts.toolbarInline 
+            ? this.position.getBoundingRect() 
+            : this.$tb.find(`.fr-command[data-cmd="${commandName}"]`)[0].getBoundingClientRect();
+        this.kenticoMacroPlugin.showConfigurationPopup(popupPositionRect, DialogMode.INSERT, undefined, defaultValueText);
     }
 }, openInsertMacroPopupCommandIcon);
 
