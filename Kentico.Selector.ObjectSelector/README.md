@@ -1,6 +1,6 @@
 # Object selector form component
 ---
-:warning: This component is under development. It is not recommended to include this component in your projects.
+:warning: This component is an unfinished product currently under active development. As such, it is still lacking certain features. We do not recommend integrating it to live, customer-facing sites.
 ---
 
 The object selector form component allows content editors to select objects of a specified type (defined by the developer) when editing page builder components via the properties configuration dialog. The selector returns a collection of *ObjectSelectorItem* objects corresponding to the objects selected by the user, which contain the code name of the returned object in the *ObjectCodeName* property. Additionally, the selector can be set to return GUIDs of object in the *ObjectGuid* property instead of code names.
@@ -10,8 +10,6 @@ The object selector form component allows content editors to select objects of a
 This component is under development right now, therefore the NuGet package is not available. Stay tuned!
 
 ## Using the selector
-![Object selector](/Kentico.Selector.ObjectSelector/ObjectSelector.gif)
-
 The object selector has the following configurable properties:
 
 - **ObjectType** - A string property that contains the code name of the object type that will be listed in the selector. For example, use "personas.persona" to list personas.
@@ -37,3 +35,5 @@ Guid guid = GetProperties().Contacts.FirstOrDefault()?.ObjectGuid ?? Guid.Empty;
 // Retrieves the ContactInfo object that corresponds to the selected object GUID
 ContactInfo contact = ContactInfoProvider.GetContactInfo(guid);
 ```
+
+![Object selector](/Kentico.Selector.ObjectSelector/ObjectSelector.gif)
