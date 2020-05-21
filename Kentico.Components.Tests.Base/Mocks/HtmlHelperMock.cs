@@ -4,7 +4,7 @@ using System.Web.Routing;
 
 using NSubstitute;
 
-namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
+namespace Kentico.Components.Tests.Base
 {
     /// <summary>
     /// Provides mock of HTML helper for tests.
@@ -16,7 +16,20 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
         /// </summary>
         /// <param name="applicationPath">Application path used in HTTP context.</param>
         /// <param name="routeData">Route data.</param>
+        /// <param name="textWriter">Text writer.</param>
         public static HtmlHelper GetHtmlHelper(string applicationPath = "/", RouteData routeData = null, TextWriter textWriter = null)
+        {
+            return GetHtmlHelper<object>(applicationPath, routeData, textWriter);
+        }
+
+
+        /// <summary>
+        /// Gets a mock of a generic HTML helper.
+        /// </summary>
+        /// <param name="applicationPath">Application path used in HTTP context.</param>
+        /// <param name="routeData">Route data.</param>
+        /// <param name="textWriter">Text writer.</param>
+        public static HtmlHelper<TModel> GetHtmlHelper<TModel>(string applicationPath = "/", RouteData routeData = null, TextWriter textWriter = null)
         {
             textWriter = textWriter ?? Substitute.For<TextWriter>();
 
@@ -30,7 +43,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
             var mockViewDataContainer = Substitute.For<IViewDataContainer>();
             mockViewDataContainer.ViewData.Returns(viewDataDictionary);
 
-            return new HtmlHelper(viewContext, mockViewDataContainer);
+            return new HtmlHelper<TModel>(viewContext, mockViewDataContainer);
         }
     }
 }

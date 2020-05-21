@@ -13,13 +13,17 @@
   "dependencies": {
     "codemirror": "5.49.2",
     "froala-editor": "^3.1.0",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.15",
+    "select2": "^4.1.0-beta.1",
     "underscore-template-loader": "^1.0.0"
   },
   "devDependencies": {
     "@types/codemirror": "0.0.81",
     "@types/jest": "^24.0.23",
+    "@types/jquery": "^3.3.35",
     "@types/lodash": "^4.14.149",
+    "@types/select2": "^4.0.48",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.2.0",
     "glob": "^7.1.6",

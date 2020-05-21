@@ -11,11 +11,11 @@ using CMS.Membership;
 using CMS.SiteProvider;
 using CMS.Tests;
 
+using Kentico.Components.Tests.Base;
 using Kentico.Web.Mvc;
 
 using NSubstitute;
 using NUnit.Framework;
-
 
 namespace Kentico.Components.Web.Mvc.InlineEditors.Tests
 {

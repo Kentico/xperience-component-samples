@@ -117,7 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Kentico.Selector.ObjectSelector.LoadingMore" xml:space="preserve">
+    <value>Loading more items...</value>
+  </data>
   <data name="Kentico.Selector.ObjectSelector.Name" xml:space="preserve">
     <value>Object selector</value>
+  </data>
+  <data name="Kentico.Selector.ObjectSelector.NoResults" xml:space="preserve">
+    <value>No data found</value>
+  </data>
+  <data name="Kentico.Selector.ObjectSelector.Placeholder" xml:space="preserve">
+    <value>(None)</value>
+  </data>
+  <data name="Kentico.Selector.ObjectSelector.Searching" xml:space="preserve">
+    <value>Searching…</value>
+  </data>
+  <data name="Kentico.Selector.ObjectSelector.SearchPlaceholder" xml:space="preserve">
+    <value>Type here to search</value>
   </data>
 </root>

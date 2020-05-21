@@ -565,9 +565,6 @@
     <Compile Include="DynamicText\DynamicTextTestMacroMethods.cs" />
     <Compile Include="Extensions\HtmlHelperExtensionsTests.cs" />
     <Compile Include="Extensions\RouteCollectionExtensionsTests.cs" />
-    <Compile Include="Mocks\HtmlHelperMock.cs" />
-    <Compile Include="Mocks\HttpContextMock.cs" />
-    <Compile Include="Mocks\RequestContextMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -575,6 +572,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kentico.Components.Tests.Base\Kentico.Components.Tests.Base.csproj">
+      <Project>{8708219b-87f3-4010-94b6-b0259c2f9490}</Project>
+      <Name>Kentico.Components.Tests.Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kentico.InlineEditor.RichText\Kentico.InlineEditor.RichText.csproj">
       <Project>{cc8499d6-4f7c-4a4c-a902-d6ff1264653c}</Project>
       <Name>Kentico.InlineEditor.RichText</Name>
