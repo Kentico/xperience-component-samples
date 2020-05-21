@@ -45,3 +45,9 @@ after_test:
 artifacts:
   - path: '*.nupkg'
     name: NuGet packages
+  - path: TestDatabases.zip
+    name: TestDatabases
+
+on_failure:
+ - ps: 7z a TestDatabases.zip TestDatabases\*
+ - ps: Push-AppveyorArtifact TestDatabases.zip
