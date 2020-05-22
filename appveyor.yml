@@ -42,6 +42,9 @@ after_test:
   # run tests
   - npm run test
 
+test_script:
+- nunit3-console.exe "C:\projects\ems-mvc-components\Kentico.Selector.ObjectSelector.Tests\bin\Release\Kentico.Selector.ObjectSelector.Tests.dll" --result=myresults.xml;format=AppVeyor --workers=1
+
 artifacts:
   - path: '*.nupkg'
     name: NuGet packages
