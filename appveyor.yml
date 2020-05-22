@@ -10,9 +10,9 @@ before_build:
 - mkdir C:\projects\ems-mvc-components\dbs
 - ps: |
     $acl = Get-Acl C:\projects\ems-mvc-components\dbs
-    $AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule("NT Services\MSSQL$SQL2019","Modify","Allow")
+    $AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule('MSSQL$SQL2019',"Modify","Allow")
     $acl.SetAccessRule($AccessRule)
-    $acl | Set-Acl C:\projects\ems-mvc-components\dbs
+    $acl | Set-Acl C:\projects\ems-mvc-components\dbs | fl
 - ps: .nuget\BuildInit.ps1
 - cmd: nuget restore
 
