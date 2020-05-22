@@ -7,6 +7,12 @@ init:
 - ps: $blockRdp = $true;iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 before_build:
+- mkdir C:\projects\ems-mvc-components\dbs
+- ps: |
+    $acl = Get-Acl C:\projects\ems-mvc-components\dbs
+    $AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule("NT Services\MSSQL$SQL2019","Modify","Allow")
+    $acl.SetAccessRule($AccessRule)
+    $acl | Set-Acl C:\projects\ems-mvc-components\dbs
 - ps: .nuget\BuildInit.ps1
 - cmd: nuget restore
 
