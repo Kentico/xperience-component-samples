@@ -40,7 +40,7 @@ document.addEventListener(FORM_COMPONENT_INITIALIZATION_EVENT_NAME, ({ target: e
         }
     });
     valueEl.dispatchEvent(new Event("change"));
-})
+});
 
 window.kentico.pageBuilder.registerInlineEditor("Kentico.InlineEditor.RichText", {
     init(options) {

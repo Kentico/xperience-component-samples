@@ -34,7 +34,7 @@ export const getEvents = (options: InlineEditorOptions | RichTextFormComponentOp
             }
         },
         ["commands.after"](cmd: string) {
-            if (cmd === "html" && this.codeView.isActive()) {
+            if (cmd === "html" && this.codeView.isActive() && editorType === "InlineEditor") {
                 // Update the underlying Froala HTML when code is changed in CodeMirror
                 const froalaWrapper = unwrapElement(this.$wp);
                 const codeMirrorInstance = froalaWrapper!.querySelector<CodeMirrorElement>(".CodeMirror");
@@ -136,7 +136,10 @@ const ensureFormComponentInitialization = (froalaEditor: FroalaEditor, formCompo
 
 const handleFullscreenExit = (froalaEditor: FroalaEditor, formComponent: HTMLElement) => {
     const valueEl = formComponent.querySelector<HTMLInputElement>(`.${FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME}`);
-    valueEl!.value = replaceMacroElements(froalaEditor.html.get());
+    const editorValue = froalaEditor.codeView.isActive()
+        ? froalaEditor.$wp.find<CodeMirrorElement>(".CodeMirror")[0].CodeMirror.getValue()
+        : froalaEditor.html.get();
+    valueEl!.value = replaceMacroElements(editorValue);
     valueEl?.dispatchEvent(new Event("change"));
     froalaEditor.fullscreen.toggle();
     froalaEditor.destroy();
