@@ -120,18 +120,14 @@ const ensureFormComponentInitialization = (froalaEditor: FroalaEditor, formCompo
         handleFullscreenExit(froalaEditor, formComponent);
         saveButton.remove();
     });
+    document.body.appendChild(saveButton);
 
     // Ensure fullscreen mode
     document.body.classList.add("ktc-rich-text-form-component--fullscreen");
-    document.body.appendChild(saveButton);
-    froalaEditor.$iframe[0]!.style.height = "100%";
-    try {
-        // There's a known bug that fullscreen.toggle() throws an error
-        // see https://github.com/froala/wysiwyg-editor/issues/3803  
-        froalaEditor.fullscreen.toggle();
-    } catch (error) {
-        froalaEditor.events.focus();
-    }
+    froalaEditor.fullscreen.toggle();
+    // Set initial iframe height which ensures scrollbars if the content overflows the editor's size
+    froalaEditor.$iframe[0]!.style.height = `${froalaEditor.el.clientHeight}px`;
+    froalaEditor.events.focus();
 }
 
 const handleFullscreenExit = (froalaEditor: FroalaEditor, formComponent: HTMLElement) => {
