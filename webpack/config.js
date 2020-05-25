@@ -38,7 +38,10 @@ module.exports = {
         ]
       },
       {
-        test: /\.html$/,
+        test: [
+          /\.html$/,
+          /froala_style\.min\.css$/
+        ],
         use: {
           loader: "underscore-template-loader",
           query: {
