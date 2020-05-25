@@ -7,6 +7,13 @@
 @preview-height: @form-component-height - @form-component-border-size * 2;
 @preview-max-width: @form-component-max-width - @form-component-border-size * 2;
 
+// Override for form component popups
+.ktc-rich-text-form-component--fullscreen {
+    .fr-popup.fr-active {
+        z-index: 10210 !important;
+    }
+}
+
 .ktc-rich-text-form-component__froala {
     display: none;
 

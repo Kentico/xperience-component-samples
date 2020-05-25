@@ -4,8 +4,9 @@ import FroalaEditor, * as Froala from "froala-editor/js/froala_editor.pkgd.min";
 
 import { initializeFroalaEditor, destroyFroalaEditor } from "./froala";
 import { initializePlugins } from "./plugins";
-import { FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME, FORM_COMPONENT_INITIALIZATION_EVENT_NAME } from "./constants";
-import { getPreviewIframeHtml } from "./form-component/form-component-templates";
+import { FORM_COMPONENT_INITIALIZATION_EVENT_NAME } from "./constants";
+import { initializeRichTextFormComponent } from "./form-component";
+import { getInlineEditorOptions } from "./inline-editor/inline-editor-options";
 
 // Initialize plugins
 window.addEventListener("DOMContentLoaded", () => {
@@ -23,30 +24,13 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-document.addEventListener(FORM_COMPONENT_INITIALIZATION_EVENT_NAME, ({ target: editor, detail: data  }) => {
-    const editButton = editor.querySelector<HTMLButtonElement>(".ktc-btn");
-    editButton?.addEventListener("click", () => {
-        initializeFroalaEditor({ editor }, "FormComponent");
-    });
-
-    const valueEl = document.querySelector<HTMLInputElement>(`.${FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME}`)!;
-    valueEl.value = data.html;
-    valueEl.addEventListener("change", () => {
-        const iframeEl = editor.querySelector<HTMLIFrameElement>("iframe")!;
-        iframeEl.srcdoc = getPreviewIframeHtml(valueEl.value);
-
-        if (valueEl.value === "") {
-            editor.classList.add("ktc-rich-text-form-component--empty")
-        } else {
-            editor.classList.remove("ktc-rich-text-form-component--empty");
-        }
-    });
-    valueEl.dispatchEvent(new Event("change"));
+document.addEventListener(FORM_COMPONENT_INITIALIZATION_EVENT_NAME, ({ target: formComponent, detail: data }) => {
+    initializeRichTextFormComponent(formComponent, data);
 });
 
 window.kentico.pageBuilder.registerInlineEditor("Kentico.InlineEditor.RichText", {
     init(options) {
-        initializeFroalaEditor(options, "InlineEditor");
+        initializeFroalaEditor(options, getInlineEditorOptions(options), "InlineEditor");
     },
     destroy(options) {
         // Destroy Froala editor when destroying inline editor
