@@ -227,12 +227,14 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
   
     export type GenericObject<T = any> = { [key: string]: T; };
   
-    export interface ToolbarButtons {
-      [key: string]: {
+    export interface ToolbarButton {
         buttons: string[];
         align?: string;
         buttonsVisible?: number;
-      };
+    }
+
+    export interface ToolbarButtons {
+      [key: string]: ToolbarButton;
     }
   
     export interface EmoticonButton {
@@ -381,7 +383,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       tabSpaces: number,
       theme: string,
       toolbarBottom: boolean,
-      toolbarButtons: Partial<ToolbarButtons>,
+      toolbarButtons: string[] | Partial<ToolbarButtons>,
       toolbarButtonsMD: Partial<ToolbarButtons>,
       toolbarButtonsSM: Partial<ToolbarButtons>,
       toolbarButtonsXS: Partial<ToolbarButtons>,

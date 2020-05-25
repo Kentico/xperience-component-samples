@@ -27,15 +27,31 @@ export const initializeFroalaEditor = (element: HTMLRichTextEditorElement, insta
 export const destroyFroalaEditor = ({ editor }: InlineEditorOptions) => {
     const richTextEditor = editor.querySelector(RICH_TEXT_WRAPPER_SELECTOR);
     const froala = richTextEditor?.["data-froala.editor"];
-    
+
     froala?.destroy();
 }
 
 const getCustomOptions = (richTextEditor: HTMLRichTextEditorElement): Partial<Froala.FroalaOptions> => {
     const configurationName = richTextEditor.dataset.richTextEditorConfiguration;
     const customConfiguration = window.kentico.pageBuilder.richTextEditor?.configurations?.[configurationName];
+    removeFullScreenMode(customConfiguration?.toolbarButtons);
 
     return (typeof customConfiguration === "object") ? customConfiguration : {};
+}
+
+const removeFullScreenMode = (configuration: string[] | Partial<ToolbarButtons> | undefined): void => {
+    if (configuration) {
+        if (Array.isArray(configuration)) {
+            configuration = configuration.filter(i => i !== 'fullscreen');
+        }
+        else if (typeof configuration === 'object') {
+            for (const value of Object.values(configuration)) {
+                if (value && value.buttons) {
+                    value.buttons = value?.buttons.filter(i => i !== 'fullscreen');
+                }
+            }
+        }
+    }
 }
 
 const setFroalaDefaults = (richTextEditor: HTMLRichTextEditorElement) => {
