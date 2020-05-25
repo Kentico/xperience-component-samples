@@ -1,8 +1,11 @@
 @import "../../../../shared/variables.less";
 
 @fullscreen-z-index: 10205;
-@preview-height: @ktc-base-unit * 9;
+@form-component-height: @ktc-base-unit * 9;
 @form-component-max-width: @ktc-base-unit * 20;
+@form-component-border-size: 2px;
+@preview-height: @form-component-height - @form-component-border-size * 2;
+@preview-max-width: @form-component-max-width - @form-component-border-size * 2;
 
 .ktc-rich-text-form-component__froala {
     display: none;
@@ -34,29 +37,32 @@
     .ktc-form-control {
         &.ktc-preview-frame {
             padding: 0;
-            height: @preview-height;
+            height: @form-component-height;
         }
     }
 
     .ktc-preview {
-        display: none;
+        display: flex;
         position: absolute;
         height: @preview-height;
         width: 100%;
-        max-width: @form-component-max-width;
-
+        max-width: @preview-max-width;
         justify-content: center;
         align-items: center;
+        opacity: 0;
+        transition: .5s ease;
+        margin: @form-component-border-size;
+        background-color: fade(@ktc-color-white, 75%);
         // Allow scrolling of the iframe
         pointer-events: none;
-
-        background-color: fade(@ktc-color-white, 50%);
 
         .ktc-preview-box {
             z-index: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
+            user-select: none; 
+            pointer-events: auto;
 
             .ktc-info-text {
                 margin-bottom: 0.5 * @ktc-base-unit;
@@ -69,24 +75,21 @@
 
             .ktc-btn {
                 width: @ktc-base-unit * 4;
-                pointer-events: auto;
             }
         }
     }
 
     &:hover {
         .ktc-preview {
-            display: flex;
+            opacity: 1;
         }
     }
 
     &.ktc-rich-text-form-component--empty {
         .ktc-preview {
-            display: flex;
-
             .ktc-info-text {
                 display: none;
-    
+
                 &.ktc-info-text--empty {
                     display: block;
                 }

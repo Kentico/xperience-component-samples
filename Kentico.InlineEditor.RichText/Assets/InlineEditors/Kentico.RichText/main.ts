@@ -5,6 +5,7 @@ import FroalaEditor, * as Froala from "froala-editor/js/froala_editor.pkgd.min";
 import { initializeFroalaEditor, destroyFroalaEditor } from "./froala";
 import { initializePlugins } from "./plugins";
 import { FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME, FORM_COMPONENT_INITIALIZATION_EVENT_NAME } from "./constants";
+import { getPreviewIframeHtml } from "./form-component/form-component-templates";
 
 // Initialize plugins
 window.addEventListener("DOMContentLoaded", () => {
@@ -22,17 +23,18 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-document.addEventListener(FORM_COMPONENT_INITIALIZATION_EVENT_NAME, ({ target: editor, detail: richTextHtml }) => {
+document.addEventListener(FORM_COMPONENT_INITIALIZATION_EVENT_NAME, ({ target: editor, detail: data  }) => {
     const editButton = editor.querySelector<HTMLButtonElement>(".ktc-btn");
     editButton?.addEventListener("click", () => {
         initializeFroalaEditor({ editor }, "FormComponent");
     });
 
     const valueEl = document.querySelector<HTMLInputElement>(`.${FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME}`)!;
-    valueEl.value = richTextHtml;
+    valueEl.value = data.html;
     valueEl.addEventListener("change", () => {
-        const iframeEl = editor.querySelector("iframe")!;
-        iframeEl.srcdoc = valueEl.value;
+        const iframeEl = editor.querySelector<HTMLIFrameElement>("iframe")!;
+        iframeEl.srcdoc = getPreviewIframeHtml(valueEl.value);
+
         if (valueEl.value === "") {
             editor.classList.add("ktc-rich-text-form-component--empty")
         } else {
