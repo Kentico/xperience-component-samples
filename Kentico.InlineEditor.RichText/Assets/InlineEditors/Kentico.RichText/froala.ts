@@ -7,11 +7,12 @@ import { HTMLRichTextEditorElement } from "@/types/rich-text";
 import { getEvents } from "./froala-events";
 import { getFroalaOptions } from "./froala-options";
 import { RichTextFormComponentOptions, EditorType } from "./types";
+import { FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME } from "./constants";
 
 const RICH_TEXT_WRAPPER_SELECTOR = ".ktc-rich-text-wrapper";
 let defaultsWereSet = false;
 
-export const initializeFroalaEditor = (options: InlineEditorOptions | RichTextFormComponentOptions, editorType: EditorType) => {
+export const initializeFroalaEditor = (options: InlineEditorOptions | RichTextFormComponentOptions, instanceSpecificOptions: Partial<Froala.FroalaOptions>, editorType: EditorType) => {
     const { editor } = options;
     const element = editor.querySelector(RICH_TEXT_WRAPPER_SELECTOR);
 
@@ -22,7 +23,10 @@ export const initializeFroalaEditor = (options: InlineEditorOptions | RichTextFo
     setFroalaDefaults(element);
 
     const customOptions = getCustomOptions(element);
-    const events = getEvents(options, customOptions, editorType);
+    const editorValue = editorType === "InlineEditor" 
+        ? (options as InlineEditorOptions).propertyValue
+        : editor.querySelector<HTMLInputElement>(`.${FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME}`)!.value;
+    const events = getEvents(editorValue, instanceSpecificOptions, customOptions);
     const froalaOptions = getFroalaOptions(events, customOptions, editorType);
 
     if (editorType === "FormComponent") {
