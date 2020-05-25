@@ -7,6 +7,7 @@ import { HTMLRichTextEditorElement } from "@/types/rich-text";
 import { getEvents } from "./froala-events";
 import { getFroalaOptions } from "./froala-options";
 import { RICH_TEXT_WRAPPER_SELECTOR } from "./constants";
+import { ToolbarButtons } from "froala-editor/js/froala_editor.pkgd.min";
 
 let defaultsWereSet = false;
 
