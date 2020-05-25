@@ -5,6 +5,9 @@ import { CodeMirrorElement } from "../types";
 import { replaceMacroElements } from "../plugins/macros/macro-services";
 
 export const getFormComponentOptions = (editor: HTMLElement): Partial<FroalaOptions> => ({
+    toolbarInline: false,
+    iframe: true,
+    zIndex: 10205,
     events: {
         initialized() {
             ensureFormComponentInitialization(this, editor);

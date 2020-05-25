@@ -6,6 +6,7 @@ import { replaceMacroElements } from "../plugins/macros/macro-services";
 import { CodeMirrorElement } from "../types";
 
 export const getInlineEditorOptions = (options: InlineEditorOptions): Partial<FroalaOptions> => ({
+    toolbarInline: true,
     events: {
         contentChanged() {
             updatePropertyValue(options.editor, options.propertyName, this.html.get());
