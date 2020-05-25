@@ -31,6 +31,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
+        exclude: /froala_style\.min\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
