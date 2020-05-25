@@ -1,4 +1,4 @@
-import { RichTextInitEventParams } from "../types";
+import { RichTextInitEventParams, FroalaOptionsModifier } from "../types";
 import { initializeFroalaEditor } from "../froala";
 import { getFormComponentOptions } from "./form-component-options";
 import { FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME, RICH_TEXT_WRAPPER_SELECTOR } from "../constants";
@@ -12,7 +12,7 @@ export const initializeRichTextFormComponent = (formComponent: HTMLElement, init
         const richTextEl = formComponent.querySelector(RICH_TEXT_WRAPPER_SELECTOR)!;
         richTextEl.classList.add("ktc-rich-text-form-component__froala");
         document.body.appendChild(richTextEl);
-        initializeFroalaEditor(richTextEl, getFormComponentOptions(formComponent), valueEl.value);
+        initializeFroalaEditor(richTextEl, getFormComponentOptions(formComponent), valueEl.value, removeFullScreenMode);
     });
 
     valueEl.value = initializationData.html;
@@ -28,3 +28,18 @@ export const initializeRichTextFormComponent = (formComponent: HTMLElement, init
     });
     valueEl.dispatchEvent(new Event("change"));
 };
+
+const removeFullScreenMode : FroalaOptionsModifier = (options) => {
+    if (options?.toolbarButtons) {
+        if (Array.isArray(options.toolbarButtons)) {
+            options.toolbarButtons = options.toolbarButtons.filter(i => i !== 'fullscreen');
+        }
+        else if (typeof options.toolbarButtons === 'object') {
+            for (const value of Object.values(options.toolbarButtons)) {
+                if (value && value.buttons) {
+                    value.buttons = value?.buttons.filter(i => i !== 'fullscreen');
+                }
+            }
+        }
+    }
+}

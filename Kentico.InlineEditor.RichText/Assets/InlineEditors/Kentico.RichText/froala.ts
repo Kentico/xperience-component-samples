@@ -7,11 +7,11 @@ import { HTMLRichTextEditorElement } from "@/types/rich-text";
 import { getEvents } from "./froala-events";
 import { getFroalaOptions } from "./froala-options";
 import { RICH_TEXT_WRAPPER_SELECTOR } from "./constants";
-import { ToolbarButtons } from "froala-editor/js/froala_editor.pkgd.min";
+import { FroalaOptionsModifier } from "./types";
 
 let defaultsWereSet = false;
 
-export const initializeFroalaEditor = (element: HTMLRichTextEditorElement, instanceSpecificOptions: Partial<Froala.FroalaOptions>, editorValue: string) => {
+export const initializeFroalaEditor = (element: HTMLRichTextEditorElement, instanceSpecificOptions: Partial<Froala.FroalaOptions>, editorValue: string, froalaOptionsModifier?: FroalaOptionsModifier) => {
     if (!element) {
         return;
     }
@@ -21,6 +21,11 @@ export const initializeFroalaEditor = (element: HTMLRichTextEditorElement, insta
     const customOptions = getCustomOptions(element);
     const events = getEvents(editorValue, instanceSpecificOptions, customOptions);
     const froalaOptions = getFroalaOptions(events, instanceSpecificOptions, customOptions);
+
+    if (froalaOptionsModifier)
+    {
+        froalaOptionsModifier(froalaOptions);
+    }
 
     new FroalaEditor(element, froalaOptions);
 }
@@ -35,24 +40,8 @@ export const destroyFroalaEditor = ({ editor }: InlineEditorOptions) => {
 const getCustomOptions = (richTextEditor: HTMLRichTextEditorElement): Partial<Froala.FroalaOptions> => {
     const configurationName = richTextEditor.dataset.richTextEditorConfiguration;
     const customConfiguration = window.kentico.pageBuilder.richTextEditor?.configurations?.[configurationName];
-    removeFullScreenMode(customConfiguration?.toolbarButtons);
 
     return (typeof customConfiguration === "object") ? customConfiguration : {};
-}
-
-const removeFullScreenMode = (configuration: string[] | Partial<ToolbarButtons> | undefined): void => {
-    if (configuration) {
-        if (Array.isArray(configuration)) {
-            configuration = configuration.filter(i => i !== 'fullscreen');
-        }
-        else if (typeof configuration === 'object') {
-            for (const value of Object.values(configuration)) {
-                if (value && value.buttons) {
-                    value.buttons = value?.buttons.filter(i => i !== 'fullscreen');
-                }
-            }
-        }
-    }
 }
 
 const setFroalaDefaults = (richTextEditor: HTMLRichTextEditorElement) => {

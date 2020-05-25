@@ -1,3 +1,5 @@
+import { FroalaOptions } from "froala-editor/js/froala_editor.pkgd.min";
+
 export type FroalaEventsOption = { [event: string]: Function };
 
 export interface CodeMirrorElement extends HTMLElement {
@@ -8,3 +10,5 @@ export interface RichTextInitEventParams {
     html: string;
     applicationPath: string;
 };
+
+export type FroalaOptionsModifier = (froalaOptions: Partial<FroalaOptions>) => void;
