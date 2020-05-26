@@ -1,9 +1,9 @@
-import { RichTextInitEventParams, FroalaOptionsModifier } from "../types";
+import { RichTextInitEventParams } from "../types";
 import { initializeFroalaEditor } from "../froala";
 import { getFormComponentOptions } from "./form-component-options";
 import { FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME, RICH_TEXT_WRAPPER_SELECTOR } from "../constants";
 import { getPreviewIframeHtml } from "./form-component-templates";
-import { removeFullScreenMode } from "./options-modifier";
+import { formComponentOptionsModifier } from "./options-modifier";
 
 export const initializeRichTextFormComponent = (formComponent: HTMLElement, initializationData: RichTextInitEventParams) => {
     const editButton = formComponent.querySelector<HTMLButtonElement>(".ktc-btn");
@@ -13,7 +13,7 @@ export const initializeRichTextFormComponent = (formComponent: HTMLElement, init
         const richTextEl = formComponent.querySelector(RICH_TEXT_WRAPPER_SELECTOR)!;
         richTextEl.classList.add("ktc-rich-text-form-component__froala");
         document.body.appendChild(richTextEl);
-        initializeFroalaEditor(richTextEl, getFormComponentOptions(formComponent), valueEl.value, removeFullScreenMode);
+        initializeFroalaEditor(richTextEl, getFormComponentOptions(formComponent), valueEl.value, formComponentOptionsModifier);
     });
 
     valueEl.value = initializationData.html;
