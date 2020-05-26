@@ -8,7 +8,6 @@ export interface CodeMirrorElement extends HTMLElement {
 
 export interface RichTextInitEventParams {
     html: string;
-    applicationPath: string;
 };
 
 export type FroalaOptionsModifier = (froalaOptions: Partial<FroalaOptions>) => void;
