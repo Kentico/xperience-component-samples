@@ -22,10 +22,7 @@ export const initializeFroalaEditor = (element: HTMLRichTextEditorElement, insta
     const events = getEvents(editorValue, instanceSpecificOptions, customOptions);
     const froalaOptions = getFroalaOptions(events, instanceSpecificOptions, customOptions);
 
-    if (froalaOptionsModifier)
-    {
-        froalaOptionsModifier(froalaOptions);
-    }
+    froalaOptionsModifier?.(froalaOptions);
 
     new FroalaEditor(element, froalaOptions);
 }
