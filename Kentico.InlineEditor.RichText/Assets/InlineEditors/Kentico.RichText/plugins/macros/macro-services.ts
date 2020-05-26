@@ -27,6 +27,8 @@ export const replaceMacrosWithElements = (html: string, macros: ContextMacros): 
     });
 }
 
+export const removeMacros = (html: string): string => html.replace(dynamicTextRegex, "");
+
 /**
  * Binds 'onclick' listener to Macro Elements.
  * @param editor Froala editor instance.
