@@ -138,4 +138,7 @@
   <data name="Kentico.FormComponent.RichText.PreviewInfoText" xml:space="preserve">
     <value>This is a preview of your text.</value>
   </data>
+  <data name="Kentico.FormComponent.RichText.SaveButton" xml:space="preserve">
+    <value>Apply &amp; close</value>
+  </data>
 </root>

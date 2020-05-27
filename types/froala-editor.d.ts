@@ -1021,7 +1021,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
     }
   
     export interface Tooltip {
-      bind(element: Element, selector: string, displayAbove?: boolean): object;
+      bind(element: JQuery, selector: string, displayAbove?: boolean): object;
       hide(): object;
       to(element: Element, displayAbove?: boolean): object;
     }

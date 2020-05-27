@@ -4,7 +4,7 @@ const froalaCss = require('froala-editor/css/froala_style.min.css')();
 
 export const getPreviewIframeHtml = (html: string): string => {
     html = removeMacros(html);
-    return require("./preview-iframe.html")({
+    return require("./templates/preview-iframe.html")({
         html,
         froalaCss
     });
