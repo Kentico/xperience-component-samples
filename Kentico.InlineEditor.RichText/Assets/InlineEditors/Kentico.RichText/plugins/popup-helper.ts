@@ -1,6 +1,7 @@
 import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 
-import { unwrapElement } from "../helpers";
+import {unwrapElement} from "../helpers";
+import {DialogMode} from "@/Kentico.InlineEditor.RichText/Assets/InlineEditors/Kentico.RichText/plugins/plugin-types";
 
 export const getDialogElement = (editor: FroalaEditor, popupName: string) => {
   return unwrapElement(editor.popups.get(popupName));
@@ -27,14 +28,12 @@ const initializePopup = (editor: FroalaEditor, popupName: string, buttons: any[]
   }
 
   // Create popup.
-  var $popup = editor.popups.create(popupName, template);
-
-  return $popup;
+  return editor.popups.create(popupName, template);
 }
 
-export const showPopup = (editor: FroalaEditor, popupName: string, relatedElementPosition: DOMRect | ClientRect, buttons: any[], customLayer?: string) => {
+export const showPopup = (editor: FroalaEditor, popupName: string, relatedElementPosition: DOMRect | ClientRect, buttons: any[], dialogMode: DialogMode, customLayer?: string) => {
   // Get the popup object defined above.
-  var $popup = editor.popups.get(popupName);
+  const $popup = editor.popups.get(popupName);
 
   // If popup doesn't exist then create it.
   // To improve performance it is best to create the popup when it is first needed
@@ -44,12 +43,14 @@ export const showPopup = (editor: FroalaEditor, popupName: string, relatedElemen
   }
 
   // Set the the body element as the popup's container.
-  editor.popups.setContainer(popupName, editor.$sc);
+  const container = dialogMode === DialogMode.INSERT ? editor.$tb : editor.$sc;
+  editor.popups.refresh(popupName);
+  editor.popups.setContainer(popupName, container);
 
   // Compute the popup's position.
   const { top, left, width, height } = relatedElementPosition;
   const offsetLeft = left + width / 2;
-  const offsetTop = top + window.pageYOffset;
+  const offsetTop = top + window.pageYOffset + height;
 
   // Show the custom popup.
   // The button's outerHeight is required in case the popup needs to be displayed above it.

@@ -1,10 +1,11 @@
 import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 
-import { MACRO_ACTIVE_CLASS, ACTIONS_POPUP_NAME } from "../macro-constants";
-import { showPopup } from "../../popup-helper";
+import {ACTIONS_POPUP_NAME, MACRO_ACTIVE_CLASS} from "../macro-constants";
+import {showPopup} from "../../popup-helper";
+import {DialogMode} from "@/Kentico.InlineEditor.RichText/Assets/InlineEditors/Kentico.RichText/plugins/plugin-types";
 
 export function showActionsPopup(this: FroalaEditor, macroElement: HTMLElement) {
-    showPopup(this, ACTIONS_POPUP_NAME, macroElement.getBoundingClientRect(), this.opts.popupActionButtons);
+    showPopup(this, ACTIONS_POPUP_NAME, macroElement.getBoundingClientRect(), this.opts.popupActionButtons, DialogMode.UPDATE);
 
     const currentActiveMacroEl = this.el.querySelector(`.${MACRO_ACTIVE_CLASS}`)
     if (currentActiveMacroEl) {

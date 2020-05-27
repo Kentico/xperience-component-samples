@@ -14,7 +14,7 @@ const POPUP_TEMPLATE_BODY_CLASS_NAME = "ktc-configure-popup";
 const getShowLinkPopup = (popupName: string, buttons: any[], linkModel: LinkModel) =>
     (editor: FroalaEditor, relatedElementPosition: DOMRect | ClientRect, linkDescriptor: LinkDescriptor, dialogMode: DialogMode = DialogMode.INSERT) => {
         const customLayer = `<div class="${POPUP_TEMPLATE_BODY_CLASS_NAME}"></div>`;
-        showPopup(editor, popupName, relatedElementPosition, buttons, customLayer);
+        showPopup(editor, popupName, relatedElementPosition, buttons, dialogMode, customLayer);
         showForm(editor, popupName, linkDescriptor, linkModel, dialogMode);
     }
 

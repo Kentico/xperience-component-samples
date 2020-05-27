@@ -9,7 +9,7 @@ import { SWITCH_URL_TAB_COMMAND_NAME, SWITCH_MACRO_TAB_COMMAND_NAME } from "../m
 export const getShowPopup = (popupName: string, buttons: any[], macroType: MacroType) => {
     return function (this: FroalaEditor, relatedElementPosition: DOMRect | ClientRect, mode: DialogMode, macroValue: string = "", macroDefaultValue: string = "") {
         const customLayer = "<div class=\"ktc-configure-popup\"></div>";
-        showPopup(this, popupName, relatedElementPosition, buttons, customLayer);
+        showPopup(this, popupName, relatedElementPosition, buttons, mode, customLayer);
         showForm(this, popupName, mode, macroType, macroValue, macroDefaultValue);
     };
 }
@@ -21,7 +21,7 @@ export const showForm = (editor: FroalaEditor, popupName: string, mode: DialogMo
     
     if (dialog) {
         const container = dialog.querySelector<HTMLElement>(".ktc-configure-popup");
-        let tabCommand = "";
+        let tabCommand: string;
 
         if (macroType === MacroType.URL) {
             container!.innerHTML = getConfigureUrlParameterElement(mode, macroValue, macroDefaultValue);
