@@ -4,6 +4,8 @@ import { FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME } from "../constants";
 import { CodeMirrorElement } from "../types";
 import { replaceMacroElements } from "../plugins/macros/macro-services";
 
+const iframeStyle = ".ktc-macro { cursor: pointer; border: 1px solid black; border-radius: 3px; padding: 0 4px; background-color: #e5e5e5;} .ktc-macro:hover { -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.75); box-shadow: 0 0 3px rgba(0, 0, 0, 0.75);}";
+
 export const getFormComponentOptions = (editor: HTMLElement): Partial<FroalaOptions> => ({
     toolbarInline: false,
     iframe: true,
@@ -12,7 +14,8 @@ export const getFormComponentOptions = (editor: HTMLElement): Partial<FroalaOpti
         initialized() {
             ensureFormComponentInitialization(this, editor);
         }
-    }
+    },
+    iframeStyle
 });
 
 const ensureFormComponentInitialization = (froalaEditor: FroalaEditor, formComponent: HTMLElement) => {
