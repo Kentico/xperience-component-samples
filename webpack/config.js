@@ -31,7 +31,10 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        exclude: /froala_style\.min\.css$/,
+        exclude: [
+          /\.template\.css$/,
+          /froala_style\.min\.css$/,
+        ],
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
@@ -40,7 +43,8 @@ module.exports = {
       {
         test: [
           /\.html$/,
-          /froala_style\.min\.css$/
+          /\.template\.css$/,
+          /froala_style\.min\.css$/,
         ],
         use: {
           loader: "underscore-template-loader",
