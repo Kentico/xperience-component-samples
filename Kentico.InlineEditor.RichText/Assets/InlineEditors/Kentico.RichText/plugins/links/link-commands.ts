@@ -1,5 +1,9 @@
 import FroalaEditor, { RegisterCommandParameters } from "froala-editor/js/froala_editor.pkgd.min";
 
+import { IdentifierMode } from "@/types/kentico/selectors/page-selector-open-options";
+import { MediaFile } from "@/types/kentico/selectors/media-file";
+import { Page } from "@/types/kentico/selectors/page";
+
 import * as constants from "./link-constants";
 import { FroalaCommand } from "../../froala-command";
 import { FroalaIcon } from "../../froala-icon";
@@ -9,11 +13,7 @@ import { LinkType } from "./link-types";
 import { showForm } from "./popups/link-configuration-popup";
 import { LinkModel } from "./link-model";
 import { LinkDescriptor } from "./link-descriptor";
-
 import { unwrapElement } from "../../helpers";
-import { IdentifierMode } from "@/types/kentico/selectors/page-selector-open-options";
-import { MediaFile } from "@/types/kentico/selectors/media-file";
-import { Page } from "@/types/kentico/selectors/page";
 
 type OpenItemSelectionCommand = typeof constants.OPEN_PAGE_SELECTION_DIALOG_COMMAND_NAME | typeof constants.OPEN_MEDIA_FILE_SELECTION_DIALOG_COMMAND_NAME;
 
@@ -52,10 +52,15 @@ const openInsertLinkPopupCommandParameters: RegisterCommandParameters = {
 
         defaultLinkDescriptor = new LinkDescriptor(linkText, "", false, isImageLink);
         linkModel = new LinkModel(LinkType.PAGE);
-        const boundingRect = getBoundingClientRect(this, commandName, isImageLink, image);
 
-        this.kenticoLinkPlugin.showInsertLinkPopup(boundingRect, defaultLinkDescriptor);
-
+        if (isImageLink && image) {
+            this.kenticoLinkPlugin.showInsertLinkPopup(defaultLinkDescriptor, () => this.image.get()[0]);
+        } else if (!this.opts.toolbarInline) {
+            const getInsertLinkToolbarButton = () => this.$tb.find(`.fr-command[data-cmd="${commandName}"]`)[0];
+            this.kenticoLinkPlugin.showInsertLinkPopup(defaultLinkDescriptor, getInsertLinkToolbarButton);
+        } else {
+            this.kenticoLinkPlugin.showInsertLinkPopup(defaultLinkDescriptor);
+        }
     }
 };
 
@@ -108,15 +113,13 @@ const openLinkConfigurationPopupCommand = new FroalaCommand(constants.OPEN_LINK_
     undo: false,
     focus: false,
     refresh: onLinkButtonRefresh(false),
-    async callback(this: FroalaEditor, commandName) {
+    async callback(this: FroalaEditor) {
         const link = this.link.get() as HTMLAnchorElement;
-        const image = unwrapElement(this.image.get());
         const linkDescriptor = new LinkDescriptor(link);
-        const boundingRect = getBoundingClientRect(this, commandName, linkDescriptor.isImageLink, image);
         const getLinkMetadataEndpointUrl = this.opts.getLinkMetadataEndpointUrl;
         linkModel = await getLinkModel(getLinkMetadataEndpointUrl, linkDescriptor.linkURL);
 
-        await this.kenticoLinkPlugin.showLinkConfigurationPopup(boundingRect, linkDescriptor, linkModel);
+        this.kenticoLinkPlugin.showLinkConfigurationPopup(linkDescriptor, linkModel);
     }
 });
 
@@ -286,25 +289,6 @@ const getVisiblePopupName = (editor: FroalaEditor) => {
     }
 }
 
-const getBoundingClientRect = (editor: FroalaEditor, commandName: string, isImageLink: boolean, image: HTMLElement | null): DOMRect => {
-    if (isImageLink && image) {
-        return image.getBoundingClientRect();
-    } else if (commandName === constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME) {
-        if (!editor.opts.toolbarInline) {
-            return editor.$tb.find(`.fr-command[data-cmd="${commandName}"]`)[0].getBoundingClientRect();
-        } else {
-            return editor.position.getBoundingRect();
-        }
-    } else {
-        const link = editor.link.get() as HTMLAnchorElement;
-        if (link) {
-            return link.getBoundingClientRect();
-        }
-
-        return editor.position.getBoundingRect();
-    }
-}
-
 export const linkCommands = [
     openInsertLinkPopupCommand,
     openInsertImageLinkPopupCommand,
@@ -318,4 +302,4 @@ export const linkCommands = [
     switchMediaLinkTabCommand,
     openPageSelectionDialogCommand,
     openMediaFileSelectionDialogCommand,
-]
+];

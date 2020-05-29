@@ -34,10 +34,10 @@ const initializePopup = (editor: FroalaEditor, popupName: string, buttons: any[]
 export const showPopup = (
   editor: FroalaEditor,
   popupName: string,
-  relatedElementPosition: DOMRect | ClientRect,
   buttons: any[],
   dialogMode: DialogMode,
   popupWidth: number,
+  getRelatedElement?: () => Element,
   customLayer?: string
 ) => {
   // Get the popup object defined above.
@@ -48,6 +48,14 @@ export const showPopup = (
   // and not when the this is initialized.
   if (!$popup) {
     initializePopup(editor, popupName, buttons, customLayer);
+
+    if (dialogMode !== DialogMode.INSERT && !editor.opts.toolbarInline && editor.$wp) {
+      editor.events.$on(editor.$wp, "scroll", () => {
+        if (getRelatedElement?.() && editor.popups.isVisible(popupName)) {
+          showPopup(editor, popupName, buttons, dialogMode, popupWidth, getRelatedElement, customLayer);
+        }
+      });
+  }
   }
 
   // Set the the body element as the popup's container.
@@ -56,6 +64,7 @@ export const showPopup = (
   editor.popups.setContainer(popupName, container);
 
   // Compute the popup's position.
+  const relatedElementPosition = getRelatedElement?.().getBoundingClientRect() ?? editor.position.getBoundingRect();
   const { top, left, width, height } = relatedElementPosition;
   const offsetLeft = left + (width / 2) - (popupWidth / 2);
   const offsetTop = top + window.pageYOffset + height;

@@ -7,32 +7,28 @@ import { DialogMode } from "../../plugin-types";
 import { LinkType } from "../link-types";
 import { LinkModel } from "../link-model";
 import { LinkDescriptor } from "../link-descriptor";
-
+import { ACTIVE_POPUP_TAB_CLASS_NAME } from "../../../constants";
 
 const POPUP_TEMPLATE_BODY_CLASS_NAME = "ktc-configure-popup";
 
 const getShowLinkPopup = (popupName: string, buttons: any[], linkModel: LinkModel) =>
-    (editor: FroalaEditor, relatedElementPosition: DOMRect | ClientRect, linkDescriptor: LinkDescriptor, dialogMode: DialogMode = DialogMode.INSERT) => {
+    (editor: FroalaEditor, linkDescriptor: LinkDescriptor, getRelatedElement?: () => Element, dialogMode: DialogMode = DialogMode.INSERT) => {
         const customLayer = `<div class="${POPUP_TEMPLATE_BODY_CLASS_NAME}"></div>`;
-        showPopup(editor, popupName, relatedElementPosition, buttons, dialogMode, CONFIGURATION_POPUP_WIDTH_PX, customLayer);
+        showPopup(editor, popupName, buttons, dialogMode, CONFIGURATION_POPUP_WIDTH_PX, getRelatedElement, customLayer);
         showForm(editor, popupName, linkDescriptor, linkModel, dialogMode);
     }
 
-export async function showInsertLinkPopup(this: FroalaEditor, relatedElementPosition: DOMRect | ClientRect, linkDescriptor: LinkDescriptor) {
-    getShowLinkPopup(INSERT_LINK_POPUP_NAME, this.opts.popupInsertLinkButtons, new LinkModel(LinkType.PAGE))(this, relatedElementPosition, linkDescriptor);
+export function showInsertLinkPopup(this: FroalaEditor, linkDescriptor: LinkDescriptor, getRelatedElement?: () => Element) {
+    getShowLinkPopup(INSERT_LINK_POPUP_NAME, this.opts.popupInsertLinkButtons, new LinkModel(LinkType.PAGE))(this, linkDescriptor, getRelatedElement);
 }
 
-export async function showLinkConfigurationPopup(this: FroalaEditor, relatedElementPosition: DOMRect | ClientRect, linkDescriptor: LinkDescriptor, linkModel: LinkModel) {
-    const showLinkPopup = linkModel.linkType === LinkType.PAGE
-        ? getShowLinkPopup(CONFIGURE_PAGE_LINK_POPUP_NAME, this.opts.popupUpdatePageLinkButtons, linkModel)
-        : linkModel.linkType === LinkType.MEDIA
-            ? getShowLinkPopup(CONFIGURE_MEDIA_LINK_POPUP_NAME, this.opts.popupUpdateMediaLinkButtons, linkModel)
-            : getShowLinkPopup(CONFIGURE_GENERAL_LINK_POPUP_NAME, this.opts.popupUpdateGeneralLinkButtons, linkModel);
-
-    showLinkPopup(this, relatedElementPosition, linkDescriptor, DialogMode.UPDATE);
+export function showLinkConfigurationPopup(this: FroalaEditor, linkDescriptor: LinkDescriptor, linkModel: LinkModel) {
+    const { buttons, popupName } = getPopupInfo(this, linkModel.linkType);
+    const showLinkPopup = getShowLinkPopup(popupName, buttons, linkModel);
+    showLinkPopup(this, linkDescriptor, () => this.link.get(), DialogMode.UPDATE);
 }
 
-export const showForm = (editor: FroalaEditor, popupName: string, linkDescriptor: LinkDescriptor, linkModel: LinkModel, dialogMode: DialogMode = DialogMode.INSERT) => {
+export const showForm = (editor: FroalaEditor, popupName: string, linkDescriptor: LinkDescriptor, linkModel: LinkModel, dialogMode = DialogMode.INSERT) => {
     const dialog = getDialogElement(editor, popupName);
 
     if (!dialog) {
@@ -77,8 +73,10 @@ export const showForm = (editor: FroalaEditor, popupName: string, linkDescriptor
             break;
     }
 
-    const button = dialog.querySelector<HTMLButtonElement>(`.fr-command[data-cmd="${tabCommand}"]`);
-    button!.classList.add("fr-active", "fr-selected");
+    const previousSelectedTab = dialog.querySelector<HTMLButtonElement>(`.fr-command.${ACTIVE_POPUP_TAB_CLASS_NAME}`);
+    previousSelectedTab?.classList.remove(ACTIVE_POPUP_TAB_CLASS_NAME);
+    const selectedTab = dialog.querySelector<HTMLButtonElement>(`.fr-command[data-cmd="${tabCommand}"]`);
+    selectedTab?.classList.add(ACTIVE_POPUP_TAB_CLASS_NAME);
 
     bindFocusEventToInputs(dialog);
 
@@ -92,3 +90,23 @@ export function hideLinkConfigurationPopup(this: FroalaEditor) {
     this.popups.hide(CONFIGURE_GENERAL_LINK_POPUP_NAME);
     this.popups.hide(CONFIGURE_MEDIA_LINK_POPUP_NAME);
 }
+
+const getPopupInfo = (editor: FroalaEditor, linkType: LinkType) => {
+    switch (linkType) {
+        case LinkType.PAGE:
+            return {
+                popupName: CONFIGURE_PAGE_LINK_POPUP_NAME,
+                buttons: editor.opts.popupUpdatePageLinkButtons,
+            };
+        case LinkType.MEDIA:
+            return {
+                popupName: CONFIGURE_MEDIA_LINK_POPUP_NAME,
+                buttons: editor.opts.popupUpdateMediaLinkButtons,
+            };
+        default:
+            return {
+                popupName: CONFIGURE_GENERAL_LINK_POPUP_NAME,
+                buttons: editor.opts.popupUpdateGeneralLinkButtons,
+            };
+    }
+};

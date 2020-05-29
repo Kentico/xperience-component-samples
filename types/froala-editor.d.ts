@@ -784,6 +784,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       focus(): object;
       // Register an event.
       on(name: string, callback: (event: Event) => void | boolean, first: boolean): object;
+      $on(element: JQuery, name: string, callback: (event: Event) => void | boolean): JQuery;
       // Triggers an event.
       trigger(name: string, args: any[], force: boolean): object;
     }
