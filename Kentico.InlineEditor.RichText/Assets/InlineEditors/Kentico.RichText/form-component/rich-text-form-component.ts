@@ -46,8 +46,6 @@ export class RichTextFormComponent {
     private ensureFullscreen() {
         document.body.classList.add(FULL_SCREEN_CLASS_NAME);
         this.froalaEditor.fullscreen.toggle();
-        // Set initial iframe height which ensures scrollbars if the content overflows the editor's size
-        this.froalaEditor.$iframe[0]!.style.height = `${this.froalaEditor.el.clientHeight}px`;
         this.froalaEditor.events.focus();
     }
 

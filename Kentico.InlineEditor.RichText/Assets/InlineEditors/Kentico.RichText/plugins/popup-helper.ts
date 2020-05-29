@@ -1,7 +1,7 @@
 import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 
-import {unwrapElement} from "../helpers";
-import {DialogMode} from "@/Kentico.InlineEditor.RichText/Assets/InlineEditors/Kentico.RichText/plugins/plugin-types";
+import { unwrapElement } from "../helpers";
+import { DialogMode } from "./plugin-types";
 
 export const getDialogElement = (editor: FroalaEditor, popupName: string) => {
   return unwrapElement(editor.popups.get(popupName));
@@ -31,7 +31,15 @@ const initializePopup = (editor: FroalaEditor, popupName: string, buttons: any[]
   return editor.popups.create(popupName, template);
 }
 
-export const showPopup = (editor: FroalaEditor, popupName: string, relatedElementPosition: DOMRect | ClientRect, buttons: any[], dialogMode: DialogMode, customLayer?: string) => {
+export const showPopup = (
+  editor: FroalaEditor,
+  popupName: string,
+  relatedElementPosition: DOMRect | ClientRect,
+  buttons: any[],
+  dialogMode: DialogMode,
+  popupWidth: number,
+  customLayer?: string
+) => {
   // Get the popup object defined above.
   const $popup = editor.popups.get(popupName);
 
@@ -43,13 +51,13 @@ export const showPopup = (editor: FroalaEditor, popupName: string, relatedElemen
   }
 
   // Set the the body element as the popup's container.
-  const container = dialogMode === DialogMode.INSERT ? editor.$tb : editor.$sc;
+  const container = dialogMode === DialogMode.INSERT ? editor.$tb || editor.$sc : editor.$sc;
   editor.popups.refresh(popupName);
   editor.popups.setContainer(popupName, container);
 
   // Compute the popup's position.
   const { top, left, width, height } = relatedElementPosition;
-  const offsetLeft = left + width / 2;
+  const offsetLeft = left + (width / 2) - (popupWidth / 2);
   const offsetTop = top + window.pageYOffset + height;
 
   // Show the custom popup.

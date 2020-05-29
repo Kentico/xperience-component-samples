@@ -1,7 +1,7 @@
 import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 
 import { showPopup, getDialogElement, bindFocusEventToInputs } from "../../popup-helper";
-import { INSERT_LINK_POPUP_NAME, CONFIGURE_PAGE_LINK_POPUP_NAME, SWITCH_PAGE_LINK_TAB_COMMAND_NAME, SWITCH_GENERAL_LINK_TAB_COMMAND_NAME, CONFIGURE_GENERAL_LINK_POPUP_NAME, SWITCH_MEDIA_LINK_TAB_COMMAND_NAME, CONFIGURE_MEDIA_LINK_POPUP_NAME } from "../link-constants";
+import { INSERT_LINK_POPUP_NAME, CONFIGURE_PAGE_LINK_POPUP_NAME, SWITCH_PAGE_LINK_TAB_COMMAND_NAME, SWITCH_GENERAL_LINK_TAB_COMMAND_NAME, CONFIGURE_GENERAL_LINK_POPUP_NAME, SWITCH_MEDIA_LINK_TAB_COMMAND_NAME, CONFIGURE_MEDIA_LINK_POPUP_NAME, CONFIGURATION_POPUP_WIDTH_PX } from "../link-constants";
 import { getPageLinkConfigurationPopupTemplate, getGeneralLinkConfigurationPopupTemplate, getMediaLinkConfigurationPopupTemplate } from "../link-templates";
 import { DialogMode } from "../../plugin-types";
 import { LinkType } from "../link-types";
@@ -14,7 +14,7 @@ const POPUP_TEMPLATE_BODY_CLASS_NAME = "ktc-configure-popup";
 const getShowLinkPopup = (popupName: string, buttons: any[], linkModel: LinkModel) =>
     (editor: FroalaEditor, relatedElementPosition: DOMRect | ClientRect, linkDescriptor: LinkDescriptor, dialogMode: DialogMode = DialogMode.INSERT) => {
         const customLayer = `<div class="${POPUP_TEMPLATE_BODY_CLASS_NAME}"></div>`;
-        showPopup(editor, popupName, relatedElementPosition, buttons, dialogMode, customLayer);
+        showPopup(editor, popupName, relatedElementPosition, buttons, dialogMode, CONFIGURATION_POPUP_WIDTH_PX, customLayer);
         showForm(editor, popupName, linkDescriptor, linkModel, dialogMode);
     }
 

@@ -4,12 +4,12 @@ import { MacroType } from "../macro-types";
 import { DialogMode } from "../../plugin-types";
 import { getDialogElement, showPopup, bindFocusEventToInputs } from "../../popup-helper";
 import { getConfigureUrlParameterElement, getConfigureContextMacroElement } from "../macro-templates";
-import { SWITCH_URL_TAB_COMMAND_NAME, SWITCH_MACRO_TAB_COMMAND_NAME } from "../macro-constants";
+import { SWITCH_URL_TAB_COMMAND_NAME, SWITCH_MACRO_TAB_COMMAND_NAME, CONFIGURATION_POPUP_WIDTH_PX } from "../macro-constants";
 
 export const getShowPopup = (popupName: string, buttons: any[], macroType: MacroType) => {
     return function (this: FroalaEditor, relatedElementPosition: DOMRect | ClientRect, mode: DialogMode, macroValue: string = "", macroDefaultValue: string = "") {
         const customLayer = "<div class=\"ktc-configure-popup\"></div>";
-        showPopup(this, popupName, relatedElementPosition, buttons, mode, customLayer);
+        showPopup(this, popupName, relatedElementPosition, buttons, mode, CONFIGURATION_POPUP_WIDTH_PX, customLayer);
         showForm(this, popupName, mode, macroType, macroValue, macroDefaultValue);
     };
 }

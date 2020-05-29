@@ -117,7 +117,6 @@ const openLinkConfigurationPopupCommand = new FroalaCommand(constants.OPEN_LINK_
         linkModel = await getLinkModel(getLinkMetadataEndpointUrl, linkDescriptor.linkURL);
 
         await this.kenticoLinkPlugin.showLinkConfigurationPopup(boundingRect, linkDescriptor, linkModel);
-
     }
 });
 
@@ -289,17 +288,22 @@ const getVisiblePopupName = (editor: FroalaEditor) => {
 
 const getBoundingClientRect = (editor: FroalaEditor, commandName: string, isImageLink: boolean, image: HTMLElement | null): DOMRect => {
     if (isImageLink && image) {
-        return getImageBoundingClientRect(image.getBoundingClientRect());
-    } else if (commandName === constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME && !editor.opts.toolbarInline) {
-        return editor.$tb.find(`.fr-command[data-cmd="${commandName}"]`)[0].getBoundingClientRect();
+        return image.getBoundingClientRect();
+    } else if (commandName === constants.OPEN_INSERT_LINK_POPUP_COMMAND_NAME) {
+        if (!editor.opts.toolbarInline) {
+            return editor.$tb.find(`.fr-command[data-cmd="${commandName}"]`)[0].getBoundingClientRect();
+        } else {
+            return editor.position.getBoundingRect();
+        }
     } else {
+        const link = editor.link.get() as HTMLAnchorElement;
+        if (link) {
+            return link.getBoundingClientRect();
+        }
+
         return editor.position.getBoundingRect();
     }
 }
-
-
-const getImageBoundingClientRect = ({ left, top, width, height }: DOMRect) : DOMRect => 
-    new DOMRect(left - (constants.POPUP_WIDTH_PX / 2), top + height, width, height);
 
 export const linkCommands = [
     openInsertLinkPopupCommand,
