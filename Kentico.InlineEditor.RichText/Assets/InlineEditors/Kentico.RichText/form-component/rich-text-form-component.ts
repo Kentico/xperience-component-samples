@@ -4,10 +4,10 @@ import { CodeMirrorElement } from "../types";
 import { replaceMacroElements } from "../plugins/macros/macro-services";
 import { FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME } from "../constants";
 
-const ANIMATION_LOCAL_STORAGE_KEY = "Kentico.FormComponents.RichText.SaveButtonAnimation";
+const ANIMATION_LOCAL_STORAGE_KEY = "Kentico.FormComponents.RichText.ApplyButtonAnimation";
 const FULL_SCREEN_CLASS_NAME = "ktc-rich-text-form-component--fullscreen";
-const APPLY_BUTTON_TEXT_RESOURCE_STRING = "Kentico.FormComponent.RichText.SaveButton";
-const APPLY_BUTTON_SELECTOR = ".ktc-btn-rich-text-save";
+const APPLY_BUTTON_TEXT_RESOURCE_STRING = "Kentico.FormComponent.RichText.ApplyButton";
+const APPLY_BUTTON_SELECTOR = ".ktc-btn-rich-text-apply";
 const APPLY_BUTTON_ANIMATION_CLASS_NAME = "ktc-btn-slide";
 const APPLY_BUTTON_ANIMATION_DURATION = 3000;
 const APPLY_BUTTON_ANIMATION_DELAY = 300;
