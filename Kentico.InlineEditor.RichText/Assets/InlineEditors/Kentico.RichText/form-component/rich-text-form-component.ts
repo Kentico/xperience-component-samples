@@ -6,17 +6,17 @@ import { FORM_COMPONENT_VALUE_ELEMENT_CLASS_NAME } from "../constants";
 
 const ANIMATION_LOCAL_STORAGE_KEY = "Kentico.FormComponents.RichText.SaveButtonAnimation";
 const FULL_SCREEN_CLASS_NAME = "ktc-rich-text-form-component--fullscreen";
-const SAVE_BUTTON_TEXT_RESOURCE_STRING = "Kentico.FormComponent.RichText.SaveButton";
-const SAVE_BUTTON_SELECTOR = ".ktc-btn-rich-text-save";
-const SAVE_BUTTON_ANIMATION_CLASS_NAME = "ktc-btn-slide";
-const SAVE_BUTTON_ANIMATION_DURATION = 3000;
-const SAVE_BUTTON_ANIMATION_DELAY = 100;
+const APPLY_BUTTON_TEXT_RESOURCE_STRING = "Kentico.FormComponent.RichText.SaveButton";
+const APPLY_BUTTON_SELECTOR = ".ktc-btn-rich-text-save";
+const APPLY_BUTTON_ANIMATION_CLASS_NAME = "ktc-btn-slide";
+const APPLY_BUTTON_ANIMATION_DURATION = 3000;
+const APPLY_BUTTON_ANIMATION_DELAY = 300;
 
 export class RichTextFormComponent {
-    private readonly saveButtonText: string;
+    private readonly applyButtonText: string;
 
     public constructor(private readonly froalaEditor: FroalaEditor, private readonly formComponent: HTMLElement) {
-        this.saveButtonText = window.kentico.localization.strings[SAVE_BUTTON_TEXT_RESOURCE_STRING];
+        this.applyButtonText = window.kentico.localization.strings[APPLY_BUTTON_TEXT_RESOURCE_STRING];
     }
 
     public initialize() {
@@ -25,22 +25,22 @@ export class RichTextFormComponent {
     }
 
     private ensureSaveButton() {
-        let wrapper = document.createElement("div");
-        wrapper.innerHTML = require("./templates/save-button.html")({
-            buttonText: this.saveButtonText
+        const tempWrapper = document.createElement("div");
+        tempWrapper.innerHTML = require("./templates/apply-button.html")({
+            buttonText: this.applyButtonText
         });
-        wrapper = wrapper.firstChild as HTMLDivElement;
-        wrapper.querySelector(SAVE_BUTTON_SELECTOR)?.addEventListener("click", () => {
+        const applyButton = tempWrapper.firstChild as HTMLButtonElement;
+        applyButton.addEventListener("click", () => {
             this.handleFullscreenExit();
-            wrapper.remove();
+            applyButton.remove();
         })
-        document.body.appendChild(wrapper);
+        document.body.appendChild(applyButton);
 
         // Ensure tooltip
-        this.froalaEditor.tooltip.bind(this.froalaEditor.$sc, SAVE_BUTTON_SELECTOR);
+        this.froalaEditor.tooltip.bind(this.froalaEditor.$sc, APPLY_BUTTON_SELECTOR);
 
         // Animate the button on first load
-        this.ensureSaveButtonAnimation(wrapper);
+        this.ensureApplyButtonAnimation(applyButton);
     }
 
     private ensureFullscreen() {
@@ -49,14 +49,14 @@ export class RichTextFormComponent {
         this.froalaEditor.events.focus();
     }
 
-    private ensureSaveButtonAnimation(saveButton: HTMLElement) {
+    private ensureApplyButtonAnimation(applyButton: HTMLElement) {
         if (!localStorage.getItem(ANIMATION_LOCAL_STORAGE_KEY)) {
             setTimeout(() => {
-                saveButton.classList.add(SAVE_BUTTON_ANIMATION_CLASS_NAME);
-            }, SAVE_BUTTON_ANIMATION_DELAY);
+                applyButton.classList.add(APPLY_BUTTON_ANIMATION_CLASS_NAME);
+            }, APPLY_BUTTON_ANIMATION_DELAY);
             setTimeout(() => {
-                saveButton.classList.remove(SAVE_BUTTON_ANIMATION_CLASS_NAME);
-            }, SAVE_BUTTON_ANIMATION_DURATION);
+                applyButton.classList.remove(APPLY_BUTTON_ANIMATION_CLASS_NAME);
+            }, APPLY_BUTTON_ANIMATION_DURATION);
             localStorage.setItem(ANIMATION_LOCAL_STORAGE_KEY, "1");
         }
     }

@@ -32,70 +32,57 @@
     }
 }
 
-.ktc-btn-rich-text-save__wrapper {
+.ktc-btn-rich-text-save {
     position: fixed;
     top: 0;
     right: 1.25 * @ktc-base-unit;
     z-index: @fullscreen-z-index;
+    text-align: left;
+    width: 38px;
+    white-space: nowrap;
+    overflow: hidden;
+    border: 0;
+    outline: none;
+    margin: 4px 2px;
+    padding: 0;
+    border-radius: 4px;
+    height: 40px;
+    line-height: 40px;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.5s, width 0.3s ease-in-out;
+    
+    &:hover {
+        background: #ebebeb;
+    }
 
-    .ktc-btn-rich-text-save {
-        border: 0;
-        outline: none;
-        margin: 4px 2px;
-        padding: 0;
-        border-radius: 4px;
-        height: 40px;
-        background: transparent;
-        cursor: pointer;
-        transition: background-color 0.5s, padding-right 0.3s ease-in-out;
-    
-        &:hover {
-            background: #ebebeb;
-        }
-    
-        &:active {
-            background-color: #d6d6d6;
-        }
-    
-        .fr-svg {
-            margin: 8px 7px;
-            height: 24px;
-    
-            path {
-                fill: #0098f7;
-            }
+    &:active {
+        background-color: #d6d6d6;
+    }
+
+    .fr-svg {
+        margin: 8px 7px;
+        height: 24px;
+
+        path {
+            fill: #0098f7;
         }
     }
 
     .ktc-btn-save__label {
-        visibility: hidden;
-        pointer-events: none;
         font-family: @ktc-font-family;
         font-size: 15px;
         font-weight: bold;
         position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        right: -110px;
     }
 
     &.ktc-btn-slide {
         color: #333333;
+        width: 9 * @ktc-base-unit;
+        background: #a3a2a2;
 
-        .ktc-btn-rich-text-save {
-            padding-right: 7 * @ktc-base-unit;
-            background: #a3a2a2;
-    
-            .fr-svg path {
-                fill: #333333;
-            }
-        }
-
-        .ktc-btn-save__label {
-            visibility: visible;
-            transition: 0.3s;
-            transition-delay: 0.2s;
-            right: @ktc-base-unit;
+        .fr-svg path {
+            fill: #333333;
         }
     }
 }
