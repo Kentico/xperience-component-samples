@@ -41,10 +41,30 @@
             outline: 0;
         }
     }
-    
+
+    &.ktc-object-selector-dropdown__search--hide {
+        .select2-search--dropdown {
+            display: none;
+        }
+    }
+
     .select2-results {
+        .loading-results {
+            display: none;
+        }
+
         .select2-results__option--highlighted {
             background-color: @ktc-color-blue-100;
         }
     }
+
+    &.ktc-object-selector-dropdown--searching {
+        .select2-results {
+            .loading-results {
+                display: list-item;
+            }
+        }
+    }
+    
+    
 }

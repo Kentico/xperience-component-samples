@@ -560,8 +560,10 @@
     <Compile Include="Extensions\RouteCollectionExtensionsTests.cs" />
     <Compile Include="Fakes\FakeObjectSelector.cs" />
     <Compile Include="Fakes\FakeUrlHelper.cs" />
+    <Compile Include="Fakes\InternalsVisibleFakeClassStructure.cs" />
     <Compile Include="ObjectsRetrieverTestsBase.cs" />
     <Compile Include="ObjectsRetrieverTests.cs" />
+    <Compile Include="ObjectsRetrieverTestsHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
