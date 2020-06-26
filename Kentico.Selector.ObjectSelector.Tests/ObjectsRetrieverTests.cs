@@ -14,6 +14,9 @@ using NSubstitute;
 
 using NUnit.Framework;
 
+using static Kentico.Components.Web.Mvc.Selectors.Tests.ObjectsRetrieverTestsHelper;
+
+
 namespace Kentico.Components.Web.Mvc.Selectors.Tests
 {
     public class ObjectsRetrieverTests
@@ -108,68 +111,46 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
         [TestFixture]
         public class GetObjects : UnitTests
         {
+            private InternalsVisibleFakeClassStructure<ContactInfo> contactClassStructureInfo;
+            private InternalsVisibleFakeClassStructure<UserInfo> userClassStructureInfo;
+            private ObjectsRetriever objectsRetriever;
+
+
             [SetUp]
             public void SetUp()
-            { 
+            {
                 Fake<ContactGroupMemberInfo, ContactGroupMemberInfoProvider>();
-                var contactProviderFake = Fake<ContactInfo, ContactInfoProvider>();
+                contactClassStructureInfo = new InternalsVisibleFakeClassStructure<ContactInfo>();
+                var contactProviderFake = Fake<ContactInfo, ContactInfoProvider>().WithOriginalSourceName();
                 var contacts = CreateItems<ContactInfo>(new[] { "Test", "Foo", "Bar" }, 7);
                 contactProviderFake.WithData(contacts);
 
-                var userProviderFake = Fake<UserInfo, UserInfoProvider>();
+                userClassStructureInfo = new InternalsVisibleFakeClassStructure<UserInfo>();
+                var userProviderFake = Fake<UserInfo, UserInfoProvider>().WithOriginalSourceName();
                 var users = CreateItems<UserInfo>(new[] { "John", "Paul", "Ringo", "George" }, 15);
                 userProviderFake.WithData(users);
+
+                UserInfo.TYPEINFO.ClassStructureInfo = userClassStructureInfo;
+                ContactInfo.TYPEINFO.ClassStructureInfo = contactClassStructureInfo;
+                objectsRetriever = new ObjectsRetriever(Substitute.For<ISiteService>());
             }
 
 
             [TestCaseSource(nameof(GetObjectTestCaseSource))]
             public void GetObjects_ReturnsCorrectResult(object searchParams, string[] expectedNames, bool expectedNextPageAvailable)
             {
-                var siteService = Substitute.For<ISiteService>();
-                var objectsRetriever = new ObjectsRetriever(siteService);
-                
-                var actualResult = objectsRetriever.GetObjects(searchParams as ObjectsRetrieverSearchParams, out var actualNextPageAvailable);
+                // Arrange
+                var parameters = searchParams as ObjectsRetrieverSearchParams;
+                userClassStructureInfo.RegisterColumn(String.Format(ObjectsRetriever.ORDERING_COLUMN_VALUE_TEMPLATE, UserInfo.TYPEINFO.DisplayNameColumn, parameters.SearchTerm), typeof(string));
+                contactClassStructureInfo.RegisterColumn(String.Format(ObjectsRetriever.ORDERING_COLUMN_VALUE_TEMPLATE, ContactInfo.TYPEINFO.DisplayNameColumn, parameters.SearchTerm), typeof(string));
 
+                // Act
+                var actualResult = objectsRetriever.GetObjects(parameters, out var actualNextPageAvailable);
                 var actualNames = actualResult.Select(info => info[info.TypeInfo.DisplayNameColumn].ToString());
 
+                // Assert
                 Assert.That(actualNames, Is.EquivalentTo(expectedNames));
                 Assert.That(actualNextPageAvailable, Is.EqualTo(expectedNextPageAvailable));
-            }
-
-
-            private T[] CreateItems<T>(string[] alternatingNames, int count, string objectType = null, Action<T> initializer = null) where T : AbstractInfo<T>, new()
-            {
-                if ((alternatingNames == null) || (alternatingNames.Length == 0))
-                {
-                    throw new ArgumentException("Parameter must be a non-empty instance of array.", nameof(alternatingNames));
-                }
-
-                if (alternatingNames.Length > count)
-                {
-                    throw new ArgumentException($"Length of '{nameof(alternatingNames)}' must be equal or greater than a value of '{nameof(count)}'");
-                }
-
-                int namesLength = alternatingNames.Length;
-                int iterations = count / namesLength;
-
-                var items = new List<T>();
-
-                for (int i = 0; i < namesLength; i++)
-                {
-                    int upperBound = (i == 0) ? iterations + (count % namesLength) : iterations;
-                    for (int j = 0; j < upperBound; j++)
-                    {
-                        var item = AbstractInfo<T>.New((info) =>
-                        {
-                            initializer?.Invoke(info);
-                            info[info.TypeInfo.DisplayNameColumn] = alternatingNames[i] + j;
-                        }, objectType);
-
-                        items.Add(item);
-                    }
-                }
-
-                return items.ToArray();
             }
 
 
