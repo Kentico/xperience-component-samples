@@ -15,7 +15,7 @@
     <tags>Kentico ems mvc object selector component</tags>
     <dependencies>
         <group targetFramework="net461">
-            <dependency id="Kentico.AspNet.Mvc.Libraries" version="12.0.43" />
+            <dependency id="Kentico.AspNet.Mvc.Libraries" version="12.0.79" />
         </group>
     </dependencies>
   </metadata>
