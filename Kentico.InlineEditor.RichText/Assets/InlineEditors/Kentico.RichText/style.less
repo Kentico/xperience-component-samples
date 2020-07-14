@@ -1,7 +1,7 @@
-// Override Froala editor's z-indexing since the zIndex option also sets the z-index to the main editor element,
-// thus covers the add widget button and they refuse to change this behavior, see https://github.com/froala/wysiwyg-editor/issues/3588
-.ktc-rich-text-wrapper {
+@active-element-color: #0098f7;
+@active-element-hover-color: #008ae1;
 
+.ktc-rich-text-wrapper {
     &.fr-box.fr-fullscreen {
         background-color: #ffffff;
         z-index: 10010 !important;
@@ -45,6 +45,8 @@
         float: left;
     }
 
+    // Override Froala editor's z-indexing since the zIndex option also sets the z-index to the main editor element,
+    // thus covers the add widget button and they refuse to change this behavior, see https://github.com/froala/wysiwyg-editor/issues/3588
     .fr-toolbar {
         z-index: inherit !important;
 
@@ -57,17 +59,7 @@
         }
     }
 
-    .ktc-macro {
-        cursor: pointer;
-        border: 1px solid black;
-        border-radius: 3px;
-        padding: 0 4px;
-        background-color: #e5e5e5;
-
-        &:hover {
-            box-shadow: 0 0 3px rgba(0, 0, 0, 0.75);
-        }
-    }
+    @import (less) "style-macro.template.css";
 }
 
 .fr-fullscreen-wrapper {
@@ -75,23 +67,34 @@
 }
 
 .fr-popup {
-
-    &.fr-active {
-        z-index: 10015 !important;
+    .fr-command {
+        &.ktc-tab-active {
+            .fr-svg {
+                path {
+                    fill: @active-element-color;
+                }
+            }
+        }
     }
 
     // override style for primary button
     .fr-action-buttons button.fr-command.fr-submit {
         font-family: inherit;
-        background: #0098f7;
-        border: 1px solid #0098f7;
+        background: @active-element-color;
+        border: 1px solid @active-element-color;
         color: #ffffff;
         border-radius: 2px;
     
         &:hover, &:focus {
-            border-color: #008ae1;
-            background: #008ae1;
+            border-color: @active-element-hover-color;
+            background: @active-element-hover-color;
         }
+    }
+}
+
+body:not(.ktc-rich-text-form-component--fullscreen) {
+    .fr-popup.fr-active {
+        z-index: 10015 !important;
     }
 }
 
@@ -116,7 +119,7 @@
 
     &:focus {
         outline: none;
-        border: solid 2px #0098f7;
+        border: solid 2px @active-element-color;
         padding: 3px 11px;        
     }
 

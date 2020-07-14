@@ -1,5 +1,9 @@
 import FroalaEditor, { RegisterCommandParameters } from "froala-editor/js/froala_editor.pkgd.min";
 
+import { IdentifierMode } from "@/types/kentico/selectors/page-selector-open-options";
+import { MediaFile } from "@/types/kentico/selectors/media-file";
+import { Page } from "@/types/kentico/selectors/page";
+
 import * as constants from "./link-constants";
 import { FroalaCommand } from "../../froala-command";
 import { FroalaIcon } from "../../froala-icon";
@@ -9,11 +13,7 @@ import { LinkType } from "./link-types";
 import { showForm } from "./popups/link-configuration-popup";
 import { LinkModel } from "./link-model";
 import { LinkDescriptor } from "./link-descriptor";
-
 import { unwrapElement } from "../../helpers";
-import { IdentifierMode } from "@/types/kentico/selectors/page-selector-open-options";
-import { MediaFile } from "@/types/kentico/selectors/media-file";
-import { Page } from "@/types/kentico/selectors/page";
 
 type OpenItemSelectionCommand = typeof constants.OPEN_PAGE_SELECTION_DIALOG_COMMAND_NAME | typeof constants.OPEN_MEDIA_FILE_SELECTION_DIALOG_COMMAND_NAME;
 
@@ -44,7 +44,7 @@ const openInsertLinkPopupCommandParameters: RegisterCommandParameters = {
     undo: false,
     plugin: constants.LINK_PLUGIN_NAME,
     refreshAfterCallback: true,
-    callback(this: FroalaEditor) {
+    callback(this: FroalaEditor, commandName) {
         this.selection.save();
         const linkText = this.selection.text();
         const image = unwrapElement(this.image.get());
@@ -52,10 +52,15 @@ const openInsertLinkPopupCommandParameters: RegisterCommandParameters = {
 
         defaultLinkDescriptor = new LinkDescriptor(linkText, "", false, isImageLink);
         linkModel = new LinkModel(LinkType.PAGE);
-        const boundingRect = getBoundingClientRect(this, isImageLink, image);
 
-        this.kenticoLinkPlugin.showInsertLinkPopup(boundingRect, defaultLinkDescriptor);
-
+        if (isImageLink && image) {
+            this.kenticoLinkPlugin.showInsertLinkPopup(defaultLinkDescriptor, () => this.image.get()[0]);
+        } else if (!this.opts.toolbarInline) {
+            const getInsertLinkToolbarButton = () => this.$tb.find(`.fr-command[data-cmd="${commandName}"]`)[0];
+            this.kenticoLinkPlugin.showInsertLinkPopup(defaultLinkDescriptor, getInsertLinkToolbarButton);
+        } else {
+            this.kenticoLinkPlugin.showInsertLinkPopup(defaultLinkDescriptor);
+        }
     }
 };
 
@@ -110,14 +115,11 @@ const openLinkConfigurationPopupCommand = new FroalaCommand(constants.OPEN_LINK_
     refresh: onLinkButtonRefresh(false),
     async callback(this: FroalaEditor) {
         const link = this.link.get() as HTMLAnchorElement;
-        const image = unwrapElement(this.image.get());
         const linkDescriptor = new LinkDescriptor(link);
-        const boundingRect = getBoundingClientRect(this, linkDescriptor.isImageLink, image);
         const getLinkMetadataEndpointUrl = this.opts.getLinkMetadataEndpointUrl;
         linkModel = await getLinkModel(getLinkMetadataEndpointUrl, linkDescriptor.linkURL);
 
-        await this.kenticoLinkPlugin.showLinkConfigurationPopup(boundingRect, linkDescriptor, linkModel);
-
+        this.kenticoLinkPlugin.showLinkConfigurationPopup(linkDescriptor, linkModel);
     }
 });
 
@@ -287,13 +289,6 @@ const getVisiblePopupName = (editor: FroalaEditor) => {
     }
 }
 
-const getBoundingClientRect = (editor: FroalaEditor, isImageLink: boolean, image: HTMLElement | null): DOMRect => 
-    isImageLink && image ? getImageBoundingClientRect(image.getBoundingClientRect()) : editor.position.getBoundingRect();
-
-
-const getImageBoundingClientRect = ({ left, top, width, height }: DOMRect) : DOMRect => 
-    new DOMRect(left - (constants.POPUP_WIDTH_PX / 2), top + height, width, height);
-
 export const linkCommands = [
     openInsertLinkPopupCommand,
     openInsertImageLinkPopupCommand,
@@ -307,4 +302,4 @@ export const linkCommands = [
     switchMediaLinkTabCommand,
     openPageSelectionDialogCommand,
     openMediaFileSelectionDialogCommand,
-]
+];

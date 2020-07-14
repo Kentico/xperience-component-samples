@@ -1,20 +1,13 @@
 import FroalaEditor, { FroalaOptions, FroalaEvents } from "froala-editor/js/froala_editor.pkgd.min";
 
-import { UPDATE_WIDGET_PROPERTY_EVENT_NAME } from "@/shared/constants";
-import { replaceMacrosWithElements, replaceMacroElements, bindMacroClickListener } from "./plugins/macros/macro-services";
-import { unwrapElement } from "./helpers";
+import { replaceMacrosWithElements, bindMacroClickListener } from "./plugins/macros/macro-services";
+import { FroalaEventsOption } from "./types";
 
-type FroalaEventsOption = { [event: string]: Function };
-
-interface CodeMirrorElement extends HTMLElement {
-    readonly CodeMirror: CodeMirror.Editor;
-}
-
-export const getEvents = (inlineEditor: HTMLElement, propertyName: string, propertyValue: string, customOptions: Partial<FroalaOptions>): Partial<FroalaEvents> => {
+export const getEvents = (editorValue: string, instanceSpecificOptions: Partial<FroalaOptions>, customOptions: Partial<FroalaOptions>): Partial<FroalaEvents> => {
     const events: Partial<FroalaEvents> = {
         initialized() {
-            if (propertyValue) {
-                const editModePropertyValue = replaceMacrosWithElements(propertyValue, this.opts.contextMacros);
+            if (editorValue) {
+                const editModePropertyValue = replaceMacrosWithElements(editorValue, this.opts.contextMacros);
                 this.html.set(editModePropertyValue);
             }
         },
@@ -23,28 +16,11 @@ export const getEvents = (inlineEditor: HTMLElement, propertyName: string, prope
         },
         contentChanged() {
             bindMacroClickListener(this);
-            updatePropertyValue(inlineEditor, propertyName, this.html.get());
-        },
-        ["commands.after"](cmd: string) {
-            if (cmd === "html" && this.codeView.isActive()) {
-                // Update the underlying Froala HTML when code is changed in CodeMirror
-                const froalaWrapper = unwrapElement(this.$wp);
-                const codeMirrorInstance = froalaWrapper!.querySelector<CodeMirrorElement>(".CodeMirror");
-                if (codeMirrorInstance) {
-                    codeMirrorInstance.CodeMirror.on("change", function (instance: CodeMirror.Editor) {
-                        updatePropertyValue(inlineEditor, propertyName, instance.getValue());
-                    });
-                }
-
-                // Temporary, until https://github.com/froala/wysiwyg-editor/issues/3639 is fixed
-                const editor = unwrapElement(this.$oel);
-                const codeViewExitButton = editor!.querySelector(".fr-btn.html-switch");
-                codeViewExitButton!.innerHTML = this.button.build("html");
-            }
         },
     };
 
-    return mergeWithCustomEvents(events, customOptions);
+    const defaultWithInstanceEvents = mergeWithCustomEvents(events, instanceSpecificOptions);
+    return mergeWithCustomEvents(defaultWithInstanceEvents, customOptions);
 }
 
 /**
@@ -89,16 +65,4 @@ const mergeWithCustomEvents = (defaultEvents: Partial<FroalaEvents>, customOptio
         ...events,
         ...customEvents
     };
-}
-
-const updatePropertyValue = (inlineEditor: HTMLElement, propertyName: string, newValue: string) => {
-    const event = new CustomEvent(UPDATE_WIDGET_PROPERTY_EVENT_NAME, {
-        detail: {
-            name: propertyName,
-            value: replaceMacroElements(newValue),
-            refreshMarkup: false
-        }
-    });
-
-    inlineEditor.dispatchEvent(event);
 }

@@ -2,7 +2,7 @@ import FroalaEditor from "froala-editor/js/froala_editor.pkgd.min";
 
 import { MacrosPlugin, MacroType } from "./macro-types";
 import { showActionsPopup, hideActionsPopup } from "./popups";
-import { CONFIGURE_URL_MACRO_POPUP_NAME, CONFIGURE_CONTEXT_MACRO_POPUP_NAME, CONFIGURATION_POPUP_NAME, ACTIONS_POPUP_NAME } from "./macro-constants";
+import { CONFIGURE_URL_MACRO_POPUP_NAME, CONFIGURE_CONTEXT_MACRO_POPUP_NAME, CONFIGURATION_POPUP_NAME, ACTIONS_POPUP_NAME, MACRO_ACTIVE_CLASS } from "./macro-constants";
 import { getShowPopup } from "./popups";
 
 function hidePopups(this: FroalaEditor) {
@@ -11,6 +11,10 @@ function hidePopups(this: FroalaEditor) {
     }
 
     hideConfigurationPopup.call(this);
+}
+
+function getActiveMacro(this: FroalaEditor) {
+    return this.el.querySelector<HTMLInputElement>(`.${MACRO_ACTIVE_CLASS}`)
 }
 
 function hideConfigurationPopup(this: FroalaEditor) {
@@ -36,6 +40,7 @@ export const macroPlugin = (editor: FroalaEditor): MacrosPlugin => {
     }
 
     const macroPlugin: MacrosPlugin = {
+        getActiveMacro,
         showActionsPopup,
         hideActionsPopup,
         showConfigureContextMacroPopup: getShowPopup(CONFIGURE_CONTEXT_MACRO_POPUP_NAME, editor.opts.popupEditContextMacroButtons, MacroType.CONTEXT),

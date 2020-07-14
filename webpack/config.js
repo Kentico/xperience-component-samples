@@ -31,13 +31,21 @@ module.exports = {
       },
       {
         test: /\.css$/,
+        exclude: [
+          /\.template\.css$/,
+          /froala_style\.min\.css$/,
+        ],
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
         ]
       },
       {
-        test: /\.html$/,
+        test: [
+          /\.html$/,
+          /\.template\.css$/,
+          /froala_style\.min\.css$/,
+        ],
         use: {
           loader: "underscore-template-loader",
           query: {

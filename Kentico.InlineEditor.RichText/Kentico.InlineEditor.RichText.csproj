@@ -555,6 +555,7 @@
     <Compile Include="PageLink\RichTextInlineEditorUrlRetriever.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\InlineEditors\Kentico.RichText\form-component\preview-iframe.html" />
     <Content Include="Assets\InlineEditors\Kentico.RichText\main.ts" />
   </ItemGroup>
   <ItemGroup>
@@ -614,6 +615,11 @@
     <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\images\image-constants.ts" />
     <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\images\index.ts" />
     <Content Include="Assets\InlineEditors\Kentico.RichText\plugins\index.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Assets\InlineEditors\Kentico.RichText\constants.ts" />
+    <TypeScriptCompile Include="Assets\InlineEditors\Kentico.RichText\form-component\form-component-templates.ts" />
+    <TypeScriptCompile Include="Assets\InlineEditors\Kentico.RichText\types.ts" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Targets\Kentico.ResourceFiles.targets" />

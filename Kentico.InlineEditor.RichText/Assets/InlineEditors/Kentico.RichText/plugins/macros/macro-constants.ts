@@ -19,8 +19,10 @@ export const MACRO_ACTIVE_CLASS = `${MACRO_CLASS}-active`;
 
 // Pop-ups
 
+export const ACTIONS_POPUP_WIDTH_PX = 102;
 export const ACTIONS_POPUP_NAME = `${MACROS_PLUGIN_NAME}.popup`;
 
+export const CONFIGURATION_POPUP_WIDTH_PX = 300;
 export const CONFIGURATION_POPUP_NAME = `${MACROS_PLUGIN_NAME}.popupConfigure`;
 export const CONFIGURE_URL_MACRO_POPUP_NAME = `${MACROS_PLUGIN_NAME}.popupUrl`;
 export const CONFIGURE_CONTEXT_MACRO_POPUP_NAME = `${MACROS_PLUGIN_NAME}.popupContext`;

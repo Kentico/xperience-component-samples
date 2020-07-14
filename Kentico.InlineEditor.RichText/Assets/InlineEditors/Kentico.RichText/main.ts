@@ -4,6 +4,9 @@ import FroalaEditor, * as Froala from "froala-editor/js/froala_editor.pkgd.min";
 
 import { initializeFroalaEditor, destroyFroalaEditor } from "./froala";
 import { initializePlugins } from "./plugins";
+import { FORM_COMPONENT_INITIALIZATION_EVENT_NAME, RICH_TEXT_WRAPPER_SELECTOR } from "./constants";
+import { initializeRichTextFormComponent } from "./form-component";
+import { getInlineEditorOptions } from "./inline-editor/inline-editor-options";
 
 // Initialize plugins
 window.addEventListener("DOMContentLoaded", () => {
@@ -21,9 +24,14 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+document.addEventListener(FORM_COMPONENT_INITIALIZATION_EVENT_NAME, ({ target: formComponent, detail: data }) => {
+    initializeRichTextFormComponent(formComponent, data);
+});
+
 window.kentico.pageBuilder.registerInlineEditor("Kentico.InlineEditor.RichText", {
     init(options) {
-        initializeFroalaEditor(options);
+        const richTextEl = options.editor.querySelector(RICH_TEXT_WRAPPER_SELECTOR)!;
+        initializeFroalaEditor(richTextEl, getInlineEditorOptions(options), options.propertyValue);
     },
     destroy(options) {
         // Destroy Froala editor when destroying inline editor

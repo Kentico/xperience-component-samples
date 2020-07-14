@@ -1,6 +1,6 @@
 import * as macroHelpers from "../macro-helpers";
 import * as macroTemplateResolvers from "../macro-templates";
-import { replaceMacrosWithElements, replaceMacroElements } from "../macro-services";
+import { replaceMacrosWithElements, replaceMacroElements, removeMacros } from "../macro-services";
 import { MacroType } from "../macro-types";
 
 const contextMacros = {
@@ -20,6 +20,9 @@ const htmlWithMacros =
     <p>{% ResolveDynamicText("pattern", "ContactLastName", "TestLastName") %}</p>
     <p>{% ResolveDynamicText("pattern", "ContactDescriptiveName", "") %}</p>
     <p>{% ResolveDynamicText("pattern", "ContactDescriptiveName", "TestDescriptiveName") %}</p>
+    <p>{%%}</p>
+    <p>{%  %}</p>
+    <p>{% ResolveDynamicText %}</p>
 </div>`;
 
 const fakeMacroElementTemplateResolver = (macroType: MacroType, macroValue: string, macroDefaultValue: string, macroDisplayValue: string) => {
@@ -27,7 +30,7 @@ const fakeMacroElementTemplateResolver = (macroType: MacroType, macroValue: stri
 }
 
 const getMacroElementAttributes = (macroType: MacroType, macroValue: string, macroDisplayValue: string, macroDefaultValue: string = "") =>
-    `class="ktc-macro" value="${macroDisplayValue}" data-macro-type="${macroType}" data-macro-value="${macroValue}" data-macro-default-value="${macroDefaultValue}"`
+    `class="ktc-macro" value="${macroDisplayValue}" data-macro-type="${macroType}" data-macro-value="${macroValue}" data-macro-default-value="${macroDefaultValue}"`;
 
 const htmlWithMacroElements = 
 `<div>
@@ -40,7 +43,28 @@ const htmlWithMacroElements =
     <p><input ${getMacroElementAttributes(MacroType.CONTEXT, "ContactLastName", "Last name", "TestLastName")} /></p>
     <p><input ${getMacroElementAttributes(MacroType.CONTEXT, "ContactDescriptiveName", "Full name")} /></p>
     <p><input ${getMacroElementAttributes(MacroType.CONTEXT, "ContactDescriptiveName", "Full name", "TestDescriptiveName")} /></p>
-</div>`
+    <p>{%%}</p>
+    <p>{%  %}</p>
+    <p>{% ResolveDynamicText %}</p>
+</div>`;
+
+
+const htmlWithoutMacros =
+`<div>
+    <p>Hello</p>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p>{%%}</p>
+    <p>{%  %}</p>
+    <p>{% ResolveDynamicText %}</p>
+</div>`;
+
 
 describe("macro services", () => {
     describe("replaceMacroElements", () => {
@@ -48,6 +72,14 @@ describe("macro services", () => {
             const result = replaceMacroElements(htmlWithMacroElements);
 
             expect(result).toBe(htmlWithMacros);
+        });
+    });
+
+    describe("removeMacros", () => {
+        it("should replace macros with an empty string", () => {
+            const result = removeMacros(htmlWithMacros);
+
+            expect(result).toBe(htmlWithoutMacros);
         });
     });
 
