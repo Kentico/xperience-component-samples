@@ -14,7 +14,7 @@
     "codemirror": "5.49.2",
     "froala-editor": "^3.1.1-2",
     "jquery": "^3.5.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "select2": "^4.1.0-beta.1",
     "underscore-template-loader": "^1.0.0"
   },
