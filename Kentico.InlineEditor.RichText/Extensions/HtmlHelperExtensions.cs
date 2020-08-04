@@ -57,7 +57,7 @@ namespace Kentico.Components.Web.Mvc.InlineEditors
             // Add the preview virtual context URL prefix
             getLinkMetadataEndpointUrl = previewPathDecorator.Decorate(getLinkMetadataEndpointUrl, urlHelper);
 
-            using (htmlHelper.Kentico().BeginInlineEditor(RichTextInlineEditorConstants.IDENTIFIER, propertyName))
+            using (htmlHelper.Kentico().BeginInlineEditor(RichTextInlineEditorConstants.IDENTIFIER, propertyName, new { data_instance_guid = Guid.NewGuid().ToString() }))
             {
                 var tagBuilder = new TagBuilder("div");
                 tagBuilder.AddCssClass(RICH_TEXT_EDITOR_CLASS_NAME);

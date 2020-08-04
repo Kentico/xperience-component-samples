@@ -1,3 +1,6 @@
+# Ignore Intellij idea files
+.idea/*
+
 #ignore thumbnails created by windows
 Thumbs.db
 

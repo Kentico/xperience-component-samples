@@ -23,10 +23,11 @@ const openInsertMacroPopupCommand = new FroalaCommand(constants.OPEN_INSERT_MACR
     undo: false,
     plugin: constants.MACROS_PLUGIN_NAME,
     refreshAfterCallback: true,
-    callback(this: FroalaEditor) {
+    callback(this: FroalaEditor, commandName) {
         this.selection.save();
         defaultValueText = this.selection.text();
-        this.kenticoMacroPlugin.showConfigurationPopup(this.position.getBoundingRect(), DialogMode.INSERT, undefined, defaultValueText);
+        const getRelatedElement = !this.opts.toolbarInline ? () => this.$tb.find(`.fr-command[data-cmd="${commandName}"]`)[0] : undefined;
+        this.kenticoMacroPlugin.showConfigurationPopup(DialogMode.INSERT, getRelatedElement, undefined, defaultValueText);
     }
 }, openInsertMacroPopupCommandIcon);
 
@@ -140,16 +141,16 @@ const configureMacroCommand = new FroalaCommand(constants.CONFIGURE_MACRO_COMMAN
     undo: false,
     focus: false,
     callback(this: FroalaEditor) {
-        const macroEl = this.el.querySelector<HTMLElement>(`.${constants.MACRO_ACTIVE_CLASS}`);
+        const getActiveMacro = () => this.kenticoMacroPlugin.getActiveMacro()!;
+        const macroEl = getActiveMacro();
         if (macroEl) {
             const dataset = macroEl.dataset as { macroType: MacroType, macroValue: string, macroDefaultValue: string };
             const { macroValue, macroDefaultValue, macroType } = dataset;
-            const macroElementRect = macroEl.getBoundingClientRect();
 
             if (macroType === MacroType.URL) {
-                this.kenticoMacroPlugin.showConfigureUrlPopup(macroElementRect, DialogMode.UPDATE, macroValue, macroDefaultValue);
+                this.kenticoMacroPlugin.showConfigureUrlPopup(DialogMode.UPDATE, getActiveMacro, macroValue, macroDefaultValue);
             } else {
-                this.kenticoMacroPlugin.showConfigureContextMacroPopup(macroElementRect, DialogMode.UPDATE, macroValue, macroDefaultValue);
+                this.kenticoMacroPlugin.showConfigureContextMacroPopup(DialogMode.UPDATE, getActiveMacro, macroValue, macroDefaultValue);
             }
         }
     }

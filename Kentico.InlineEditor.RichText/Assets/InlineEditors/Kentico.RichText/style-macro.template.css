@@ -1,0 +1,12 @@
+.ktc-macro {
+    cursor: pointer;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 0 4px;
+    background-color: #e5e5e5;
+}
+
+.ktc-macro:hover {
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.75);
+}
+

@@ -162,6 +162,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       $tb: JQuery;
       $sc: JQuery;
       $wp: JQuery;
+      $iframe: JQuery;
       destroy(): object;
 
       static MAIL_REGEX: RegExp;
@@ -226,12 +227,14 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
   
     export type GenericObject<T = any> = { [key: string]: T; };
   
-    export interface ToolbarButtons {
-      [key: string]: {
+    export interface ToolbarButton {
         buttons: string[];
         align?: string;
         buttonsVisible?: number;
-      };
+    }
+
+    export interface ToolbarButtons {
+      [key: string]: ToolbarButton;
     }
   
     export interface EmoticonButton {
@@ -380,7 +383,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       tabSpaces: number,
       theme: string,
       toolbarBottom: boolean,
-      toolbarButtons: Partial<ToolbarButtons>,
+      toolbarButtons: string[] | Partial<ToolbarButtons>,
       toolbarButtonsMD: Partial<ToolbarButtons>,
       toolbarButtonsSM: Partial<ToolbarButtons>,
       toolbarButtonsXS: Partial<ToolbarButtons>,
@@ -781,6 +784,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
       focus(): object;
       // Register an event.
       on(name: string, callback: (event: Event) => void | boolean, first: boolean): object;
+      $on(element: JQuery, name: string, callback: (event: Event) => void | boolean): JQuery;
       // Triggers an event.
       trigger(name: string, args: any[], force: boolean): object;
     }
@@ -1018,7 +1022,7 @@ declare module 'froala-editor/js/froala_editor.pkgd.min' {
     }
   
     export interface Tooltip {
-      bind(element: Element, selector: string, displayAbove?: boolean): object;
+      bind(element: JQuery, selector: string, displayAbove?: boolean): object;
       hide(): object;
       to(element: Element, displayAbove?: boolean): object;
     }

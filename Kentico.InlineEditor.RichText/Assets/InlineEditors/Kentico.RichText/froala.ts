@@ -6,13 +6,12 @@ import { InlineEditorOptions } from "@/types/kentico/inline-editors/inline-edito
 import { HTMLRichTextEditorElement } from "@/types/rich-text";
 import { getEvents } from "./froala-events";
 import { getFroalaOptions } from "./froala-options";
+import { RICH_TEXT_WRAPPER_SELECTOR } from "./constants";
+import { FroalaOptionsModifier } from "./types";
 
-const RICH_TEXT_WRAPPER_SELECTOR = ".ktc-rich-text-wrapper";
 let defaultsWereSet = false;
 
-export const initializeFroalaEditor = ({ editor, propertyName, propertyValue }: InlineEditorOptions) => {
-    const element = editor.querySelector(RICH_TEXT_WRAPPER_SELECTOR);
-
+export const initializeFroalaEditor = (element: HTMLRichTextEditorElement, instanceSpecificOptions: Partial<Froala.FroalaOptions>, editorValue: string, froalaOptionsModifier?: FroalaOptionsModifier) => {
     if (!element) {
         return;
     }
@@ -20,16 +19,18 @@ export const initializeFroalaEditor = ({ editor, propertyName, propertyValue }: 
     setFroalaDefaults(element);
 
     const customOptions = getCustomOptions(element);
-    const events = getEvents(editor, propertyName, propertyValue, customOptions);
-    const options = getFroalaOptions(events, customOptions);
+    const events = getEvents(editorValue, instanceSpecificOptions, customOptions);
+    const froalaOptions = getFroalaOptions(events, instanceSpecificOptions, customOptions);
 
-    new FroalaEditor(element, options);
+    froalaOptionsModifier?.(froalaOptions);
+
+    new FroalaEditor(element, froalaOptions);
 }
 
 export const destroyFroalaEditor = ({ editor }: InlineEditorOptions) => {
     const richTextEditor = editor.querySelector(RICH_TEXT_WRAPPER_SELECTOR);
     const froala = richTextEditor?.["data-froala.editor"];
-    
+
     froala?.destroy();
 }
 

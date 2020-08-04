@@ -117,10 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Kentico.FormComponent.RichText.ApplyButton" xml:space="preserve">
+    <value>Apply &amp; close</value>
+  </data>
+  <data name="Kentico.FormComponent.RichText.EditButton" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Kentico.FormComponent.RichText.Name" xml:space="preserve">
+    <value>Rich text</value>
+  </data>
+  <data name="Kentico.FormComponent.RichText.EmptyFieldText" xml:space="preserve">
+    <value>Field is empty.</value>
+  </data>
   <data name="Kentico.Widget.RichText.Description" xml:space="preserve">
     <value>Rich text widget</value>
   </data>
   <data name="Kentico.Widget.RichText.Name" xml:space="preserve">
     <value>Rich text</value>
+  </data>
+  <data name="Kentico.FormComponent.RichText.PreviewInfoText" xml:space="preserve">
+    <value>This is a preview of your text.</value>
   </data>
 </root>

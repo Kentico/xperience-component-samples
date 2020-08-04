@@ -7,7 +7,6 @@ import { OPEN_LINK_CONFIGURATION_POPUP_COMMAND_NAME, OPEN_INSERT_LINK_POPUP_COMM
 import { OPEN_INSERT_MACRO_POPUP_COMMAND_NAME } from "./plugins/macros/macro-constants";
 
 const defaultOptions: Partial<Froala.FroalaOptions> = {
-    toolbarInline: true,
     codeMirror: CodeMirror,
     pasteDeniedAttrs: ["id", "style"],
     imageAllowedTypes: ["gif", "png", "jpg", "jpeg"],
@@ -28,14 +27,14 @@ const defaultOptions: Partial<Froala.FroalaOptions> = {
         },
         moreMisc: {
             buttons: ["undo", "redo", "fullscreen", "selectAll", "html", "help"],
-            align: "right",
             buttonsVisible: 2,
         }
     },
 };
 
-export const getFroalaOptions = (events: Partial<Froala.FroalaEvents>, customOptions: Partial<Froala.FroalaOptions>): Partial<Froala.FroalaOptions> => ({
+export const getFroalaOptions = (events: Partial<Froala.FroalaEvents>, instanceSpecificOptions: Partial<Froala.FroalaOptions>, customOptions: Partial<Froala.FroalaOptions>): Partial<Froala.FroalaOptions> => ({
     ...defaultOptions,
+    ...instanceSpecificOptions,
     ...customOptions,
     key: Froala.DEFAULTS.licenseKey,
     events,
