@@ -14,15 +14,15 @@ using CMS;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Kentico.InlineEditor.RichText")]
-[assembly: AssemblyCopyright("Copyright © 2019")]
+[assembly: AssemblyCopyright("Copyright © 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
 [assembly: Guid("cc8499d6-4f7c-4a4c-a902-d6ff1264653c")]
 
-[assembly: AssemblyVersion("1.2.1.0")]
-[assembly: AssemblyFileVersion("1.2.1.0")]
+[assembly: AssemblyVersion("1.3.0.0")]
+[assembly: AssemblyFileVersion("1.3.0.0")]
 
 [assembly: InternalsVisibleTo("Kentico.InlineEditor.RichText.Tests")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
