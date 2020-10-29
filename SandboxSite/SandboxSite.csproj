@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup Label="Globals">
   </PropertyGroup>
@@ -8,10 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="App_Data\CMSModules\WebFarm\**" />
-    <Content Remove="App_Data\CMSModules\WebFarm\**" />
-    <EmbeddedResource Remove="App_Data\CMSModules\WebFarm\**" />
-    <None Remove="App_Data\CMSModules\WebFarm\**" />
+    <Compile Remove="App_Data\CMSModules\**" />
+    <Content Remove="App_Data\CMSModules\**" />
+    <EmbeddedResource Remove="App_Data\CMSModules\**" />
+    <None Remove="App_Data\CMSModules\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="App_Data\CMSModules\" />
+    <Folder Include="App_Data\" />
   </ItemGroup>
 
 </Project>
