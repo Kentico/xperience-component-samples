@@ -9,9 +9,13 @@
 
   <ItemGroup>
     <Compile Remove="App_Data\CMSModules\**" />
+    <Compile Remove="CMSSiteUtils\**" />
     <Content Remove="App_Data\CMSModules\**" />
+    <Content Remove="CMSSiteUtils\**" />
     <EmbeddedResource Remove="App_Data\CMSModules\**" />
+    <EmbeddedResource Remove="CMSSiteUtils\**" />
     <None Remove="App_Data\CMSModules\**" />
+    <None Remove="CMSSiteUtils\**" />
   </ItemGroup>
 
   <ItemGroup>
