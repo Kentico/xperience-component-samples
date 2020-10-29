@@ -58,8 +58,7 @@ SandboxSite/Content/*
 /SandboxSite/App_Data/CMSModules/SmartSearch
 
 # Actual config files
-/SandboxSite/AppSettings.config
-/SandboxSite/ConnectionStrings.config
+/SandboxSite/appsettings.Development.json
 
 # Ignore nuild nuget packages
 /SandboxSite/*.nupkg

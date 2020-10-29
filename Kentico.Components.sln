@@ -2,8 +2,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandboxSite", "SandboxSite\SandboxSite.csproj", "{DAFBD0E0-F62E-4BB6-ACAD-78FBA75C4A3A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Widget.Video", "Kentico.Widget.Video\Kentico.Widget.Video.csproj", "{7BC9BF35-B4C2-43FF-A932-1D29A797BF50}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Widget.Video.Views", "Kentico.Widget.Video.Views\Kentico.Widget.Video.Views.csproj", "{47F7A09A-C58B-4F57-86FD-7E576C6474BE}"
@@ -28,16 +26,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Selector.ObjectSele
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kentico.Components.Tests.Base", "Kentico.Components.Tests.Base\Kentico.Components.Tests.Base.csproj", "{8708219B-87F3-4010-94B6-B0259C2F9490}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandboxSite", "SandboxSite\SandboxSite.csproj", "{CEC0938E-D241-4906-A983-212374991733}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DAFBD0E0-F62E-4BB6-ACAD-78FBA75C4A3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DAFBD0E0-F62E-4BB6-ACAD-78FBA75C4A3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DAFBD0E0-F62E-4BB6-ACAD-78FBA75C4A3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DAFBD0E0-F62E-4BB6-ACAD-78FBA75C4A3A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7BC9BF35-B4C2-43FF-A932-1D29A797BF50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7BC9BF35-B4C2-43FF-A932-1D29A797BF50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BC9BF35-B4C2-43FF-A932-1D29A797BF50}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -86,6 +82,10 @@ Global
 		{8708219B-87F3-4010-94B6-B0259C2F9490}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8708219B-87F3-4010-94B6-B0259C2F9490}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8708219B-87F3-4010-94B6-B0259C2F9490}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEC0938E-D241-4906-A983-212374991733}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEC0938E-D241-4906-A983-212374991733}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEC0938E-D241-4906-A983-212374991733}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEC0938E-D241-4906-A983-212374991733}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
