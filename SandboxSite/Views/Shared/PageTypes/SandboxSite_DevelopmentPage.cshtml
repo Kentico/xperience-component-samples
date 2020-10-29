@@ -1,0 +1,15 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Kentico.Web.Mvc
+@using Kentico.PageBuilder.Web.Mvc
+
+@using CMS.DocumentEngine
+
+@model Kentico.Content.Web.Mvc.Routing.IPageViewModel<TreeNode>
+
+<h1>@Model.Page.DocumentName</h1>
+<div>
+    @await Html.Kentico().EditableAreaAsync("main")
+</div>
