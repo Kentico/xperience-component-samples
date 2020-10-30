@@ -1,9 +1,22 @@
 # .System Configuration
 version: '{build}'
 image:
-    #- Ubuntu
-    - Visual Studio 2019
+    - Ubuntu
+    #- Visual Studio 2019
 
+# Set the specific version of Node.js
+environment:
+  nodejs_version: "10"
+ 
+# Install scripts. (runs after repo cloning)
+install:
+  # Install Node.js
+  - sh: nvm install $nodejs_version
+  - ps: Install-Product node $env:nodejs_version
+  
+  # install modules
+  - npm install
+  
 # Nuget restore before build    
 before_build:
     - dotnet restore
@@ -21,20 +34,6 @@ test:
   assemblies:
     only:
     - '**\kentico.*.Tests.dll'
-    
-# Set the specific version of Node.js
-environment:
-  nodejs_version: "10"
-
-# Install scripts. (runs after repo cloning)
-install:
-  # Install Node.js
-  - sh: nvm install $nodejs_version
-  - ps: Install-Product node $env:nodejs_version
-  
-  # install modules
-  - npm install
-  - npm run build
 
 # Post-install test scripts.
 after_test:
@@ -42,5 +41,6 @@ after_test:
   - node -version
   - npm -version
   
-  # run tests
+  # Run build & tests
   - npm run test
+  - npm run build
