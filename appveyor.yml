@@ -13,7 +13,7 @@ build:
     project: Kentico.Components.sln
     verbosity: minimal
 
-Configuration:
+configuration:
     - Release
 
 # .NET Tests
