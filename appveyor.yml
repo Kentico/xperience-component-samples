@@ -1,43 +1,44 @@
-# .NET Build Configuration
+# .System Configuration
 version: '{build}'
-image: Visual Studio 2019
-before_build:
-- ps: .nuget\BuildInit.ps1
-- cmd: nuget restore
+image:
+    #- Ubuntu
+    - Visual Studio 2019
 
+# Nuget restore before build    
+before_build:
+    - dotnet restore
+
+# Build
 build:
-  verbosity: minimal
-configuration: Release
-skip_tags: true
+    project: Kentico.Components.sln
+    verbosity: minimal
+    configuration: Release
 
 # .NET Tests
 test:
   assemblies:
     only:
     - '**\kentico.*.Tests.dll'
-# Test against the latest version of this Node.js version
+    
+# Set the specific version of Node.js
 environment:
   nodejs_version: "10"
 
 # Install scripts. (runs after repo cloning)
 install:
-  # Get the latest stable version of Node.js or io.js
+  # Install Node.js
+  - sh: nvm install $nodejs_version
   - ps: Install-Product node $env:nodejs_version
+  
   # install modules
   - npm install
   - npm run build
 
-after_build:
-  - ps: .nuget\CreatePackages.ps1
-
 # Post-install test scripts.
 after_test:
   # Output useful info for debugging.
-  - node --version
-  - npm --version
+  - node -version
+  - npm -version
+  
   # run tests
   - npm run test
-
-artifacts:
-  - path: '*.nupkg'
-    name: NuGet packages
