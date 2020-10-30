@@ -12,7 +12,9 @@ before_build:
 build:
     project: Kentico.Components.sln
     verbosity: minimal
-    configuration: Release
+
+Configuration:
+    - Release
 
 # .NET Tests
 test:
