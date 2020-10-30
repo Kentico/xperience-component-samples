@@ -15,6 +15,12 @@ install:
   - sh: nvm install $nodejs_version
   - ps: Install-Product node $env:nodejs_version
   
+  # Output useful info for debugging.
+  - echo "ENVIRONMENT SETUP INFO"
+  - node --version
+  - npm --version
+  - dotnet --version
+  
   # install modules
   - npm install
   
@@ -38,10 +44,6 @@ test:
 
 # Post-install test scripts.
 after_test:
-  # Output useful info for debugging.
-  - node -version
-  - npm -version
-  
   # Run build & tests
   - npm run test
   - npm run build
