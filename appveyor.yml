@@ -3,6 +3,7 @@ version: '{build}'
 image:
     - Ubuntu
     - Visual Studio 2019
+    - macos
 
 # Set the specific version of Node.js
 environment:
