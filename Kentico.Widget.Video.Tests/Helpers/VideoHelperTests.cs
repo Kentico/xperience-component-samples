@@ -17,7 +17,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers.Tests
             public void Magic_TrueEqualsTrue()
             {
                 // Act & Assert
-                Assert.AreEqual(true, false);
+                Assert.AreEqual(true, true);
             }
 
 
