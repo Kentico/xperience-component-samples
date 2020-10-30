@@ -3,9 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 
-using Kentico.Components.Web.Mvc.Widgets.Models;
-
-namespace Kentico.Components.Web.Mvc.Widgets.Helpers
+namespace Kentico.Widget.Video.Components.Widgets
 {
     /// <summary>
     /// Helper methods for working with YouTube/Vimeo videos.
@@ -34,7 +32,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers
         /// <param name="video">Video model.</param>
         /// <exception cref="ArgumentNullException"><paramref name="video"/> is <c>null</c>.</exception>
         /// <exception cref="NotSupportedException"><paramref name="video"/> doesn't refer to a Youtube or Vimeo video.</exception>
-        public static string GetVideoEmbedUrl(VideoModel video)
+        public static string GetVideoEmbedUrl(VideoWidgetViewModel video)
         {
             video = video ?? throw new ArgumentNullException(nameof(video));
 
@@ -59,11 +57,11 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers
         /// <param name="videoUrl">YouTube or Vimeo video URL.</param>
         /// <exception cref="NotSupportedException"><paramref name="video"/> doesn't refer to a Youtube or Vimeo video.</exception>
         /// <exception cref="UriFormatException"><paramref name="videoUrl"/> is malformed URL.</exception>
-        public static VideoModel GetVideoModel(string videoUrl)
+        public static VideoWidgetViewModel GetVideoModel(string videoUrl)
         {
             if (videoUrl == null)
             {
-                return new VideoModel();
+                return new VideoWidgetViewModel();
             }
 
             // Throws exception if videoUrl is invalid URL.
@@ -89,7 +87,7 @@ namespace Kentico.Components.Web.Mvc.Widgets.Helpers
                     videoKind = VideoKindEnum.Vimeo;
                 }
 
-                return new VideoModel(videoUrl, videoId, videoKind);
+                return new VideoWidgetViewModel(videoUrl, videoId, videoKind);
             }
 
             throw new NotSupportedException($"{videoUrl} doesn't refer to supported video type.");

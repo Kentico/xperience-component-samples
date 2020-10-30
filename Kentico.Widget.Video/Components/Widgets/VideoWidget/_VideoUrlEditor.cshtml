@@ -1,9 +1,10 @@
-@using CMS.Helpers;
+﻿@using CMS.Helpers
 
-@using Kentico.Components.Web.Mvc.Widgets.Helpers;
-@using Kentico.PageBuilder.Web.Mvc;
+@using Kentico.PageBuilder.Web.Mvc
+@using Kentico.Web.Mvc
+@using Kentico.Widget.Video.Components.Widgets
 
-@model Kentico.Components.Web.Mvc.Widgets.Models.VideoModel
+@model VideoWidgetViewModel
 
 @using (Html.Kentico().BeginInlineEditor("Kentico.InlineEditor.VideoUrlEditor", nameof(Model.VideoUrl)))
 {

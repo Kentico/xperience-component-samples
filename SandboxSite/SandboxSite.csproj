@@ -27,5 +27,9 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Kentico.Widget.Video\Kentico.Widget.Video.csproj" />
+  </ItemGroup>
+
 </Project>
 

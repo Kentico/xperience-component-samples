@@ -1,11 +1,9 @@
-﻿using Kentico.Components.Web.Mvc.Widgets.Helpers;
-
-namespace Kentico.Components.Web.Mvc.Widgets.Models
+﻿namespace Kentico.Widget.Video.Components.Widgets
 {
     /// <summary>
     /// View model for video widget.
     /// </summary>
-    public class VideoModel
+    public class VideoWidgetViewModel
     {
         /// <summary>
         /// Video URL.
@@ -26,20 +24,20 @@ namespace Kentico.Components.Web.Mvc.Widgets.Models
 
 
         /// <summary>
-        /// Create a new instance of <see cref="VideoModel"/>
+        /// Create a new instance of <see cref="VideoWidgetViewModel"/>
         /// </summary>
-        public VideoModel()
+        public VideoWidgetViewModel()
         {
         }
 
 
         /// <summary>
-        /// Create a new instance of <see cref="VideoModel"/>
+        /// Create a new instance of <see cref="VideoWidgetViewModel"/>
         /// </summary>
         /// <param name="videoUrl">Video URL.</param>
         /// <param name="videoId">Video identifier.</param>
         /// <param name="videoKind">Video kind.</param>
-        public VideoModel(string videoUrl, string videoId, VideoKindEnum videoKind)
+        public VideoWidgetViewModel(string videoUrl, string videoId, VideoKindEnum videoKind)
         {
             VideoUrl = videoUrl;
             VideoId = videoId;

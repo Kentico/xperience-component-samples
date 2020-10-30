@@ -1,9 +1,10 @@
-﻿@using CMS.Helpers;
+﻿@using CMS.Helpers
 
-@using Kentico.Components.Web.Mvc.Widgets.Helpers;
 @using Kentico.PageBuilder.Web.Mvc
+@using Kentico.Widget.Video.Components.Widgets
+@using Kentico.Web.Mvc
 
-@model Kentico.Components.Web.Mvc.Widgets.Models.VideoModel
+@model VideoWidgetViewModel
 
 @if (!String.IsNullOrWhiteSpace(Model.VideoUrl))
 {
@@ -13,7 +14,7 @@
 }
 else if (Context.Kentico().PageBuilder().EditMode)
 {
-    Html.RenderPartial("~/Views/Shared/Kentico/InlineEditors/_VideoUrlEditor.cshtml", Model);
+    @await Html.PartialAsync("~/Components/Widgets/VideoWidget/_VideoUrlEditor.cshtml", Model)
 }
 else
 {

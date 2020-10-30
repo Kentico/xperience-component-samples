@@ -15,12 +15,12 @@ using CMS;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Kentico.Widget.Video")]
-[assembly: AssemblyCopyright("Kentico © 2019")]
+[assembly: AssemblyCopyright("Kentico ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
-[assembly: Guid("7bc9bf35-b4c2-43ff-a932-1d29a797bf50")]
+[assembly: Guid("1251f57a-a0d9-4ff6-8979-f8ee16e2341c")]
 
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
