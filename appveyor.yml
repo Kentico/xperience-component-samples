@@ -7,6 +7,7 @@ image:
 # Set the specific version of Node.js
 environment:
   nodejs_version: "10"
+  APPVEYOR_YML_DISABLE_PS_LINUX: true
  
 # Install scripts. (runs after repo cloning)
 install:
