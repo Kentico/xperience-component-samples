@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-using Kentico.Widget.Video.Components.Widgets;
-
 using NUnit.Framework;
 
-namespace Kentico.Components.Web.Mvc.Widgets.Helpers.Tests
+namespace Kentico.Components.Tests
 {
     public static class VideoHelperTests
     {

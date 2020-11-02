@@ -1,14 +1,12 @@
-﻿using CMS;
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 
+using Kentico.Components;
 using Kentico.PageBuilder.Web.Mvc;
-using Kentico.Widget.Video.Components.Widgets;
 
 [assembly: RegisterWidget(VideoWidgetViewComponent.IDENTIFIER, typeof(VideoWidgetViewComponent), "{$Kentico.Widget.Video.Name$}", typeof(VideoWidgetProperties), Description = "{$Kentico.Widget.Video.Description$}", IconClass = "icon-brand-youtube")]
 
-namespace Kentico.Widget.Video.Components.Widgets
+namespace Kentico.Components
 {
     public class VideoWidgetViewComponent : ViewComponent
     {
