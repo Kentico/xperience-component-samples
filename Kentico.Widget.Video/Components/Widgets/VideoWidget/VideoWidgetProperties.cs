@@ -3,7 +3,7 @@
 using Kentico.Forms.Web.Mvc;
 using Kentico.PageBuilder.Web.Mvc;
 
-namespace Kentico.Widget.Video.Components.Widgets
+namespace Kentico.Components
 {
     /// <summary>
     /// Video widget properties.
