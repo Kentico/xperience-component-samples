@@ -1,3 +1,4 @@
+using Kentico.Components.Web.Mvc.Selectors;
 using Kentico.Content.Web.Mvc;
 using Kentico.Content.Web.Mvc.Routing;
 using Kentico.PageBuilder.Web.Mvc;
@@ -66,6 +67,7 @@ namespace SandboxSite
             app.UseEndpoints(endpoints =>
             {
                 endpoints.Kentico().MapRoutes();
+                endpoints.MapObjectSelectorRoutes();
             });
         }
     }

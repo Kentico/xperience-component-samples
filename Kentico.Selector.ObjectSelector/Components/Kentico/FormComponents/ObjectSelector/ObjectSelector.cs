@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 
 using CMS.Base;
 using CMS.Core;
@@ -11,10 +10,12 @@ using Kentico.Components.Web.Mvc.FormComponents;
 using Kentico.Components.Web.Mvc.Selectors;
 using Kentico.Forms.Web.Mvc;
 
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-[assembly: RegisterFormComponent(ObjectSelector.IDENTIFIER, typeof(ObjectSelector), "{$Kentico.Selector.ObjectSelector.Name$}", ViewName = "~/Views/Shared/Kentico/Selectors/FormComponents/_ObjectSelector.cshtml", IsAvailableInFormBuilderEditor = false)]
+[assembly: RegisterFormComponent(ObjectSelector.IDENTIFIER, typeof(ObjectSelector), "{$Kentico.Selector.ObjectSelector.Name$}", ViewName = "~/Components/Kentico/FormComponents/ObjectSelector/_ObjectSelector.cshtml", IsAvailableInFormBuilderEditor = false)]
 
 namespace Kentico.Components.Web.Mvc.FormComponents
 {

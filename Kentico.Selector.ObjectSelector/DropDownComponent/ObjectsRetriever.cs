@@ -83,7 +83,17 @@ namespace Kentico.Components.Web.Mvc.Selectors
         /// <exception cref="InvalidOperationException">Thrown when given <paramref name="objectType"/> does not have a GUID or code name column defined, depending on the object identification method defined by <paramref name="useGuidToIdentifyObjects"/>.</exception>
         public IEnumerable<BaseInfo> GetSelectedObjects(string objectType, IEnumerable<string> itemIdentifiers, bool useGuidToIdentifyObjects = false)
         {
+            if (String.IsNullOrEmpty(objectType))
+            {
+                throw new InvalidOperationException($"Object selector form coponent: The object type was not defined.");
+            }
+
             var typeInfo = GetTypeInfo(objectType);
+            if (typeInfo == null)
+            {
+                throw new InvalidOperationException($"The object type '{objectType}' is not registerred in the system.");
+            }
+
             if (useGuidToIdentifyObjects && (String.IsNullOrEmpty(typeInfo.GUIDColumn) || typeInfo.GUIDColumn.Equals(ObjectTypeInfo.COLUMN_NAME_UNKNOWN, StringComparison.Ordinal)))
             {
                 throw new InvalidOperationException($"The object type '{typeInfo.ObjectType}' does not have a GUID column defined. The object selector form component can be used only for objects that have a GUID column specified.");

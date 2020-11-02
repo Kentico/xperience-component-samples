@@ -1,13 +1,20 @@
 ﻿@using Kentico.Components.Web.Mvc.FormComponents;
 @using Kentico.Components.Web.Mvc.Selectors.Internal;
 
+
+@using Kentico.Content.Web.Mvc;
+@using Kentico.Web.Mvc;
+
+
+
 @model ObjectSelector
 
 @{
     var selectorId = $"objectSelector-{Guid.NewGuid()}";
 }
 
-@Html.ObjectSelector(Url, selectorId, Url.Kentico().AuthenticateUrl)
+@Html.ObjectSelectorValueTag(selectorId)
+@Html.ObjectSelectorDropDown(Url, selectorId, Url.Kentico().AuthenticateUrlRaw)
 
 <script>
 (function () {
