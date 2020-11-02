@@ -121,12 +121,12 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
             {
                 Fake<ContactGroupMemberInfo, ContactGroupMemberInfoProvider>();
                 contactClassStructureInfo = new InternalsVisibleFakeClassStructure<ContactInfo>();
-                var contactProviderFake = Fake<ContactInfo, ContactInfoProvider>().WithOriginalSourceName();
+                var contactProviderFake = Fake<ContactInfo, ContactInfoProvider>();
                 var contacts = CreateItems<ContactInfo>(new[] { "Test", "Foo", "Bar" }, 7);
                 contactProviderFake.WithData(contacts);
 
                 userClassStructureInfo = new InternalsVisibleFakeClassStructure<UserInfo>();
-                var userProviderFake = Fake<UserInfo, UserInfoProvider>().WithOriginalSourceName();
+                var userProviderFake = Fake<UserInfo, UserInfoProvider>();
                 var users = CreateItems<UserInfo>(new[] { "John", "Paul", "Ringo", "George" }, 15);
                 userProviderFake.WithData(users);
 

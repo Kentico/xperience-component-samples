@@ -1,6 +1,8 @@
-﻿using Kentico.Components.Web.Mvc.FormComponents;
-using System.Linq;
-using System.Web.Mvc;
+﻿using System.Linq;
+
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+using Kentico.Components.Web.Mvc.FormComponents;
 
 namespace Kentico.Components.Web.Mvc.Selectors.Tests
 {
