@@ -20,7 +20,7 @@ namespace Kentico.Components
         {
             var viewModel = VideoHelper.GetVideoModel(properties.VideoUrl);
 
-            return View("~/Components/Widgets/VideoWidget/_VideoWidget.cshtml", viewModel);
+            return View("~/Components/Kentico/Widgets/VideoWidget/_VideoWidget.cshtml", viewModel);
         }
     }
 }
