@@ -51,7 +51,7 @@ packages/
 /SandboxSite/CMSSiteUtils
 
 # Components client files
-/SnadboxSite/wwwroot/PageBuilder/Public
+/SandboxSite/wwwroot/PageBuilder/Public
 
 # Actual config files
 /SandboxSite/appsettings.Development.json
