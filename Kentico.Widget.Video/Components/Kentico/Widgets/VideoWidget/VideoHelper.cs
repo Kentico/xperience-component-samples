@@ -36,15 +36,12 @@ namespace Kentico.Components
         {
             video = video ?? throw new ArgumentNullException(nameof(video));
 
-            switch (video.VideoKind)
+            return video.VideoKind switch
             {
-                case VideoKindEnum.Youtube:
-                    return YOUTUBE_VIDEO_URL_EMBED_FORMAT + video.VideoId;
-                case VideoKindEnum.Vimeo:
-                    return VIMEO_VIDEO_URL_EMBED_FORMAT + video.VideoId;
-                default:
-                    throw new NotSupportedException($"{video.VideoUrl} is not a supported video format.");
-            }
+                VideoKindEnum.Youtube => YOUTUBE_VIDEO_URL_EMBED_FORMAT + video.VideoId,
+                VideoKindEnum.Vimeo => VIMEO_VIDEO_URL_EMBED_FORMAT + video.VideoId,
+                _ => throw new NotSupportedException($"{video.VideoUrl} is not a supported video format."),
+            };
         }
 
 
