@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
 
 using Kentico.Components;
 using Kentico.PageBuilder.Web.Mvc;
@@ -16,9 +15,9 @@ namespace Kentico.Components
         public const string IDENTIFIER = "Kentico.Widget.Video";
 
 
-        public ViewViewComponentResult Invoke(VideoWidgetProperties properties)
+        public IViewComponentResult Invoke(ComponentViewModel<VideoWidgetProperties> componentViewModel)
         {
-            var viewModel = VideoHelper.GetVideoModel(properties.VideoUrl);
+            var viewModel = VideoHelper.GetVideoModel(componentViewModel.Properties.VideoUrl);
 
             return View("~/Components/Kentico/Widgets/VideoWidget/_VideoWidget.cshtml", viewModel);
         }

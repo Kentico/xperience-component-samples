@@ -1,10 +1,13 @@
-﻿@using CMS.Helpers
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@using CMS.Helpers
 
 @using Kentico.Components
 @using Kentico.PageBuilder.Web.Mvc
-@using Kentico.Web.Mvc
 
 @model VideoWidgetViewModel
+
+@inject IPageBuilderDataContextRetriever pageBuilderContext
 
 @if (!String.IsNullOrWhiteSpace(Model.VideoUrl))
 {
@@ -12,9 +15,9 @@
         <iframe data-widget-guid="@Guid.NewGuid()" src="@VideoHelper.GetVideoEmbedUrl(Model)" class="ktc-resp-iframe"></iframe>
     </div>
 }
-else if (Context.Kentico().PageBuilder().EditMode)
+else if (pageBuilderContext.Retrieve().EditMode)
 {
-    @await Html.PartialAsync("~/Components/Kentico/Widgets/VideoWidget/_VideoUrlEditor.cshtml", Model)
+    <partial name="~/Components/Kentico/Widgets/VideoWidget/_VideoUrlEditor.cshtml" model="Model" />
 }
 else
 {
