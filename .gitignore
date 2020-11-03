@@ -50,6 +50,9 @@ packages/
 /SandboxSite/App_Data/CMSModules/SmartSearch
 /SandboxSite/CMSSiteUtils
 
+# Components client files
+/SnadboxSite/wwwroot/PageBuilder/Public
+
 # Actual config files
 /SandboxSite/appsettings.Development.json
 

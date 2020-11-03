@@ -1,9 +1,9 @@
 ﻿using Kentico.Content.Web.Mvc;
-using Kentico.Selector.ObjectSelector.App_Data.Global.Resources.Kentico.Selector;
+using Kentico.Selector.ObjectSelector.Resources;
 
 [assembly: RegisterPageBuilderLocalizationResource(typeof(ObjectSelector), "en-us")]
 
-namespace Kentico.Selector.ObjectSelector.App_Data.Global.Resources.Kentico.Selector
+namespace Kentico.Selector.ObjectSelector.Resources
 {
     public class ObjectSelector
     {

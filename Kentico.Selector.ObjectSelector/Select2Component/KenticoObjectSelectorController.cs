@@ -15,8 +15,6 @@ namespace Kentico.Components.Web.Mvc.Selectors.Controllers
     /// <summary>
     /// The object selector API controller.
     /// </summary>
-    // TODO: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //[UseCamelCasePropertyNamesContractResolver]
     public class KenticoObjectSelectorController : Controller
     {
         private const int PAGE_ITEMS_COUNT = 50;

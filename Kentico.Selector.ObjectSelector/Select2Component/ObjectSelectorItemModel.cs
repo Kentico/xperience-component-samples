@@ -5,7 +5,7 @@ namespace Kentico.Components.Web.Mvc.Selectors
     /// <summary>
     /// Represents an object selector item.
     /// </summary>
-    public class ObjectSelectorItemModel
+    internal class ObjectSelectorItemModel
     {
         /// <summary>
         /// Item value.

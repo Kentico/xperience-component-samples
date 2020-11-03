@@ -7,7 +7,7 @@ namespace Kentico.Components.Web.Mvc.Selectors
     /// <summary>
     /// Represents the object selector's <see cref="KenticoObjectSelectorController.GetObjects"></see> action result.
     /// </summary>
-    public class GetObjectsActionResult
+    internal class GetObjectsActionResult
     {
         /// <summary>
         /// Object selector items.
