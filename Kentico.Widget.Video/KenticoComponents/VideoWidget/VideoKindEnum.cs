@@ -1,4 +1,4 @@
-﻿namespace Kentico.Components
+﻿namespace Kentico.Widget.Video
 {
     /// <summary>
     /// Enumeration of supported video kinds.

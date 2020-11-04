@@ -2,8 +2,8 @@
 
 @using CMS.Helpers
 
-@using Kentico.Components
 @using Kentico.PageBuilder.Web.Mvc
+@using Kentico.Widget.Video
 
 @model VideoWidgetViewModel
 
@@ -17,7 +17,7 @@
 }
 else if (pageBuilderContext.Retrieve().EditMode)
 {
-    <partial name="~/Components/Kentico/Widgets/VideoWidget/_VideoUrlEditor.cshtml" model="Model" />
+    <partial name="~/KenticoComponents/VideoWidget/_VideoUrlEditor.cshtml" model="Model" />
 }
 else
 {

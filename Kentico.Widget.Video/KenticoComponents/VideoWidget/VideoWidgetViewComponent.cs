@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-using Kentico.Components;
 using Kentico.PageBuilder.Web.Mvc;
+using Kentico.Widget.Video;
 
 [assembly: RegisterWidget(VideoWidgetViewComponent.IDENTIFIER, typeof(VideoWidgetViewComponent), "{$Kentico.Widget.Video.Name$}", typeof(VideoWidgetProperties), Description = "{$Kentico.Widget.Video.Description$}", IconClass = "icon-brand-youtube")]
 
-namespace Kentico.Components
+namespace Kentico.Widget.Video
 {
     public class VideoWidgetViewComponent : ViewComponent
     {
@@ -19,7 +19,7 @@ namespace Kentico.Components
         {
             var viewModel = VideoHelper.GetVideoModel(componentViewModel.Properties.VideoUrl);
 
-            return View("~/Components/Kentico/Widgets/VideoWidget/_VideoWidget.cshtml", viewModel);
+            return View("~/KenticoComponents/VideoWidget/_VideoWidget.cshtml", viewModel);
         }
     }
 }

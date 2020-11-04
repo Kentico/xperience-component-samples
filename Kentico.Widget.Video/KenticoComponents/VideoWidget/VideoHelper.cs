@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace Kentico.Components
+namespace Kentico.Widget.Video
 {
     /// <summary>
     /// Helper methods for working with YouTube/Vimeo videos.

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Copyright>Kentico © 2020</Copyright>
   </PropertyGroup>
   
   <ItemGroup>

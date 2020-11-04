@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 using NUnit.Framework;
 
-namespace Kentico.Components.Tests
+namespace Kentico.Widget.Video.Tests
 {
     public static class VideoHelperTests
     {
