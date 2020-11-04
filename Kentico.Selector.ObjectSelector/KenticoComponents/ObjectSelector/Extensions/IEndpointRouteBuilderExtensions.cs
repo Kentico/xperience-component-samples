@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Routing;
 
 namespace Kentico.Components.Web.Mvc.Selectors
 {
-    public static class RouteCollectionExtensions
+    public static class IEndpointRouteBuilderExtensions
     {
         /// <summary>
         /// Maps object selector routes.

@@ -13,7 +13,7 @@
     var selectorId = $"objectSelector-{Guid.NewGuid()}";
 }
 
-@Html.ObjectSelectorValueTag(selectorId)
+@Html.ObjectSelectorValue(selectorId)
 @Html.ObjectSelectorDropDown(Url, selectorId, Url.Kentico().AuthenticateUrlRaw)
 
 <script>

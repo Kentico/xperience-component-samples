@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-[assembly: RegisterFormComponent(ObjectSelector.IDENTIFIER, typeof(ObjectSelector), "{$Kentico.Selector.ObjectSelector.Name$}", ViewName = "~/Components/Kentico/FormComponents/ObjectSelector/_ObjectSelector.cshtml", IsAvailableInFormBuilderEditor = false)]
+[assembly: RegisterFormComponent(ObjectSelector.IDENTIFIER, typeof(ObjectSelector), "{$Kentico.Selector.ObjectSelector.Name$}", ViewName = "~/KenticoComponents/ObjectSelector/_ObjectSelector.cshtml", IsAvailableInFormBuilderEditor = false)]
 
 namespace Kentico.Components.Web.Mvc.FormComponents
 {

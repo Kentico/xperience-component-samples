@@ -13,12 +13,12 @@ namespace Kentico.Components.Web.Mvc.Selectors.Internal
 {
     public static class IHtmlHelperExtensions
     {
-        private const string FORM_CONTROL_CLASS_NAME = "ktc-form-control";
-        private const string OBJECT_TYPE_ATTRIBUTE = "data-object-type";
-        private const string GET_OBJECTS_ENDPOINT_URL_ATTRIBUTE = "data-get-objects-endpoint-url";
-        private const string INITIALIZATION_EVENT_NAME_ATTRIBUTE = "data-initialization-event";
+        internal const string FORM_CONTROL_CLASS_NAME = "ktc-form-control";
+        internal const string OBJECT_TYPE_ATTRIBUTE = "data-object-type";
+        internal const string GET_OBJECTS_ENDPOINT_URL_ATTRIBUTE = "data-get-objects-endpoint-url";
+        internal const string INITIALIZATION_EVENT_NAME_ATTRIBUTE = "data-initialization-event";
         // Name of an attribute that indicates whether the object selector should identify objects by their GUIDs instead of code names.
-        private const string IDENTIFY_OBJECTS_BY_GUID_ATTRIBUTE = "data-identify-object-by-guid";
+        internal const string IDENTIFY_OBJECTS_BY_GUID_ATTRIBUTE = "data-identify-object-by-guid";
 
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Kentico.Components.Web.Mvc.Selectors.Internal
         /// <param name="id">Element ID.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="htmlHelper"/> is null.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="id"/> is empty.</exception>
-        public static IHtmlContent ObjectSelectorValueTag(this IHtmlHelper<ObjectSelector> htmlHelper, string id)
+        public static IHtmlContent ObjectSelectorValue(this IHtmlHelper<ObjectSelector> htmlHelper, string id)
         {
             htmlHelper = htmlHelper ?? throw new ArgumentNullException(nameof(htmlHelper));
 
@@ -64,7 +64,6 @@ namespace Kentico.Components.Web.Mvc.Selectors.Internal
                 throw new ArgumentException("Element ID cannot be empty.", nameof(id));
             }
 
-            var objectSelector = htmlHelper.ViewData.Model;
             var getObjectsEndpointUrl = urlHelper.RouteUrl(ObjectSelectorConstants.GET_OBJECTS_ROUTE_NAME, new RouteValueDictionary());
 
             if (String.IsNullOrEmpty(getObjectsEndpointUrl))
@@ -73,6 +72,7 @@ namespace Kentico.Components.Web.Mvc.Selectors.Internal
             }
 
             getObjectsEndpointUrl = authenticateUrl(getObjectsEndpointUrl).ToString();
+            var objectSelector = htmlHelper.ViewData.Model;
 
             return htmlHelper.DropDownListFor(m => m.SelectedValue, objectSelector.SelectedItems, new Dictionary<string, object>
             {
