@@ -5,7 +5,7 @@ using Kentico.Widget.Video.KenticoComponents.VideoWidget;
 
 namespace Kentico.Widget.Video.KenticoComponents.VideoWidget
 {
-    public class VideoWidgetResources
+    internal class VideoWidgetResources
     {
     }
 }
