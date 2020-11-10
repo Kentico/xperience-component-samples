@@ -1,11 +1,7 @@
 ﻿@using Kentico.Components.Web.Mvc.FormComponents;
 @using Kentico.Components.Web.Mvc.Selectors.Internal;
-
-
 @using Kentico.Content.Web.Mvc;
 @using Kentico.Web.Mvc;
-
-
 
 @model ObjectSelector
 
@@ -13,11 +9,11 @@
     var selectorId = $"objectSelector-{Guid.NewGuid()}";
 }
 
-@Html.ObjectSelectorValue(selectorId)
 @Html.ObjectSelectorDropDown(Url, selectorId, Url.Kentico().AuthenticateUrlRaw)
+@Html.ObjectSelectorValue(selectorId)
 
 <script>
-(function () {
+    (function () {
     var selector = document.getElementById("@selectorId");
     selector.dispatchEvent(new Event(selector.dataset.initializationEvent, {
         bubbles: true,

@@ -27,7 +27,7 @@ document.addEventListener(INITIALIZATION_EVENT_NAME, (event) => {
         placeholder: getString("Placeholder"),
         minimumResultsForSearch: 7,
         // @ts-ignore
-        selectionCssClass: "ktc-object-selector-container",  
+        selectionCssClass: "ktc-object-selector-container ktc-form-control",  
         dropdownCssClass: `${DROPDOWN_CLASS_NAME} ${HIDE_SEARCH_CLASS_NAME}`,
         ajax: {
             url: $selector.attr(GET_OBJECTS_ENDPOINT_URL_ATTRIBUTE),

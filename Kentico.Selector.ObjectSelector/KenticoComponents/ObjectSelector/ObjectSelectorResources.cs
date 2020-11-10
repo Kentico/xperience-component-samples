@@ -8,7 +8,7 @@ namespace Kentico.Selector.ObjectSelector.KenticoComponents.ObjectSelector
     /// <summary>
     /// Represents the object selector localization resources class.
     /// </summary>
-    public class ObjectSelectorResources
+    internal class ObjectSelectorResources
     {
     }
 }
