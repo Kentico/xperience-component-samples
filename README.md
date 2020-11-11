@@ -1,10 +1,10 @@
-# Kentico EMS MVC components
+# Kentico Xperience component samples
 
 [![Build status](https://ci.appveyor.com/api/projects/status/mjjcebk97lpvi998?svg=true)](https://ci.appveyor.com/project/kentico/ems-mvc-components)
 
 This repository contains [page builder](https://kentico.com/CMSPages/DocLinkMapper.ashx?version=latest&link=page_builder_mvc) components, which can be used in your projects.
 
-To help you get started with [MVC page builder](https://kentico.com/CMSPages/DocLinkMapper.ashx?version=latest&link=page_builder_mvc) development, you can explore the  [Kentico EMS Component Starter](https://github.com/Kentico/ems-mvc-component-starter) repository.
+To help you get started with [MVC page builder](https://kentico.com/CMSPages/DocLinkMapper.ashx?version=latest&link=page_builder_mvc) development, you can explore the  [Kentico Xperience Component Starter](https://github.com/Kentico/xperience-component-starter) repository.
 
 ## Components available in this repository
 - [Object selector form component](/Kentico.Selector.ObjectSelector)
