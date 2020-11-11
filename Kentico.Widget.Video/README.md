@@ -9,7 +9,7 @@ The video widget allows content editors to insert an embedded video from Youtube
 Prerequisite: You need to have [NodeJS runtime](https://nodejs.org/en/) installed to be able to use this widget.
 
 1. Clone this repository to your file system.
-    - `git clone https://github.com/Kentico/ems-mvc-components.git`
+    - `git clone https://github.com/Kentico/xperience-component-samples.git`
 1. Open the `Kentico.Components.sln` solution in Visual Studio and build the solution.
 1. Open PowerShell and navigate to the root of the repository.
 1. In the PowerShell, run the `npm install` command and then the `npm run build` command.
