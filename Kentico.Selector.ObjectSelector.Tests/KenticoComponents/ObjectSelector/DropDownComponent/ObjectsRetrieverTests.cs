@@ -111,8 +111,8 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
         [TestFixture]
         public class GetObjects : UnitTests
         {
-            private InternalsVisibleFakeClassStructure<ContactInfo> contactClassStructureInfo;
-            private InternalsVisibleFakeClassStructure<UserInfo> userClassStructureInfo;
+            private FakeClassStructureInfo<ContactInfo> contactClassStructureInfo;
+            private FakeClassStructureInfo<UserInfo> userClassStructureInfo;
             private ObjectsRetriever objectsRetriever;
 
 
@@ -120,12 +120,12 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
             public void SetUp()
             {
                 Fake<ContactGroupMemberInfo, ContactGroupMemberInfoProvider>();
-                contactClassStructureInfo = new InternalsVisibleFakeClassStructure<ContactInfo>();
+                contactClassStructureInfo = new FakeClassStructureInfo<ContactInfo>();
                 var contactProviderFake = Fake<ContactInfo, ContactInfoProvider>();
                 var contacts = CreateItems<ContactInfo>(new[] { "Test", "Foo", "Bar" }, 7);
                 contactProviderFake.WithData(contacts);
 
-                userClassStructureInfo = new InternalsVisibleFakeClassStructure<UserInfo>();
+                userClassStructureInfo = new FakeClassStructureInfo<UserInfo>();
                 var userProviderFake = Fake<UserInfo, UserInfoProvider>();
                 var users = CreateItems<UserInfo>(new[] { "John", "Paul", "Ringo", "George" }, 15);
                 userProviderFake.WithData(users);

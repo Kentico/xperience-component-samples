@@ -25,22 +25,22 @@ namespace Kentico.Components.Web.Mvc.Selectors.Internal
         /// HTML helper for the object selector's value input tag.
         /// </summary>
         /// <param name="htmlHelper">HTML helper.</param>
-        /// <param name="id">Element ID.</param>
+        /// <param name="dropDownId">The identifer of the drop down element.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="htmlHelper"/> is null.</exception>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="id"/> is empty.</exception>
-        public static IHtmlContent ObjectSelectorValue(this IHtmlHelper<ObjectSelector> htmlHelper, string id)
+        /// <exception cref="ArgumentException">Thrown when <paramref name="dropDownId"/> is empty.</exception>
+        public static IHtmlContent ObjectSelectorValue(this IHtmlHelper<ObjectSelector> htmlHelper, string dropDownId)
         {
             htmlHelper = htmlHelper ?? throw new ArgumentNullException(nameof(htmlHelper));
 
-            if (String.IsNullOrWhiteSpace(id))
+            if (String.IsNullOrWhiteSpace(dropDownId))
             {
-                throw new ArgumentException("Element ID cannot be empty.", nameof(id));
+                throw new ArgumentException("Element ID cannot be empty.", nameof(dropDownId));
             }
 
             return htmlHelper.TextBoxFor(m => m.SelectedValue, new
             {
                 hidden = "true",
-                data_value_for = id
+                data_value_for = dropDownId
             });
         }
 
