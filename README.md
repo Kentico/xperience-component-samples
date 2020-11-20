@@ -4,7 +4,7 @@
 
 This repository contains [page builder](https://kentico.com/CMSPages/DocLinkMapper.ashx?version=latest&link=page_builder_mvc) components, which can be used in your projects.
 
-To help you get started with [MVC page builder](https://kentico.com/CMSPages/DocLinkMapper.ashx?version=latest&link=page_builder_mvc) development, you can explore the  [Kentico Xperience Component Starter](https://github.com/Kentico/xperience-component-starter) repository.
+To help you get started with [Page builder](https://kentico.com/CMSPages/DocLinkMapper.ashx?version=latest&link=page_builder_mvc) development, you can explore the  [Kentico Xperience Component Starter](https://github.com/Kentico/xperience-component-starter) repository.
 
 ## Components available in this repository
 - [Object selector form component](/Kentico.Selector.ObjectSelector)
