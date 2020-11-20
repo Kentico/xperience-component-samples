@@ -75,7 +75,7 @@ namespace Kentico.Components.Web.Mvc.Selectors.Controllers
                 })
             };
 
-            return Ok(result);
+            return Json(result, ObjectSelector.SerializerOptions);
         }
     }
 }

@@ -67,7 +67,7 @@ namespace Kentico.Components.Web.Mvc.Selectors.Tests
                     });
 
                 var controllerInstance = new KenticoObjectSelectorController(objectsRetriever);
-                var actionResult = controllerInstance.GetObjects(DataClassInfo.OBJECT_TYPE, pageIndex, searchTerm, useGuid) as OkObjectResult;
+                var actionResult = controllerInstance.GetObjects(DataClassInfo.OBJECT_TYPE, pageIndex, searchTerm, useGuid) as JsonResult;
                 var resultValue = actionResult.Value as GetObjectsActionResult;
 
                 objectsRetriever.Received().GetObjects(Arg.Is<ObjectsRetrieverSearchParams>(p =>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 using CMS.Base;
 using CMS.Core;
@@ -11,9 +12,6 @@ using Kentico.Components.Web.Mvc.Selectors;
 using Kentico.Forms.Web.Mvc;
 
 using Microsoft.AspNetCore.Mvc.Rendering;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 [assembly: RegisterFormComponent(ObjectSelector.IDENTIFIER, typeof(ObjectSelector), "{$Kentico.Selector.ObjectSelector.Name$}", ViewName = "~/KenticoComponents/ObjectSelector/_ObjectSelector.cshtml", IsAvailableInFormBuilderEditor = false)]
 
@@ -65,6 +63,16 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         }
 
 
+        /// <summary>
+        /// The object selector serializer options used across all object selector serializations and deserializations.
+        /// </summary>
+        internal static JsonSerializerOptions SerializerOptions => new JsonSerializerOptions
+        {
+            IgnoreNullValues = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
+
+
         private SelectListItem GetSelectedItem(BaseInfo info)
         {
             var typeInfo = info.TypeInfo;
@@ -77,7 +85,7 @@ namespace Kentico.Components.Web.Mvc.FormComponents
             return new SelectListItem
             {
                 Text = displayName,
-                Value = JsonConvert.SerializeObject(item, SerializerSettings),
+                Value = JsonSerializer.Serialize(item, SerializerOptions),
                 Selected = true,
             };
         }
@@ -86,23 +94,13 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         private string SelectIdentifier(ObjectSelectorItem item) => Properties.IdentifyObjectByGuid ? item.ObjectGuid.ToString() : item.ObjectCodeName;
 
 
-        private JsonSerializerSettings SerializerSettings => new JsonSerializerSettings
-        {
-            NullValueHandling = NullValueHandling.Ignore,
-            ContractResolver = new DefaultContractResolver
-            {
-                NamingStrategy = new CamelCaseNamingStrategy()
-            }
-        };
-
-
         private IEnumerable<ObjectSelectorItem> SelectedObjects
         {
             get
             {
                 if (mSelectedObject == null)
                 {
-                    mSelectedObject = !String.IsNullOrEmpty(SelectedValue) ? JsonConvert.DeserializeObject<IEnumerable<ObjectSelectorItem>>(SelectedValue) : Enumerable.Empty<ObjectSelectorItem>();
+                    mSelectedObject = !String.IsNullOrEmpty(SelectedValue) ? JsonSerializer.Deserialize<IEnumerable<ObjectSelectorItem>>(SelectedValue, SerializerOptions) : Enumerable.Empty<ObjectSelectorItem>();
                 }
 
                 return mSelectedObject;
@@ -124,7 +122,7 @@ namespace Kentico.Components.Web.Mvc.FormComponents
         /// </summary>
         public override void SetValue(IEnumerable<ObjectSelectorItem> value)
         {
-            SelectedValue = (value != null) ? JsonConvert.SerializeObject(value) : null;
+            SelectedValue = (value != null) ? JsonSerializer.Serialize(value, SerializerOptions) : null;
         }
     }
 }
