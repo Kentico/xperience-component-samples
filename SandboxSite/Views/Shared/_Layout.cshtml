@@ -1,27 +1,19 @@
-﻿@using Kentico.PageBuilder.Web.Mvc
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Kentico components sandbox</title>
-
-    @Html.Kentico().PageBuilderStyles()
-
+    <title>Kentico Xperience components sandbox</title>
+    <page-builder-styles />
 </head>
 <body>
-    <div class="container body-content">
-        @RenderBody()
+    @RenderBody()
+    
+    <hr />
+    <footer>
+        <p>&copy; @DateTime.Now.Year - Kentico Xperience components sandbox</p>
+    </footer>
 
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Kentico components sandbox</p>
-        </footer>
-    </div>
-
-    @Html.Kentico().PageBuilderScripts()
-
-    @RenderSection("scripts", required: false)
+    <page-builder-scripts />
 </body>
 </html>

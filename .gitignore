@@ -43,26 +43,18 @@ WebApp.sln
 packages/
 
 # Ignore Nuget packages Kentico content files
-# kentico.languagepack.english
-SandboxSite/CMSResources/*
 /*.Views/CMSResources/*
-
-# kentico.aspnet.mvc
-SandboxSite/App_Data/Global/Resources/Kentico.*
-
-# Ignore component development files
-SandboxSite/Content/*
 
 # Kentico application data files
 /SandboxSite/App_Data/CMSModules/WebFarm/*.sync
 /SandboxSite/App_Data/CMSModules/SmartSearch
+/SandboxSite/CMSSiteUtils
+
+# Components client files
+/SandboxSite/wwwroot/PageBuilder/Public
 
 # Actual config files
-/SandboxSite/AppSettings.config
-/SandboxSite/ConnectionStrings.config
-
-# Ignore nuild nuget packages
-/SandboxSite/*.nupkg
+/SandboxSite/appsettings.Development.json
 
 # build artifacts
 /artifacts

@@ -1,0 +1,12 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using CMS.DocumentEngine
+
+@model Kentico.Content.Web.Mvc.Routing.IPageViewModel<TreeNode>
+
+<h1>@Model.Page.DocumentName</h1>
+<div>
+    <editable-area area-identifier="main" />
+</div>

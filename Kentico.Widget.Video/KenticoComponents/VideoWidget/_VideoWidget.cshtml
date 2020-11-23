@@ -1,0 +1,20 @@
+﻿@using CMS.Helpers
+
+@model VideoWidgetViewModel
+
+@inject IPageBuilderDataContextRetriever pageBuilderContext
+
+@if (!String.IsNullOrWhiteSpace(Model.VideoUrl))
+{
+    <div class="ktc-resp-container">
+        <iframe data-widget-guid="@Guid.NewGuid()" src="@VideoHelper.GetVideoEmbedUrl(Model)" class="ktc-resp-iframe"></iframe>
+    </div>
+}
+else if (pageBuilderContext.Retrieve().EditMode)
+{
+    <partial name="~/KenticoComponents/VideoWidget/_VideoUrlEditor.cshtml" model="Model" />
+}
+else
+{
+    <p>@ResHelper.GetString("Kentico.Widget.Video.VideoUrl.NotSet")</p>
+}

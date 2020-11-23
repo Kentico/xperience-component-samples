@@ -1,43 +1,50 @@
-# .NET Build Configuration
+# System Configuration
 version: '{build}'
-image: Visual Studio 2019
-before_build:
-- ps: .nuget\BuildInit.ps1
-- cmd: nuget restore
+image:
+    - Ubuntu
+    - Visual Studio 2019
+    - macos
 
+# Set the specific version of Node.js
+environment:
+  nodejs_version: "10"
+  APPVEYOR_YML_DISABLE_PS_LINUX: true
+ 
+# Install scripts. (runs after repo cloning)
+install:
+  # Install Node.js
+  - sh: nvm install $nodejs_version
+  - ps: Install-Product node $env:nodejs_version
+  
+  # Output useful info for debugging.
+  - echo "ENVIRONMENT SETUP INFO"
+  - node --version
+  - npm --version
+  - dotnet --version
+  
+  # install modules
+  - npm install
+  
+# Nuget restore before build    
+before_build:
+    - dotnet restore
+
+# Build
 build:
-  verbosity: minimal
-configuration: Release
-skip_tags: true
+    project: Kentico.Components.sln
+    verbosity: minimal
+
+configuration:
+    - Release
 
 # .NET Tests
 test:
   assemblies:
     only:
     - '**\kentico.*.Tests.dll'
-# Test against the latest version of this Node.js version
-environment:
-  nodejs_version: "10"
-
-# Install scripts. (runs after repo cloning)
-install:
-  # Get the latest stable version of Node.js or io.js
-  - ps: Install-Product node $env:nodejs_version
-  # install modules
-  - npm install
-  - npm run build
-
-after_build:
-  - ps: .nuget\CreatePackages.ps1
 
 # Post-install test scripts.
 after_test:
-  # Output useful info for debugging.
-  - node --version
-  - npm --version
-  # run tests
+  # Run build & tests
+  - npm run build
   - npm run test
-
-artifacts:
-  - path: '*.nupkg'
-    name: NuGet packages
