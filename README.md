@@ -22,4 +22,3 @@ To help you get started with [Page builder](https://kentico.com/CMSPages/DocLink
 ## License
 - [MIT](/LICENSE)
 
-![Analytics](https://kentico-ga-beacon.azurewebsites.net/api/UA-69014260-4/Kentico/ems-mvc-components?pixel)
