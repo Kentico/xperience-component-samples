@@ -28,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Kentico.Selector.ObjectSelector\Kentico.Selector.ObjectSelector.csproj" />
     <ProjectReference Include="..\Kentico.Widget.Video\Kentico.Widget.Video.csproj" />
   </ItemGroup>
 
